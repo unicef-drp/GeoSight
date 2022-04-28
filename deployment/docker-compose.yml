@@ -54,8 +54,8 @@ services:
     environment:
       - ALLOW_IP_RANGE=0.0.0.0/0
       - POSTGRES_DBNAME=${DATABASE_NAME:-django}
-      - USERNAME=${DATABASE_USERNAME:-docker}
-      - PASS=${DATABASE_PASSWORD:-docker}
+      - POSTGRES_USER=${DATABASE_USERNAME:-docker}
+      - POSTGRES_PASS=${DATABASE_PASSWORD:-docker}
     restart: on-failure:5
 
   dbbackups:
