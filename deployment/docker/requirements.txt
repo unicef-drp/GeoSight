@@ -1,7 +1,7 @@
 Django==3.2.13
 django-braces==1.15.0
 djangorestframework==3.13.1
-djangorestframework-gis==0.17
+djangorestframework-gis==0.18
 
 requests==2.27.1
 celery==5.2.6
