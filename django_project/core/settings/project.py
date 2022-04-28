@@ -7,10 +7,11 @@ repository!
 """
 
 import os  # noqa
+
 from django.utils.translation import ugettext_lazy as _
+
 from .contrib import *  # noqa
 
-DEBUG = False
 ALLOWED_HOSTS = ['*']
 ADMINS = (
     ('Irwan Fathurrahman', 'irwam@kartoza.com'),
@@ -50,15 +51,17 @@ LOCALE_PATHS = (ABS_PATH('locale'),)
 # Extra installed apps
 INSTALLED_APPS = INSTALLED_APPS + (
     'core',
-    'rir_data',
-    'rir_harvester',
-    'rir_dashboard',
+    'gap_data',
+    'gap_harvester',
+    'gap_dashboard',
 )
 
 # -------------------------------------------------- #
 # ----------            CELERY          ------------ #
 # -------------------------------------------------- #
-CELERY_BROKER_URL = 'amqp://guest:guest@%s:5672//' % os.environ.get('RABBITMQ_HOST', 'rabbitmq')
+
+CELERY_BROKER_URL = 'amqp://guest:guest@%s:5672//' % os.environ.get(
+    'RABBITMQ_HOST', 'rabbitmq')
 CELERY_RESULT_BACKEND = None
 CELERY_TASK_ALWAYS_EAGER = False  # set this to False in order to run async
 CELERY_TASK_IGNORE_RESULT = True

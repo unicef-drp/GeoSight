@@ -19,7 +19,8 @@ class ProxyView(APIView):
         if username and password:
             response = requests.get(url, auth=(username, password))
         elif basic_auth:
-            response = requests.get(url, headers={"Authorization": f"Basic {basic_auth}"})
+            response = requests.get(url, headers={
+                "Authorization": f"Basic {basic_auth}"})
         else:
             response = requests.get(url)
 

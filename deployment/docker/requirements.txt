@@ -1,0 +1,13 @@
+Django==3.2.13
+django-braces==1.15.0
+djangorestframework==3.13.1
+djangorestframework-gis==0.18
+
+requests==2.27.1
+celery==5.2.6
+Pillow==9.1.0
+psycopg2-binary==2.9.3
+pyexcel-xls==0.7.0
+pyexcel-xlsx==0.6.0
+raven==6.10.0
+uwsgi==2.0.20

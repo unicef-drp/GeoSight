@@ -51,13 +51,13 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     ABS_PATH('core', 'static'),
-    ABS_PATH('rir_dashboard', 'static'),
+    ABS_PATH('gap_dashboard', 'static'),
 )
 
 # Every cache key will get prefixed with this value - here we set it to
 # the name of the directory the project is in to try and use something
 # project specific.
-CACHE_MIDDLEWARE_KEY_PREFIX = 'rir_dashboard'
+CACHE_MIDDLEWARE_KEY_PREFIX = 'gap_dashboard'
 
 MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -82,7 +82,7 @@ TEMPLATES = [
         'DIRS': [
             # Put Templates Hers
             ABS_PATH('core', 'templates'),
-            ABS_PATH('rir_dashboard', 'templates'),
+            ABS_PATH('gap_dashboard', 'templates'),
         ],
         'OPTIONS': {
             'loaders': [
@@ -98,7 +98,7 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
                 'core.context_processors.global_context.global_context',
-                'rir_data.context_processors.global_context.global_context',
+                'gap_data.context_processors.global_context.global_context',
             ],
         },
     },
@@ -128,4 +128,6 @@ INSTALLED_APPS = (
 LOGIN_URL = '/login'
 SITE_ID = 1
 SECRET_KEY = 'ymji&#qvdm%qchny!6@=%6&)qo!4ir=2aqp8g#$pcl1!v2dx8a'
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATICFILES_STORAGE = (
+    'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+)

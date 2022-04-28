@@ -10,7 +10,7 @@ app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
     'run-harvester': {
-        'task': 'rir_harvester.tasks.run_harvesters',
+        'task': 'gap_harvester.tasks.run_harvesters',
         'schedule': crontab(hour=00)
     }
 }

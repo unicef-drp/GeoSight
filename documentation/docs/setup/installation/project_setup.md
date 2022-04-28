@@ -1,17 +1,17 @@
 # Project Setup
 
-## Clone rir-dashboard repository
+## Clone gis_geo_analytics-platform repository
 
-This will clone the rir-dashboard repository to your machine
+This will clone the gis_geo_analytics-platform repository to your machine
 ```
-git clone https://github.com/kartoza/rir-dashboard.git
+git clone https://github.com/unicef-drp/gis_geo_analytics-platform.git
 ```
 
 ## Set up the project
 
-This will set up the rir-dashboard project on your machine
+This will set up the gis_geo_analytics-platform project on your machine
 ```
-cd rir-dashboard
+cd gis_geo_analytics-platform
 cd deployment
 cp docker-compose.override.template.yml docker-compose.override.yml
 cp .template.env .env
@@ -22,20 +22,18 @@ Wait until everything is done.
 
 After everything is done, open up a web browser and go to [http://127.0.0.1/](http://127.0.0.1/) and the dashboard will open:
 
-![RIR Dashboard on 127.0.0.1](../../assets/screenshots/rir-dashboard-linux-machine.png)
-
 By Default, we can use the admin credential:
 ```
 username : admin
 password : admin
 ```
 
-## Setup different environment
-To setup different environment, for example the Default credential, or the port of server, open **deployment/.env**.
+## Set up different environment
+To set up different environment, for example the Default credential, or the port of server, open **deployment/.env**.
 You can check the description below for each of variable.
 
 ```
-COMPOSE_PROJECT_NAME=rir_dashboard
+COMPOSE_PROJECT_NAME=gap
 NGINX_TAG=0.0.1  -> Change this for different nginx image
 DJANGO_TAG=0.0.1 -> Change this for different django image
 DJANGO_DEV_TAG=0.0.1 -> Change this for different django dev image
@@ -60,4 +58,4 @@ PUID=1000
 PGID=1000
 ```
 
-After you hange the desired variable and do `make up`. It will rerun the project with new environment.
+After you change the desired variable and do `make up`. It will rerun the project with new environment.

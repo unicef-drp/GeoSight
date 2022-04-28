@@ -1,4 +1,5 @@
 from django.test.testcases import TestCase
+
 from core.tests.model_factories import SitePreferencesF
 
 

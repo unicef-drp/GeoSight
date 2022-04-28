@@ -1,4 +1,3 @@
 # Setup
 
-This document covers how you can setup the project.
-From setup the machine to setup the data. 
+This document covers how you can set up the project, for production and development environment.

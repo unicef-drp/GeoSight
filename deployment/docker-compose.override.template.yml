@@ -46,8 +46,8 @@ services:
       context: ../
       dockerfile: deployment/docker/Dockerfile
       target: dev
-    image: kartoza/rir_dashboard_django_dev:${DJANGO_DEV_TAG:-0.0.1}
-    container_name: "rir_dashboard_dev"
+    image: kartoza/gap_django_dev:${DJANGO_DEV_TAG:-0.0.1}
+    container_name: "gap_dev"
     volumes:
       - ../django_project:/home/web/django_project
       - ./volumes/static:/home/web/static

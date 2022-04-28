@@ -1,6 +1,6 @@
 from core.models.preferences import SitePreferences
 from core.serializer.site_preferences import SitePreferencesSerializer
-from rir_data.models import Instance, Link
+from gap_data.models import Instance, Link
 
 
 def global_context(request):

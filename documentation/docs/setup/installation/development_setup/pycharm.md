@@ -59,6 +59,6 @@ After the interpreter is done, we need configuration to run the project in devel
 
 This development mode is DEBUG mode, and also whenever we change the code, the site will also change in runtime.
 
-For more information how to setup on pycharm, please visit [Using a Docker Compose-Based Python Interpreter in PyCharm](https://kartoza.com/en/blog/using-docker-compose-based-python-interpreter-in-pycharm/)
+For more information how to set up on pycharm, please visit [Using a Docker Compose-Based Python Interpreter in PyCharm](https://kartoza.com/en/blog/using-docker-compose-based-python-interpreter-in-pycharm/)
 
 

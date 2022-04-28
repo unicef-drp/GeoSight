@@ -7,8 +7,9 @@ This script initializes
 #########################################################
 
 import os
-import django
 import time
+
+import django
 
 django.setup()
 
@@ -71,7 +72,6 @@ except get_user_model().DoesNotExist:
     )
     print('superuser successfully created')
 
-
 #########################################################
 # 4. Loading fixtures
 #########################################################
@@ -82,6 +82,7 @@ print("4. Loading fixtures")
 # Disable fixtures loading in prod by including environment variable:
 #  INITIAL_FIXTURES=False
 import ast
+
 _load_initial_fixtures = ast.literal_eval(
     os.getenv('INITIAL_FIXTURES', 'True'))
 if _load_initial_fixtures:

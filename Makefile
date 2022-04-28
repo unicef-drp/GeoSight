@@ -1,4 +1,4 @@
-PROJECT_ID := rir_dashboard
+PROJECT_ID := gap
 export COMPOSE_FILE=deployment/docker-compose.yml:deployment/docker-compose.override.yml
 export ONEDRIVE_DATA_DIR=$(shell pwd)/deployment/onedrive/data
 

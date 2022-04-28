@@ -40,6 +40,15 @@ class SlugTerm(AbstractTerm):
             slug=slugify(name)
         ).first() is not None
 
+    @staticmethod
+    def name_is_exist_of_all(name: str) -> bool:
+        """
+        Check of name is exist
+        """
+        return SlugTerm._meta.model.objects.filter(
+            slug=slugify(name)
+        ).first() is not None
+
 
 class IconTerm(models.Model):
     """ Abstract model contains icon """
