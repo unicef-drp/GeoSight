@@ -1,3 +1,4 @@
+"""Test for Harvester : Sharepoint."""
 from core.settings.utils import ABS_PATH
 from gap_harvester.models.harvester import SharepointHarvester
 from gap_harvester.tests.model_factories import HarvesterF
@@ -5,9 +6,10 @@ from gap_harvester.tests.test_harvesters._base import BaseHarvesterTest
 
 
 class SharepointTest(BaseHarvesterTest):
-    """ Test for Harvester : Sharepoint """
+    """Test for Harvester : Sharepoint."""
 
     def test_no_attr_error(self):
+        """Test run with no attribute error."""
         harvester = HarvesterF(
             indicator=self.indicator,
             harvester_class=SharepointHarvester[0]
@@ -20,6 +22,7 @@ class SharepointTest(BaseHarvesterTest):
         )
 
     def test_run(self):
+        """Test run."""
         filepath = ABS_PATH(
             'gap_harvester', 'tests', 'test_harvesters',
             'fixtures', 'excel_test.xlsx'

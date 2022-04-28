@@ -1,3 +1,4 @@
+"""Scenario model."""
 from django.contrib.gis.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -6,9 +7,8 @@ from gap_data.models.instance import Instance
 
 
 class ScenarioLevel(AbstractTerm):
-    """
-    The level of scenario
-    """
+    """The level of scenario."""
+
     instance = models.ForeignKey(
         Instance,
         on_delete=models.CASCADE
@@ -34,14 +34,12 @@ class ScenarioLevel(AbstractTerm):
     def __str__(self):
         return f'{self.instance} - {self.name} - {self.level}'
 
-    class Meta:
+    class Meta:  # noqa: D106
         ordering = ('level',)
 
     @property
     def element(self):
-        """
-        Return element of the scenario
-        """
+        """Return element of the scenario."""
         return (
             f'<span class="scenario-level" style="color:{self.text_color}; '
             f'background-color: {self.background_color}">'

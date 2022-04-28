@@ -1,3 +1,4 @@
+"""Test for Indicator detail api."""
 from django.test import Client
 from django.test.testcases import TestCase
 from django.urls import reverse
@@ -9,9 +10,10 @@ from gap_data.tests.model_factories import (
 
 
 class IndicatorDetailApiTest(TestCase):
-    """ Test for Indicator detail api"""
+    """Test for Indicator detail api."""
 
     def setUp(self):
+        """To setup test."""
         name = 'Indicator 1'
         instance = InstanceF()
         group = IndicatorGroupF(
@@ -29,11 +31,13 @@ class IndicatorDetailApiTest(TestCase):
         )
 
     def test_delete_indicator_view_no_login(self):
+        """Test delete indicator with no login."""
         client = Client()
         response = client.delete(self.url)
         self.assertEquals(response.status_code, 403)
 
     def test_delete_indicator_view_not_staff(self):
+        """Test delete indicator with as non staff."""
         username = 'test'
         password = 'testpassword'
         UserF(username=username, password=password, is_superuser=False)
@@ -43,6 +47,7 @@ class IndicatorDetailApiTest(TestCase):
         self.assertEquals(response.status_code, 403)
 
     def test_delete_indicator_view_staff(self):
+        """Test delete indicator with as staff."""
         username = 'admin'
         password = 'adminpassword'
         UserF(username=username, password=password, is_superuser=True)

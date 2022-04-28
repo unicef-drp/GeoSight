@@ -1,3 +1,4 @@
+"""Test Geometry model."""
 from django.test.testcases import TestCase
 
 from gap_data.tests.attribute_factories import polygon_sample
@@ -8,13 +9,15 @@ from gap_data.tests.model_factories import (
 
 
 class GeometryLevelNameTest(TestCase):
-    """ Test for GeometryLevelName model """
+    """Test for GeometryLevelName model."""
 
     def setUp(self):
+        """To setup test."""
         self.name = 'Geometry Level 1'
         self.instance = GeometryLevelNameF()
 
     def test_create(self):
+        """Test create."""
         geometry_level_name = GeometryLevelNameF(
             name=self.name
         )
@@ -22,13 +25,15 @@ class GeometryLevelNameTest(TestCase):
 
 
 class GeometryLevelInstanceTest(TestCase):
-    """ Test for GeometryLevelInstance model """
+    """Test for GeometryLevelInstance model."""
 
     def setUp(self):
+        """To setup test."""
         self.instance = InstanceF()
         self.level = GeometryLevelNameF()
 
     def test_create_scenario_level(self):
+        """Test create."""
         geometry_level_name = GeometryLevelInstanceF(
             instance=self.instance,
             level=self.level
@@ -49,14 +54,16 @@ class GeometryLevelInstanceTest(TestCase):
 
 
 class GeometryTest(TestCase):
-    """ Test for Geometry model """
+    """Test for Geometry model."""
 
     def setUp(self):
+        """To setup test."""
         self.name = 'Geometry 1'
         self.instance = InstanceF()
         self.level = GeometryLevelNameF()
 
     def test_create(self):
+        """Test create."""
         geometry_parent = GeometryF(
             name=self.name,
             instance=self.instance,

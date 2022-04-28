@@ -4,6 +4,7 @@
 
 [![Tests](https://github.com/unicef-drp/gis_geo_analytics-platform/workflows/Tests/badge.svg)](https://github.com/unicef-drp/gis_geo_analytics-platform/actions/workflows/tests.yaml)
 [![Documentation](https://github.com/unicef-drp/gis_geo_analytics-platform/workflows/Documentation/badge.svg)](https://unicef-drp.github.io/gis_geo_analytics-platform/)
+[![Flake8](https://github.com/unicef-drp/gis_geo_analytics-platform/workflows/Flake8/badge.svg)](https://github.com/unicef-drp/gis_geo_analytics-platform/actions/workflows/flake8.yml)
 
 ## QUICK INSTALLATION GUIDE
 

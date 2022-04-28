@@ -1,3 +1,4 @@
+"""Download file API."""
 import mimetypes
 import os
 
@@ -11,13 +12,13 @@ from core.permissions import AdminAuthenticationPermission
 
 
 class DownloadFile(APIView):
-    """
-    Download  file
-    """
+    """Download file."""
+
     permission_classes = (IsAuthenticated, AdminAuthenticationPermission,)
     folder = None
 
     def get(self, request, **kwargs):
+        """Download file."""
         filepath = request.GET.get('file', None)
         if not filepath:
             return HttpResponseBadRequest('file is required in parameter')
@@ -39,14 +40,12 @@ class DownloadFile(APIView):
 
 
 class DownloadSharepointFile(DownloadFile):
-    """
-    Download sharepoint file
-    """
+    """Download sharepoint file."""
+
     folder = settings.ONEDRIVE_ROOT
 
 
 class DownloadBackupsFile(DownloadFile):
-    """
-    Download backups file
-    """
+    """Download backups file."""
+
     folder = settings.BACKUPS_ROOT

@@ -1,3 +1,4 @@
+"""Test for Basemap model."""
 import urllib.parse
 
 from django.test.testcases import TestCase
@@ -9,9 +10,10 @@ from gap_data.tests.model_factories import (
 
 
 class BasemapLayerTest(TestCase):
-    """ Test for Basemap model """
+    """Test for Basemap model."""
 
     def setUp(self):
+        """To setup test."""
         self.name = 'Context Layer 1'
         self.params = {
             'param 1': 'value 1',
@@ -25,6 +27,7 @@ class BasemapLayerTest(TestCase):
         }
 
     def test_create(self):
+        """Test create."""
         context_layer = ContextLayerF(
             name=self.name
         )

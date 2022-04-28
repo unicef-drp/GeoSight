@@ -1,3 +1,4 @@
+"""Model for Website Preferences."""
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -5,7 +6,15 @@ from core.models.singleton import SingletonModel
 
 
 class SitePreferences(SingletonModel):
-    """ Setting specifically for website """
+    """Preference settings specifically for website.
+
+    Preference contains
+    - site_title
+    - primary_color
+    - secondary_color
+    - icon
+    -favicon
+    """
 
     site_title = models.CharField(
         max_length=512,
@@ -38,11 +47,12 @@ class SitePreferences(SingletonModel):
         blank=True
     )
 
-    class Meta:
+    class Meta:  # noqa: D106
         verbose_name_plural = "site preferences"
 
     @staticmethod
     def preferences() -> "SitePreferences":
+        """Load Site Preference."""
         return SitePreferences.load()
 
     def __str__(self):

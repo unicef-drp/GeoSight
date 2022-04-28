@@ -1,3 +1,4 @@
+"""Test for Harvester : ExcelHarvester."""
 from core.settings.utils import ABS_PATH
 from gap_harvester.models.harvester import ExcelHarvester
 from gap_harvester.tests.model_factories import HarvesterF
@@ -5,9 +6,10 @@ from gap_harvester.tests.test_harvesters._base import BaseHarvesterTest
 
 
 class ExcelHarvesterTest(BaseHarvesterTest):
-    """ Test for Harvester : ExcelHarvester """
+    """Test for Harvester : ExcelHarvester."""
 
     def test_no_attr_error(self):
+        """Test run with no attribute error."""
         harvester = HarvesterF(
             indicator=self.indicator,
             harvester_class=ExcelHarvester[0]
@@ -20,6 +22,7 @@ class ExcelHarvesterTest(BaseHarvesterTest):
         )
 
     def test_run(self):
+        """Test run."""
         filepath = ABS_PATH(
             'gap_harvester', 'tests', 'test_harvesters',
             'fixtures', 'excel_test.xlsx'

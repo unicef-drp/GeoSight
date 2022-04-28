@@ -1,3 +1,4 @@
+"""Harvester Attributes model."""
 from django.contrib.gis.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -5,9 +6,8 @@ from gap_harvester.models.harvester import Harvester
 
 
 class HarvesterAttribute(models.Model):
-    """
-    Additional attribute for harvester
-    """
+    """Additional attribute for harvester."""
+
     harvester = models.ForeignKey(
         Harvester, on_delete=models.CASCADE
     )
@@ -29,21 +29,22 @@ class HarvesterAttribute(models.Model):
         null=True, blank=True
     )
 
-    class Meta:
+    class Meta:  # noqa: D106
         unique_together = ('harvester', 'name')
 
     def __str__(self):
+        """Return str."""
         return f'{self.name}'
 
     @property
     def human_name(self):
+        """Return humann name."""
         return self.name.replace('_', ' ').capitalize()
 
 
 class HarvesterMappingValue(models.Model):
-    """
-    Mapping value for the value from the remote to platform side
-    """
+    """Mapping value for the value from the remote to platform side."""
+
     harvester = models.ForeignKey(
         Harvester, on_delete=models.CASCADE
     )
@@ -60,7 +61,7 @@ class HarvesterMappingValue(models.Model):
         )
     )
 
-    class Meta:
+    class Meta:  # noqa: D106
         unique_together = ('harvester', 'remote_value')
 
     def __str__(self):

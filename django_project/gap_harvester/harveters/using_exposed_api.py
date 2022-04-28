@@ -1,3 +1,4 @@
+"""Harvester from exposed API."""
 import uuid
 
 from django.shortcuts import reverse
@@ -6,10 +7,12 @@ from gap_harvester.harveters._base import BaseHarvester
 
 
 class UsingExposedAPI(BaseHarvester):
-    """
+    """Harvester from exposed API.
+
     Harvester to indicate the indicator is just receiving
     data using exposed API from external client
     """
+
     description = (
         "Harvester to indicate the indicator is just "
         "receiving data using exposed API from external client"
@@ -17,6 +20,7 @@ class UsingExposedAPI(BaseHarvester):
 
     @staticmethod
     def additional_attributes(**kwargs) -> dict:
+        """Return additional attributes."""
         api_url = ''
         if 'instance' in kwargs and 'indicator' in kwargs:
             api_url = reverse(
@@ -47,13 +51,13 @@ class UsingExposedAPI(BaseHarvester):
         }
 
     def _process(self):
-        """ Run the harvester """
+        """To run the harvester."""
         return
 
     @property
     def allow_to_harvest_new_data(self):
-        """
-        Allowing if the new data can be harvested
-        It will check based on the frequency
+        """Check if the new data can be harvested.
+
+        It will check based on the frequency.
         """
         return False

@@ -1,3 +1,4 @@
+"""Test for Indicator show hide api."""
 from django.test import Client
 from django.test.testcases import TestCase
 from django.urls import reverse
@@ -9,9 +10,10 @@ from gap_data.tests.model_factories import (
 
 
 class IndicatorShowHideViewTest(TestCase):
-    """ Test for Indicator show hide api"""
+    """Test for Indicator show hide api."""
 
     def setUp(self):
+        """To setup test."""
         name = 'Indicator 1'
         instance = InstanceF()
         group = IndicatorGroupF(
@@ -35,6 +37,7 @@ class IndicatorShowHideViewTest(TestCase):
         )
 
     def test_show_hide_no_login(self):
+        """Test API with no login."""
         client = Client()
         response = client.patch(self.show_url)
         self.assertEquals(response.status_code, 403)
@@ -42,6 +45,7 @@ class IndicatorShowHideViewTest(TestCase):
         self.assertEquals(response.status_code, 403)
 
     def test_show_hide_not_staff(self):
+        """Test API with as non staff."""
         username = 'test'
         password = 'testpassword'
         UserF(username=username, password=password, is_superuser=False)
@@ -53,6 +57,7 @@ class IndicatorShowHideViewTest(TestCase):
         self.assertEquals(response.status_code, 403)
 
     def test_show_hide_staff(self):
+        """Test API with as staff."""
         username = 'admin'
         password = 'adminpassword'
         UserF(username=username, password=password, is_superuser=True)

@@ -1,3 +1,4 @@
+"""Harvester Model."""
 import os
 import uuid
 
@@ -48,8 +49,8 @@ ALL_HARVESTERS = HARVESTERS + (
 
 
 class Harvester(models.Model):
-    """ Harvester of indicator data
-    """
+    """Harvester of indicator data."""
+
     unique_id = models.UUIDField(
         default=uuid.uuid4, editable=False
     )
@@ -82,27 +83,29 @@ class Harvester(models.Model):
     )
 
     def __str__(self):
+        """Return str."""
         return str(self.unique_id)
 
     @property
     def get_harvester_class(self):
+        """Return harvester class of indicator."""
         return import_string(self.harvester_class)
 
     @property
     def harvester_name(self):
+        """Return harvester name of indicator."""
         for harvester in ALL_HARVESTERS:
             if harvester[0] == self.harvester_class:
                 return harvester[1]
         return ''
 
     def save(self, *args, **kwargs):
+        """Save model."""
         super().save(*args, **kwargs)
         self.save_default_attributes()
 
     def save_default_attributes(self, **kwargs):
-        """
-        Save default attributes for the harvesters
-        """
+        """Save default attributes for the harvesters."""
         from gap_harvester.models import HarvesterAttribute
         harvester = self.get_harvester_class
         for key in harvester.additional_attributes(**kwargs).keys():
@@ -112,9 +115,7 @@ class Harvester(models.Model):
             )
 
     def save_attributes(self, data):
-        """
-        Save attributes for the harvesters
-        """
+        """Save attributes for the harvesters."""
         from gap_harvester.models.harvester_attribute import HarvesterAttribute
         for key, value in data.items():
             try:
@@ -127,9 +128,7 @@ class Harvester(models.Model):
                 pass
 
     def save_mapping(self, data):
-        """
-        Save mapping for the harvesters
-        """
+        """Save mapping for the harvesters."""
         from gap_harvester.models.harvester_attribute import (
             HarvesterMappingValue
         )
@@ -150,9 +149,7 @@ class Harvester(models.Model):
                 pass
 
     def get_attributes(self):
-        """
-        Get attributes keys
-        """
+        """Get attributes keys."""
         from gap_data.models.instance import Instance
         from gap_harvester.models import HarvesterAttribute
         ids = []
@@ -187,14 +184,13 @@ class Harvester(models.Model):
         return attributes
 
     def run(self, force=False):
-        """
-        Run the harvester
-        """
+        """Run the harvester."""
         if self.active:
             self.get_harvester_class(self).run(force)
 
     @property
     def report_file(self):
+        """Return report file."""
         folder = os.path.join(settings.MEDIA_ROOT, 'harvester', 'report')
         if not os.path.exists(folder):
             os.makedirs(folder)
@@ -202,6 +198,7 @@ class Harvester(models.Model):
 
     @property
     def report_file_url(self):
+        """Return report url file."""
         return os.path.join(
             settings.MEDIA_URL, 'harvester', 'report',
             str(self.unique_id) + '.xlsx'
@@ -209,4 +206,5 @@ class Harvester(models.Model):
 
     @property
     def short_log_list(self):
+        """Return 10 of logs."""
         return self.harvesterlog_set.all()[:10]

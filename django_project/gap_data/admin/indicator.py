@@ -1,3 +1,4 @@
+"""Indicator admin."""
 from django.contrib import admin
 
 from gap_data.models.indicator import (
@@ -7,7 +8,11 @@ from gap_data.models.indicator import (
 
 
 class IndicatorValueAdmin(admin.ModelAdmin):
+    """IndicatorValue admin."""
+
     class IndicatorExtraValueRuleInline(admin.TabularInline):
+        """IndicatorExtraValue inline."""
+
         model = IndicatorExtraValue
         extra = 0
 
@@ -18,11 +23,17 @@ class IndicatorValueAdmin(admin.ModelAdmin):
 
 
 class IndicatorFrequencyAdmin(admin.ModelAdmin):
+    """IndicatorFrequencyAdmin admin."""
+
     list_display = ('name', 'frequency')
 
 
 class IndicatorAdmin(admin.ModelAdmin):
+    """Indicator admin."""
+
     class IndicatorScenarioRuleInline(admin.TabularInline):
+        """IndicatorScenarioRule inline."""
+
         model = IndicatorScenarioRule
         extra = 0
 
@@ -36,6 +47,8 @@ class IndicatorAdmin(admin.ModelAdmin):
 
 
 class IndicatorGroupAdmin(admin.ModelAdmin):
+    """IndicatorGroup admin."""
+
     list_display = ('name', 'instance')
     list_filter = ('instance',)
 

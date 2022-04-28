@@ -1,7 +1,5 @@
 # coding=utf-8
-"""
-core.settings.contrib
-"""
+"""Settings for 3rd party."""
 from .base import *  # noqa
 
 # Extra installed apps

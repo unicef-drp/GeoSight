@@ -1,3 +1,4 @@
+"""Test for Harvester : APIWithGeograpyAndDate."""
 import responses
 
 from gap_harvester.models.harvester import APIListWithGeographyAndDate
@@ -6,9 +7,10 @@ from gap_harvester.tests.test_harvesters._base import BaseHarvesterTest
 
 
 class APIWithGeograpyAndDateTest(BaseHarvesterTest):
-    """ Test for Harvester : APIWithGeograpyAndDate """
+    """Test for Harvester : APIWithGeograpyAndDate."""
 
     def test_no_attr_error(self):
+        """Test run with no attribute error."""
         harvester = HarvesterF(
             indicator=self.indicator,
             harvester_class=APIListWithGeographyAndDate[0]
@@ -24,6 +26,7 @@ class APIWithGeograpyAndDateTest(BaseHarvesterTest):
 
     @responses.activate
     def test_with_timestamp(self):
+        """Test run with timestamp."""
         harvester = HarvesterF(
             indicator=self.indicator,
             harvester_class=APIListWithGeographyAndDate[0]
@@ -105,6 +108,7 @@ class APIWithGeograpyAndDateTest(BaseHarvesterTest):
 
     @responses.activate
     def test_run(self):
+        """Test run."""
         harvester = HarvesterF(
             indicator=self.indicator,
             harvester_class=APIListWithGeographyAndDate[0]

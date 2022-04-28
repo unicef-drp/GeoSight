@@ -1,3 +1,4 @@
+"""Download master data API."""
 import os
 from datetime import datetime
 
@@ -16,11 +17,10 @@ from gap_data.models.instance import Instance
 
 
 class DownloadMasterData(APIView):
-    """
-    Download master data as spreadsheet
-    """
+    """Download master data as spreadsheet."""
 
     def get(self, request, slug, date):
+        """Download master data as spreadsheet."""
         instance = get_object_or_404(
             Instance, slug=slug
         )
@@ -167,11 +167,10 @@ class DownloadMasterData(APIView):
 
 
 class DownloadMasterDataCheck(APIView):
-    """
-    Download master data as spreadsheet
-    """
+    """Download master data as spreadsheet."""
 
     def get(self, request, slug, date):
+        """Download master data as spreadsheet."""
         instance = get_object_or_404(
             Instance, slug=slug
         )

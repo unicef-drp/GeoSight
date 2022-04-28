@@ -1,3 +1,4 @@
+"""Geometry model."""
 import datetime
 
 from django.contrib.gis.db import models
@@ -9,16 +10,14 @@ from gap_data.models.instance import Instance
 
 
 class GeometryLevelName(AbstractTerm):
-    """
-    Geometry level name
-    """
+    """Geometry level name."""
+
     pass
 
 
 class GeometryLevelInstance(models.Model):
-    """
-    This is geometry level hierarchy for the instance
-    """
+    """This is geometry level hierarchy for the instance."""
+
     instance = models.ForeignKey(
         Instance,
         on_delete=models.CASCADE
@@ -34,10 +33,11 @@ class GeometryLevelInstance(models.Model):
         related_name='geometry_parent_level'
     )
 
-    class Meta:
+    class Meta:  # noqa: D106
         unique_together = ('instance', 'level')
 
     def get_level_tree(self):
+        """Return all of geometry level in tree."""
         tree = []
         level_instance = self
         parent = True
@@ -52,6 +52,7 @@ class GeometryLevelInstance(models.Model):
         return tree
 
     def get_child_tree(self):
+        """Return child tree of geometry level."""
         tree = [self.level.name]
         for child in GeometryLevelInstance.objects.filter(
                 instance=self.instance,
@@ -62,7 +63,10 @@ class GeometryLevelInstance(models.Model):
 
 
 class FindGeometry(models.Manager):
+    """Model manager for geometry."""
+
     def get_by(self, name, geometry_level, child_of=None):
+        """Filter geometry by name, geometry level and/or child of."""
         return self.filter(
             child_of=child_of,
             geometry_level=geometry_level
@@ -72,9 +76,7 @@ class FindGeometry(models.Manager):
         )
 
     def by_date(self, date: datetime.date):
-        """
-        Filter dates by date
-        """
+        """Filter geometry by date."""
         return super().filter(
             Q(active_date_from__lte=date, active_date_to__isnull=True) |
             Q(active_date_from__lte=date, active_date_to__gte=date)
@@ -82,14 +84,14 @@ class FindGeometry(models.Manager):
 
 
 def default_active_date_from():
+    """Return default of active date of geometry."""
     now = datetime.date.today()
     return now.replace(year=1900, month=1, day=1)
 
 
 class Geometry(models.Model):
-    """
-    Geometry with it's type
-    """
+    """Geometry model."""
+
     identifier = models.CharField(
         max_length=512
     )
@@ -145,22 +147,22 @@ class Geometry(models.Model):
 
     objects = FindGeometry()
 
-    class Meta:
+    class Meta:  # noqa: D106
         verbose_name_plural = 'geometries'
 
     def __str__(self):
+        """Return the name of geometry."""
         return self.str()
 
     def str(self):
+        """Return the name of geometry."""
         name = f'{self.name}'
         if self.name != self.identifier:
             name += f' ({self.identifier})'
         return name
 
     def geometries_by_level(self, geometry_level: GeometryLevelName):
-        """
-        Return geometries of this geometry by geometry level
-        """
+        """Return geometries of this geometry by geometry level."""
         geometries = Geometry.objects.filter(id=self.id)
         current_geometry_level = self.geometry_level
 

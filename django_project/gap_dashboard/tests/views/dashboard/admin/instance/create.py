@@ -1,3 +1,4 @@
+"""Test create instance."""
 from django.contrib.auth import get_user_model
 from django.test import Client
 from django.test.testcases import TestCase
@@ -10,9 +11,10 @@ User = get_user_model()
 
 
 class InstanceCreateTest(TestCase):
-    """ Test create instance"""
+    """Test create instance."""
 
     def setUp(self):
+        """To setup test."""
         self.url = reverse(
             'instance-management-create'
         )
@@ -21,11 +23,13 @@ class InstanceCreateTest(TestCase):
         }
 
     def test_save_level_no_login(self):
+        """Test save level no login."""
         client = Client()
         response = client.post(self.url, data=self.data)
         self.assertEquals(response.status_code, 302)
 
     def test_save_level_not_staff(self):
+        """Test save level non staff."""
         username = 'test'
         password = 'testpassword'
         UserF(username=username, password=password, is_superuser=False)
@@ -35,6 +39,7 @@ class InstanceCreateTest(TestCase):
         self.assertEquals(response.status_code, 302)
 
     def test_save_level_staff(self):
+        """Test save level staff."""
         username = 'admin'
         password = 'adminpassword'
         UserF(username=username, password=password, is_superuser=True)

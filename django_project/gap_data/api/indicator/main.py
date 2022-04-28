@@ -1,3 +1,4 @@
+"""Main API."""
 import json
 from datetime import datetime
 
@@ -27,15 +28,14 @@ from gap_data.serializer.indicator import (
 
 
 class IndicatorValuesByGeometry(APIView):
-    """
-    Return Scenario value for the specific geometry
-    for all date
-    """
-    permission_classes = (IsAuthenticated, AdminAuthenticationPermission,)
+    """Return Scenario value for the specific geometry for all date."""
+
+    permission_classes = (
+        IsAuthenticated, AdminAuthenticationPermission,
+    )
 
     def get(self, request, slug, pk, geometry_pk):
-        """
-        Return values of the indicator
+        """Return values of the indicator.
 
         :param slug: slug of the instance
         :param pk: pk of the indicator
@@ -59,8 +59,7 @@ class IndicatorValuesByGeometry(APIView):
             return HttpResponseBadRequest('Date format is not correct')
 
     def post(self, request, slug, pk, geometry_pk):
-        """
-        Return values of the indicator
+        """Return values of the indicator.
 
         :param slug: slug of the instance
         :param pk: pk of the indicator
@@ -85,16 +84,17 @@ class IndicatorValuesByGeometry(APIView):
 
 
 class IndicatorValuesByDate(APIView):
-    """
-    Return Scenario value for the specific geometry
+    """Return Scenario value for the specific geometry.
+
     Geometry level is the level that the value needs to get
     Return as list of value
     """
 
-    def values(self, slug, pk, geometry_identifier, geometry_level, date,
-               use_exact_date=False, more_information=True):
-        """
-        Return values of the indicator
+    def values(
+            self, slug, pk, geometry_identifier, geometry_level, date,
+            use_exact_date=False, more_information=True
+    ):
+        """Return values of the indicator.
 
         :param pk: pk of the indicator
         :param geometry_identifier: the geometry identifier
@@ -118,8 +118,11 @@ class IndicatorValuesByDate(APIView):
             use_exact_date=use_exact_date, more_information=more_information
         )
 
-    def get(self, request, slug, pk, geometry_identifier, geometry_level,
-            date):
+    def get(
+            self, request, slug, pk,
+            geometry_identifier, geometry_level, date
+    ):
+        """Return values of the indicator."""
         try:
             return Response(
                 self.values(
@@ -134,17 +137,22 @@ class IndicatorValuesByDate(APIView):
 
 
 class IndicatorValuesByDateAndGeojson(IndicatorValuesByDate):
-    """
-    Return geojson Scenario value for the specific geometry
+    """Return geojson Scenario value for the specific geometry.
+
     Geometry level is the level that the value needs to get
     Return as geojson of geometry
     """
 
-    def get(self, request, slug, pk, geometry_identifier, geometry_level,
-            date):
+    def get(
+            self, request, slug, pk,
+            geometry_identifier, geometry_level, date
+    ):
+        """Return geojson Scenario value for the specific geometry."""
         try:
-            values = self.values(slug, pk, geometry_identifier, geometry_level,
-                                 date)
+            values = self.values(
+                slug, pk,
+                geometry_identifier, geometry_level, date
+            )
             features = []
             for value in values:
                 try:
@@ -175,14 +183,13 @@ class IndicatorValuesByDateAndGeojson(IndicatorValuesByDate):
 
 
 class IndicatorValuesByGeometryAndLevel(APIView):
-    """
-    Return Scenario value for the specific geometry
+    """Return Scenario value for the specific geometry.
+
     Geometry level is the level that the value needs to get
     """
 
     def values(self, slug, pk, geometry_identifier, geometry_level):
-        """
-        Return values of the indicator
+        """Return values of the indicator.
 
         :param pk: pk of the indicator
         :param geometry_identifier: the geometry identifier
@@ -219,6 +226,7 @@ class IndicatorValuesByGeometryAndLevel(APIView):
         return values
 
     def get(self, request, slug, pk, geometry_identifier, geometry_level):
+        """Return values of the indicator."""
         try:
             return Response(
                 self.values(slug, pk, geometry_identifier, geometry_level))
@@ -229,12 +237,14 @@ class IndicatorValuesByGeometryAndLevel(APIView):
 
 
 class IndicatorValues(APIView):
-    """
-    Return Scenario value for country with the indicator geometry level
-    """
-    authentication_classes = (IndicatorHarvesterTokenAndBearerAuthentication,)
+    """Return Scenario value for country with the indicator geometry level."""
+
+    authentication_classes = (
+        IndicatorHarvesterTokenAndBearerAuthentication,
+    )
 
     def get(self, request, slug, pk):
+        """Get values for specific indicator."""
         try:
             instance = get_object_or_404(
                 Instance, slug=slug
@@ -269,8 +279,7 @@ class IndicatorValues(APIView):
             raise Http404('The reporting level is not level of instance')
 
     def post(self, request, slug, pk):
-        """
-        Save value for specific date
+        """Save value for specific date.
 
         :param slug: slug of the instance
         :param pk: pk of the indicator
@@ -341,14 +350,14 @@ class IndicatorValues(APIView):
 
 
 class IndicatorValuesBatch(APIView):
-    """
-    Return Scenario value for country with the indicator geometry level
-    """
-    authentication_classes = (IndicatorHarvesterTokenAndBearerAuthentication,)
+    """Return Scenario value for country with the indicator geometry level."""
+
+    authentication_classes = (
+        IndicatorHarvesterTokenAndBearerAuthentication,
+    )
 
     def post(self, request, slug, pk):
-        """
-        Save value for specific date
+        """Save value for specific date.
 
         :param slug: slug of the instance
         :param pk: pk of the indicator
@@ -432,14 +441,12 @@ class IndicatorValuesBatch(APIView):
 
 
 class IndicatorReportingUnits(APIView):
-    """
-    Change reporting units of indicator
-    """
+    """Change reporting units of indicator."""
+
     permission_classes = (IsAuthenticated, AdminAuthenticationPermission,)
 
     def post(self, request, slug, pk):
-        """
-        Save reporting units of indicator
+        """Save reporting units of indicator.
 
         :param slug: slug of the instance
         :param pk: pk of the indicator

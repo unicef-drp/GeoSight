@@ -1,3 +1,4 @@
+"""Show/Hide indicator API."""
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
@@ -10,12 +11,12 @@ from gap_data.models.instance import Instance
 
 
 class IndicatorShow(APIView):
-    """
-    Show indicator
-    """
+    """Show indicator."""
+
     permission_classes = (IsAuthenticated, AdminAuthenticationPermission,)
 
     def patch(self, request, slug, pk):
+        """Show indicator."""
         try:
             instance = get_object_or_404(
                 Instance, slug=slug
@@ -29,12 +30,14 @@ class IndicatorShow(APIView):
 
 
 class IndicatorHide(APIView):
-    """
-    Hide indicator
-    """
-    permission_classes = (IsAuthenticated, AdminAuthenticationPermission,)
+    """Hide indicator."""
+
+    permission_classes = (
+        IsAuthenticated, AdminAuthenticationPermission,
+    )
 
     def patch(self, request, slug, pk):
+        """Hide indicator."""
         try:
             instance = get_object_or_404(
                 Instance, slug=slug

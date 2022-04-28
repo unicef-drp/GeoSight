@@ -1,3 +1,4 @@
+"""Indicator model."""
 import typing
 from datetime import date
 
@@ -16,6 +17,8 @@ from gap_data.models.scenario import ScenarioLevel
 
 # AGGREGATION BEHAVIOURS
 class AggregationBehaviour(object):
+    """A quick couple variable for AggregationBehaviour."""
+
     ALL_REQUIRED = 'All geography required in current time window'
     USE_AVAILABLE = (
         'Use all available populated geography in current time window'
@@ -25,19 +28,22 @@ class AggregationBehaviour(object):
 
 # AGGREGATION METHOD
 class AggregationMethod(object):
+    """A quick couple variable for AggregationMethod."""
+
     SUM = 'Aggregate data by sum all data.'
     AVERAGE = 'Aggregate data by average data in the levels.'
     MAJORITY = 'Aggregate data by majority data in the levels.'
 
 
 class IndicatorValueRejectedError(Exception):
+    """Exceptions for value rejected."""
+
     pass
 
 
 class Indicator(AbstractTerm, PermissionModel):
-    """
-    The indicator of scenario
-    """
+    """The indicator model."""
+
     shortcode = models.CharField(
         max_length=512,
         null=True, blank=True,
@@ -140,22 +146,24 @@ class Indicator(AbstractTerm, PermissionModel):
         return self.full_name
 
     def save(self, *args, **kwargs):
+        """Save model."""
         if not self.order:
             self.order = Indicator.objects.count()
         super(Indicator, self).save(*args, **kwargs)
 
-    class Meta:
+    class Meta:  # noqa: D106
         ordering = ('order',)
 
     @property
     def full_name(self):
+        """Return full name of indicator with the group."""
         return f'{self.group}/{self.name}'
 
     @property
     def allow_to_harvest_new_data(self):
-        """
-        Allowing if the new data can be harvested
-        It will check based on the frequency
+        """For checking if the new data can be harvested.
+
+        It will check based on the frequency.
         """
         last_data = self.indicatorvalue_set.all().order_by('-date').first()
         if not last_data:
@@ -166,14 +174,12 @@ class Indicator(AbstractTerm, PermissionModel):
 
     @staticmethod
     def list():
-        """ Return list of indicators """
+        """Return list of indicators."""
         return Indicator.objects.filter(show_in_context_analysis=True)
 
     @property
     def legends(self):
-        """
-        Return legend of indicator
-        """
+        """Return legend of indicator."""
         output = {}
         for indicator_rule in self.indicatorscenariorule_set.order_by(
                 'scenario_level__level'):
@@ -189,16 +195,12 @@ class Indicator(AbstractTerm, PermissionModel):
         return output
 
     def scenario_rule(self, level: int):
-        """
-        Return scenario rule for specific level number
-        """
+        """Return scenario rule for specific level number."""
         return self.indicatorscenariorule_set.filter(
             scenario_level__level=level).first()
 
     def scenario_level(self, value) -> typing.Optional[ScenarioLevel]:
-        """
-        Return scenario level of the value
-        """
+        """Return scenario level of the value."""
         if value is not None:
             # check the rule
             for indicator_rule in self.indicatorscenariorule_set.all():
@@ -212,9 +214,7 @@ class Indicator(AbstractTerm, PermissionModel):
         return None
 
     def scenarios_dict(self):
-        """
-        Return scenarios in list of dict
-        """
+        """Return scenarios in list of dict."""
         from gap_data.models import ScenarioLevel, IndicatorScenarioRule
         scenarios = []
         for scenario in ScenarioLevel.objects.order_by('level'):
@@ -235,9 +235,7 @@ class Indicator(AbstractTerm, PermissionModel):
         return scenarios
 
     def scenario_rule_by_value(self, value):
-        """
-        Return scenario level of the value
-        """
+        """Return scenario level of the value."""
         if value is not None:
             # check the rule
             for indicator_rule in self.indicatorscenariorule_set.all():
@@ -251,7 +249,7 @@ class Indicator(AbstractTerm, PermissionModel):
             return None
 
     def query_value(self, date_data: date):
-        """ Return query of value"""
+        """Return query of value."""
         query = self.indicatorvalue_set.filter(date__lte=date_data).filter(
             geometry__geometry_level=self.geometry_reporting_level
         )
@@ -264,7 +262,7 @@ class Indicator(AbstractTerm, PermissionModel):
         return query
 
     def serialize(self, geometry, value, attributes=None):
-        # return data
+        """Serialize the data."""
         scenario_value = self.scenario_level(value)
         background_color = scenario_value.background_color \
             if scenario_value else ''
@@ -292,13 +290,15 @@ class Indicator(AbstractTerm, PermissionModel):
         values.update(attributes if attributes else {})
         return values
 
-    def values(self, geometry: Geometry, geometry_level: GeometryLevelName,
-               date_data: date,
-               use_exact_date=False, more_information=False, serializer=None):
-        """
-        Return list data based on the geometry and geometry level with date
+    def values(
+            self, geometry: Geometry, geometry_level: GeometryLevelName,
+            date_data: date,
+            use_exact_date=False, more_information=False, serializer=None
+    ):
+        """Return list data based on the geometry and geometry level with date.
+
         If it is upper than the reporting geometry level,
-        it will be aggregate to upper level
+        it will be aggregate to upper level.
         """
         from gap_data.models.indicator import IndicatorExtraValue
 
@@ -430,9 +430,10 @@ class Indicator(AbstractTerm, PermissionModel):
 
     @property
     def reporting_units(self):
-        """
-        Return geometry of instance in the
-        level when does not have geometry_reporting_units
+        """To return geometry of instance.
+
+        It will return all unit if
+        it does not have geometry_reporting_units.
         """
         if self.geometry_reporting_units.count() == 0:
             return self.group.instance.geometries().filter(
@@ -442,6 +443,7 @@ class Indicator(AbstractTerm, PermissionModel):
 
     @property
     def url_geojson_template(self):
+        """For returning url for the data as geojson."""
         instance = self.group.instance
         country_level = instance.geometry_instance_levels.filter(
             parent=None).first()
@@ -460,6 +462,7 @@ class Indicator(AbstractTerm, PermissionModel):
 
     @property
     def url_data_template(self):
+        """For returning url for the data to in list."""
         instance = self.group.instance
         country_level = instance.geometry_instance_levels.filter(
             parent=None).first()
@@ -478,9 +481,7 @@ class Indicator(AbstractTerm, PermissionModel):
 
     @property
     def levels(self):
-        """
-        Return levels of indicators in tree
-        """
+        """Return levels of indicators in tree."""
         from gap_data.models import GeometryLevelInstance
         level_instance = GeometryLevelInstance.objects.filter(
             instance=self.group.instance,
@@ -493,6 +494,7 @@ class Indicator(AbstractTerm, PermissionModel):
 
     @property
     def create_harvester_url(self):
+        """Create the first harvester url for this indicator."""
         from gap_harvester.models.harvester import HARVESTERS
         return reverse(
             HARVESTERS[0][0], args=[self.group.instance.slug, self.id]
@@ -501,8 +503,9 @@ class Indicator(AbstractTerm, PermissionModel):
     def save_value(
             self,
             date: date, geometry: Geometry, value: float,
-            extras: dict = None, details: list = None):
-        """ Save new value for the indicator """
+            extras: dict = None, details: list = None
+    ):
+        """Save new value for the indicator."""
         from gap_data.models.indicator import (
             IndicatorValue, IndicatorExtraValue,
             IndicatorValueExtraDetailRow, IndicatorValueExtraDetailColumn

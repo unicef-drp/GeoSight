@@ -1,3 +1,4 @@
+"""Indicator Creation View."""
 from django.shortcuts import redirect, reverse, render, get_object_or_404
 
 from gap_dashboard.forms.indicator import IndicatorForm
@@ -8,17 +9,22 @@ from gap_data.models import (
 
 
 class IndicatorCreateView(AdminView):
+    """Indicator Creation View."""
+
     template_name = 'dashboard/admin/indicator/form.html'
 
     @property
     def page_title(self):
+        """Return page title."""
         return 'Create New Indicator'
 
     @property
     def content_title(self):
+        """Return content title."""
         return ''
 
     def get_context_data(self, **kwargs) -> dict:
+        """Return context data."""
         context = super().get_context_data(**kwargs)
         scenarios = []
         for scenario in ScenarioLevel.objects.order_by('level'):
@@ -54,6 +60,7 @@ class IndicatorCreateView(AdminView):
         return context
 
     def post(self, request, **kwargs):
+        """Create indicator."""
         self.instance = get_object_or_404(
             Instance, slug=kwargs.get('slug', '')
         )

@@ -1,3 +1,4 @@
+"""Base for test API."""
 from django.test.testcases import TestCase
 
 from gap_data.tests.model_factories import (
@@ -8,9 +9,10 @@ from gap_data.tests.model_factories import (
 
 
 class BaseHarvesterTest(TestCase):
-    """ Base for test API """
+    """Base for test API."""
 
     def setUp(self):
+        """To setup tests."""
         self.instance = InstanceF()
         level = GeometryLevelNameF()
         self.indicator = IndicatorF(

@@ -1,3 +1,4 @@
+"""Abstract class for harvester."""
 import datetime
 import traceback
 from abc import ABC, abstractmethod
@@ -16,13 +17,16 @@ User = get_user_model()
 
 
 class HarvestingError(Exception):
+    """Error class for Harvesting."""
+
     def __init__(self, message):
+        """init."""
         self.message = message
         super().__init__(self.message)
 
 
 class BaseHarvester(ABC):
-    """ Abstract class for harvester """
+    """Abstract class for harvester."""
 
     log = None
     description = ""
@@ -31,6 +35,7 @@ class BaseHarvester(ABC):
     done_message = ''
 
     def __init__(self, harvester: Harvester):
+        """init."""
         self.harvester = harvester
         for attribute in harvester.harvesterattribute_set.all():
             self.attributes[attribute.name] = \
@@ -43,8 +48,8 @@ class BaseHarvester(ABC):
 
     @staticmethod
     def additional_attributes(**kwargs) -> dict:
-        """
-        Attributes that needs to be saved on database
+        """Attributes that needs to be saved on database.
+
         The value is the default value for the attribute
         This will be used by harvester
         """
@@ -52,19 +57,21 @@ class BaseHarvester(ABC):
 
     @property
     def _headers(self) -> dict:
+        """Return headers."""
         return {}
 
     def eval_json(self, json, str) -> dict:
+        """Evaluate json."""
         return eval(str.replace('x', 'json'))
 
     @abstractmethod
     def _process(self):
-        """ Run the harvester process"""
+        """Run the harvester process."""
 
     @property
     def allow_to_harvest_new_data(self):
-        """
-        Allowing if the new data can be harvested
+        """Check if the new data can be harvested.
+
         It will check based on the frequency
         """
         last_data = self.harvester.harvesterlog_set.all().first()
@@ -79,7 +86,7 @@ class BaseHarvester(ABC):
             return False
 
     def run(self, force=False):
-        # run the process
+        """To run the process."""
         if self.allow_to_harvest_new_data or force:
             try:
                 self.log = HarvesterLog.objects.create(
@@ -104,7 +111,7 @@ class BaseHarvester(ABC):
                 )
 
     def _request_api(self, url: str):
-        """ Request function"""
+        """Request function."""
         try:
             response = requests.get(url, headers=self._headers)
             if response.status_code == 404:
@@ -117,6 +124,7 @@ class BaseHarvester(ABC):
             raise HarvestingError(f'{url} : {e}')
 
     def _error(self, message):
+        """Raise error and update log."""
         self.harvester.is_run = False
         self.harvester.save()
 
@@ -126,6 +134,7 @@ class BaseHarvester(ABC):
         self.log.save()
 
     def _done(self, message=''):
+        """Update log to done."""
         self.harvester.is_run = False
         self.harvester.save()
 
@@ -135,14 +144,14 @@ class BaseHarvester(ABC):
         self.log.save()
 
     def _update(self, message=''):
-        """ Update note for the log """
+        """Update note for the log."""
         self.log.note = message
         self.log.save()
 
     def save_indicator_data(
             self, value: str, date: datetime.date, geometry: Geometry
     ) -> IndicatorValue:
-        """ Save new indicator data of the indicator """
+        """Save new indicator data of the indicator."""
         try:
             if value:
                 return self.harvester.indicator.save_value(

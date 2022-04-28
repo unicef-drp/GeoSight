@@ -1,3 +1,4 @@
+"""Indicator Management View."""
 import json
 
 from django.http import HttpResponseBadRequest
@@ -10,13 +11,17 @@ from gap_harvester.models.harvester import UsingExposedAPI
 
 
 class IndicatorManagementView(AdminView):
+    """Indicator Management View."""
+
     template_name = 'dashboard/admin/indicator/management.html'
 
     @property
     def content_title(self):
+        """Return content title."""
         return 'Indicator Management'
 
     def get_context_data(self, **kwargs) -> dict:
+        """Return context data."""
         context = super().get_context_data(**kwargs)
         indicators_in_groups = self.instance.get_indicators(self.request.user)
         for excluded_group in self.instance.indicatorgroup_set.exclude(
@@ -34,6 +39,7 @@ class IndicatorManagementView(AdminView):
         return context
 
     def post(self, request, **kwargs):
+        """Save indicator orders."""
         self.instance = get_object_or_404(
             Instance, slug=kwargs.get('slug', '')
         )

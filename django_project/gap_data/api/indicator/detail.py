@@ -1,3 +1,4 @@
+"""API for detail of indicator."""
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
@@ -10,15 +11,12 @@ from gap_data.models.instance import Instance
 
 
 class IndicatorDetailAPI(APIView):
-    """
-    API for detail of indicator
-    """
+    """API for detail of indicator."""
+
     permission_classes = (IsAuthenticated, AdminAuthenticationPermission,)
 
     def delete(self, request, slug, pk):
-        """
-        Delete an indicator
-        """
+        """Delete an indicator."""
         instance = get_object_or_404(Instance, slug=slug)
         try:
             indicator = instance.indicators.get(id=pk)

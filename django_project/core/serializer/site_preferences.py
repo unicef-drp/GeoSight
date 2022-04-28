@@ -1,9 +1,12 @@
+"""Site preference serializer."""
 from rest_framework import serializers
 
 from core.models.preferences import SitePreferences
 
 
 class SitePreferencesSerializer(serializers.ModelSerializer):
-    class Meta:
+    """Site preference serializer."""
+
+    class Meta:  # noqa: D106
         model = SitePreferences
         fields = '__all__'

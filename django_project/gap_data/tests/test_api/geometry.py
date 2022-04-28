@@ -1,3 +1,4 @@
+"""Test API for Geometry."""
 from datetime import date
 
 from django.contrib.auth import get_user_model
@@ -13,9 +14,10 @@ User = get_user_model()
 
 
 class GeometryAPITest(TestCase):
-    """ Test API for Geometry """
+    """Test API for Geometry."""
 
     def setUp(self):
+        """To setup test."""
         self.instance = InstanceF(name='instance')
         self.country_level = GeometryLevelNameF(name='country')
         self.district_level = GeometryLevelNameF(name='district')
@@ -52,9 +54,7 @@ class GeometryAPITest(TestCase):
             child_of=self.province_2)
 
     def test_instance_not_found(self):
-        """
-        Test if instance not found
-        """
+        """Test if instance not found."""
         client = Client()
         response = client.get(
             reverse('geometry-geojson-api', kwargs={
@@ -66,9 +66,7 @@ class GeometryAPITest(TestCase):
         self.assertEquals(response.status_code, 404)
 
     def test_get_country_geojson(self):
-        """
-        Test get geojson of country
-        """
+        """Test get geojson of country."""
         client = Client()
         response = client.get(
             reverse('geometry-geojson-api', kwargs={
@@ -81,9 +79,7 @@ class GeometryAPITest(TestCase):
         self.assertEquals(len(response.data['features']), 2)
 
     def test_get_country_geojson_date_1(self):
-        """
-        Test get geojson of country on date 1900-10-01
-        """
+        """Test get geojson of country on date 1900-10-01."""
         client = Client()
         response = client.get(
             reverse('geometry-geojson-api', kwargs={
@@ -96,9 +92,7 @@ class GeometryAPITest(TestCase):
         self.assertEquals(len(response.data['features']), 4)
 
     def test_get_country_geojson_date_2(self):
-        """
-        Test get geojson of country on date 1900-12-01
-        """
+        """Test get geojson of country on date 1900-12-01."""
         client = Client()
         response = client.get(
             reverse('geometry-geojson-api', kwargs={
@@ -111,9 +105,7 @@ class GeometryAPITest(TestCase):
         self.assertEquals(len(response.data['features']), 1)
 
     def test_get_district_geojson(self):
-        """
-        Test get district of country
-        """
+        """Test get district of country."""
         client = Client()
         response = client.get(
             reverse('geometry-geojson-api', kwargs={

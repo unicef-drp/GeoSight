@@ -1,3 +1,4 @@
+"""Celery settings."""
 from __future__ import absolute_import
 
 from celery import Celery
@@ -18,4 +19,5 @@ app.conf.beat_schedule = {
 
 @app.task(bind=True)
 def debug_task(self):
+    """Debug task for celery."""
     print('Request: {0!r}'.format(self.request))

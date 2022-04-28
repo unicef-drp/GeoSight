@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+"""Utilities for project."""
 import os
 
 # Absolute filesystem path to the Django project directory:
@@ -9,4 +10,5 @@ DJANGO_ROOT = os.path.dirname(
 
 
 def ABS_PATH(*args):
+    """Return absolute path of django project."""
     return os.path.join(DJANGO_ROOT, *args)

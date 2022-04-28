@@ -1,3 +1,4 @@
+"""Geography Level Management."""
 import json
 
 from django.shortcuts import get_object_or_404, redirect, reverse
@@ -8,13 +9,17 @@ from gap_data.models.instance import Instance
 
 
 class GeographyLevelManagementView(AdminView):
+    """Geography Level Management."""
+
     template_name = 'dashboard/admin/geography/level-management.html'
 
     @property
     def content_title(self):
+        """Return content title."""
         return 'Level Management'
 
     def get_context_data(self, **kwargs) -> dict:
+        """Return context data."""
         context = super().get_context_data(**kwargs)
         level_in_tree = self.instance.geometry_levels_in_tree
         context.update({
@@ -24,6 +29,7 @@ class GeographyLevelManagementView(AdminView):
         return context
 
     def post(self, request, **kwargs):
+        """Save level tree data."""
         self.instance = get_object_or_404(
             Instance, slug=kwargs.get('slug', '')
         )
@@ -40,6 +46,7 @@ class GeographyLevelManagementView(AdminView):
         )
 
     def save_level_tree(self, parent_id, level_data):
+        """Save level tree data."""
         for id, value in level_data.items():
             GeometryLevelInstance.objects.get_or_create(
                 instance=self.instance,

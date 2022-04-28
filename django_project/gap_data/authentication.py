@@ -1,3 +1,4 @@
+"""Requests authentications."""
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from rest_framework import authentication
@@ -8,10 +9,14 @@ from gap_harvester.models.harvester import UsingExposedAPI, Harvester
 
 
 class IndicatorHarvesterTokenAndBearerAuthentication(
-    authentication.TokenAuthentication):
+    authentication.TokenAuthentication
+):
+    """Authentication using token and bearer."""
+
     keywords = ['Token', 'Bearer']
 
     def authenticate(self, request):
+        """Authenticate request."""
         auth = authentication.get_authorization_header(request).split()
 
         if not auth or auth[0].lower() not in [

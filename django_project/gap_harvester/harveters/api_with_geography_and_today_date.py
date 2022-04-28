@@ -1,3 +1,4 @@
+"""Harvester get the data from api with geography and today date."""
 from django.utils.timezone import now
 
 from gap_harvester.harveters._base import (
@@ -6,10 +7,8 @@ from gap_harvester.harveters._base import (
 
 
 class APIWithGeographyAndTodayDate(BaseHarvester):
-    """
-    Harvester just get the data from api and has list and
-    map the geography name with data
-    """
+    """Harvester get the data from api with geography and today date."""
+
     description = (
         "Harvester to harvest from API with list of geography with "
         "it's value using date when the harvester run."
@@ -17,6 +16,7 @@ class APIWithGeographyAndTodayDate(BaseHarvester):
 
     @staticmethod
     def additional_attributes(**kwargs) -> dict:
+        """Return additional attributes."""
         return {
             'api_url': {
                 'description': "URL of api"
@@ -46,8 +46,7 @@ class APIWithGeographyAndTodayDate(BaseHarvester):
         }
 
     def _process(self):
-        """ Run the harvester """
-
+        """Run the harvester."""
         try:
             api_url = self.attributes['api_url']
             if not api_url:

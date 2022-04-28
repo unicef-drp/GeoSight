@@ -1,3 +1,4 @@
+"""Value management forms of indicator."""
 import datetime
 import json
 
@@ -11,14 +12,18 @@ from gap_data.serializer.geometry import GeometryContextSerializer
 
 
 class IndicatorValueManagementMapView(AdminView):
+    """Indicator Value Management Map View."""
+
     template_name = 'dashboard/admin/indicator/value-management-map.html'
     indicator = None
 
     @property
     def content_title(self):
+        """Return content title."""
         return f'Indicator Value Manager Map : {self.indicator.full_name} '
 
     def get_context_data(self, **kwargs) -> dict:
+        """Return context data."""
         context = super().get_context_data(**kwargs)
         try:
             self.indicator = self.instance.indicators.get(
@@ -76,11 +81,14 @@ class IndicatorValueManagementMapView(AdminView):
 
 
 class IndicatorValueManagementTableView(AdminView):
+    """Indicator Value Management Form View."""
+
     template_name = 'dashboard/admin/indicator/value-management-form.html'
     indicator = None
 
     @property
-    def dashboard_title(self):
+    def content_title(self):
+        """Return content title."""
         return (
             f'<span>Indicator Value Manager Form</span> : '
             f'{self.indicator.full_name} '
@@ -88,9 +96,7 @@ class IndicatorValueManagementTableView(AdminView):
 
     @property
     def context_view(self) -> dict:
-        """
-        Return context for specific view by instance
-        """
+        """Return context for specific view by instance."""
         try:
             self.indicator = self.instance.indicators.get(
                 id=self.kwargs.get('pk', '')
@@ -107,6 +113,7 @@ class IndicatorValueManagementTableView(AdminView):
             raise Http404('Indicator does not exist')
 
     def post(self, request, **kwargs):
+        """Save value of indicator."""
         self.instance = get_object_or_404(
             Instance, slug=kwargs.get('slug', '')
         )

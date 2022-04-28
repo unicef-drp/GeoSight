@@ -1,3 +1,4 @@
+"""Basic functions."""
 from django import template
 
 register = template.Library()
@@ -5,9 +6,7 @@ register = template.Library()
 
 @register.filter
 def index(indexable, i):
-    """
-    Return specific index
-    """
+    """For returning specific index."""
     try:
         return indexable[i]
     except IndexError:
@@ -16,7 +15,5 @@ def index(indexable, i):
 
 @register.filter
 def split(value, key):
-    """
-    Returns the value turned into a list.
-    """
+    """For splitting the value turned into a list."""
     return str(value).split(key)

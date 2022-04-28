@@ -1,16 +1,17 @@
+"""Run specific or all harvester."""
 from django.core.management.base import BaseCommand
 
 from gap_harvester.models import Harvester
 
 
 class Command(BaseCommand):
-    """
-    Run specific or all harvester
-    """
+    """Run specific or all harvester."""
+
     args = ''
     help = 'Run specific of all harvester.'
 
     def add_arguments(self, parser):
+        """Command arguments."""
         parser.add_argument(
             '-id',
             '--id',
@@ -25,6 +26,7 @@ class Command(BaseCommand):
             help='Force the harvesting')
 
     def handle(self, *args, **options):
+        """Command handler."""
         id = options.get('id', None)
         harvesters = Harvester.objects.filter(active=True)
         force = options.get('force', False)

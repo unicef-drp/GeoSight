@@ -1,3 +1,4 @@
+"""Return HarvesterLog data API."""
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,11 +9,10 @@ from gap_harvester.serializer.harvester import HarvesterLogSerializer
 
 
 class HarvesterLogData(APIView):
-    """
-    Return HarvesterLog data
-    """
+    """Return HarvesterLog data API."""
 
     def get(self, request, slug, pk):
+        """Return log data."""
         get_object_or_404(
             Instance, slug=slug
         )

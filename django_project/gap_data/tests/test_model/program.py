@@ -1,3 +1,4 @@
+"""Test for Program model."""
 from django.test.testcases import TestCase
 
 from gap_data.tests.model_factories import (
@@ -6,13 +7,15 @@ from gap_data.tests.model_factories import (
 
 
 class ProgramTest(TestCase):
-    """ Test for Program model """
+    """Test for Program model."""
 
     def setUp(self):
+        """To setup test."""
         self.name = 'Link1'
         self.instance = InstanceF()
 
     def test_create(self):
+        """Test create."""
         program = ProgramF(
             name=self.name
         )

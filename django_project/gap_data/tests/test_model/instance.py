@@ -1,3 +1,4 @@
+"""Test for Instance model."""
 from django.template.defaultfilters import slugify
 from django.test.testcases import TestCase
 
@@ -11,12 +12,14 @@ from gap_data.tests.model_factories import (
 
 
 class InstanceTest(TestCase):
-    """ Test for Instance model """
+    """Test for Instance model."""
 
     def setUp(self):
+        """To setup test."""
         self.name = 'Test Instance'
 
     def test_create(self):
+        """Test create."""
         instance = InstanceF(
             name=self.name
         )
@@ -24,9 +27,7 @@ class InstanceTest(TestCase):
         self.assertEquals(instance.slug, slugify(self.name))
 
     def test_scenario_levels(self):
-        """
-        Test for ScenarioLevel of the instance
-        """
+        """Test for ScenarioLevel of the instance."""
         instance_1 = InstanceF()
 
         # create ScenarioLevel for each instance
@@ -43,9 +44,7 @@ class InstanceTest(TestCase):
                           'Scenario Level 3')
 
     def test_basemap_layers(self):
-        """
-        Test for basemaps of the instance
-        """
+        """Test for basemaps of the instance."""
         instance_1 = InstanceF()
         instance_2 = InstanceF()
 
@@ -69,9 +68,7 @@ class InstanceTest(TestCase):
                           'Basemap Instance 2 2')
 
     def test_context_layers(self):
-        """
-        Test for context of the instance
-        """
+        """Test for context of the instance."""
         instance_1 = InstanceF()
         instance_2 = InstanceF()
 
@@ -95,9 +92,7 @@ class InstanceTest(TestCase):
                           'Context Instance 2 2')
 
     def test_links(self):
-        """
-        Test for links of the instance
-        """
+        """Test for links of the instance."""
         instance_1 = InstanceF()
         instance_2 = InstanceF()
 
@@ -119,9 +114,7 @@ class InstanceTest(TestCase):
         self.assertEquals(instance_2.links[2].name, 'Link Instance 2 2')
 
     def test_geometries(self):
-        """
-        Test for geometries of the instance
-        """
+        """Test for geometries of the instance."""
         instance = InstanceF(
             name=self.name
         )
@@ -162,6 +155,7 @@ class InstanceTest(TestCase):
         ])
 
     def test_indicators(self):
+        """Test for indicators."""
         instance = InstanceF()
         group_1 = IndicatorGroupF(
             instance=instance

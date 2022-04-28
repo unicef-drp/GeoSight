@@ -1,3 +1,4 @@
+"""Geography Upload View."""
 import uuid
 
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon
@@ -17,13 +18,17 @@ from gap_data.models.instance import Instance
 
 
 class GeographyUploadView(AdminView):
+    """Geography Upload View."""
+
     template_name = 'dashboard/admin/geography/upload.html'
 
     @property
     def content_title(self):
+        """Return content title."""
         return 'Upload Geography'
 
     def get_context_data(self, **kwargs) -> dict:
+        """Return context data."""
         context = super().get_context_data(**kwargs)
         context.update(
             {
@@ -41,6 +46,7 @@ class GeographyUploadView(AdminView):
         return context
 
     def post(self, request, **kwargs):
+        """Save geography."""
         self.instance = get_object_or_404(
             Instance, slug=kwargs.get('slug', '')
         )

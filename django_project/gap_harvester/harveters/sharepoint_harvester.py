@@ -1,3 +1,4 @@
+"""Sharepoint Harvester."""
 import json
 import os
 from datetime import datetime
@@ -16,15 +17,17 @@ from gap_harvester.harveters._base import (
 
 
 class RecordError(Exception):
+    """Error for Record evaluation."""
+
     def __init__(self, message):
+        """init."""
         self.message = message
         super().__init__(self.message)
 
 
 class SharepointHarvester(BaseHarvester):
-    """
-    Harvester using sharepoint file in the volume settings.ONEDRIVE_ROOT
-    """
+    """Harvester using sharepoint file in the volume settings.ONEDRIVE_ROOT."""
+
     description = (
         "Harvester using sharepoint file. <br>"
         "It will fetch the data from file and the file synced frequently."
@@ -32,6 +35,7 @@ class SharepointHarvester(BaseHarvester):
 
     @staticmethod
     def additional_attributes(**kwargs) -> dict:
+        """Return additional attributes."""
         attr = {
             'file': {
                 'title': "Path of file",
@@ -78,7 +82,7 @@ class SharepointHarvester(BaseHarvester):
         return attr
 
     def _process(self):
-        """ Run the harvester """
+        """Run the harvester."""
         indicator = self.harvester.indicator
         rule_names = [name.lower() for name in list(
             indicator.indicatorscenariorule_set.values_list('name', flat=True)

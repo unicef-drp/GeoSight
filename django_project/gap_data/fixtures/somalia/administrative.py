@@ -1,3 +1,4 @@
+"""Import somalia geometry."""
 import json
 import os
 
@@ -8,7 +9,7 @@ from gap_data.models import Geometry, GeometryLevelName, Instance
 
 
 def run():
-    """ Run importer geometries of somalia """
+    """Run importer geometries of somalia."""
     folder = os.path.join(DJANGO_ROOT, 'gap_data', 'fixtures', 'somalia')
 
     try:

@@ -1,3 +1,4 @@
+"""Geometry form."""
 import json
 import os
 import shutil
@@ -21,9 +22,8 @@ CHOICES = (
 
 
 class GeometryForm(forms.Form):
-    """
-    Form to upload CSV file.
-    """
+    """Form to upload CSV file."""
+
     label_suffix = ""
     level = forms.ModelChoiceField(
         GeometryLevelName.objects.all()
@@ -57,6 +57,7 @@ class GeometryForm(forms.Form):
     )
 
     def __init__(self, *args, **kwargs):
+        """Init."""
         level = None
         self.uuid = None
         try:
@@ -69,21 +70,18 @@ class GeometryForm(forms.Form):
             self.fields['level'].choices = [(u.id, u.name) for u in level]
 
     def temporary_folder(self):
-        """
-        Temporary folder
-        """
+        """Temporary folder."""
         folder = os.path.join(settings.MEDIA_ROOT, 'temp', str(self.uuid))
         if not os.path.exists(folder):
             os.makedirs(folder)
         return folder
 
     def temporary_filename(self, filename):
-        """
-        Temporary filename
-        """
+        """Temporary filename."""
         return os.path.join('temp', str(self.uuid), filename)
 
     def clean_file(self):
+        """Clean file."""
         try:
             SHAPEFILE = 'shapefile'
             GEOJSON = 'geojson'

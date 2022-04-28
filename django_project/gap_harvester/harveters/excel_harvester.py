@@ -1,3 +1,4 @@
+"""Harvest data from spreadsheet for multi indicator."""
 import json
 from datetime import datetime
 
@@ -15,10 +16,8 @@ from gap_harvester.harveters._base import (
 
 
 class ExcelHarvester(BaseHarvester):
-    """
-    Harvester just get the data from api and has list and
-    map the geography name with data
-    """
+    """Harvest data from spreadsheet for multi indicator."""
+
     description = (
         "Harvest data from spreadsheet for multi indicator. "
         "<br>Create data in the spreadsheet with the name of "
@@ -29,6 +28,7 @@ class ExcelHarvester(BaseHarvester):
 
     @staticmethod
     def additional_attributes(**kwargs) -> dict:
+        """Return additional attributes."""
         attr = {
             'date': {
                 'title': "Date of Data",
@@ -82,7 +82,7 @@ class ExcelHarvester(BaseHarvester):
         return attr
 
     def get_records(self):
-        """ Get records form upload session """
+        """Get records form upload session."""
         _file_attr = self.harvester.harvesterattribute_set.get(name='file')
         _file = _file_attr.file
 
@@ -110,7 +110,7 @@ class ExcelHarvester(BaseHarvester):
         return records
 
     def _process(self):
-        """ Run the harvester """
+        """Run the harvester."""
         default_attr = ExcelHarvester.additional_attributes()
         # fetch data
         self._update('Fetching data')

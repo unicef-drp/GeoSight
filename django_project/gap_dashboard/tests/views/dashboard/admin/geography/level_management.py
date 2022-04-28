@@ -1,8 +1,11 @@
+"""Test Level management of geometry."""
 import json
+
 from django.contrib.auth import get_user_model
 from django.test import Client
 from django.test.testcases import TestCase
 from django.urls import reverse
+
 from gap_data.tests.model_factories import (
     InstanceF, GeometryLevelNameF, UserF
 )
@@ -11,9 +14,10 @@ User = get_user_model()
 
 
 class LevelManagementTest(TestCase):
-    """ Test Level management of geometry """
+    """Test Level management of geometry."""
 
     def setUp(self):
+        """To setup tests."""
         self.instance = InstanceF(name='instance')
         self.level_1 = GeometryLevelNameF(name='level_1')
         self.level_2 = GeometryLevelNameF(name='level_2')
@@ -37,6 +41,7 @@ class LevelManagementTest(TestCase):
         }
 
     def test_save_level_no_login(self):
+        """Test save level no login."""
         client = Client()
         response = client.post(self.url, data={
             'levels': json.dumps(self.levels)
@@ -44,6 +49,7 @@ class LevelManagementTest(TestCase):
         self.assertEquals(response.status_code, 302)
 
     def test_save_level_not_staff(self):
+        """Test save level non staff."""
         username = 'test'
         password = 'testpassword'
         UserF(username=username, password=password, is_superuser=False)
@@ -55,6 +61,7 @@ class LevelManagementTest(TestCase):
         self.assertEquals(response.status_code, 302)
 
     def test_save_level_staff(self):
+        """Test save level staff."""
         username = 'admin'
         password = 'adminpassword'
         UserF(username=username, password=password, is_superuser=True)

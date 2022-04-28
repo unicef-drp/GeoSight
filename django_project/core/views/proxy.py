@@ -1,14 +1,14 @@
+"""Proxi API for request the url from outside API."""
 import requests
 from django.http import HttpResponseBadRequest, HttpResponse
 from rest_framework.views import APIView
 
 
 class ProxyView(APIView):
-    """
-    Return HarvesterLog data
-    """
+    """Proxy API for returning outside url."""
 
     def get(self, request):
+        """GET API."""
         url = request.GET.get('url', None)
         if not url:
             return HttpResponseBadRequest('url is required')

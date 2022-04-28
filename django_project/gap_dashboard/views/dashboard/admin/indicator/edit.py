@@ -1,3 +1,4 @@
+"""Indicator Editor View."""
 from django.http import Http404
 from django.shortcuts import redirect, reverse, render, get_object_or_404
 
@@ -9,10 +10,13 @@ from gap_data.models import (
 
 
 class IndicatorEditView(AdminView):
+    """Indicator Editor View."""
+
     template_name = 'dashboard/admin/indicator/form.html'
 
     @property
     def content_title(self):
+        """Return content title."""
         try:
             indicator = self.instance.indicators.get(
                 id=self.kwargs.get('pk', '')
@@ -22,6 +26,7 @@ class IndicatorEditView(AdminView):
         return f'<span>Edit Indicator : {indicator.full_name}</span>'
 
     def get_context_data(self, **kwargs) -> dict:
+        """Return context data."""
         context = super().get_context_data(**kwargs)
         try:
             indicator = self.instance.indicators.get(
@@ -43,6 +48,7 @@ class IndicatorEditView(AdminView):
         return context
 
     def post(self, request, **kwargs):
+        """Save indicator."""
         self.instance = get_object_or_404(
             Instance, slug=kwargs.get('slug', '')
         )

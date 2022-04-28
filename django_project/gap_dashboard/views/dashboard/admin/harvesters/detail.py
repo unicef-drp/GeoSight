@@ -1,3 +1,4 @@
+"""Harvester Detail view."""
 from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, reverse, redirect
 
@@ -8,14 +9,18 @@ from gap_harvester.tasks import run_harvester
 
 
 class HarvesterIndicatorDetail(AdminView):
+    """Harvester Indicator View."""
+
     template_name = 'dashboard/admin/harvesters/detail/harvester_detail.html'
     indicator = None
 
     @property
     def content_title(self):
+        """Return content title."""
         return f'Harvester for {self.indicator.full_name}'
 
     def get_context(self, harvester, edit_url):
+        """Parse context."""
         context = {
             'edit_url': edit_url,
             'instance': self.instance,
@@ -33,6 +38,7 @@ class HarvesterIndicatorDetail(AdminView):
         return context
 
     def get_context_data(self, **kwargs) -> dict:
+        """Return context data."""
         context = super().get_context_data(**kwargs)
         try:
             self.indicator = self.instance.indicators.get(
@@ -57,9 +63,7 @@ class HarvesterIndicatorDetail(AdminView):
         return context
 
     def post(self, request, slug, pk):
-        """
-        POST to force harvester to harvest
-        """
+        """POST to force harvester to harvest."""
         instance = get_object_or_404(
             Instance, slug=slug
         )
@@ -85,14 +89,18 @@ class HarvesterIndicatorDetail(AdminView):
 
 
 class HarvesterDetail(HarvesterIndicatorDetail):
+    """Harvester Detail View."""
+
     template_name = 'dashboard/admin/harvesters/detail/harvester_detail.html'
     indicator = None
 
     @property
     def content_title(self):
+        """Return content title."""
         return 'Harvester detail'
 
     def get_context_data(self, **kwargs) -> dict:
+        """Return context data."""
         context = super().get_context_data(**kwargs)
         try:
             harvester = Harvester.objects.get(
@@ -112,9 +120,7 @@ class HarvesterDetail(HarvesterIndicatorDetail):
         return context
 
     def post(self, request, slug, uuid):
-        """
-        POST to force harvester to harvest
-        """
+        """POST to force harvester to harvest."""
         instance = get_object_or_404(
             Instance, slug=slug
         )

@@ -1,3 +1,4 @@
+"""Harvester base."""
 from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, reverse
 from django.utils.module_loading import import_string
@@ -10,17 +11,18 @@ from gap_harvester.models import (
 
 
 class HarvesterFormView(AdminView):
+    """HarvesterForm Base View."""
+
     indicator = None
     harvester_class = None
 
     @property
     def content_title(self):
+        """Return content title."""
         return f'Harvester for {self.indicator.full_name}'
 
     def get_indicator(self):
-        """
-         Return indicator and save it as attribute
-        """
+        """Return indicator and save it as attribute."""
         try:
             self.indicator = self.instance.indicators.get(
                 id=self.kwargs.get('pk', '')
@@ -30,19 +32,16 @@ class HarvesterFormView(AdminView):
             raise Http404('Indicator does not exist')
 
     def get_harvester(self) -> Harvester:
-        """
-         Return harvester
-        """
+        """Return harvester."""
         return self.indicator.harvester
 
     @property
     def harvesters(self) -> list:
-        """
-         Return harvesters
-        """
+        """Return harvesters."""
         return HARVESTERS
 
     def get_context_data(self, **kwargs) -> dict:
+        """Return context data."""
         context = super().get_context_data(**kwargs)
 
         self.get_indicator()
@@ -117,12 +116,11 @@ class HarvesterFormView(AdminView):
         return context
 
     def after_post(self, harvester: Harvester):
-        """
-         Called after post success
-        """
+        """For calling after post success."""
         pass
 
     def post(self, request, **kwargs):
+        """POST save harvester."""
         self.instance = get_object_or_404(
             Instance, slug=kwargs.get('slug', '')
         )

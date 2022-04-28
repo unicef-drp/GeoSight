@@ -1,3 +1,4 @@
+"""Indicator form."""
 from django import forms
 from django.forms.models import model_to_dict
 
@@ -8,9 +9,8 @@ from gap_data.models.instance import Instance
 
 
 class IndicatorForm(forms.ModelForm):
-    """
-    Indicator form
-    """
+    """Indicator form."""
+
     label_suffix = ""
     instance = forms.ModelChoiceField(
         Instance.objects.all()
@@ -21,6 +21,7 @@ class IndicatorForm(forms.ModelForm):
     group = forms.ChoiceField()
 
     def __init__(self, *args, **kwargs):
+        """Init."""
         instance = kwargs.pop("indicator_instance")
         super().__init__(*args, **kwargs)
         self.fields['instance'].initial = instance
@@ -43,7 +44,7 @@ class IndicatorForm(forms.ModelForm):
         except KeyError:
             pass
 
-    class Meta:
+    class Meta:  # noqa: D106
         model = Indicator
         exclude = (
             'order', 'geometry_reporting_units',
@@ -51,6 +52,7 @@ class IndicatorForm(forms.ModelForm):
         )
 
     def clean_frequency(self):
+        """Return frequency."""
         frequency = self.cleaned_data['frequency']
         indicator_frequency, created = \
             IndicatorFrequency.objects.get_or_create(
@@ -60,6 +62,7 @@ class IndicatorForm(forms.ModelForm):
         return indicator_frequency
 
     def clean_group(self):
+        """Return group."""
         group = self.cleaned_data['group']
         instance = Instance.objects.get(id=self.data['instance'])
         indicator_group, created = IndicatorGroup.objects.get_or_create(
@@ -70,6 +73,7 @@ class IndicatorForm(forms.ModelForm):
 
     @staticmethod
     def model_to_initial(indicator: Indicator):
+        """Return model data as json."""
         from gap_data.models.indicator import IndicatorGroup
         from gap_data.models.indicator import IndicatorFrequency
         initial = model_to_dict(indicator)

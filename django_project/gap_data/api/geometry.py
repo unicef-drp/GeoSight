@@ -1,3 +1,4 @@
+"""Geometry API."""
 from datetime import datetime
 
 from django.http import Http404, HttpResponseBadRequest
@@ -11,13 +12,10 @@ from gap_data.serializer.geometry import GeometrySerializer
 
 
 class GeometryGeojsonAPI(APIView):
-    """
-    Return geometry of instance
-    """
+    """Return geometry of instance."""
 
     def get(self, request, slug, geometry_level, date):
-        """
-        Return geometry in geojson
+        """Return geometry in geojson.
 
         :param geometry_level: the geometry level that will be returned
         :param date: the date of data
@@ -42,13 +40,10 @@ class GeometryGeojsonAPI(APIView):
 
 
 class GeometryDetailAPI(APIView):
-    """
-    Return geometry of instance
-    """
+    """Return geometry of instance."""
 
     def post(self, request, slug, pk):
-        """
-        Update the values for geometry
+        """Update the values for geometry.
 
         :param slug: slug of the instance
         :param pk: pk of the indicator

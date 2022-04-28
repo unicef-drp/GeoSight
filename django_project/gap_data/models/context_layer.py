@@ -1,3 +1,4 @@
+"""Context layer models."""
 from django.contrib.gis.db import models
 from django.utils.translation import ugettext_lazy as _
 from core.models import AbstractTerm
@@ -5,20 +6,26 @@ from gap_data.models.instance import Instance
 
 
 class LayerType(object):
+    """A quick couple of variable and Layer Type string."""
+
     ARCGIS = 'ARCGIS'
     RASTER_TILE = 'Raster Tile'
 
 
 class ContextLayerGroup(AbstractTerm):
+    """A model for the group of context layer."""
+
     order = models.IntegerField(
         default=0
     )
 
-    class Meta:
+    class Meta:  # noqa: D106
         ordering = ('name',)
 
 
 class ContextLayer(AbstractTerm):
+    """A model for the context layer."""
+
     instance = models.ForeignKey(
         Instance,
         null=True, blank=True,
@@ -81,19 +88,19 @@ class ContextLayer(AbstractTerm):
         default=0
     )
 
-    class Meta:
+    class Meta:  # noqa: D106
         ordering = ('order',)
 
     def save(self, *args, **kwargs):
+        """Save model."""
         if not self.order:
             self.order = ContextLayer.objects.count()
         super(ContextLayer, self).save(*args, **kwargs)
 
 
 class ContextLayerParameter(models.Model):
-    """
-    Additional parameter for context layer
-    """
+    """Additional parameter for context layer."""
+
     context_layer = models.ForeignKey(
         ContextLayer, on_delete=models.CASCADE
     )
@@ -111,7 +118,7 @@ class ContextLayerParameter(models.Model):
         )
     )
 
-    class Meta:
+    class Meta:  # noqa: D106
         unique_together = ('context_layer', 'name')
 
     def __str__(self):
@@ -119,9 +126,8 @@ class ContextLayerParameter(models.Model):
 
 
 class ContextLayerStyle(models.Model):
-    """
-    Overridden style of leaflet
-    """
+    """Overridden style of leaflet."""
+
     context_layer = models.ForeignKey(
         ContextLayer, on_delete=models.CASCADE
     )
@@ -145,7 +151,7 @@ class ContextLayerStyle(models.Model):
         )
     )
 
-    class Meta:
+    class Meta:  # noqa: D106
         unique_together = ('context_layer', 'name')
 
     def __str__(self):

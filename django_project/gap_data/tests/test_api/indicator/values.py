@@ -1,3 +1,4 @@
+"""Test API for Indicator Values."""
 from django.contrib.auth import get_user_model
 from django.test import Client
 from django.test.testcases import TestCase
@@ -14,9 +15,10 @@ User = get_user_model()
 
 
 class IndicatorValuesAPITest(TestCase):
-    """ Test API for Geometry """
+    """Test API for Indicator Values."""
 
     def setUp(self):
+        """To setup test."""
         self.instance = InstanceF(name='instance')
         self.group = IndicatorGroupF(name='group', instance=self.instance)
 
@@ -89,9 +91,7 @@ class IndicatorValuesAPITest(TestCase):
         )
 
     def test_indicator_list_api(self):
-        """
-        Test indicator list by api
-        """
+        """Test indicator list by api."""
         instance = InstanceF(name='instance 2')
         group = IndicatorGroupF(name='group 2', instance=instance)
         IndicatorF(group=group)
@@ -116,9 +116,7 @@ class IndicatorValuesAPITest(TestCase):
         self.assertEquals(len(response.data), 2)
 
     def test_indicator_values_by_geometry(self):
-        """
-        Test IndicatorValuesByGeometry API
-        """
+        """Test IndicatorValuesByGeometry API."""
         client = Client()
         response = client.get(
             reverse('indicator-values-by-geometry', kwargs={
@@ -176,9 +174,7 @@ class IndicatorValuesAPITest(TestCase):
         self.assertEquals(len(response.data), 4)
 
     def test_indicator_values_by_date(self):
-        """
-        Test IndicatorValuesByGeometryAndLevel API
-        """
+        """Test IndicatorValuesByGeometryAndLevel API."""
         client = Client()
         client.login(username=self.username, password=self.password)
         response = client.get(
@@ -196,9 +192,7 @@ class IndicatorValuesAPITest(TestCase):
             self.assertEquals(data['value'], 1)
 
     def test_indicator_reporting_units(self):
-        """
-        Test IndicatorReportingUnits API
-        """
+        """Test IndicatorReportingUnits API."""
         client = Client()
         response = client.get(
             reverse('indicator-reporting-units-api', kwargs={

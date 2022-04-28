@@ -1,3 +1,4 @@
+"""Utilities."""
 import os
 
 from django.templatetags.static import static
@@ -7,8 +8,7 @@ from gap_data.models.scenario import ScenarioLevel
 
 
 def overall_scenario() -> ScenarioLevel:
-    """ Return overall scenario level """
-
+    """Return overall scenario level."""
     scenarios = {}
     for indicator in Indicator.list():
         scenario_level = indicator.scenario_level
@@ -34,9 +34,7 @@ def overall_scenario() -> ScenarioLevel:
 
 
 def get_level_instance_in_tree(instance, level_instances) -> dict:
-    """
-    Return level instance in tree
-    """
+    """Return level instance in tree."""
     from gap_data.models import GeometryLevelInstance
     levels = {}
     for top in level_instances:
@@ -52,9 +50,7 @@ def get_level_instance_in_tree(instance, level_instances) -> dict:
 
 
 def sizeof_fmt(num, suffix="B"):
-    """
-    Bytes to human readable
-    """
+    """Bytes to human readable."""
     for unit in ["", "K", "M", "G", "T", "P", "E", "Z"]:
         if abs(num) < 1024.0:
             return f"{num:3.1f}{unit}{suffix}"
@@ -63,10 +59,9 @@ def sizeof_fmt(num, suffix="B"):
 
 
 def path_to_dict(
-        path, original_folder=None, ext_filters=None, show_size=False):
-    """
-    Return path as dict with child
-    """
+        path, original_folder=None, ext_filters=None, show_size=False
+):
+    """Return path as dict with child."""
     filename, ext = os.path.splitext(path)
     if ext_filters and not os.path.isdir(path) and ext not in ext_filters:
         return None

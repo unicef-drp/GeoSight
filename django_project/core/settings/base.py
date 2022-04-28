@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Django settings for watchkeeper project.
+"""Django settings for watchkeeper project."""
 
 from core.settings.utils import ABS_PATH
 

@@ -1,3 +1,4 @@
+"""Multi Indicator Editor View."""
 from django.http import Http404
 from django.shortcuts import redirect, reverse, get_object_or_404
 
@@ -9,13 +10,17 @@ from gap_data.models import (
 
 
 class IndicatorMultiEditView(AdminView):
+    """Multi Indicator Editor View."""
+
     template_name = 'dashboard/admin/indicator/form-multi-edit.html'
 
     @property
     def content_title(self):
+        """Return content title."""
         return '<span>Multi Edit Indicators</span>'
 
     def get_context_data(self, **kwargs) -> dict:
+        """Return context data."""
         context = super().get_context_data(**kwargs)
         scenarios_by_id = {}
         initial = {}
@@ -77,6 +82,7 @@ class IndicatorMultiEditView(AdminView):
         return context
 
     def post(self, request, **kwargs):
+        """Save indicators."""
         self.instance = get_object_or_404(
             Instance, slug=kwargs.get('slug', '')
         )

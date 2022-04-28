@@ -1,3 +1,4 @@
+"""The external link model."""
 from django.contrib.gis.db import models
 
 from core.models import AbstractTerm
@@ -5,6 +6,8 @@ from gap_data.models.instance import Instance
 
 
 class Link(AbstractTerm):
+    """The external link model."""
+
     instance = models.ForeignKey(
         Instance,
         null=True, blank=True,
@@ -22,5 +25,5 @@ class Link(AbstractTerm):
         default=0
     )
 
-    class Meta:
+    class Meta:  # noqa: D106
         ordering = ('order',)

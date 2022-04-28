@@ -1,3 +1,4 @@
+""".Test for Indicator model."""
 from datetime import datetime, timedelta
 
 from django.test.testcases import TestCase
@@ -11,12 +12,14 @@ from gap_data.tests.model_factories import (
 
 
 class IndicatorTest(TestCase):
-    """ Test for Indicator model """
+    """.Test for Indicator model."""
 
     def setUp(self):
+        """To setup test."""
         self.name = 'Indicator 1'
 
     def test_create(self):
+        """Test create."""
         group = IndicatorGroupF(
             instance=InstanceF()
         )
@@ -36,6 +39,7 @@ class IndicatorTest(TestCase):
                           geometry_reporting_level)
 
     def test_allow_to_harvest_new_data(self):
+        """Test allow harvest new data."""
         frequency = IndicatorFrequencyF(
             frequency=10
         )
@@ -66,7 +70,7 @@ class IndicatorTest(TestCase):
         self.assertFalse(indicator.allow_to_harvest_new_data)
 
     def test_list(self):
-        """ Test list method """
+        """Test list method."""
         group = IndicatorGroupF(
             instance=InstanceF()
         )
@@ -86,7 +90,7 @@ class IndicatorTest(TestCase):
         self.assertEquals(len(Indicator.list()), 1)
 
     def test_rules(self):
-        """ Check legends """
+        """Check rules."""
         geometry_reporting_level = GeometryLevelNameF()
         indicator = IndicatorF(
             name='Name 1',
@@ -121,6 +125,7 @@ class IndicatorTest(TestCase):
         self.assertEquals(indicator.scenario_level(0), rules[4].scenario_level)
 
     def test_value(self):
+        """Test value."""
         instance = InstanceF()
         level_1 = ScenarioLevelF(name='Level 1', level=1)
         level_2 = ScenarioLevelF(name='Level 2', level=2)

@@ -1,3 +1,4 @@
+"""Reporting Unit of Indicator View."""
 from django.http import Http404
 from django.shortcuts import reverse
 
@@ -6,16 +7,20 @@ from gap_data.models import Indicator
 
 
 class IndicatorReportingUnitView(AdminView):
+    """Reporting Unit of Indicator View."""
+
     template_name = 'dashboard/admin/indicator/reporting-unit.html'
     indicator = None
 
     @property
     def content_title(self):
+        """Return content title."""
         return (
             f'<span>Indicator Reporting Units</span> : {self.indicator.name} '
         )
 
     def get_context_data(self, **kwargs) -> dict:
+        """Return context data."""
         context = super().get_context_data(**kwargs)
         try:
             self.indicator = self.instance.indicators.get(

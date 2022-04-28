@@ -1,3 +1,4 @@
+"""COntext layer Admin."""
 from django.contrib import admin
 
 from gap_data.models.context_layer import (
@@ -6,16 +7,22 @@ from gap_data.models.context_layer import (
 
 
 class ContextLayerParameterInline(admin.TabularInline):
+    """ContextLayerParameter inline."""
+
     model = ContextLayerParameter
     extra = 0
 
 
 class ContextLayerStyleInline(admin.TabularInline):
+    """ContextLayerStyle inline."""
+
     model = ContextLayerStyle
     extra = 0
 
 
 class ContextLayerAdmin(admin.ModelAdmin):
+    """ContextLayer admin."""
+
     list_display = (
         'name', 'group', 'show_on_map',
         'enable_by_default', 'order', 'instance', 'url'
@@ -26,6 +33,8 @@ class ContextLayerAdmin(admin.ModelAdmin):
 
 
 class ContextLayerGroupAdmin(admin.ModelAdmin):
+    """ContextLayerGroup admin."""
+
     list_display = ('name', 'order')
     list_editable = ('order',)
 

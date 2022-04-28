@@ -1,3 +1,4 @@
+"""Indicator API."""
 from datetime import datetime
 
 from django.http import Http404
@@ -12,11 +13,10 @@ from gap_data.serializer.indicator import IndicatorSerializer
 
 
 class IndicatorsList(APIView):
-    """
-    Return Indicator List With it's Scenario
-    """
+    """Return Indicator List With it's Scenario."""
 
     def get(self, request, slug):
+        """Return Indicator List With it's Scenario."""
         instance = get_object_or_404(
             Instance, slug=slug
         )
@@ -28,11 +28,10 @@ class IndicatorsList(APIView):
 
 
 class IndicatorsGroupValuesByGeometryDate(APIView):
-    """
-    Return values of all indicators by date and and geometry
-    """
+    """Return values of all indicators by date and geometry."""
 
     def get(self, request, slug, geometry_identifier, geometry_level, date):
+        """Return values of all indicators by date and geometry."""
         try:
 
             instance = get_object_or_404(
@@ -96,11 +95,10 @@ class IndicatorsGroupValuesByGeometryDate(APIView):
 
 
 class IndicatorsValuesByGeometryDate(APIView):
-    """
-    Return values of all indicators by date and and geometry
-    """
+    """Return values of all indicators by date and geometry."""
 
     def get(self, request, slug, geometry_identifier, geometry_level, date):
+        """Return values of all indicators by date and geometry."""
         try:
 
             instance = get_object_or_404(

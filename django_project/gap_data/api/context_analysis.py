@@ -1,3 +1,4 @@
+"""Context Analysis API.."""
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -10,11 +11,10 @@ from gap_data.serializer.scenario import ScenarioLevelSerializer
 
 
 class ContextAnalysisData(APIView):
-    """
-    Return all context analysis data
-    """
+    """Return all context analysis data."""
 
     def get(self, request, slug):
+        """Return all context analysis data."""
         context = {}
         instance = get_object_or_404(
             Instance, slug=slug

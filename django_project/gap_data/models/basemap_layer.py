@@ -1,3 +1,4 @@
+"""Basemap Layer model."""
 from django.contrib.gis.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -6,11 +7,15 @@ from gap_data.models.instance import Instance
 
 
 class BasemapLayerType(object):
+    """A quick couple of variable and Basemap Layer type."""
+
     XYZ_TILE = 'XYZ Tile'
     WMS = 'WMS'
 
 
 class BasemapLayer(AbstractTerm, IconTerm):
+    """Model of BasemapLayer."""
+
     instance = models.ForeignKey(
         Instance,
         null=True, blank=True,
@@ -35,14 +40,13 @@ class BasemapLayer(AbstractTerm, IconTerm):
         default=False
     )
 
-    class Meta:
+    class Meta:  # noqa: D106
         ordering = ('name',)
 
 
 class BasemapLayerParameter(models.Model):
-    """
-    Additional parameter for basemap layer
-    """
+    """Additional parameter for basemap layer."""
+
     basemap_layer = models.ForeignKey(
         BasemapLayer, on_delete=models.CASCADE
     )
@@ -60,7 +64,7 @@ class BasemapLayerParameter(models.Model):
         )
     )
 
-    class Meta:
+    class Meta:  # noqa: D106
         unique_together = ('basemap_layer', 'name')
 
     def __str__(self):

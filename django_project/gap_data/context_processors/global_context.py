@@ -1,8 +1,10 @@
+"""Global context for data."""
 from gap_data.models.instance import Instance, InstanceCategory
 from gap_data.serializer.instance import InstanceSerializer
 
 
 def global_context(request):
+    """Global context that will be returned for every request."""
     instance_categories = {}
     for category in InstanceCategory.objects.all().order_by('order'):
         instance_categories[category.name] = InstanceSerializer(

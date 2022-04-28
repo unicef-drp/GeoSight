@@ -1,3 +1,4 @@
+"""Instance model."""
 from datetime import date
 
 from django.contrib.gis.db import models
@@ -8,51 +9,43 @@ from core.models.general import IconTerm, SlugTerm, PermissionLevels
 
 
 class InstanceCategory(AbstractTerm):
-    """
-    The category of instance
-    """
+    """The category of instance."""
+
     # order of category rendered on the list
     order = models.IntegerField(
         default=0
     )
 
-    class Meta:
+    class Meta:  # noqa: D106
         ordering = ('order',)
         verbose_name_plural = 'instance categories'
 
 
 class Instance(SlugTerm, IconTerm):
-    """
-    Instance model
-    """
+    """Instance model."""
+
     category = models.ForeignKey(
         InstanceCategory, on_delete=models.SET_NULL,
         blank=True, null=True
     )
 
-    class Meta:
+    class Meta:  # noqa: D106
         ordering = ('name',)
 
     @property
     def scenario_levels(self):
-        """
-        Return scenarios of the instance
-        """
+        """Return scenarios of the instance."""
         return self.scenariolevel_set.all()
 
     @property
     def indicators(self):
-        """
-        Return indicators of the instance
-        """
+        """Return indicators of the instance."""
         from gap_data.models.indicator.indicator import Indicator
         return Indicator.objects.filter(group__instance=self)
 
     @property
     def geometry_levels(self):
-        """
-        Return geometry levels of the instance
-        """
+        """Return geometry levels of the instance."""
         from gap_data.models import GeometryLevelName
         return GeometryLevelName.objects.filter(
             pk__in=list(
@@ -62,16 +55,12 @@ class Instance(SlugTerm, IconTerm):
 
     @property
     def geometry_instance_levels(self):
-        """
-        Return geometry levels of the instance
-        """
+        """Return geometry levels of the instance."""
         return self.geometrylevelinstance_set.all()
 
     @property
     def geometry_levels_in_order(self):
-        """
-        Return geometry levels of the instance
-        """
+        """Return geometry levels of the instance."""
         levels = []
         levels += self._get_geometry_level_child(
             self.geometry_instance_levels.filter(parent=None)
@@ -79,6 +68,7 @@ class Instance(SlugTerm, IconTerm):
         return levels
 
     def _get_geometry_level_child(self, instance_levels):
+        """Get geometry level child from a level."""
         levels = []
         for instance_level in instance_levels:
             levels.append(instance_level.level)
@@ -90,9 +80,7 @@ class Instance(SlugTerm, IconTerm):
 
     @property
     def geometry_levels_in_tree(self):
-        """
-        Return geometry levels of the instance
-        """
+        """Return geometry levels of the instance."""
         from gap_data.utils import get_level_instance_in_tree
         return get_level_instance_in_tree(
             self,
@@ -101,22 +89,16 @@ class Instance(SlugTerm, IconTerm):
 
     @property
     def programs_instance(self):
-        """
-        Return program of the instance
-        """
+        """Return program of the instance."""
         return self.programinstance_set.all()
 
     def geometries(self, date: date = date.today()):
-        """
-        Return geometries of the instance
-        """
+        """Return geometries of the instance."""
         from gap_data.models.geometry import Geometry
         return Geometry.objects.by_date(date).filter(instance=self)
 
     def get_indicators(self, user=None):
-        """
-        Return all indicators and overall scenario of the instance
-        """
+        """Return all indicators and overall scenario of the instance."""
         from gap_data.models.geometry import Geometry, GeometryLevelName
         from gap_data.serializer.indicator import IndicatorSerializer
 
@@ -169,9 +151,7 @@ class Instance(SlugTerm, IconTerm):
         return indicators_in_group
 
     def get_indicators_and_overall_scenario(self, user=None):
-        """
-        Return all indicators and overall scenario of the instance
-        """
+        """Return all indicators and overall scenario of the instance."""
         from gap_data.models.geometry import Geometry, GeometryLevelName
         from gap_data.serializer.indicator import IndicatorSerializer
 
@@ -272,9 +252,7 @@ class Instance(SlugTerm, IconTerm):
 
     @property
     def context_layers(self):
-        """
-        Return context layers of the instance
-        """
+        """Return context layers of the instance."""
         from gap_data.models import ContextLayer
         return ContextLayer.objects.filter(
             Q(instance__isnull=True) | Q(instance=self)).filter(
@@ -282,9 +260,7 @@ class Instance(SlugTerm, IconTerm):
 
     @property
     def basemap_layers(self):
-        """
-        Return basemap layers of the instance
-        """
+        """Return basemap layers of the instance."""
         from gap_data.models import BasemapLayer
         return BasemapLayer.objects.filter(
             Q(instance__isnull=True) | Q(instance=self)).filter(
@@ -292,8 +268,6 @@ class Instance(SlugTerm, IconTerm):
 
     @property
     def links(self):
-        """
-        Return links of the instance
-        """
+        """Return links of the instance."""
         from gap_data.models import Link
         return Link.objects.filter(Q(instance__isnull=True) | Q(instance=self))

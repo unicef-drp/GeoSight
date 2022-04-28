@@ -1,3 +1,4 @@
+"""Geography View."""
 from django.shortcuts import reverse, render, get_object_or_404
 
 from gap_dashboard.views.dashboard.admin._base import AdminView
@@ -5,13 +6,17 @@ from gap_data.models.instance import Instance
 
 
 class GeographyView(AdminView):
+    """Geography View."""
+
     template_name = 'dashboard/admin/geography/view.html'
 
     @property
     def content_title(self):
+        """Return content title."""
         return 'Management: Geography View'
 
     def get_context_data(self, **kwargs) -> dict:
+        """Return context data."""
         context = super().get_context_data(**kwargs)
         context.update(
             {
@@ -26,6 +31,7 @@ class GeographyView(AdminView):
         return context
 
     def post(self, request, **kwargs):
+        """Save geographies."""
         self.instance = get_object_or_404(
             Instance, slug=kwargs.get('slug', '')
         )

@@ -1,3 +1,4 @@
+"""Test for Harvester : APIWithGeograpyAndTodayDate."""
 import datetime
 
 import responses
@@ -8,9 +9,10 @@ from gap_harvester.tests.test_harvesters._base import BaseHarvesterTest
 
 
 class APIWithGeograpyAndTodayDateTest(BaseHarvesterTest):
-    """ Test for Harvester : APIWithGeograpyAndTodayDate """
+    """Test for Harvester : APIWithGeograpyAndTodayDate."""
 
     def test_no_attr_error(self):
+        """Test run with no attribute error."""
         harvester = HarvesterF(
             indicator=self.indicator,
             harvester_class=APIWithGeographyAndTodayDate[0]
@@ -26,6 +28,7 @@ class APIWithGeograpyAndTodayDateTest(BaseHarvesterTest):
 
     @responses.activate
     def test_run(self):
+        """Test run."""
         today = datetime.datetime.today().date()
         harvester = HarvesterF(
             indicator=self.indicator,

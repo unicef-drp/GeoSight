@@ -1,9 +1,12 @@
+"""Link admin."""
 from django.contrib import admin
 
 from gap_data.models.link import Link
 
 
 class LinkAdmin(admin.ModelAdmin):
+    """Link admin."""
+
     list_display = (
         'url', 'name', 'instance', 'is_public', 'order', 'instance'
     )

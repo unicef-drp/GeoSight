@@ -1,3 +1,4 @@
+"""Test for Harvester model."""
 from django.test.testcases import TestCase
 
 from gap_data.tests.model_factories.indicator import IndicatorF
@@ -6,9 +7,10 @@ from gap_harvester.tests.model_factories import HarvesterF
 
 
 class HarvesterTest(TestCase):
-    """ Test for Harvester model """
+    """Test for Harvester model."""
 
     def test_create(self):
+        """Test create."""
         for harvester_class in ALL_HARVESTERS:
             harvester = HarvesterF(
                 indicator=IndicatorF(),

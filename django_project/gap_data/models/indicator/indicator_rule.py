@@ -1,3 +1,4 @@
+"""Contains Indicator Scenario Rule model."""
 from django.contrib.gis.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -6,9 +7,8 @@ from gap_data.models.scenario import ScenarioLevel
 
 
 class IndicatorScenarioRule(models.Model):
-    """
-    The rule of scenario
-    """
+    """The rule of scenario model."""
+
     name = models.CharField(
         max_length=512
     )
@@ -36,13 +36,12 @@ class IndicatorScenarioRule(models.Model):
         )
     )
 
-    class Meta:
+    class Meta:  # noqa: D106
         unique_together = ('indicator', 'scenario_level')
 
     @property
     def rule_str(self):
-        """ Return rules in string list
-        """
+        """Return rule in string list with & as separator."""
         values = []
         if not self.rule:
             return ''

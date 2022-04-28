@@ -1,12 +1,12 @@
+"""For geometry uploader."""
 import uuid
 
 from django.contrib.gis.db import models
 
 
 class GeometryUploader(models.Model):
-    """
-    Geometry uploader
-    """
+    """Geometry uploader."""
+
     unique_id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True
     )
@@ -16,7 +16,8 @@ class GeometryUploader(models.Model):
 
 
 def upload_to(self, filename):
-    """ Return upload to based on incident id
+    """Return upload to based on incident id.
+
     :type self: GeometryUploaderFile
     :type filename: str
     """
@@ -25,9 +26,8 @@ def upload_to(self, filename):
 
 
 class GeometryUploaderFile(models.Model):
-    """
-    Geometry files
-    """
+    """Geometry files."""
+
     uploader = models.ForeignKey(
         GeometryUploader,
         on_delete=models.CASCADE
@@ -38,9 +38,8 @@ class GeometryUploaderFile(models.Model):
 
 
 class GeometryUploaderLog(models.Model):
-    """
-    Log for geometry uploader
-    """
+    """Log for geometry uploader."""
+
     uploader = models.ForeignKey(
         GeometryUploader,
         on_delete=models.CASCADE

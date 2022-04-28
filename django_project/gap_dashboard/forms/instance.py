@@ -1,3 +1,4 @@
+"""Instance form."""
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms.models import model_to_dict
@@ -6,13 +7,13 @@ from gap_data.models.instance import Instance, InstanceCategory
 
 
 class InstanceForm(forms.ModelForm):
-    """
-    Form to upload CSV file.
-    """
+    """Form to upload CSV file."""
+
     label_suffix = ""
     category = forms.ChoiceField(required=False)
 
     def __init__(self, *args, **kwargs):
+        """Init."""
         super().__init__(*args, **kwargs)
         self.fields['category'].choices = [('', '')] + [
             (
@@ -28,11 +29,12 @@ class InstanceForm(forms.ModelForm):
         except KeyError:
             pass
 
-    class Meta:
+    class Meta:  # noqa: D106
         model = Instance
         exclude = ('slug', 'white_icon')
 
     def clean_name(self):
+        """Return name."""
         name = self.cleaned_data['name']
         if self.instance and self.instance.name_is_exist(name):
             raise ValidationError('This name already exist')
@@ -41,6 +43,7 @@ class InstanceForm(forms.ModelForm):
         return name
 
     def clean_category(self):
+        """Return category."""
         category = self.cleaned_data['category']
         if not category:
             return None
@@ -51,6 +54,7 @@ class InstanceForm(forms.ModelForm):
 
     @staticmethod
     def model_to_initial(instance: Instance):
+        """Return json of model."""
         initial = model_to_dict(instance)
         try:
             initial['category'] = InstanceCategory.objects.get(

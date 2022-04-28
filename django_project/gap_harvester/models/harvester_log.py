@@ -1,3 +1,4 @@
+"""Harvester log model."""
 import json
 
 from django.contrib.gis.db import models
@@ -9,13 +10,16 @@ from gap_harvester.models.harvester import Harvester
 
 
 class LogStatus(object):
+    """Quick access for coupling variable with Log status string."""
+
     RUNNING = 'Running'
     ERROR = 'Error'
     DONE = 'Done'
 
 
 class HarvesterLog(models.Model):
-    """ History of harvester """
+    """History of harvester."""
+
     harvester = models.ForeignKey(
         Harvester, on_delete=models.CASCADE
     )
@@ -47,13 +51,11 @@ class HarvesterLog(models.Model):
         )
     )
 
-    class Meta:
+    class Meta:  # noqa: D106
         ordering = ('-start_time',)
 
     def html_detail(self):
-        """
-        Return html string for the detail
-        """
+        """Return html string for the detail."""
         try:
             pref = SitePreferences.preferences()
             return render_to_string(

@@ -1,3 +1,4 @@
+"""Attributes of indicator."""
 from django.contrib.gis.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -11,22 +12,26 @@ frequency_help_text = _(
 
 
 class IndicatorFrequency(AbstractTerm):
+    """The frequency of data for the indicator.
+
+    It is used to check if the data is expired from last data
+    And it will auto fetch the data.
     """
-    The frequency of data for the indicator
-    """
+
     frequency = models.IntegerField(
         help_text=frequency_help_text
     )
 
-    class Meta:
+    class Meta:  # noqa: D106
         verbose_name_plural = 'indicator frequencies'
 
 
 class IndicatorGroup(AbstractTerm):
+    """The group of indicator.
+
+    It is linked with an instance.
     """
-    The group of indicator
-    It is linked with the instance
-    """
+
     instance = models.ForeignKey(
         Instance,
         on_delete=models.CASCADE
