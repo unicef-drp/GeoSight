@@ -1,46 +1,14 @@
-site_name: RIR Dashboard 1.0
+site_name: GAP 1.0
 site_description: 'A platform provides a way to understand risk modalities across different geographic contexts.'
 site_author: 'Tim Sutton'
-repo_name: 'kartoza/rir-dashboard'
-repo_url: 'https://github.com/kartoza/rir-dashboard'
+repo_name: 'unicef-drp/gis_geo_analytics-platform'
+repo_url: 'https://github.com/unicef-drp/gis_geo_analytics-platform'
 copyright: Copyright Tim Sutton and Contributors, 2022
 
 # Navigation
 nav:
-  - Introduction:
+  - Home:
       - index.md
-      - Disclaimer: introduction/disclaimer.md
-      - License: introduction/license.md
-      - Contributing: introduction/contributing.md
-      - Credits: introduction/credits.md
-      - Platform tour:
-          - Overview: introduction/platform_tour/platform_tour.md
-          - Indicator: introduction/platform_tour/indicator.md
-          - Map interaction: introduction/platform_tour/map_interaction.md
-          - Layers: introduction/platform_tour/layers.md
-  - Setup:
-      - setup/index.md
-      - Installation:
-          - Preparation: setup/installation/preparation.md
-          - Project setup: setup/installation/project_setup.md
-          - Development setup:
-              - setup/installation/development_setup/index.md
-              - Using pycharm: setup/installation/development_setup/pycharm.md
-      - Configuration:
-          - Preferences: setup/configuration/preferences.md
-          - User: setup/configuration/user.md
-          - Instance: setup/configuration/instances.md
-          - Navigation link: setup/configuration/navigation_link.md
-          - Scenario: setup/configuration/scenario.md
-          - Program intervention: setup/configuration/program_intervention.md
-          - Layer: setup/configuration/layer.md
-          - Geography: setup/configuration/geography.md
-          - Indicator: setup/configuration/indicator.md
-  - Tutorial:
-      - tutorial/index.md
-      - User: tutorial/user_tutorial.md
-      - Administrator: tutorial/administrator_tutorial.md
-  - Roadmap: setup/roadmap.md
 
 # Configuration
 theme:

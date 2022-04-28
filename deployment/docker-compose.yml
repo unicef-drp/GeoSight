@@ -15,7 +15,7 @@ volumes:
 
 x-common-django:
   &default-common-django
-  image: kartoza/rir_dashboard_django:${DJANGO_TAG:-0.0.1}
+  image: kartoza/gap_django:${DJANGO_TAG:-0.0.1}
   environment:
     # editable in .env
     - DATABASE_NAME=${DATABASE_NAME:-django}
@@ -40,14 +40,14 @@ services:
   # Vanilla RabbitMQ service. This is needed by celery
   rabbitmq:
     image: rabbitmq:3.7-alpine
-    container_name: "rir_dashboard_rabbitmq"
+    container_name: "gap_rabbitmq"
     volumes:
       - rabbitmq:/var/lib/rabbitmq
     restart: on-failure
 
   db:
     image: kartoza/postgis:13.0
-    container_name: "rir_dashboard_db"
+    container_name: "gap_db"
     volumes:
       - database:/var/lib/postgresql/13
     environment:
@@ -59,11 +59,11 @@ services:
 
   dbbackups:
     image: kartoza/pg-backup:13.0
-    container_name: "rir_dashboard_dbbackups"
+    container_name: "gap_dbbackups"
     environment:
       # take care to let the project name below match that
       # declared in the top of the makefile
-      - DUMPPREFIX=PG_RIR
+      - DUMPPREFIX=PG_GAP
       # These are all defaults anyway, but setting explicitly in
       # case we ever want to ever use different credentials
       - POSTGRES_USER=${DATABASE_USERNAME:-docker}
@@ -77,19 +77,19 @@ services:
 
   django:
     <<: *default-common-django
-    container_name: "rir_dashboard_django"
+    container_name: "gap_django"
     command: 'uwsgi --ini /uwsgi.conf'
 
   # Celery worker that executes celery tasks created by Django.
   worker:
     <<: *default-common-django
-    container_name: "rir_dashboard_worker"
+    container_name: "gap_worker"
     command: celery -A core.celery:app worker -B -l debug
     entrypoint: []
 
   nginx:
-    image: kartoza/rir_dashboard_nginx:${NGINX_TAG:-0.0.1}
-    container_name: "rir_dashboard_nginx"
+    image: kartoza/gap_nginx:${NGINX_TAG:-0.0.1}
+    container_name: "gap_nginx"
     hostname: nginx
     volumes:
       - static-data:/home/web/static:ro
@@ -101,7 +101,7 @@ services:
   # one drive service
   onedrive:
     image: driveone/onedrive:latest
-    container_name: "rir_dashboard_onedrive"
+    container_name: "gap_onedrive"
     restart: unless-stopped
     environment:
       - ONEDRIVE_UID=${PUID:-1000}

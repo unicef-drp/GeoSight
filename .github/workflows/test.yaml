@@ -15,7 +15,7 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     env:
-      APP_IMAGE: kartoza/rir_dashboard
+      APP_IMAGE: kartoza/gap_django
     steps:
       - uses: actions/checkout@v2
       - name: Set up QEMU

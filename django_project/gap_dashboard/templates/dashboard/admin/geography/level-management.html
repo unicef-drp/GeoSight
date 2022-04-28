@@ -1,0 +1,52 @@
+{% extends 'dashboard/_base.html' %}
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/dashboard/admin/geography/level-management.css' %}" type="text/css" media="screen, projection"/>
+{% endblock stylesheet %}
+{% block content %}
+    <div class="section">
+        <div id="level-drop-area-section">
+            <div id="level-drop-area" class="row">
+                <div>
+                    <div>
+                        <i>Drag and drop here to change the level from top to bottom</i><br><br>
+                    </div>
+                    <div class="row">
+                        <div id="level-0" class="level-block-value">
+                            <div class="level-block-content" style="border: none; color: #555">Drop here to add new most top level</div>
+                            <div class="row"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form method="post" id="login-form">
+            {% csrf_token %}
+            <input id="level-input" type="text" name="levels" style="display: none">
+            <button class="main-button">Submit</button>
+        </form>
+        <div id="level-list" style="padding:10px;margin-top: 20px">
+            <div style="margin-bottom: 5px; color: gray">Available Levels</div>
+            <div class="row">
+                {% for level in levels %}
+                    <div id="level-{{ level.id }}" class="level-block level-block-value" data-id="{{ level.id }}">
+                        <div class="level-block-content">{{ level.name }}</div>
+                        <div class="row"></div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'js/dashboard/admin/geography/level-management.js' %}"></script>
+    <script>
+        const instanceLevels = [];
+        const instanceLevelTree = {{ level_in_tree|safe }};
+        {% for level in instance_levels %}
+            instanceLevels.push({{ level.id }});
+        {% endfor %}
+        $('#nav-geography-level-management').addClass('active')
+    </script>
+{% endblock %}

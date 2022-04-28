@@ -1,0 +1,34 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load indicator_tags %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block stylesheet %}
+    <link href="{% static 'libs/leaflet/1.5.1/leaflet.css' %}" rel="stylesheet" type="text/css" media="screen, projection"/>
+    <link href="{% static 'css/pages/instances.css' %}" rel="stylesheet" type="text/css" media="screen, projection"/>
+{% endblock %}
+
+{% block header %}
+    Select instance
+{% endblock %}
+
+{% block content %}
+    {% for category, category_instances in instance_categories.items %}
+        <div>
+            <h4>{{ category }}</h4>
+        </div>
+        <div class="row">
+            {% for instance in category_instances %}
+                <div class="col-2">
+                    <a href="{% url 'dashboard-list-view' instance.slug %}" class="instance">
+                        <img src="{% if instance.icon %}{{ instance.icon }}{% else %}{% static "img/no-image-found.jpg" %}{% endif %}">
+                        <span>{{ instance.name }}</span>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% endblock %}

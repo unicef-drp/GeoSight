@@ -1,0 +1,54 @@
+.col-2 {
+    padding: 0;
+}
+
+.container-page-content {
+    padding: 10px 0;
+}
+
+.instance img {
+    width: 100%;
+}
+
+.instance span {
+    color: var(--primary-color);
+    display: block;
+    margin-top: 5px;
+    font-weight: 700;
+}
+
+.instance {
+    display: block;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.instance:hover {
+    background: var(--hovered-color);
+    text-decoration: none;
+}
+
+#container h4 {
+    font-weight: 700;
+    padding: 0 20px;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+#instances h3 {
+    border-bottom: 1px solid var(--divider-color);
+    padding-left: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+#instances {
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+    min-height: 0;
+    padding: 10px;
+}
+

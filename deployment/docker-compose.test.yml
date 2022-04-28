@@ -8,7 +8,7 @@ services:
 
   dev:
     image: ${APP_IMAGE}:dev
-    container_name: "rir_dashboard_dev"
+    container_name: "gap_dev"
     links:
       - db:db
     environment:

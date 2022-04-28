@@ -1,11 +1,11 @@
-# Risk-Informed Response (RIR) Dashboard
+# Gis-geo Analytics Platform (GAP) Dashboard
 
 ## QUICK INSTALLATION GUIDE
 
 # Production
 ```
-git clone https://github.com/kartoza/rir-dashboard.git
-cd rir-dashboard/deployment
+git clone https://github.com/unicef-drp/gis_geo_analytics-platform
+cd gis_geo_analytics-platform/deployment
 docker-compose up -d
 ```
 
@@ -24,12 +24,12 @@ docker-compose down
 
 # Development
 ```
-git clone https://github.com/kartoza/rir-dashboard.git
-cd rir-dashboard/deplyment
+git clone https://github.com/unicef-drp/gis_geo_analytics-platform
+cd gis_geo_analytics-platform/deployment
 cp .template.env .env
 docker-compose.override.template.yml docker-compose.override.yml
 
-cd rir-dashboard
+cd gis_geo_analytics-platform
 make up
 make dev
 ```

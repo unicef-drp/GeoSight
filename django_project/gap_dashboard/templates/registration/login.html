@@ -1,0 +1,27 @@
+{% extends '_base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    Sign In
+{% endblock %}
+
+{% block stylesheet %}
+    <link href="{% static 'css/form.css' %}" rel="stylesheet" type="text/css" media="screen, projection"/>
+{% endblock %}
+
+{% block header %}
+    Sign in
+{% endblock %}
+
+{% block content %}
+    {% include "registration/login-form.html" %}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        if (window.location.hash) {
+            window.location = window.location.href.substr(0, window.location.href.indexOf('#'))
+        }
+    </script>
+{% endblock %}

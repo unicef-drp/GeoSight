@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 AS prod
+FROM ubuntu:20.04 AS prod
 MAINTAINER Irwan Fathurrahman<meomancer@gmail.com>
 
 # Pandoc needed to generate rst dumps, uic compressor needed for django-pipeline
@@ -17,9 +17,9 @@ ENV LANG en_ZA.UTF-8
 ENV LANGUAGE en_ZA:en
 ENV LC_ALL en_ZA.UTF-8
 
-ADD deployment/docker/REQUIREMENTS.txt /REQUIREMENTS.txt
+ADD deployment/docker/requirements.txt /requirements.txt
 RUN pip3 install --upgrade pip && pip install --upgrade pip
-RUN pip install -r /REQUIREMENTS.txt
+RUN pip install -r /requirements.txt
 
 RUN ln -s /usr/bin/python3 /usr/local/bin/python
 
@@ -51,8 +51,8 @@ RUN echo "export VISIBLE=now" >> /etc/profile
 
 # End of cut & paste section
 
-ADD deployment/docker/REQUIREMENTS-dev.txt /REQUIREMENTS-dev.txt
-RUN pip install -r /REQUIREMENTS-dev.txt
+ADD deployment/docker/requirements-dev.txt /requirements-dev.txt
+RUN pip install -r /requirements-dev.txt
 
 # --------------------------------------------------------
 # Open ports as needed
