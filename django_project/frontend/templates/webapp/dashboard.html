@@ -1,0 +1,29 @@
+{% load render_bundle from webpack_loader %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content="No description yet."/>
+    <title>Gis-geo Analytics Platform (GAP) Dashboard</title>
+    <meta name="description"
+          content="Gis-geo Analytics Platform (GAP) Dashboard."/>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Rubik:300,300i,500,500i"/>
+
+    <!-- leaflet css -->
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+          integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+          crossorigin=""/>
+    {% load static %}
+
+</head>
+<body>
+
+<div id="app"></div>
+{% render_bundle 'Dashboard' %}
+</body>
+</html>

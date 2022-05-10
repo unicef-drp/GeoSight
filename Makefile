@@ -24,6 +24,13 @@ web:
 	@echo "------------------------------------------------------------------"
 	@docker-compose up -d
 
+frontend-dev:
+	@echo
+	@echo "------------------------------------------------------------------"
+	@echo "Run frontend dev"
+	@echo "------------------------------------------------------------------"
+	@docker exec $(PROJECT_ID)_dev /bin/bash -c 'cd /home/web/django_project/frontend; npm install; npm run dev;'
+
 dev:
 	@echo
 	@echo "------------------------------------------------------------------"
@@ -209,3 +216,13 @@ devweb-test:
 	@echo "Running in DEVELOPMENT mode"
 	@echo "------------------------------------------------------------------"
 	@docker-compose exec -T dev python manage.py test --keepdb --noinput
+
+# --------------- TESTS ---------------
+run-flake8:
+	@echo
+	@echo "------------------------------------------------------------------"
+	@echo "Running flake8"
+	@echo "------------------------------------------------------------------"
+	@pip install flake8
+	@pip install flake8-docstrings
+	@flake8

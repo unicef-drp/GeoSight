@@ -1,0 +1,29 @@
+/* ==========================================================================
+   Dashboard specific style
+   ========================================================================== */
+
+@import '../global.scss';
+
+.page__dashboard {
+  main {
+    display: grid;
+    grid-template-columns: 15% auto 20%;
+    grid-template-rows: auto;
+  }
+
+  .page__dashboard__left_side,
+  .page__dashboard__right_side {
+    box-shadow: $base-shadow-box;
+    overflow-y: auto;
+    z-index: 1000;
+
+    .page__dashboard__content {
+      padding: $global-spacing;
+    }
+  }
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+}

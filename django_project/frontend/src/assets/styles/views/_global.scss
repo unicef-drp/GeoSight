@@ -1,0 +1,40 @@
+/* ==========================================================================
+   Globals
+   That being used for global elements
+   ========================================================================== */
+
+@import '../global.scss';
+
+body {
+  margin: 0;
+}
+
+html {
+  font-size: $root-font-size;
+}
+
+body {
+  background: #fff;
+  color: $base-font-color;
+  font-size: $base-font-size;
+  line-height: $base-line-height;
+  font-family: $base-font-family;
+  font-weight: $base-font-weight;
+  font-style: $base-font-style;
+  min-width: 320px;
+}
+
+#outdated {
+  display: none;
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: none;
+}
+
+a:hover {
+  opacity: $base-hovered-opacity;
+}

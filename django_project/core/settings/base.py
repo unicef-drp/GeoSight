@@ -52,6 +52,7 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     ABS_PATH('core', 'static'),
     ABS_PATH('gap_dashboard', 'static'),
+    ABS_PATH('frontend', 'bundles'),
 )
 
 # Every cache key will get prefixed with this value - here we set it to
@@ -83,6 +84,7 @@ TEMPLATES = [
             # Put Templates Hers
             ABS_PATH('core', 'templates'),
             ABS_PATH('gap_dashboard', 'templates'),
+            ABS_PATH('frontend', 'templates'),
         ],
         'OPTIONS': {
             'loaders': [
