@@ -1,0 +1,29 @@
+/* ==========================================================================
+   Navbar
+   ========================================================================== */
+
+@import '../global.scss';
+
+.page__header-menu {
+  background-color: $navbar-background-color;
+  color: $navbar-font-color;
+  display: flex;
+  flex: 1;
+  list-style-type: none;
+  margin: 0;
+  padding: ($global-spacing * 0.5) $global-spacing;
+
+  a {
+    color: $navbar-font-color;
+    text-underline: none;
+  }
+
+  li {
+    padding: 0 $global-spacing 0 0;
+  }
+
+  li:last-child {
+    margin: 0 0 0 auto;
+    padding: 0;
+  }
+}

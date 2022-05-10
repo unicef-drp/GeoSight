@@ -19,8 +19,8 @@
         {% endfor %}
     </div>
 {% endblock %}
-{% block dashboard_title %}
-    {{ dashboard_title|safe }}
+{% block content_title %}
+    {{ content_title|safe }}
     <a href="{% url "instance-management-create" %}">
         <button class=" main-button pull-right"><i class="fa fa-plus-circle" aria-hidden="true"></i> Create new</button>
     </a>
