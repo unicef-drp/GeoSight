@@ -6,11 +6,12 @@ import { store } from './store';
 import c from 'classnames';
 import T from 'prop-types';
 
-import NavBar from './components/NavBar';
+import NavBar from './components/NavBar/Index';
 
 // STYLES
-import './assets/styles/views/_global.scss';
-import './assets/styles/views/_base.scss';
+import './assets/styles/bootstrap.scss';
+import './assets/styles/views/global.scss';
+import './assets/styles/views/base.scss';
 import { createRoot } from "react-dom/client";
 
 

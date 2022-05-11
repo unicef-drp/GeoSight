@@ -1,31 +1,36 @@
 import React from 'react';
-import i18n from "i18next";
 
 // STYLES
-import '../assets/styles/component/navbar.scss';
+import '../../assets/styles/component/navbar.scss';
+import User from './user'
+import i18n from "i18next";
 
 export default class NavBar extends React.PureComponent {
   render() {
+    const { icon, site_title } = preferences;
     return (
       <header className='page__header'>
         <ul className='page__header-menu'>
-          <li>
+          <li className='page__header-logo'>
             <a
               href='/'
               title={i18n.t('Homepage')}
               className='page__header-link'
             >
-              <span>Home</span>
+              <img src={icon} alt="Logo"/>
+            </a>
+          </li>
+          <li className='page__header-title'>
+            <a
+              href='/'
+              title={i18n.t('Homepage')}
+              className='page__header-link'
+            >
+              {site_title}
             </a>
           </li>
           <li>
-            <a
-              href='/'
-              title={i18n.t('Homepage')}
-              className='page__header-link'
-            >
-              <span>Home</span>
-            </a>
+            <User/>
           </li>
         </ul>
       </header>

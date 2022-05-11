@@ -4,6 +4,10 @@
 
 @import '../global.scss';
 
+.page__header {
+  height: 40px;
+}
+
 .page__header-menu {
   background-color: $navbar-background-color;
   color: $navbar-font-color;
@@ -12,18 +16,77 @@
   list-style-type: none;
   margin: 0;
   padding: ($global-spacing * 0.5) $global-spacing;
+  height: 100%;
 
   a {
     color: $navbar-font-color;
     text-underline: none;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 
   li {
     padding: 0 $global-spacing 0 0;
+
+    &:last-child {
+      margin: 0 0 0 auto;
+      padding: 0;
+    }
   }
 
-  li:last-child {
-    margin: 0 0 0 auto;
-    padding: 0;
+  .sign-in {
+    cursor: pointer;
+
+    &:hover {
+      opacity: $base-hovered-opacity;
+    }
   }
+
+  .dropdown {
+    button {
+      margin-top: -6px;
+      border: unset;
+      font-weight: 300;
+      padding: 0;
+
+      &:active,
+      &:focus-visible,
+      &:focus,
+      &:hover {
+        background: none;
+        border: unset;
+        box-shadow: unset;
+      }
+    }
+
+    a {
+      color: $base-color;
+      font-weight: 300;
+    }
+
+    .dropdown-item:active {
+      background-color: inherit;
+    }
+  }
+
+  .dropdown.show > .btn-primary.dropdown-toggle {
+    background: none;
+    border: unset;
+    box-shadow: unset;
+  }
+}
+
+.page__header-logo {
+  padding-right: 0.3rem !important;
+
+  img {
+    height: 70%;
+    margin-top: -4px;
+  }
+}
+
+.page__header-title {
+  font-weight: 600;
 }

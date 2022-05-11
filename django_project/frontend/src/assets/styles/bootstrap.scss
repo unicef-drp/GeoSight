@@ -1,0 +1,16 @@
+/* ==========================================================================
+   Bootstrap
+   ========================================================================== */
+@import './global.scss';
+
+button {
+  border: unset;
+  background: $base-color;
+  color: $base-color-reverse;
+  padding: 3px 5px;
+}
+
+.btn-primary {
+  background-color: $base-color;
+  border-color: $base-color;
+}
