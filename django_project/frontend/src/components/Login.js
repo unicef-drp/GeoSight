@@ -1,32 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import T from 'prop-types';
+
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import T from 'prop-types';
 
+function LoginModal(props) {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const authUrl = '/auth/login/?next=' + window.location.pathname
 
-export default class LoginModal extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modalIsOpen: props.modalIsOpen
-    };
-    this.closeSignIn = this.closeSignIn.bind(this)
-  }
+  useEffect(() => {
+    setModalIsOpen(props.modalIsOpen);
+  })
 
-  componentDidUpdate(prevProps, prevState) {
-    // Typical usage (don't forget to compare props):
-    if (prevState.modalIsOpen !== this.props.modalIsOpen) {
-      this.setState({
-        modalIsOpen: this.props.modalIsOpen
-      })
-    }
-  }
+  const closeSignIn = () => {
+    setModalIsOpen(false);
+    props.modalClosed();
+  };
 
-  render() {
-    const { modalIsOpen } = this.state;
-    const authUrl = '/auth/login/?next=' + window.location.pathname
-    return <Modal show={modalIsOpen} onHide={this.closeSignIn}>
+  return (
+    <Modal show={modalIsOpen} onHide={closeSignIn}>
       <Modal.Header closeButton>
         <Modal.Title>Sign In</Modal.Title>
       </Modal.Header>
@@ -53,17 +46,12 @@ export default class LoginModal extends React.PureComponent {
         </Form>
       </Modal.Body>
     </Modal>
-  }
-
-  closeSignIn() {
-    this.setState({
-      modalIsOpen: false
-    })
-    this.props.modalClosed()
-  }
+  )
 }
 
 LoginModal.propTypes = {
   modalIsOpen: T.bool,
   modalClosed: T.func
 };
+
+export default LoginModal;

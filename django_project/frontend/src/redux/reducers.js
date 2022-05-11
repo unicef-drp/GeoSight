@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { DECREASE_COUNTER, INCREASE_COUNTER } from './actions'
+import { DECREASE_COUNTER, INCREASE_COUNTER } from './actions/counter'
 
 /**
  * User reducer

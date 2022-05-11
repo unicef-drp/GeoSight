@@ -8,3 +8,8 @@ export function increaseCounter() {
 export function decreaseCounter() {
   return { type: DECREASE_COUNTER };
 }
+
+export default {
+  increaseCounter,
+  decreaseCounter
+}

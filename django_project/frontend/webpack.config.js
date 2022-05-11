@@ -13,9 +13,9 @@ module.exports = {
   //  And the connect is still working
   //  Or maybe keep the router
   entry: {
-    Counter: ['./src/views_indexes/Counter.js'],
-    Dashboard: ['./src/views_indexes/Dashboard.js'],
-    Home: ['./src/views_indexes/Home.js'],
+    Counter: ['./src/views/Counter.js'],
+    Dashboard: ['./src/views/Dashboard.js'],
+    Home: ['./src/views/Home.js'],
   },
   output: {
     path: path.resolve(__dirname, "./bundles"),
