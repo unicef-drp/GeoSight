@@ -23,6 +23,6 @@ if settings.DEBUG:
 
 urlpatterns += [
     url(r'^proxy', ProxyView.as_view(), name='proxy-view'),
-    url(r'^dashboard', include('frontend.urls')),
+    url(r'^dashboard/', include('frontend.urls')),
     url(r'^', include('gap_data.urls')),
 ]

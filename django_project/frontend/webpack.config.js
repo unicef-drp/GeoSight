@@ -8,8 +8,14 @@ let statsFilename = (mode === 'dev') ? './webpack-stats.dev.json' : './webpack-s
 let minimized = mode !== 'dev'
 
 module.exports = {
+  // TODO:
+  //  Think about how to channeling to django better
+  //  And the connect is still working
+  //  Or maybe keep the router
   entry: {
-    Dashboard: ['./src/views/Dashboard.js']
+    Counter: ['./src/views_indexes/Counter.js'],
+    Dashboard: ['./src/views_indexes/Dashboard.js'],
+    Home: ['./src/views_indexes/Home.js'],
   },
   output: {
     path: path.resolve(__dirname, "./bundles"),

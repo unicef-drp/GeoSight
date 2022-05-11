@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
-import { createRoot } from 'react-dom/client';
 
-import BaseApp from './_BaseApp';
+import App, { render } from '../App';
 
 // STYLES
 import '../assets/styles/views/home.scss';
 
-export default class App extends Component {
+export default class Home extends Component {
   render() {
     return (
-      <BaseApp className='page__home'>
+      <App className='page__home'>
         <article>
           <header>
             <div>
@@ -24,9 +23,8 @@ export default class App extends Component {
             </div>
           </div>
         </article>
-      </BaseApp>
+      </App>
     );
   }
 }
-const root = createRoot(document.getElementById('app'));
-root.render(<App/>)
+render(Home)

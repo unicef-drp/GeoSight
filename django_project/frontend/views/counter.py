@@ -2,10 +2,10 @@
 from frontend.views.dashboard._base import BaseDashboardView
 
 
-class DashboardDetailView(BaseDashboardView):
-    """Dashboard Detail View."""
+class CounterView(BaseDashboardView):
+    """Counter View."""
 
-    template_name = 'frontend/dashboard.html'
+    template_name = 'frontend/counter.html'
 
     @property
     def content_title(self):
