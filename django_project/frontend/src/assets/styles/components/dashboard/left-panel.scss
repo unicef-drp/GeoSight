@@ -1,0 +1,24 @@
+/* ==========================================================================
+   Left-side panel
+   ========================================================================== */
+
+@import '../../global.scss';
+
+.dashboard__left_side {
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 15%;
+  transition: left 0.3s;
+
+  &.right {
+    left: -15%;
+  }
+
+  .left-right-toggle-button {
+    position: absolute;
+    right: -23px;
+    top: 5px;
+    border-radius: 0 5px 5px 0;
+  }
+}

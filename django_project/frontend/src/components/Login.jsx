@@ -4,7 +4,7 @@ import T from 'prop-types';
 import { Button, FormControl, Input, InputLabel } from '@mui/material'
 import Modal, { ModalContent, ModalHeader } from './Modal'
 // Styles
-import '../assets/styles/component/login.scss';
+import '../assets/styles/components/login.scss';
 
 function LoginModal({ open, onClosed }) {
   const authUrl = `${urls.login}?next=${window.location.pathname}` // eslint-disable-line no-undef
@@ -14,7 +14,7 @@ function LoginModal({ open, onClosed }) {
     <Modal
       open={open}
       onClosed={onClosed}
-      className='modal--login'
+      className='modal__login'
     >
       <ModalHeader>
         Sign In
@@ -24,15 +24,15 @@ function LoginModal({ open, onClosed }) {
           <FormControl>
             <InputLabel>Username</InputLabel>
             <Input type="text" name="username" placeholder="Enter username"
-                   required="true"/>
+                   required={true}/>
           </FormControl>
           <FormControl>
             <InputLabel>Password</InputLabel>
             <Input type="password" name="password" placeholder="Password"
-                   required="true"/>
+                   required={true}/>
           </FormControl>
           <Button variant="primary" type="submit"
-                  className="modal--login--submit">
+                  className="modal__login__submit">
             Sign In
           </Button>
           <Input

@@ -1,22 +1,18 @@
 import React from 'react';
-import Map from "../components/Dashboard/Map";
+import Map from "../components/dashboard/Map";
 import App, { render } from '../App';
+import LeftPanel from '../components/dashboard/LeftPanel'
+import RightPanel from '../components/dashboard/RightPanel'
 
 // STYLES
 import '../assets/styles/views/dashboard.scss';
 
 function Dashboard() {
   return (
-    <App className='page__dashboard'>
-      <section className='page__dashboard__left_side'>
-        <div className='page__dashboard__content'>Left side</div>
-      </section>
-      <section className='page__dashboard__map'>
-        <Map/>
-      </section>
-      <section className='page__dashboard__right_side'>
-        <div className='page__dashboard__content'>Right side</div>
-      </section>
+    <App className='dashboard'>
+      <LeftPanel/>
+      <RightPanel/>
+      <Map/>
     </App>
   );
 }

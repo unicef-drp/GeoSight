@@ -6,7 +6,7 @@
 $base-hovered-opacity: 0.5;
 
 /* Colors */
-$base-color: #1CABE2;
+$base-color: var(--primary-color);
 $base-color-reverse: #FFFFFF;
 $base-alpha-color: rgba($base-color, 0.08);
 $base-shadow-box: 0 0 16px 4px rgba(#000000, 0.1);

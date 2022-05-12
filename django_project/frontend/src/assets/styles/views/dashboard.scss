@@ -4,26 +4,33 @@
 
 @import '../global.scss';
 
-.page__dashboard {
+.dashboard {
   main {
-    display: grid;
-    grid-template-columns: 15% auto 20%;
-    grid-template-rows: auto;
+    height: 100%;
+    width: 100%;
+    position: relative;
   }
 
-  .page__dashboard__left_side,
-  .page__dashboard__right_side {
+  .dashboard__panel {
+    background-color: white;
     box-shadow: $base-shadow-box;
-    overflow-y: auto;
+    height: 100%;
+    position: absolute;
     z-index: 1000;
 
-    .page__dashboard__content {
+    .dashboard__content {
       padding: $global-spacing;
     }
   }
 }
 
-#map {
-  height: 100%;
-  width: 100%;
+.dashboard {
+  .left-right-toggle-button {
+    background: $base-color;
+    cursor: pointer;
+    height: 30px;
+    padding: 3px 3px 0 0;
+    width: 20px;
+    color: $base-color-reverse;
+  }
 }

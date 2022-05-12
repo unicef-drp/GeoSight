@@ -6,7 +6,7 @@ import { store } from './store';
 import c from 'classnames';
 import T from 'prop-types';
 
-import NavBar from './components/NavBar/Index';
+import NavBar from './components/navbar/Index';
 
 // STYLES
 import './assets/styles/views/global.scss';

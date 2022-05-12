@@ -1,12 +1,12 @@
 import React from 'react';
 import i18n from "i18next";
-import User from './user'
+import User from './User'
 
 // Style
-import '../../assets/styles/component/navbar.scss';
+import '../../assets/styles/components/navbar.scss';
 
 
-function NavBar() {
+export default function NavBar() {
   const { icon, site_title } = preferences;
   return (
     <header className='page__header'>
@@ -37,4 +37,3 @@ function NavBar() {
   )
 }
 
-export default NavBar;
