@@ -31,7 +31,7 @@ frontend-dev:
 	@echo "------------------------------------------------------------------"
 	@cd django_project/frontend; npm install; npm run dev;
 
-dev: frontend-dev
+dev:
 	@echo
 	@echo "------------------------------------------------------------------"
 	@echo "Running in dev mode"

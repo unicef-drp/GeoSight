@@ -16,7 +16,7 @@ let conf = {
     Home: ['./src/views/Home.jsx'],
   },
   output: {
-    path: path.resolve(__dirname, "./bundles"),
+    path: path.resolve(__dirname, "./bundles/frontend"),
     filename: filename + '.js'
   },
   module: {

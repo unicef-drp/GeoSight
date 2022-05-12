@@ -11,7 +11,7 @@ INSTALLED_APPS = INSTALLED_APPS + (
 WEBPACK_LOADER = {
     'DEFAULT': {
         'CACHE': True,
-        'BUNDLE_DIR_NAME': '/',  # must end with slash
+        'BUNDLE_DIR_NAME': 'frontend/',  # must end with slash
         'STATS_FILE': ABS_PATH('frontend', 'webpack-stats.prod.json'),
         'POLL_INTERVAL': 0.1,
         'TIMEOUT': None,
