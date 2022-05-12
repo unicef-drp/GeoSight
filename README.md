@@ -41,31 +41,9 @@ make up
 make dev
 ```
 
+Run the frontend dev with `frontend-dev`
+
+#### Pycharm
+Under Construction
+
 The web will be available at `http://localhost:2000/`
-
-To stop dev:
-
-```
-make dev-kill
-```
-
-To reload container:
-
-```
-make dev-reload
-```
-
-### Setup onedrive:
-
-1. Download onedrive by `sudo apt-get install onedrive`
-2. Execute `onedrive --get-O365-drive-id '<your site name to search>'`
-3. It will ask to click an url and put back the url that created on browser
-4. It will show an information. Check drive_id and copy it.
-5. Open file deployment/onedrive/config and put it to drive_id
-6. `make onedrive-firstrun` to run first config
-7. It will ask to click an url and put back the url that created on browser
-8. Wait the system to finish the sync
-9. After that we can stop it and do `make up`
-
-More information:
-https://github.com/abraunegg/onedrive/blob/master/docs/SharePoint-Shared-Libraries.md

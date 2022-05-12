@@ -6,6 +6,7 @@ from core.models.preferences import SitePreferences
 
 class SitePreferencesSerializer(serializers.ModelSerializer):
     """Site preference serializer."""
+
     icon = serializers.SerializerMethodField()
     favicon = serializers.SerializerMethodField()
 

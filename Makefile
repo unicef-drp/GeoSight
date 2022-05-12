@@ -29,9 +29,9 @@ frontend-dev:
 	@echo "------------------------------------------------------------------"
 	@echo "Run frontend dev"
 	@echo "------------------------------------------------------------------"
-	@docker exec $(PROJECT_ID)_dev /bin/bash -c 'cd /home/web/django_project/frontend; npm install; npm run dev;'
+	@cd django_project/frontend; npm install; npm run dev;
 
-dev:
+dev: frontend-dev
 	@echo
 	@echo "------------------------------------------------------------------"
 	@echo "Running in dev mode"

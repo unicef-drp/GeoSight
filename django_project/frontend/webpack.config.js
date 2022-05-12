@@ -1,13 +1,15 @@
 const path = require("path");
-var BundleTracker = require('webpack-bundle-tracker');
-var MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const BundleTracker = require('webpack-bundle-tracker');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const mode = process.env.npm_lifecycle_event;
-let filename = (mode === 'dev') ? "[name]" : "[name].[fullhash]"
-let statsFilename = (mode === 'dev') ? './webpack-stats.dev.json' : './webpack-stats.prod.json'
-let minimized = mode !== 'dev'
+const isDev = (mode === 'dev');
+const filename = isDev ? "[name]" : "[name].[fullhash]";
+const statsFilename = isDev ? './webpack-stats.dev.json' : './webpack-stats.prod.json';
+const minimized = !isDev;
 
-module.exports = {
+let conf = {
   entry: {
     Counter: ['./src/views/Counter.jsx'],
     Dashboard: ['./src/views/Dashboard.jsx'],
@@ -52,3 +54,18 @@ module.exports = {
     extensions: ['.js', '.jsx']
   },
 };
+if (isDev) {
+  conf['output'] = {
+    path: path.resolve(__dirname, "./bundles"),
+    filename: filename + '.js',
+    publicPath: 'http://localhost:9000/',
+  }
+  conf['devServer'] = {
+    hot: true,
+    port: 9000
+  }
+  conf['plugins'].push(
+    isDev && new ReactRefreshWebpackPlugin()
+  )
+}
+module.exports = conf;
