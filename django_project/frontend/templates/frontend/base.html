@@ -30,6 +30,11 @@
   const user = {{ user|safe }};
   const csrfmiddlewaretoken = '{{ csrf_token }}';
   const preferences = {{ preferences|safe }};
+  const urls = {
+    'login': "{% url 'login' %}",
+    'logout': "{% url 'logout' %}",
+    'admin': "{% url 'admin:index' %}"
+  }
 </script>
 {% block render_bundle %}
 {% endblock %}

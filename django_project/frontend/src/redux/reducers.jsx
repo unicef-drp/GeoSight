@@ -2,18 +2,6 @@ import { combineReducers } from 'redux';
 import { DECREASE_COUNTER, INCREASE_COUNTER } from './actions/counter'
 
 /**
- * User reducer
- */
-const userInitialState = user;
-
-function userReducer(state = userInitialState, action) {
-  switch (action.type) {
-    default:
-      return state;
-  }
-}
-
-/**
  * COUNTER reducer
  */
 const counterInitialState = {
@@ -32,6 +20,5 @@ function counterReducer(state = counterInitialState, action) {
 }
 
 export default combineReducers({
-  counter: counterReducer,
-  user: userReducer,
+  counter: counterReducer
 });

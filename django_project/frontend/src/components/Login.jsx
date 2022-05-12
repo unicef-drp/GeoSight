@@ -7,11 +7,12 @@ import Modal from 'react-bootstrap/Modal';
 
 function LoginModal(props) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const authUrl = '/auth/login/?next=' + window.location.pathname
+  const authUrl = `${urls.login}?next=${window.location.pathname}` // eslint-disable-line no-undef
+  const csrftoken = csrfmiddlewaretoken; // eslint-disable-line no-undef
 
   useEffect(() => {
     setModalIsOpen(props.modalIsOpen);
-  })
+  }, [props.modalIsOpen])
 
   const closeSignIn = () => {
     setModalIsOpen(false);
@@ -27,7 +28,7 @@ function LoginModal(props) {
         <Form action={authUrl} method='POST'>
           <Form.Control
             type="hidden" name="csrfmiddlewaretoken"
-            value={csrfmiddlewaretoken}/>
+            value={csrftoken}/>
           <Form.Group className="mb-3" controlId="formUsername">
             <Form.Label>Username</Form.Label>
             <Form.Control

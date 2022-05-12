@@ -1,13 +1,14 @@
 import React, { Fragment, useState } from 'react';
-import { useSelector } from "react-redux";
 
 import Dropdown from "react-bootstrap/Dropdown"
 import LoginModal from '../Login'
 
 
 export default function User() {
-  const { username, is_staff } = useSelector(state => state.user);
+  const { username, is_staff } = user;
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const logoutUrl = urls.logout; // eslint-disable-line no-undef
+  const adminUrl = urls.admin; // eslint-disable-line no-undef
 
   const openSignIn = () => {
     setModalIsOpen(true);
@@ -27,12 +28,12 @@ export default function User() {
         <Dropdown.Menu>
           {
             is_staff ?
-              <Dropdown.Item href="/admin/">
+              <Dropdown.Item href={adminUrl}>
                 Admin
               </Dropdown.Item> :
               ''
           }
-          <Dropdown.Item href="/auth/logout/?next=/">Logout</Dropdown.Item>
+          <Dropdown.Item href={logoutUrl}>Logout</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     )
