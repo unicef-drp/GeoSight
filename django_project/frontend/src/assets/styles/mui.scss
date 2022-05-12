@@ -10,7 +10,8 @@ button {
   padding: 3px 5px;
 }
 
-.btn-primary {
-  background-color: $base-color;
-  border-color: $base-color;
+.MuiButton-primary {
+  background-color: $base-color !important;
+  border-color: $base-color !important;
+  color: $base-color-reverse !important;
 }

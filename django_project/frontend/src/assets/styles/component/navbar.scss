@@ -5,18 +5,19 @@
 @import '../global.scss';
 
 .page__header {
-  height: 40px;
+  background-color: $navbar-background-color;
+  height: 30px;
+  padding: ($global-spacing * 0.5) $global-spacing;
 }
 
 .page__header-menu {
-  background-color: $navbar-background-color;
   color: $navbar-font-color;
   display: flex;
   flex: 1;
+  height: 100%;
   list-style-type: none;
   margin: 0;
-  padding: ($global-spacing * 0.5) $global-spacing;
-  height: 100%;
+  padding: 0;
 
   a {
     color: $navbar-font-color;
@@ -28,11 +29,10 @@
   }
 
   li {
-    padding: 0 $global-spacing 0 0;
+    padding: 2px $global-spacing 0 0;
 
     &:last-child {
       margin: 0 0 0 auto;
-      padding: 0;
     }
   }
 
@@ -44,37 +44,21 @@
     }
   }
 
-  .dropdown {
-    button {
-      margin-top: -5px;
-      border: unset;
-      font-weight: 300;
-      padding: 0;
-
-      &:active,
-      &:focus-visible,
-      &:focus,
-      &:hover {
-        background: none;
-        border: unset;
-        box-shadow: unset;
-      }
-    }
-
-    a {
-      color: $base-color;
-      font-weight: 300;
-    }
-
-    .dropdown-item:active {
-      background-color: inherit;
-    }
-  }
-
-  .dropdown.show > .btn-primary.dropdown-toggle {
-    background: none;
+  button {
+    margin-top: -5px;
     border: unset;
-    box-shadow: unset;
+    font-weight: 300;
+    padding: 0;
+    color: white;
+
+    &:active,
+    &:focus-visible,
+    &:focus,
+    &:hover {
+      background: none;
+      border: unset;
+      box-shadow: unset;
+    }
   }
 }
 
@@ -82,11 +66,18 @@
   padding-right: 0.3rem !important;
 
   img {
-    height: 70%;
+    height: 100%;
     margin-top: -4px;
   }
 }
 
 .page__header-title {
   font-weight: 600;
+}
+
+.MuiMenuItem-root {
+  a, a:link, a:visited, a:hover, a:active {
+    color: $base-color;
+    font-weight: 300;
+  }
 }

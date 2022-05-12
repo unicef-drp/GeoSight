@@ -24,10 +24,6 @@ body {
   min-width: 320px;
 }
 
-#outdated {
-  display: none;
-}
-
 a:link,
 a:visited,
 a:hover,
@@ -37,4 +33,30 @@ a:active {
 
 a:hover {
   opacity: $base-hovered-opacity;
+}
+
+// MODALS
+.modal--box {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  border-radius: .3rem;
+  border: 1px solid rgba(0, 0, 0, .2);
+  background-color: #fff;
+  background-clip: padding-box;
+  transform: translate(-50%, 0);
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.modal--header {
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.modal--content {
+  margin: auto;
+  padding: 10px 20px;
 }

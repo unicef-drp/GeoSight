@@ -9,9 +9,10 @@ import T from 'prop-types';
 import NavBar from './components/NavBar/Index';
 
 // STYLES
-import './assets/styles/bootstrap.scss';
 import './assets/styles/views/global.scss';
+import './assets/styles/mui.scss';
 import './assets/styles/views/base.scss';
+import './assets/styles/views/form.scss';
 import { createRoot } from "react-dom/client";
 
 
