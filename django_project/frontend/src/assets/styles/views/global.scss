@@ -1,44 +1,70 @@
-/* ==========================================================================
-   Globals
-   That being used for global elements
-   ========================================================================== */
+/* -------------------------------------------------------------------
+   Used for global theme element
+  ------------------------------------------------------------------- */
 
-@import '../global.scss';
+@import '../variables.scss';
 
-body {
-  margin: 0;
+.page {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: max-content auto;
+  grid-template-columns: auto;
+  overflow: hidden;
+
+  @include media(xsmall-only) {
+    min-height: 100vh;
+    display: block;
+    overflow-y: auto;
+  }
 }
 
-html {
-  font-size: $root-font-size;
+// MODALS
+.modal--box {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  border-radius: .3rem;
+  border: 1px solid rgba(0, 0, 0, .2);
+  background-color: #fff;
+  background-clip: padding-box;
+  transform: translate(-50%, 0);
+
+  &:focus-visible {
+    outline: none;
+  }
 }
 
-body {
-  background: #fff;
-  color: $base-font-color;
-  font-size: $base-font-size;
-  line-height: $base-line-height;
-  font-family: $base-font-family;
-  font-weight: $base-font-weight;
-  font-style: $base-font-style;
-  min-width: 320px;
+.modal--header {
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
 }
 
+.modal--content {
+  margin: auto;
+  padding: 10px 20px;
+}
 
-button {
-  border: unset;
+.left-right-toggle-button {
   background: $base-color;
+  cursor: pointer;
+  height: 30px;
+  padding: 0.2rem 0.3rem;
   color: $base-color-reverse;
-  padding: 3px 5px;
-}
 
-a:link,
-a:visited,
-a:hover,
-a:active {
-  text-decoration: none;
-}
+  div {
+    height: 1rem;
+    width: 0.8rem;
+  }
 
-a:hover {
-  opacity: $base-hovered-opacity;
+  &.left {
+    div:after {
+      content: '◀';
+    }
+  }
+
+  &.right {
+    div:after {
+      content: '▶';
+    }
+  }
 }

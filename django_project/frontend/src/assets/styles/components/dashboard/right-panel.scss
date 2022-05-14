@@ -2,10 +2,10 @@
    Right-side panel
    ========================================================================== */
 
-@import '../../global.scss';
+@import '../../variables.scss';
 
 .dashboard__right_side {
-  position: relative;
+  position: absolute;
   right: 0;
   top: 0;
   width: 20%;
@@ -20,5 +20,18 @@
     left: -23px;
     top: 5px;
     border-radius: 5px 0 0 5px;
+  }
+
+  @include media(small-down) {
+    width: 20%;
+    &.left {
+      right: -20%;
+    }
+  }
+  @include media(xsmall-only) {
+    box-shadow: unset !important;
+    height: auto !important;
+    position: relative;
+    width: 100%;
   }
 }

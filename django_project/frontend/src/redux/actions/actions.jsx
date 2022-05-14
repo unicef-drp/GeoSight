@@ -1,7 +1,7 @@
-import Counter from './counter'
+import Dashboard from './dashboard'
 
 const Actions = {
-  Counter
+  Dashboard
 }
 
 export default Actions

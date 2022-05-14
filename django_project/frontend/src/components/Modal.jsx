@@ -1,11 +1,21 @@
+/* ==========================================================================
+   BASE MODAL CONTAINER
+   ========================================================================== */
+
 import React, { useEffect, useState } from 'react';
-import T from 'prop-types';
 
 import { Modal as BaseModal } from '@mui/material'
 import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
 import Backdrop from '@mui/material/Backdrop';
 
+/**
+ * Base modal component
+ * @param {bool} open Initial state if modal is open or not
+ * @param {function} onClosed Function when modal closed
+ * @param {string} className Class name for modal
+ * @param {React.Component} children React component to be rendered
+ */
 function Modal({ open, onClosed, className, children }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -49,6 +59,7 @@ export function ModalHeader({ children }) {
     </div>
   )
 }
+
 export function ModalContent({ children }) {
   return (
     <div className='modal--content'>
@@ -56,11 +67,5 @@ export function ModalContent({ children }) {
     </div>
   )
 }
-
-Modal.propTypes = {
-  open: T.bool,
-  onClosed: T.func,
-  className: T.string
-};
 
 export default Modal;

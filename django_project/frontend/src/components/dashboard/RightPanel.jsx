@@ -1,5 +1,5 @@
 /* ==========================================================================
-   LEFT SIDE CONTAINER
+   RIGHT SIDE CONTAINER
    ========================================================================== */
 
 import React, { useState } from 'react';
@@ -10,13 +10,13 @@ import '../../assets/styles/components/dashboard/right-panel.scss';
 export default function RightPanel() {
   const [state, setState] = useState(RIGHT);
 
-
   const onLeft = () => {
     setState(LEFT);
   };
   const onRight = () => {
     setState(RIGHT);
   };
+
   const className = `dashboard__panel dashboard__right_side ${state}`
   return (
     <section className={className}>

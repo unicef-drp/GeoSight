@@ -2,7 +2,7 @@
    Dashboard specific style
    ========================================================================== */
 
-@import '../global.scss';
+@import '../variables.scss';
 
 .dashboard {
   main {
@@ -15,22 +15,10 @@
     background-color: white;
     box-shadow: $base-shadow-box;
     height: 100%;
-    position: absolute;
-    z-index: 1000;
+    z-index: 1001;
 
     .dashboard__content {
       padding: $global-spacing;
     }
-  }
-}
-
-.dashboard {
-  .left-right-toggle-button {
-    background: $base-color;
-    cursor: pointer;
-    height: 30px;
-    padding: 3px 3px 0 0;
-    width: 20px;
-    color: $base-color-reverse;
   }
 }

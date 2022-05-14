@@ -7,9 +7,12 @@ import LeftRightToggleButton, { LEFT, RIGHT } from '../ToggleButton'
 
 import '../../assets/styles/components/dashboard/left-panel.scss';
 
-export default function LeftPanel() {
+/**
+ * Left panel
+ * @param {object} data Data of dashboard
+ */
+export default function LeftPanel({ data }) {
   const [state, setState] = useState(LEFT);
-
 
   const onLeft = () => {
     setState(LEFT);
@@ -24,7 +27,19 @@ export default function LeftPanel() {
         initState={state}
         onLeft={onLeft}
         onRight={onRight}/>
-      <div className='dashboard__content'>Left side</div>
+      <div className='dashboard__content'>
+        {
+          data && data.indicators ?
+            data.indicators.map(
+              indicator => (
+                <div key={indicator.id}>
+                  {indicator.group}/{indicator.name}
+                </div>
+              )
+            )
+            : <div>Loading</div>
+        }
+      </div>
     </section>
   )
 }

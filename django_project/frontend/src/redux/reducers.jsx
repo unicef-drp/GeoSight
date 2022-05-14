@@ -1,24 +1,21 @@
 import { combineReducers } from 'redux';
-import { DECREASE_COUNTER, INCREASE_COUNTER } from './actions/counter'
+import { APIReducer } from './reducers_api';
 
 /**
- * COUNTER reducer
+ * DASHBOARD reducer
  */
-const counterInitialState = {
-  value: 0
+export const DASHBOARD_ACTION_NAME = 'DASHBOARD';
+const dashboardInitialState = {
+  fetching: false,
+  fetched: false,
+  error: null,
+  data: {}
 };
 
-function counterReducer(state = counterInitialState, action) {
-  switch (action.type) {
-    case INCREASE_COUNTER:
-      return { ...state, value: state.value + 1 };
-    case DECREASE_COUNTER:
-      return { ...state, value: state.value - 1 };
-    default:
-      return state;
-  }
+function dashboardReducer(state = dashboardInitialState, action) {
+  return APIReducer(state, action, DASHBOARD_ACTION_NAME);
 }
 
 export default combineReducers({
-  counter: counterReducer
+  dashboard: dashboardReducer,
 });

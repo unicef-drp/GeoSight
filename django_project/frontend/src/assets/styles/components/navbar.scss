@@ -2,12 +2,17 @@
    Navbar
    ========================================================================== */
 
-@import '../global.scss';
+@import '../variables.scss';
 
 .page__header {
   background-color: $navbar-background-color;
-  height: 30px;
+  height: 2rem;
   padding: ($global-spacing * 0.5) $global-spacing;
+  z-index: 1001;
+
+  @include media(xsmall-only) {
+    height: 1.8rem;
+  }
 }
 
 .page__header-menu {
@@ -28,27 +33,12 @@
     }
   }
 
-  li {
-    padding: 2px $global-spacing 0 0;
-
-    &:last-child {
-      margin: 0 0 0 auto;
-    }
-  }
-
-  .sign-in {
-    cursor: pointer;
-
-    &:hover {
-      opacity: $base-hovered-opacity;
-    }
-  }
-
   button {
     border: unset;
+    color: white;
     font-weight: 300;
     padding: 0;
-    color: white;
+    margin-top: -0.2rem;
 
     &:active,
     &:focus-visible,
@@ -57,6 +47,27 @@
       background: none;
       border: unset;
       box-shadow: unset;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    svg {
+      height: 1rem;
+      width: 1rem;
+    }
+  }
+
+  li {
+    padding: 0.2rem $global-spacing 0 0;
+  }
+
+  .page__header-title {
+    margin: 0 auto 0 0;
+
+    button {
+      min-width: unset;
     }
   }
 }
@@ -67,8 +78,4 @@
   img {
     height: 73%;
   }
-}
-
-.page__header-title {
-  font-weight: 600;
 }

@@ -9,6 +9,7 @@ from gap_dashboard.views.dashboard.admin.instance import (
 from gap_dashboard.views.dashboard.admin.instance import InstanceManagementView
 from gap_dashboard.views.instances import InstancesView
 from gap_data.api.context_analysis import ContextAnalysisData
+from gap_data.api.dashboard import DashboardData
 from gap_data.api.download import DownloadMasterData, DownloadMasterDataCheck
 from gap_data.api.download_file import DownloadSharepointFile, \
     DownloadBackupsFile
@@ -92,7 +93,7 @@ indicators_api = [
         name='indicators-values-by-geometry-level-date-api'
     ),
 ]
-api = [
+instance_api = [
     url(r'^geometry/', include(geometry_api)),
     url(r'^indicator/', include(indicator_api)),
     url(r'^indicators/', include(indicators_api)),
@@ -119,14 +120,20 @@ api = [
 ]
 
 instance_url = [
-    url(r'^api/', include(api)),
+    url(r'^api/', include(instance_api)),
     url(r'^', include('gap_harvester.urls')),
     url(r'^', include('gap_dashboard.urls')),
 ]
 
-urlpatterns = [
-    url(r'^(?P<slug>[^/]+)/', include(instance_url)),
+api = [
+    url(
+        r'^dashboard/(?P<slug>[^/]+)$',
+        DashboardData.as_view(),
+        name='dashboard-data-api'
+    )
+]
 
+urlpatterns = [
     # Instances
     url(
         r'^instances/create',
@@ -144,5 +151,7 @@ urlpatterns = [
         DownloadBackupsFile.as_view(),
         name='download-backups'
     ),
+    url(r'^api/', include(api)),
+    url(r'^(?P<slug>[^/]+)/', include(instance_url)),
     url(r'^', InstancesView.as_view(), name='instances-view'),
 ]

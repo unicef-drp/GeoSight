@@ -3,13 +3,16 @@
    ========================================================================== */
 
 import React, { useEffect, useState } from 'react';
-import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
-import ArrowRight from '@mui/icons-material/ArrowRight';
-import T from "prop-types";
 
 export const LEFT = 'left';
 export const RIGHT = 'right';
 
+/**
+ * Left-Right toggle button
+ * @param {string} initState Initial state of toggle between left or right
+ * @param {function} onLeft Function when state is on lft
+ * @param {function} onRight Function when state is on right
+ */
 function LeftRightToggleButton({ initState, onLeft, onRight }) {
   const [state, setState] = useState(LEFT);
 
@@ -26,25 +29,15 @@ function LeftRightToggleButton({ initState, onLeft, onRight }) {
       onRight()
     }
   };
-
+  const className = `left-right-toggle-button ${state}`
   return (
-    <div className="left-right-toggle-button"
+    <div className={className}
          onClick={() => {
            change()
          }}>
-      {state === LEFT ?
-        <ArrowLeftIcon/>
-        :
-        <ArrowRight/>
-      }
+      <div></div>
     </div>
   )
 }
-
-LeftRightToggleButton.propTypes = {
-  initState: T.string,
-  onLeft: T.func,
-  onRight: T.func
-};
 
 export default LeftRightToggleButton;

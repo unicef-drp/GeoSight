@@ -1,9 +1,15 @@
+/* ==========================================================================
+   NAVBAR
+   ========================================================================== */
+
 import React from 'react';
 import i18n from "i18next";
 import User from './User'
+import Links from './Links'
 
 // Style
 import '../../assets/styles/components/navbar.scss';
+import Button from "@mui/material/Button";
 
 
 export default function NavBar() {
@@ -21,13 +27,18 @@ export default function NavBar() {
           </a>
         </li>
         <li className='page__header-title'>
-          <a
-            href='/'
-            title={i18n.t('Homepage')}
-            className='page__header-link'
-          >
-            {site_title}
-          </a>
+          <Button>
+            <a
+              href='/'
+              title={i18n.t('Homepage')}
+              className='page__header-link'
+            >
+              {site_title}
+            </a>
+          </Button>
+        </li>
+        <li>
+          <Links/>
         </li>
         <li>
           <User/>

@@ -1,8 +1,15 @@
+/* ==========================================================================
+   MAP CONTAINER
+   ========================================================================== */
+
 import React, { useEffect } from 'react';
 import L from 'leaflet';
 
 import '../../assets/styles/components/dashboard/map.scss';
 
+/**
+ * Map component
+ */
 export default function Map() {
 
   useEffect(() => {
@@ -17,7 +24,7 @@ export default function Map() {
       ],
       zoomControl: false
     });
-  });
+  }, []);
   return <section className='dashboard__map'>
     <div id="map"></div>
   </section>

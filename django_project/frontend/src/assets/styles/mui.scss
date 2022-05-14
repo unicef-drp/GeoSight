@@ -1,8 +1,16 @@
 /* ==========================================================================
    Bootstrap
    ========================================================================== */
-@import './global.scss';
+@import './variables.scss';
 
+
+.MuiList-root {
+  padding: 0 !important;
+}
+
+.MuiButton-root {
+  text-transform: unset !important;
+}
 
 .MuiMenuItem-root {
   a, a:link, a:visited, a:hover, a:active {

@@ -1,14 +1,19 @@
+/* ==========================================================================
+   USER NAVBAR
+   ========================================================================== */
+
 import React, { Fragment, useState } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import LoginModal from '../Login'
 
 export default function User() {
   /**
-   Menu functions
-   **/
+   * User dropdown
+   * **/
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -19,7 +24,7 @@ export default function User() {
   };
 
   /**
-   Signin Modal Functions
+   * Signin Modal Functions
    **/
   const { username, is_staff } = user;
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -35,13 +40,8 @@ export default function User() {
   if (username) {
     return (
       <div>
-        <Button
-          aria-controls={open ? 'basic-menu' : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
-          onClick={handleClick}
-        >
-          {username}
+        <Button onClick={handleClick}>
+          <div>{username} <ArrowDropDownIcon/></div>
         </Button>
         <Menu
           anchorEl={anchorEl}
@@ -66,12 +66,9 @@ export default function User() {
   } else {
     return (
       <Fragment>
-        <div
-          className='sign-in'
-          onClick={openSignIn}
-        >
-          Sign In
-        </div>
+        <Button onClick={openSignIn}>
+          SIGNIN
+        </Button>
         <LoginModal
           open={modalIsOpen}
           onClosed={closeSignIn}
