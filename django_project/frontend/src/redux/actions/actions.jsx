@@ -1,7 +1,9 @@
 import Dashboard from './dashboard'
+import Map  from './map'
 
 const Actions = {
-  Dashboard
+  Dashboard,
+  Map
 }
 
 export default Actions

@@ -24,7 +24,9 @@ export default function RightPanel() {
         initState={state}
         onLeft={onLeft}
         onRight={onRight}/>
-      <div className='dashboard__content'>Right side</div>
+      <div className='dashboard__content-wrapper'>
+        <div className='dashboard__content'>Right side</div>
+      </div>
     </section>
   )
 }

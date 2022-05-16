@@ -17,7 +17,7 @@
 
   .left-right-toggle-button {
     position: absolute;
-    right: -23px;
+    right: -19px;
     top: 5px;
     border-radius: 0 5px 5px 0;
 
@@ -61,6 +61,84 @@
 
     &.right {
       left: 0;
+    }
+  }
+
+  // For accordion
+  .dashboard__content-wrapper {
+    display: flex;
+    flex-direction: column;
+
+    > div.Mui-expanded {
+      flex-grow: 1;
+    }
+
+    .MuiPaper-root {
+      box-shadow: unset !important;
+      display: flex;
+      flex-direction: column;
+
+      &:before {
+        opacity: 1 !important;
+      }
+    }
+
+    .MuiCollapse-hidden {
+      height: 0 !important;
+    }
+
+    .MuiCollapse-root {
+      flex-grow: 1 !important;
+      overflow: auto;
+      height: 0 !important;
+    }
+
+    .Mui-expanded {
+      margin: 0 !important;
+    }
+
+    .MuiAccordionSummary-root.Mui-expanded {
+      min-height: 48px !important;
+    }
+
+    .MuiAccordionSummary-content {
+      margin: 0 !important;
+    }
+
+    .MuiPaper-root {
+      border-radius: 0 !important;
+    }
+  }
+
+  .basemap__box {
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: $box-shadow;
+    width: 100%;
+    margin-bottom: 0.5 * $global-spacing;
+
+    img {
+      height: 100%;
+      width: 100%;
+      filter: grayscale(100%);
+      object-fit: cover;
+    }
+
+    &:hover,
+    &.selected {
+      img {
+        filter: grayscale(0);
+      }
+    }
+
+    .basemap__box-inner {
+      height: 100%;
+      overflow: hidden;
+      padding: 0.5 * $global-spacing;
+    }
+
+    .basemap__box-content {
+      height: 100px;
     }
   }
 }

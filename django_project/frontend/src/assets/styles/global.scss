@@ -9,6 +9,27 @@
   font-size: $root-font-size;
 }
 
+/* SCROLL */
+/* --------------------------------- */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #eee;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $base-color;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* --------------------------------- */
+
 html {
   font-size: $root-font-size;
 }

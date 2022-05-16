@@ -53,7 +53,17 @@
 
   div {
     height: 1rem;
-    width: 0.8rem;
+    width: 0.6rem;
+  }
+
+  div:after {
+    font-size: 12px;
+  }
+
+  @include media(xsmall-only) {
+    div:after {
+      font-size: 16px;
+    }
   }
 
   &.left {

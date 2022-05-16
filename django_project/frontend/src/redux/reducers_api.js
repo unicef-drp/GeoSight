@@ -7,14 +7,14 @@
  */
 export function APIReducer(state, action, actionName) {
   switch (action.type) {
-    case `REQUEST_${actionName}`:
+    case `REQUEST/${actionName}`:
       return {
         fetching: true,
         fetched: false,
         data: {},
         error: null
       };
-    case `RECEIVE_${actionName}`:
+    case `RECEIVE/${actionName}`:
       let newState = {
         fetching: false,
         fetched: true,

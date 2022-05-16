@@ -17,7 +17,7 @@ class BaseDashboardView(ABC, BaseView):
 
         # TODO:
         #  This will be linked to dashboard model
-        self.instance = Instance.objects.all().first()
+        self.instance = Instance.objects.get(slug='somalia')
         context['instance'] = self.instance
         context['dashboard'] = {
             'id': kwargs.get('slug', '')

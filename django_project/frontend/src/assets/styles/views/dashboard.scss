@@ -17,8 +17,14 @@
     height: 100%;
     z-index: 1001;
 
+    .dashboard__content-wrapper {
+      height: 100%;
+      background-color: white;
+      width: 100%;
+    }
+
     .dashboard__content {
-      padding: $global-spacing;
+      overflow-y: auto;
     }
   }
 }
