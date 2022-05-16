@@ -9,6 +9,7 @@ class LayerType(object):
     """A quick couple of variable and Layer Type string."""
 
     ARCGIS = 'ARCGIS'
+    GEOJSON = 'Geojson'
     RASTER_TILE = 'Raster Tile'
 
 
@@ -54,7 +55,8 @@ class ContextLayer(AbstractTerm):
         default=LayerType.ARCGIS,
         choices=(
             (LayerType.ARCGIS, LayerType.ARCGIS),
-            (LayerType.RASTER_TILE, LayerType.RASTER_TILE)
+            (LayerType.GEOJSON, LayerType.GEOJSON),
+            (LayerType.RASTER_TILE, LayerType.RASTER_TILE),
         )
     )
     show_on_map = models.BooleanField(

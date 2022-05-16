@@ -18,20 +18,21 @@ class ContextLayerSerializer(serializers.ModelSerializer):
 
     def get_url(self, obj: ContextLayer):
         """Url."""
-        return urllib.parse.unquote(obj.url)
+        return urllib.parse.unquote(obj.url.split('?')[0])
 
     def get_parameters(self, obj: ContextLayer):
-        """Parameters in json."""
+        """Return parameters."""
+        urls = obj.url.split('?')
         parameters = {}
-        for parameter in obj.contextlayerparameter_set.all():
-            value = parameter.value
-            try:
-                if value is None:
-                    value = ''
-                value = int(parameter.value)
-            except (ValueError, TypeError):
-                value = urllib.parse.quote(value)
-            parameters[parameter.name] = value
+        if len(urls) == 1:
+            for parameter in obj.contextlayerparameter_set.all():
+                value = parameter.value
+                parameters[parameter.name] = value
+        else:
+            for param in urls[1].split('&'):
+                params = param.split('=')
+                if params[1].lower() != 'bbox':
+                    parameters[params[0]] = params[1]
         return parameters
 
     def get_style(self, obj: ContextLayer):

@@ -10,6 +10,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import LeftRightToggleButton, { LEFT, RIGHT } from '../../ToggleButton'
 import Basemaps from './Basemaps'
+import ContextLayers from './ContextLayers'
 
 import '../../../assets/styles/components/dashboard/left-panel.scss';
 
@@ -45,10 +46,10 @@ export default function LeftPanel({ data }) {
         <Accordion
           expanded={expanded === 'indicators'}
           onChange={handleChange('indicators')}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon/>}
-          >
-            Indicators
+          <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+            <div>
+              Indicators
+            </div>
           </AccordionSummary>
           <AccordionDetails>
             {
@@ -67,39 +68,30 @@ export default function LeftPanel({ data }) {
         <Accordion
           expanded={expanded === 'contextLayers'}
           onChange={handleChange('contextLayers')}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon/>}
-          >
-            Context Layers {
-            contextLayers ? <span>&nbsp;({contextLayers.length}) </span> :
-              <i>&nbsp;(Loading)</i>
-          }
+          <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+            <div>
+              Context Layers
+              {
+                contextLayers ? <span>&nbsp;({contextLayers.length}) </span> :
+                  <i>&nbsp;(Loading)</i>
+              }
+            </div>
           </AccordionSummary>
           <AccordionDetails>
-            {
-              contextLayers ?
-                data.contextLayers.map(
-                  layer => (
-                    <div key={layer.id}>
-                      {layer.group}/{layer.name}
-                    </div>
-                  )
-                )
-                : <div>Loading</div>
-            }
+            <ContextLayers data={contextLayers}/>
           </AccordionDetails>
         </Accordion>
         <Accordion
           expanded={expanded === 'basemaps'}
           onChange={handleChange('basemaps')}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon/>}
-          >
-            Basemaps
-            {
-              basemaps ? <span>&nbsp;({basemaps.length}) </span> :
-                <i>&nbsp;(Loading)</i>
-            }
+          <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+            <div>
+              Basemaps
+              {
+                basemaps ? <span>&nbsp;({basemaps.length}) </span> :
+                  <i>&nbsp;(Loading)</i>
+              }
+            </div>
           </AccordionSummary>
           <AccordionDetails>
             <Basemaps data={basemaps}/>

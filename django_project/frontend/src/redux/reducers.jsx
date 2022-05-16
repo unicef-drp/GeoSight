@@ -19,9 +19,12 @@ function dashboardReducer(state = dashboardInitialState, action) {
 /**
  * MAP reducer
  */
-export const MAP_CHANGE_BASEMAP = `MAP/BASEMAP_CHANGE`;
+export const MAP_CHANGE_BASEMAP = `MAP/CHANGE_BASEMAP`;
+export const MAP_ADD_CONTEXTLAYERS = `MAP/ADD_CONTEXTLAYERS`;
+export const MAP_REMOVE_CONTEXTLAYERS = `MAP/REMOVE_CONTEXTLAYERS`;
 const mapInitialState = {
-  selectedBasemap: undefined
+  basemapLayer: null,
+  contextLayers: {},
 };
 
 function mapReducer(state = mapInitialState, action) {
@@ -29,7 +32,23 @@ function mapReducer(state = mapInitialState, action) {
     case MAP_CHANGE_BASEMAP: {
       return {
         ...state,
-        selectedBasemap: action.payload
+        basemapLayer: action.payload
+      }
+    }
+    case MAP_ADD_CONTEXTLAYERS: {
+      const contextLayers = Object.assign({}, state.contextLayers);
+      contextLayers[action.id] = action.payload
+      return {
+        ...state,
+        contextLayers: contextLayers
+      }
+    }
+    case MAP_REMOVE_CONTEXTLAYERS: {
+      const contextLayers = Object.assign({}, state.contextLayers);
+      delete contextLayers[action.id]
+      return {
+        ...state,
+        contextLayers: contextLayers
       }
     }
     default:

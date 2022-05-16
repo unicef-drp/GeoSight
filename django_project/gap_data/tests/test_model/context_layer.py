@@ -48,6 +48,6 @@ class BasemapLayerTest(TestCase):
         context_layer_data = ContextLayerSerializer(context_layer).data
         self.assertEquals(context_layer_data['name'], self.name)
         for key, value in context_layer_data['parameters'].items():
-            self.assertEquals(urllib.parse.quote(self.params[key]), value)
+            self.assertEquals(self.params[key], value)
         for key, value in context_layer_data['style'].items():
             self.assertEquals(self.style[key], value)

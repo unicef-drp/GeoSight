@@ -65,3 +65,8 @@ a:active {
 a:hover {
   opacity: $base-hovered-opacity;
 }
+
+.leaflet-popup-content {
+  overflow-y: auto;
+  max-height: 300px;
+}

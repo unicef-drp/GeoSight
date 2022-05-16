@@ -97,8 +97,14 @@
       margin: 0 !important;
     }
 
+    .MuiAccordionSummary-root {
+      min-height: 0 !important;
+      height: fit-content !important;
+      padding: 1rem;
+    }
+
     .MuiAccordionSummary-root.Mui-expanded {
-      min-height: 48px !important;
+      padding: 1rem 1rem 0.3rem 1rem;
     }
 
     .MuiAccordionSummary-content {
@@ -139,6 +145,41 @@
 
     .basemap__box-content {
       height: 100px;
+    }
+  }
+}
+
+.dashboard__left_side__row {
+  display: flex;
+  padding: 5px 0;
+
+  .MuiCheckbox-root {
+    align-items: baseline;
+    padding: 0 5px 0 0;
+  }
+
+  .title {
+    flex-grow: 1;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+
+    .text {
+      opacity: 0.6;
+    }
+  }
+
+  .legend table img {
+    height: 20px;
+    margin-right: 5px;
+  }
+
+  .toggler {
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
     }
   }
 }

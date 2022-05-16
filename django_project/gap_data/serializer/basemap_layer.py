@@ -1,5 +1,4 @@
 """Serializer for Basemap Layer."""
-import urllib.parse
 
 from rest_framework import serializers
 
