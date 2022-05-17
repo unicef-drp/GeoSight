@@ -1,4 +1,5 @@
 """Context Analysis API.."""
+from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -15,17 +16,24 @@ class DashboardData(APIView):
         """Return all context analysis data."""
         # TODO:
         #  Check this from dashboard
-        instance = Instance.objects.get(slug='somalia')
+        instance = Instance.objects.first()
+        if not instance:
+            raise Http404('Instance not found')
 
+        # TODO:
+        #  This slug should be the dashboard slug
+        indicator = instance.user_indicators(
+            request.user
+        ).filter(name__iexact=slug).first()
+        if not instance:
+            raise Http404('Instance not found')
+
+        reference_layer = IndicatorSerializer(indicator).data
         context = {
-            'indicators': IndicatorSerializer(
-                instance.user_indicators(request.user), many=True
-            ).data,
-
-            'basemaps': BasemapLayerSerializer(
+            'referenceLayer': reference_layer,
+            'basemapsLayers': BasemapLayerSerializer(
                 instance.basemap_layers, many=True
             ).data,
-
             'contextLayers': ContextLayerSerializer(
                 instance.context_layers, many=True
             ).data,

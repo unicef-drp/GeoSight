@@ -2,7 +2,7 @@
    Right-side panel
    ========================================================================== */
 
-@import '../../variables.scss';
+@import '../../../app/variables';
 
 .dashboard__right_side {
   position: absolute;
@@ -17,7 +17,7 @@
 
   .left-right-toggle-button {
     position: absolute;
-    left: -19px;
+    right: 100%;
     top: 5px;
     border-radius: 5px 0 0 5px;
   }

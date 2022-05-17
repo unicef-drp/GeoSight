@@ -142,6 +142,9 @@ function ContextLayerInput({ data }) {
 
   const change = (checked) => {
     setChecked(checked);
+    if (!checked) {
+      showLegendHandler(false);
+    }
   };
   const showLegendHandler = (show) => {
     setShowLegend(show);

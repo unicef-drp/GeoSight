@@ -3,9 +3,11 @@
    ========================================================================== */
 
 import React, { useState } from 'react';
-import LeftRightToggleButton, { LEFT, RIGHT } from '../ToggleButton'
 
-import '../../assets/styles/components/dashboard/right-panel.scss';
+import LeftRightToggleButton, { LEFT, RIGHT } from '../../ToggleButton'
+import Widget from '../../Widget'
+
+import './style.scss';
 
 export default function RightPanel() {
   const [state, setState] = useState(RIGHT);
@@ -25,7 +27,10 @@ export default function RightPanel() {
         onLeft={onLeft}
         onRight={onRight}/>
       <div className='dashboard__content-wrapper'>
-        <div className='dashboard__content'>Right side</div>
+        <div className='dashboard__content'>
+          <Widget
+            title='Test' description='This is description' showTitle={true}/>
+        </div>
       </div>
     </section>
   )

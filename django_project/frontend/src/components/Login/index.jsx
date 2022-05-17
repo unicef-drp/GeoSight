@@ -5,16 +5,16 @@
 import React from 'react';
 
 import { Button, FormControl, Input, InputLabel } from '@mui/material'
-import Modal, { ModalContent, ModalHeader } from './Modal'
-// Styles
-import '../assets/styles/components/login.scss';
+import Modal, { ModalContent, ModalHeader } from '../Modal'
+
+import './style.scss';
 
 /**
  * Login for modal
  * @param {bool} open Initial state if modal is open or not
  * @param {function} onClosed Function when modal closed
  */
-function LoginModal({ open, onClosed }) {
+export default function LoginModal({ open, onClosed }) {
   const authUrl = `${urls.login}?next=${window.location.pathname}` // eslint-disable-line no-undef
   const csrftoken = csrfmiddlewaretoken; // eslint-disable-line no-undef
 
@@ -51,5 +51,3 @@ function LoginModal({ open, onClosed }) {
     </Modal>
   )
 }
-
-export default LoginModal;

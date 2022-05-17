@@ -2,34 +2,35 @@
    Left-side panel
    ========================================================================== */
 
-@import '../../variables.scss';
+@import '../../../app/variables';
 
 .dashboard__left_side {
   position: absolute;
   left: 0;
   top: 0;
-  width: 15%;
+  width: 20%;
   transition: left 0.3s;
 
   &.right {
-    left: -15%;
+    left: -20%;
   }
 
   .left-right-toggle-button {
     position: absolute;
-    right: -19px;
+    left: 100%;
     top: 5px;
     border-radius: 0 5px 5px 0;
 
 
     @include media(xsmall-only) {
-      border-radius: 2px;
       background-color: white;
-      color: $base-color;
-      right: -30px;
-      height: 0.8rem;
-      width: 0.8rem;
       border: 1px solid $base-color;
+      border-radius: 2px;
+      color: $base-color;
+      height: 0.8rem;
+      margin-left: 5px;
+      width: 0.8rem;
+
       &.left,
       &.right {
         div {
@@ -69,6 +70,23 @@
     display: flex;
     flex-direction: column;
 
+    .reference-dataset {
+      &.Mui-expanded {
+        flex-grow: unset !important;
+      }
+
+      .MuiCollapse-root {
+        flex-grow: unset !important;
+        overflow: auto;
+        height: fit-content !important;
+      }
+
+      b {
+        font-weight: 500;
+        color: $base-color;
+      }
+    }
+
     > div.Mui-expanded {
       flex-grow: 1;
     }
@@ -77,6 +95,7 @@
       box-shadow: unset !important;
       display: flex;
       flex-direction: column;
+      border-radius: 0 !important;
 
       &:before {
         opacity: 1 !important;
@@ -100,55 +119,23 @@
     .MuiAccordionSummary-root {
       min-height: 0 !important;
       height: fit-content !important;
-      padding: 1rem;
+      padding: 0.5rem 1rem 0.5rem 1rem;
     }
 
     .MuiAccordionSummary-root.Mui-expanded {
-      padding: 1rem 1rem 0.3rem 1rem;
+      padding: 0.5rem 1rem 0.3rem 1rem;
     }
 
     .MuiAccordionSummary-content {
       margin: 0 !important;
-    }
-
-    .MuiPaper-root {
-      border-radius: 0 !important;
-    }
-  }
-
-  .basemap__box {
-    cursor: pointer;
-    border-radius: 5px;
-    box-shadow: $box-shadow;
-    width: 100%;
-    margin-bottom: 0.5 * $global-spacing;
-
-    img {
-      height: 100%;
-      width: 100%;
-      filter: grayscale(100%);
-      object-fit: cover;
-    }
-
-    &:hover,
-    &.selected {
-      img {
-        filter: grayscale(0);
-      }
-    }
-
-    .basemap__box-inner {
-      height: 100%;
-      overflow: hidden;
-      padding: 0.5 * $global-spacing;
-    }
-
-    .basemap__box-content {
-      height: 100px;
+      font-weight: 500;
     }
   }
 }
 
+/** -----------------------------------------------
+  ROWS
+ ----------------------------------------------- **/
 .dashboard__left_side__row {
   display: flex;
   padding: 5px 0;
@@ -170,9 +157,10 @@
     }
   }
 
-  .legend table img {
-    height: 20px;
-    margin-right: 5px;
+  .legend {
+    img {
+      height: 20px;
+    }
   }
 
   .toggler {
@@ -180,6 +168,62 @@
 
     &:hover {
       opacity: 0.8;
+    }
+  }
+}
+
+/** -----------------------------------------------
+  BASEMAPS
+ ----------------------------------------------- **/
+.dashboard__left_side__basemaps {
+  background-color: white;
+  border-radius: 5px;
+  bottom: 10px;
+  box-shadow: $box-shadow;
+  left: 100%;
+  margin-left: 10px;
+  overflow: hidden;
+  position: absolute;
+  padding: 5px 5px 0 5px;
+
+  &:hover {
+    .basemap__box {
+      display: block;
+    }
+  }
+
+  .basemap__box {
+    cursor: pointer;
+    display: none;
+    margin-bottom: 5px;
+    width: 100%;
+
+    img {
+      height: 100%;
+      width: 100%;
+      filter: grayscale(100%);
+      object-fit: cover;
+    }
+
+    &.selected {
+      display: block;
+    }
+
+    &:hover,
+    &.selected {
+      img {
+        filter: grayscale(0);
+      }
+    }
+
+    .basemap__box-inner {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .basemap__box-content {
+      height: 3rem;
+      width: 3rem;
     }
   }
 }

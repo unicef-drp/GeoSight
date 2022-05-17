@@ -7,7 +7,7 @@ from django.db.models import Count, Sum, Avg
 from django.shortcuts import reverse
 from django.utils.translation import ugettext_lazy as _
 
-from core.models.general import AbstractTerm, PermissionModel
+from core.models.general import AbstractTerm, AbstractSource, PermissionModel
 from gap_data.models.geometry import Geometry, GeometryLevelName
 from gap_data.models.indicator.indicator_attributes import (
     IndicatorFrequency, IndicatorGroup
@@ -41,7 +41,7 @@ class IndicatorValueRejectedError(Exception):
     pass
 
 
-class Indicator(AbstractTerm, PermissionModel):
+class Indicator(AbstractTerm, AbstractSource, PermissionModel):
     """The indicator model."""
 
     shortcode = models.CharField(

@@ -1,6 +1,11 @@
 /* ==========================================================================
-   Home specific style
+   Right-side panel
    ========================================================================== */
 
-.page__home {
+@import '../../app/variables';
+
+.widget {
+  display: flex;
+  padding: 0.5rem;
+  border: 0.5px solid rgba(0, 0, 0, 0.12);
 }

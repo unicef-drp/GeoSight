@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import App, { render } from '../App';
-import LeftPanel from '../components/dashboard/left-panel/LeftPanel'
-import Map from "../components/dashboard/Map";
-import RightPanel from '../components/dashboard/RightPanel'
-import Actions from '../redux/actions/actions'
+import App from '../../app';
+import { render } from '../../app';
 
-// STYLES
-import '../assets/styles/views/dashboard.scss';
+import Actions from '../../redux/actions/actions'
 
-function Dashboard() {
+import LeftPanel from '../../components/Dashboard/LeftPanel'
+import Map from "../../components/Dashboard/Map";
+import RightPanel from '../../components/Dashboard/RightPanel'
+
+import './style.scss';
+
+export default function Dashboard() {
   const { data } = useSelector(state => state.dashboard);
   const dispatch = useDispatch();
 

@@ -3,10 +3,10 @@
    ========================================================================== */
 
 import React, { useEffect, useState } from 'react';
+import { useSelector } from "react-redux";
 import L from 'leaflet';
 
-import '../../assets/styles/components/dashboard/map.scss';
-import { useSelector } from "react-redux";
+import './style.scss';
 
 /**
  * Map component

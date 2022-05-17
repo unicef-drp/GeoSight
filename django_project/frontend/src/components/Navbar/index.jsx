@@ -4,13 +4,12 @@
 
 import React from 'react';
 import i18n from "i18next";
+import Button from "@mui/material/Button";
+
 import User from './User'
 import Links from './Links'
 
-// Style
-import '../../assets/styles/components/navbar.scss';
-import Button from "@mui/material/Button";
-
+import './style.scss';
 
 export default function NavBar() {
   const { icon, site_title } = preferences;

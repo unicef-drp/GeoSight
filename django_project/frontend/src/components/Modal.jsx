@@ -5,9 +5,9 @@
 import React, { useEffect, useState } from 'react';
 
 import { Modal as BaseModal } from '@mui/material'
+import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
-import Backdrop from '@mui/material/Backdrop';
 
 /**
  * Base modal component

@@ -65,6 +65,7 @@ export default function Basemaps({ data }) {
                 onClick={() => {
                   setSelected(layer.id)
                 }}
+                title={layer.name}
               >
                 <div className='basemap__box-inner'>
                   <div className='basemap__box-content'>
