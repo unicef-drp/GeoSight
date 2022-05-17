@@ -103,6 +103,20 @@ export function numberWithCommas(x, decimalNum = 2) {
  * @param target
  * @returns {string}
  */
-export function capitalize (target) {
+export function capitalize(target) {
   return (target.charAt(0).toUpperCase() + target.slice(1)).replaceAll('_', ' ');
+}
+
+/**
+ * Returning popup html
+ * @param {string} title Title of data
+ * @param {object} properties Properties that will be rendered
+ */
+export function featurePopupContent(title, properties) {
+  let defaultHtml = '';
+  for (const [key, prop] of Object.entries(properties)) {
+    let value = typeof prop === 'object' ? JSON.stringify(prop) : numberWithCommas(prop);
+    defaultHtml += `<tr><td valign="top"><b>${capitalize(key)}</b></td><td valign="top">${value}</td></tr>`
+  }
+  return '<table><tr><td colspan="2" style="text-align: center; background: #eee"><b>' + title + '</b></td></tr>' + defaultHtml + '</table>'
 }

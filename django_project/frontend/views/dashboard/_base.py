@@ -1,4 +1,5 @@
 """Base dashboard View."""
+import datetime
 from abc import ABC
 
 from django.http import Http404
@@ -6,7 +7,6 @@ from rest_framework import serializers
 
 from frontend.views._base import BaseView
 from gap_data.models.indicator import Indicator
-from gap_data.models.instance import Instance
 from gap_data.serializer.link import LinkSerializer
 
 
@@ -34,25 +34,24 @@ class BaseDashboardView(ABC, BaseView):
         context = super().get_context_data(**kwargs)
 
         # TODO:
-        #  This will be linked to dashboard model
-        instance = Instance.objects.first()
-        if not instance:
-            raise Http404('Instance not found')
-
-        # TODO:
         #  This slug should be the dashboard slug
-        indicator = instance.user_indicators(
-            self.request.user
-        ).filter(name__iexact=kwargs.get('slug', '')).first()
+        indicator = Indicator.objects.filter(
+            name__iexact=kwargs.get('slug', '')).first()
         if not indicator:
             raise Http404('Indicator not found')
 
-        context['instance'] = instance
+        context['instance'] = indicator.instance
         context['dashboard'] = {
             'id': kwargs.get('slug', '')
         }
 
-        links = instance.links
+        context['url_template'] = indicator.url_data_template.replace(
+            'level', indicator.geometry_reporting_level.name
+        ).replace(
+            'date', datetime.datetime.now().strftime('%Y-%m-%d')
+        ) + '.geojson'
+
+        links = indicator.instance.links
         if not self.request.user.is_staff:
             links = links.exclude(is_public=False)
 

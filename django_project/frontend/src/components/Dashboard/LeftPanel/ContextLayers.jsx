@@ -10,7 +10,7 @@ import { Checkbox } from '@mui/material'
 
 import Actions from '../../../redux/actions/actions'
 import EsriLeafletLayer from '../../../utils/esri/leaflet-esri-layer'
-import { capitalize, numberWithCommas } from '../../../utils/main'
+import { featurePopupContent } from '../../../utils/main'
 
 function ContextLayerInput({ data }) {
   const dispatch = useDispatch();
@@ -27,20 +27,11 @@ function ContextLayerInput({ data }) {
   const getLayer = function (layerData) {
     const layerType = layerData.layer_type;
 
-    // This is for the popup content
-    const featurePopupContent = (properties) => {
-      let defaultHtml = '';
-
-      for (const [key, prop] of Object.entries(properties)) {
-        let value = typeof prop === 'object' ? JSON.stringify(prop) : numberWithCommas(prop);
-        defaultHtml += `<tr><td valign="top"><b>${capitalize(key)}</b></td><td valign="top">${value}</td></tr>`
-      }
-      return '<table><tr><td colspan="2" style="text-align: center; background: #eee"><b>' + layerData.name + '</b></td></tr>' + defaultHtml + '</table>'
-    }
-
     // this is for each feature
     const onEachFeature = (feature, layer) => {
-      layer.bindPopup(featurePopupContent(feature.properties));
+      layer.bindPopup(
+        featurePopupContent(layerData.name, feature.properties)
+      );
     }
     switch (layerType) {
       case 'Raster Tile': {

@@ -15,6 +15,42 @@
     left: -20%;
   }
 
+  @include media(small-down) {
+    width: 20%;
+    &.right {
+      left: -20%;
+    }
+  }
+
+  @include media(xsmall-only) {
+    height: 500px !important;
+    max-height: 100vh;
+    width: 50%;
+    left: -50%;
+
+    &.right {
+      left: 0;
+    }
+  }
+
+  &.expanded {
+    .dashboard__content-wrapper {
+      height: 100% !important;
+    }
+
+    .dashboard__left_side__basemaps {
+      position: absolute;
+      bottom: 5px;
+      left: 100%;
+    }
+  }
+
+  .dashboard__left_side__basemaps {
+    position: fixed;
+    bottom: 5px;
+    left: 0;
+  }
+
   .left-right-toggle-button {
     position: absolute;
     left: 100%;
@@ -47,28 +83,12 @@
     }
   }
 
-  @include media(small-down) {
-    width: 20%;
-    &.right {
-      left: -20%;
-    }
-  }
-
-  @include media(xsmall-only) {
-    height: 500px !important;
-    max-height: 100vh;
-    width: 50%;
-    left: -50%;
-
-    &.right {
-      left: 0;
-    }
-  }
-
   // For accordion
   .dashboard__content-wrapper {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    border-bottom-right-radius: 5px;
 
     .reference-dataset {
       &.Mui-expanded {
@@ -178,12 +198,9 @@
 .dashboard__left_side__basemaps {
   background-color: white;
   border-radius: 5px;
-  bottom: 10px;
   box-shadow: $box-shadow;
-  left: 100%;
   margin-left: 10px;
   overflow: hidden;
-  position: absolute;
   padding: 5px 5px 0 5px;
 
   &:hover {

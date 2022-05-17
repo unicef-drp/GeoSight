@@ -1,9 +1,11 @@
 import Dashboard from './dashboard'
-import Map  from './map'
+import Map from './map'
+import ReferenceLayer from './referenceLayer'
 
 const Actions = {
   Dashboard,
-  Map
+  Map,
+  ReferenceLayer
 }
 
 export default Actions

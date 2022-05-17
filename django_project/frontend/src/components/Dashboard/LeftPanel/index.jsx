@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import LeftRightToggleButton, { LEFT, RIGHT } from '../../ToggleButton'
 import Basemaps from './Basemaps'
@@ -26,13 +27,13 @@ export default function LeftPanel({ data }) {
   const onRight = () => {
     setState(RIGHT);
   };
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState('contextLayers');
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const className = `dashboard__panel dashboard__left_side ${state}`
+  const className = `dashboard__panel dashboard__left_side ${state} ${expanded ? 'expanded' : ''}`
   const basemapsLayers = data ? data.basemapsLayers : undefined;
   const contextLayers = data ? data.contextLayers : undefined;
   const referenceLayer = data ? data.referenceLayer : undefined
@@ -66,9 +67,10 @@ export default function LeftPanel({ data }) {
           </AccordionDetails>
         </Accordion>
         <Accordion
-          expanded={true}
+          expanded={expanded === 'contextLayers'}
+          onChange={handleChange('contextLayers')}
         >
-          <AccordionSummary>
+          <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
             <div>
               Context Layers
               {

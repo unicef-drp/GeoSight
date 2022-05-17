@@ -16,7 +16,7 @@ import Fade from '@mui/material/Fade';
  * @param {string} className Class name for modal
  * @param {React.Component} children React component to be rendered
  */
-function Modal({ open, onClosed, className, children }) {
+export default function Modal({ open, onClosed, className, children }) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -67,5 +67,3 @@ export function ModalContent({ children }) {
     </div>
   )
 }
-
-export default Modal;

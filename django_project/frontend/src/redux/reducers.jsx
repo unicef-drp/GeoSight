@@ -1,62 +1,17 @@
 import { combineReducers } from 'redux';
-import { APIReducer } from './reducers_api';
+import dashboardReducer from './reducers/dashboard'
+import mapReducer from './reducers/map'
+import referenceLayerReducer from './reducers/referenceLayer'
 
-/**
- * DASHBOARD reducer
- */
-export const DASHBOARD_ACTION_NAME = 'DASHBOARD';
-const dashboardInitialState = {
-  fetching: false,
-  fetched: false,
-  error: null,
-  data: {}
-};
-
-function dashboardReducer(state = dashboardInitialState, action) {
-  return APIReducer(state, action, DASHBOARD_ACTION_NAME);
-}
-
-/**
- * MAP reducer
- */
-export const MAP_CHANGE_BASEMAP = `MAP/CHANGE_BASEMAP`;
-export const MAP_ADD_CONTEXTLAYERS = `MAP/ADD_CONTEXTLAYERS`;
-export const MAP_REMOVE_CONTEXTLAYERS = `MAP/REMOVE_CONTEXTLAYERS`;
-const mapInitialState = {
-  basemapLayer: null,
-  contextLayers: {},
-};
-
-function mapReducer(state = mapInitialState, action) {
-  switch (action.type) {
-    case MAP_CHANGE_BASEMAP: {
-      return {
-        ...state,
-        basemapLayer: action.payload
-      }
-    }
-    case MAP_ADD_CONTEXTLAYERS: {
-      const contextLayers = Object.assign({}, state.contextLayers);
-      contextLayers[action.id] = action.payload
-      return {
-        ...state,
-        contextLayers: contextLayers
-      }
-    }
-    case MAP_REMOVE_CONTEXTLAYERS: {
-      const contextLayers = Object.assign({}, state.contextLayers);
-      delete contextLayers[action.id]
-      return {
-        ...state,
-        contextLayers: contextLayers
-      }
-    }
-    default:
-      return state
-  }
-}
+export { DASHBOARD_ACTION_NAME } from './reducers/dashboard';
+export {
+  MAP_CHANGE_BASEMAP, MAP_ADD_CONTEXTLAYERS, MAP_REMOVE_CONTEXTLAYERS,
+  REFERENCE_LAYER_CHANGED
+} from './reducers/map';
+export { REFERENCE_LAYER_ACTION_NAME } from './reducers/referenceLayer';
 
 export default combineReducers({
   dashboard: dashboardReducer,
   map: mapReducer,
+  referenceLayer: referenceLayerReducer,
 });

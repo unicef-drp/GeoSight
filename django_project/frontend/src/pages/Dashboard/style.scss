@@ -4,6 +4,13 @@
 
 @import '../../app/variables';
 
+html, body {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
 .dashboard {
   main {
     height: 100%;
@@ -12,19 +19,21 @@
   }
 
   .dashboard__panel {
-    background-color: white;
-    box-shadow: $base-shadow-box;
+    box-sizing: border-box;
     height: 100%;
     z-index: 1001;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    pointer-events: none;
 
     .dashboard__content-wrapper {
-      height: 100%;
+      box-shadow: $base-shadow-box;
       background-color: white;
       width: 100%;
     }
 
-    .dashboard__content {
-      overflow-y: auto;
+    > div {
+      pointer-events: auto;
     }
   }
 }

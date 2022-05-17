@@ -11,17 +11,6 @@
   width: 20%;
   transition: right 0.3s;
 
-  &.left {
-    right: -20%;
-  }
-
-  .left-right-toggle-button {
-    position: absolute;
-    right: 100%;
-    top: 5px;
-    border-radius: 5px 0 0 5px;
-  }
-
   @include media(small-down) {
     width: 20%;
     &.left {
@@ -33,5 +22,22 @@
     height: auto !important;
     position: relative;
     width: 100%;
+  }
+
+  &.left {
+    right: -20%;
+  }
+
+  .dashboard__content-wrapper {
+    border-bottom-left-radius: 5px;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+
+  .left-right-toggle-button {
+    position: absolute;
+    right: 100%;
+    top: 5px;
+    border-radius: 5px 0 0 5px;
   }
 }

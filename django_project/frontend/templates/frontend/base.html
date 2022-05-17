@@ -34,6 +34,7 @@
     'logout': "{% url 'logout' %}",
     'admin': "{% url 'admin:index' %}",
     'dashboardData': '{% url 'dashboard-data-api' slug=dashboard.id %}',
+    'indicatorURLData': '{{ url_template }}',
   }
 </script>
 {% block render_bundle %}

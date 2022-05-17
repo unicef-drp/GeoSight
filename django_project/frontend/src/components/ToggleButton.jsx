@@ -13,7 +13,9 @@ export const RIGHT = 'right';
  * @param {function} onLeft Function when state is on lft
  * @param {function} onRight Function when state is on right
  */
-function LeftRightToggleButton({ initState, onLeft, onRight }) {
+export default function LeftRightToggleButton(
+  { initState, onLeft, onRight }
+) {
   const [state, setState] = useState(LEFT);
 
   useEffect(() => {
@@ -39,5 +41,3 @@ function LeftRightToggleButton({ initState, onLeft, onRight }) {
     </div>
   )
 }
-
-export default LeftRightToggleButton;

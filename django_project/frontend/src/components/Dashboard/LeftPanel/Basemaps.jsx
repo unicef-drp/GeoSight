@@ -4,6 +4,7 @@
 
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Tooltip } from '@mui/material';
 import L from 'leaflet';
 import Actions from '../../../redux/actions/actions'
 
@@ -65,14 +66,15 @@ export default function Basemaps({ data }) {
                 onClick={() => {
                   setSelected(layer.id)
                 }}
-                title={layer.name}
               >
-                <div className='basemap__box-inner'>
-                  <div className='basemap__box-content'>
-                    <img src={layer.icon}/>
-                    <span>{layer.name}</span>
+                <Tooltip title={layer.name} placement='right'>
+                  <div className='basemap__box-inner'>
+                    <div className='basemap__box-content'>
+                      <img src={layer.icon}/>
+                      <span>{layer.name}</span>
+                    </div>
                   </div>
-                </div>
+                </Tooltip>
               </div>
             )
           )

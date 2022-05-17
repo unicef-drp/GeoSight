@@ -4,8 +4,43 @@
 
 @import '../../app/variables';
 
+.dashboard__content {
+  background-color: #eee;
+  padding: 10px 10px 5px 10px;
+}
+
 .widget {
-  display: flex;
-  padding: 0.5rem;
+  background-color: #F6F8FA;
   border: 0.5px solid rgba(0, 0, 0, 0.12);
+  border-radius: 5px;
+  position: relative;
+  margin-bottom: 5px;
+
+  > div {
+    padding: 0.5rem;
+  }
+
+  .MuiSvgIcon-root {
+    cursor: pointer;
+    right: 5px;
+    position: absolute;
+    top: 5px;
+  }
+
+  .widget__content {
+    min-height: 2rem;
+  }
+
+  .widget__info {
+    border-top: 0.5px solid rgba(0, 0, 0, 0.12);
+  }
+}
+
+.widget__gw {
+  text-align: center;
+
+  .widget__gw__title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
 }

@@ -10,7 +10,7 @@ import Modal, { ModalContent, ModalHeader } from '../Modal'
 import './style.scss';
 
 /**
- * Login for modal
+ * Modal for login
  * @param {bool} open Initial state if modal is open or not
  * @param {function} onClosed Function when modal closed
  */
