@@ -1,7 +1,11 @@
-import Counter from './counter'
+import Dashboard from './dashboard'
+import Map from './map'
+import ReferenceLayer from './referenceLayer'
 
 const Actions = {
-  Counter
+  Dashboard,
+  Map,
+  ReferenceLayer
 }
 
 export default Actions

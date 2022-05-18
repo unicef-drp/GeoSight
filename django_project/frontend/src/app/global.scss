@@ -1,0 +1,72 @@
+/* ==========================================================================
+   Globals
+   That being used for global elements
+   ========================================================================== */
+
+@import './variables.scss';
+
+:root {
+  font-size: $root-font-size;
+}
+
+/* SCROLL */
+/* --------------------------------- */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #eee;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $base-color;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* --------------------------------- */
+
+html {
+  font-size: $root-font-size;
+}
+
+
+body {
+  margin: 0;
+  background-color: #eee;
+  color: $base-black-color;
+  font-size: $base-font-size;
+  line-height: $base-line-height;
+  font-family: $base-font-family;
+  font-weight: $base-font-weight;
+  font-style: $base-font-style;
+}
+
+
+button {
+  background: $base-color;
+  border: unset;
+  color: $base-color-reverse;
+  font-size: $base-font-size !important;
+  line-height: $base-line-height !important;
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: none;
+}
+
+a:hover {
+  opacity: $base-hovered-opacity;
+}
+
+.leaflet-popup-content {
+  overflow-y: auto;
+  max-height: 300px;
+}

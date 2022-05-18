@@ -7,7 +7,7 @@ from django.db.models import Count, Sum, Avg
 from django.shortcuts import reverse
 from django.utils.translation import ugettext_lazy as _
 
-from core.models.general import AbstractTerm, PermissionModel
+from core.models.general import AbstractTerm, AbstractSource, PermissionModel
 from gap_data.models.geometry import Geometry, GeometryLevelName
 from gap_data.models.indicator.indicator_attributes import (
     IndicatorFrequency, IndicatorGroup
@@ -41,7 +41,7 @@ class IndicatorValueRejectedError(Exception):
     pass
 
 
-class Indicator(AbstractTerm, PermissionModel):
+class Indicator(AbstractTerm, AbstractSource, PermissionModel):
     """The indicator model."""
 
     shortcode = models.CharField(
@@ -160,6 +160,11 @@ class Indicator(AbstractTerm, PermissionModel):
         return f'{self.group}/{self.name}'
 
     @property
+    def instance(self):
+        """Return instance of indicator."""
+        return self.group.instance
+
+    @property
     def allow_to_harvest_new_data(self):
         """For checking if the new data can be harvested.
 
@@ -240,8 +245,8 @@ class Indicator(AbstractTerm, PermissionModel):
             # check the rule
             for indicator_rule in self.indicatorscenariorule_set.all():
                 try:
-                    if eval(indicator_rule.rule.replace('x',
-                                                        f'{value}').lower()):
+                    if eval(indicator_rule.rule.replace(
+                            'x', f'{value}').lower()):
                         return indicator_rule
                 except NameError:
                     pass
@@ -362,8 +367,9 @@ class Indicator(AbstractTerm, PermissionModel):
             for geometry_target in geometries_target:
                 geometries_report = list(
                     geometry_target.geometries_by_level(
-                        self.geometry_reporting_level).values_list('id',
-                                                                   flat=True)
+                        self.geometry_reporting_level
+                    ).values_list(
+                        'id', flat=True)
                 )
                 # filter data just by geometry target
                 query_report = query.filter(

@@ -11,9 +11,7 @@ const minimized = !isDev;
 
 let conf = {
   entry: {
-    Counter: ['./src/views/Counter.jsx'],
-    Dashboard: ['./src/views/Dashboard.jsx'],
-    Home: ['./src/views/Home.jsx'],
+    Dashboard: ['./src/pages/Dashboard'],
   },
   output: {
     path: path.resolve(__dirname, "./bundles/frontend"),
@@ -54,6 +52,8 @@ let conf = {
     extensions: ['.js', '.jsx']
   },
 };
+
+// This is for dev
 if (isDev) {
   conf['output'] = {
     path: path.resolve(__dirname, "./bundles"),
@@ -62,7 +62,10 @@ if (isDev) {
   }
   conf['devServer'] = {
     hot: true,
-    port: 9000
+    port: 9000,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
   }
   conf['plugins'].push(
     isDev && new ReactRefreshWebpackPlugin()

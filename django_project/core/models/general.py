@@ -20,6 +20,18 @@ class AbstractTerm(models.Model):
         abstract = True
 
 
+class AbstractSource(models.Model):
+    """Abstract model for Source."""
+
+    source = models.CharField(
+        max_length=512,
+        null=True, blank=True
+    )
+
+    class Meta:  # noqa: D106
+        abstract = True
+
+
 class SlugTerm(AbstractTerm):
     """Abstract model for Term."""
 

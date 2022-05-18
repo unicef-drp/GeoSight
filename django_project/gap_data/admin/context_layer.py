@@ -24,7 +24,7 @@ class ContextLayerAdmin(admin.ModelAdmin):
     """ContextLayer admin."""
 
     list_display = (
-        'name', 'group', 'show_on_map',
+        'name', 'layer_type', 'group', 'show_on_map',
         'enable_by_default', 'order', 'instance', 'url'
     )
     inlines = (ContextLayerParameterInline, ContextLayerStyleInline)

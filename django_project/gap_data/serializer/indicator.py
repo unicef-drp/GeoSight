@@ -40,7 +40,7 @@ class IndicatorSerializer(serializers.ModelSerializer):
     class Meta:  # noqa: D106
         model = Indicator
         fields = ('id', 'group', 'name', 'show_in_context_analysis', 'rules',
-                  'dashboard_link')
+                  'dashboard_link', 'source', 'description')
 
     def to_representation(self, instance: Indicator):
         """Return to_representation."""

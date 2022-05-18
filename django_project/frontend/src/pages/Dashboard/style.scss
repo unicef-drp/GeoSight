@@ -1,0 +1,43 @@
+/* ==========================================================================
+   Dashboard specific style
+   ========================================================================== */
+
+@import '../../app/variables';
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.dashboard {
+  main {
+    height: 100%;
+    width: 100%;
+    position: relative;
+
+    @include media(small-down) {
+      height: fit-content;
+    }
+  }
+
+  .dashboard__panel {
+    box-sizing: border-box;
+    height: 100%;
+    z-index: 1001;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    pointer-events: none;
+
+    .dashboard__content-wrapper {
+      box-shadow: $base-shadow-box;
+      background-color: white;
+      width: 100%;
+    }
+
+    > div {
+      pointer-events: auto;
+    }
+  }
+}

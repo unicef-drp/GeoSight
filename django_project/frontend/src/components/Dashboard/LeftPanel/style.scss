@@ -1,0 +1,246 @@
+/* ==========================================================================
+   Left-side panel
+   ========================================================================== */
+
+@import '../../../app/variables';
+
+.dashboard__left_side {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20%;
+  transition: left 0.3s;
+
+  &.right {
+    left: -20%;
+  }
+
+  @include media(small-down) {
+    width: 20%;
+    &.right {
+      left: -20%;
+    }
+  }
+
+  @include media(xsmall-only) {
+    height: 500px !important;
+    max-height: 100vh;
+    width: 50%;
+    left: -50%;
+
+    &.right {
+      left: 0;
+    }
+  }
+
+  &.expanded {
+    .dashboard__content-wrapper {
+      height: 100% !important;
+    }
+
+    .dashboard__left_side__basemaps {
+      position: absolute;
+      bottom: 5px;
+      left: 100%;
+    }
+  }
+
+  .dashboard__left_side__basemaps {
+    position: fixed;
+    bottom: 5px;
+    left: 0;
+  }
+
+  .left-right-toggle-button {
+    position: absolute;
+    left: 100%;
+    top: 5px;
+    border-radius: 0 5px 5px 0;
+
+
+    @include media(xsmall-only) {
+      background-color: white;
+      border: 1px solid $base-color;
+      border-radius: 2px;
+      color: $base-color;
+      height: 0.8rem;
+      margin-left: 5px;
+      width: 0.8rem;
+
+      &.left,
+      &.right {
+        div {
+          position: relative;
+
+          &:after {
+            left: 2px;
+            position: absolute;
+            top: -5px;
+            content: '≡';
+          }
+        }
+      }
+    }
+  }
+
+  // For accordion
+  .dashboard__content-wrapper {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-bottom-right-radius: 5px;
+
+    .reference-dataset {
+      &.Mui-expanded {
+        flex-grow: unset !important;
+      }
+
+      .MuiCollapse-root {
+        flex-grow: unset !important;
+        overflow: auto;
+        height: fit-content !important;
+      }
+
+      b {
+        font-weight: 500;
+        color: $base-color;
+      }
+    }
+
+    > div.Mui-expanded {
+      flex-grow: 1;
+    }
+
+    .MuiPaper-root {
+      box-shadow: unset !important;
+      display: flex;
+      flex-direction: column;
+      border-radius: 0 !important;
+
+      &:before {
+        opacity: 1 !important;
+      }
+    }
+
+    .MuiCollapse-hidden {
+      height: 0 !important;
+    }
+
+    .MuiCollapse-root {
+      flex-grow: 1 !important;
+      overflow: auto;
+      height: 0 !important;
+    }
+
+    .Mui-expanded {
+      margin: 0 !important;
+    }
+
+    .MuiAccordionSummary-root {
+      min-height: 0 !important;
+      height: fit-content !important;
+      padding: 0.5rem 1rem 0.5rem 1rem;
+    }
+
+    .MuiAccordionSummary-root.Mui-expanded {
+      padding: 0.5rem 1rem 0.3rem 1rem;
+    }
+
+    .MuiAccordionSummary-content {
+      margin: 0 !important;
+      font-weight: 500;
+    }
+  }
+}
+
+/** -----------------------------------------------
+  ROWS
+ ----------------------------------------------- **/
+.dashboard__left_side__row {
+  display: flex;
+  padding: 5px 0;
+
+  .MuiCheckbox-root {
+    align-items: baseline;
+    padding: 0 5px 0 0;
+  }
+
+  .title {
+    flex-grow: 1;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+
+    .text {
+      opacity: 0.6;
+    }
+  }
+
+  .legend {
+    img {
+      height: 20px;
+    }
+  }
+
+  .toggler {
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+/** -----------------------------------------------
+  BASEMAPS
+ ----------------------------------------------- **/
+.dashboard__left_side__basemaps {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: $box-shadow;
+  margin-left: 10px;
+  overflow: hidden;
+  padding: 5px 5px 0 5px;
+
+  &:hover {
+    .basemap__box {
+      display: block;
+    }
+  }
+
+  .basemap__box {
+    cursor: pointer;
+    display: none;
+    margin-bottom: 5px;
+    width: 100%;
+
+    img {
+      height: 100%;
+      width: 100%;
+      filter: grayscale(100%);
+      object-fit: cover;
+    }
+
+    &.selected {
+      display: block;
+    }
+
+    &:hover,
+    &.selected {
+      img {
+        filter: grayscale(0);
+      }
+    }
+
+    .basemap__box-inner {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .basemap__box-content {
+      height: 3rem;
+      width: 3rem;
+    }
+  }
+}

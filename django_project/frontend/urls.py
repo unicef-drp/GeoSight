@@ -1,18 +1,16 @@
-"""GAP Dashboard urls."""
+"""Dashboard urls."""
 from django.conf.urls import url
+from django.urls import include
 
-from frontend.views.counter import CounterView
 from frontend.views.dashboard.detail import DashboardDetailView
 
-urlpatterns = [
+dashboard_url = [
     url(
-        r'^counter',
-        CounterView.as_view(),
-        name='counter-view'
-    ),
-    url(
-        r'^',
+        r'^(?P<slug>[^/]+)',
         DashboardDetailView.as_view(),
         name='dashboard-detail-view'
     ),
+]
+urlpatterns = [
+    url(r'^dashboard/', include(dashboard_url)),
 ]

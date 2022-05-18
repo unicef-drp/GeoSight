@@ -1,11 +1,14 @@
 """Instance model."""
 from datetime import date
 
+from django.contrib.auth import get_user_model
 from django.contrib.gis.db import models
 from django.db.models import Q
 
 from core.models import AbstractTerm
 from core.models.general import IconTerm, SlugTerm, PermissionLevels
+
+User = get_user_model()
 
 
 class InstanceCategory(AbstractTerm):
@@ -42,6 +45,17 @@ class Instance(SlugTerm, IconTerm):
         """Return indicators of the instance."""
         from gap_data.models.indicator.indicator import Indicator
         return Indicator.objects.filter(group__instance=self)
+
+    def user_indicators(self, user: User):
+        """Return indicators of the instance."""
+        indicators = self.indicators
+        if not user.is_staff:
+            indicators = indicators.exclude(
+                access_level=PermissionLevels.ADMIN)
+        if not user.username:
+            indicators = indicators.exclude(
+                access_level=PermissionLevels.SIGNIN)
+        return indicators
 
     @property
     def geometry_levels(self):
@@ -97,6 +111,8 @@ class Instance(SlugTerm, IconTerm):
         from gap_data.models.geometry import Geometry
         return Geometry.objects.by_date(date).filter(instance=self)
 
+    # TODO:
+    #  This is deprecated
     def get_indicators(self, user=None):
         """Return all indicators and overall scenario of the instance."""
         from gap_data.models.geometry import Geometry, GeometryLevelName
@@ -150,6 +166,8 @@ class Instance(SlugTerm, IconTerm):
             group['indicator_ids'] = ','.join(group['indicator_ids'])
         return indicators_in_group
 
+    # TODO:
+    #  This is deprecated
     def get_indicators_and_overall_scenario(self, user=None):
         """Return all indicators and overall scenario of the instance."""
         from gap_data.models.geometry import Geometry, GeometryLevelName

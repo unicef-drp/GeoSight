@@ -1,24 +1,17 @@
 import { combineReducers } from 'redux';
-import { DECREASE_COUNTER, INCREASE_COUNTER } from './actions/counter'
+import dashboardReducer from './reducers/dashboard'
+import mapReducer from './reducers/map'
+import referenceLayerReducer from './reducers/referenceLayer'
 
-/**
- * COUNTER reducer
- */
-const counterInitialState = {
-  value: 0
-};
-
-function counterReducer(state = counterInitialState, action) {
-  switch (action.type) {
-    case INCREASE_COUNTER:
-      return { ...state, value: state.value + 1 };
-    case DECREASE_COUNTER:
-      return { ...state, value: state.value - 1 };
-    default:
-      return state;
-  }
-}
+export { DASHBOARD_ACTION_NAME } from './reducers/dashboard';
+export {
+  MAP_CHANGE_BASEMAP, MAP_ADD_CONTEXTLAYERS, MAP_REMOVE_CONTEXTLAYERS,
+  REFERENCE_LAYER_CHANGED
+} from './reducers/map';
+export { REFERENCE_LAYER_ACTION_NAME } from './reducers/referenceLayer';
 
 export default combineReducers({
-  counter: counterReducer
+  dashboard: dashboardReducer,
+  map: mapReducer,
+  referenceLayerJson: referenceLayerReducer,
 });

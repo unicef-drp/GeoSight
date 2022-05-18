@@ -1,0 +1,52 @@
+/* ==========================================================================
+   Right-side panel
+   ========================================================================== */
+
+@import '../../../app/variables';
+
+.dashboard__right_side {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 20%;
+  transition: right 0.3s;
+
+  @include media(small-down) {
+    width: 20%;
+    &.left {
+      right: -20%;
+    }
+  }
+  @include media(xsmall-only) {
+    box-shadow: unset !important;
+    height: auto !important;
+    position: relative;
+    width: 100%;
+  }
+
+  &.left {
+    right: -20%;
+  }
+
+  .dashboard__content-wrapper {
+    border-bottom-left-radius: 5px;
+    max-height: 100%;
+    overflow-y: auto;
+
+    @include media(small-down) {
+      box-shadow: unset !important;
+    }
+  }
+
+  .left-right-toggle-button {
+    position: absolute;
+    right: 100%;
+    top: 5px;
+    border-radius: 5px 0 0 5px;
+  }
+}
+
+.dashboard__right_side__loading {
+  padding: 20px 20px 25px 20px;
+  text-align: center;
+}

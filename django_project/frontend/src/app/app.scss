@@ -1,0 +1,80 @@
+/* -------------------------------------------------------------------
+   Used for global theme element
+  ------------------------------------------------------------------- */
+
+@import './variables.scss';
+
+.page {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: max-content auto;
+  grid-template-columns: auto;
+  overflow: hidden;
+
+  @include media(xsmall-only) {
+    min-height: 100vh;
+    display: block;
+    overflow-y: auto;
+  }
+}
+
+// MODALS
+.modal--box {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  border-radius: .3rem;
+  border: 1px solid rgba(0, 0, 0, .2);
+  background-color: #fff;
+  background-clip: padding-box;
+  transform: translate(-50%, 0);
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.modal--header {
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.modal--content {
+  margin: auto;
+  padding: 10px 20px;
+}
+
+.left-right-toggle-button {
+  background: $base-color;
+  cursor: pointer;
+  height: 30px;
+  padding: 0.2rem 0.3rem;
+  color: $base-color-reverse;
+
+  div {
+    height: 1rem;
+    width: 0.6rem;
+  }
+
+  div:after {
+    font-size: 12px;
+  }
+
+  @include media(xsmall-only) {
+    div:after {
+      font-size: 16px;
+    }
+  }
+
+  &.left {
+    div:after {
+      content: '◀';
+    }
+  }
+
+  &.right {
+    div:after {
+      content: '▶';
+    }
+  }
+}
