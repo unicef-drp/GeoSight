@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 import { useSelector } from "react-redux";
 import InfoIcon from "@mui/icons-material/Info";
-import GeneralWidget from "./Types/GeneralWidget"
+import SummaryWidget from "./Types/SummaryWidget"
 
 import './style.scss';
 
@@ -20,8 +20,8 @@ export default function Widget({ data }) {
 
   const [showInfo, setShowInfo] = useState(false);
   const {
-    title, description, unit, type,
-    layer_id, layer_type, column, operation
+    name, description, unit, type,
+    layer_id, layer_used, property, operation
   } = data
 
   const showInfoHandler = () => {
@@ -32,16 +32,18 @@ export default function Widget({ data }) {
    * Return data from leaflet layer
    */
   function getData() {
-    switch (layer_type) {
-      case 'Reference Layer':
+    switch (layer_used) {
+      case definition.PluginLayerUsed.REFERENCE_LAYER:
         const layer = referenceLayer;
         if (layer) {
           const output = [];
           layer.getLayers().forEach(function (layer) {
-            output.push({
-              'date': layer.feature.properties['date'],
-              'value': layer.feature.properties[column],
-            })
+            if (layer.feature.properties[property]) {
+              output.push({
+                'date': layer.feature.properties['date'],
+                'value': layer.feature.properties[property],
+              })
+            }
           })
           return output;
         }
@@ -53,9 +55,9 @@ export default function Widget({ data }) {
 
   function renderWidget() {
     switch (type) {
-      case 'GeneralWidget':
-        return <GeneralWidget
-          title={title} unit={unit} data={getData()} operation={operation}
+      case definition.PluginType.SUMMARY_WIDGET:
+        return <SummaryWidget
+          name={name} unit={unit} data={getData()} operation={operation}
         />;
       default:
         return <div className='widget__error'>Widget Not Found</div>;
@@ -73,7 +75,7 @@ export default function Widget({ data }) {
       {
         showInfo ?
           <div className='widget__info'>
-            <div className='widget__info__title'>{title}</div>
+            <div className='widget__info__title'>{name}</div>
             <div className='widget__info__content'>{description}</div>
           </div> : ''
       }

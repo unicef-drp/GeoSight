@@ -1,27 +1,13 @@
 """Base dashboard View."""
-import datetime
 from abc import ABC
 
-from django.http import Http404
-from rest_framework import serializers
+from django.shortcuts import get_object_or_404
 
 from frontend.views._base import BaseView
-from gap_data.models.indicator import Indicator
+from gap_data.models.dashboard import Dashboard
+from gap_data.models.dashboard.plugin import Type, LayerUsed, Operation
+from gap_data.models.link import Link
 from gap_data.serializer.link import LinkSerializer
-
-
-class IndicatorSerializer(serializers.ModelSerializer):
-    """Serializer for Indicator."""
-
-    group = serializers.SerializerMethodField()
-
-    def get_group(self, obj: Indicator):
-        """Return group."""
-        return obj.group.name
-
-    class Meta:  # noqa: D106
-        model = Indicator
-        fields = ('id', 'group', 'name',)
 
 
 class BaseDashboardView(ABC, BaseView):
@@ -32,32 +18,35 @@ class BaseDashboardView(ABC, BaseView):
     def get_context_data(self, **kwargs) -> dict:
         """Return context data."""
         context = super().get_context_data(**kwargs)
+        dashboard = get_object_or_404(
+            Dashboard, slug=kwargs.get('slug', '')
+        )
 
-        # TODO:
-        #  This slug should be the dashboard slug
-        indicator = Indicator.objects.filter(
-            name__iexact=kwargs.get('slug', '')).first()
-        if not indicator:
-            raise Http404('Indicator not found')
-
-        context['instance'] = indicator.instance
         context['dashboard'] = {
-            'id': kwargs.get('slug', '')
+            'id': dashboard.slug
         }
 
-        context['url_template'] = indicator.url_data_template.replace(
-            'level', indicator.geometry_reporting_level.name
-        ).replace(
-            'date', datetime.datetime.now().strftime('%Y-%m-%d')
-        ) + '.geojson'
-
-        links = indicator.instance.links
+        links = Link.objects.filter(instance__isnull=True)
         if not self.request.user.is_staff:
             links = links.exclude(is_public=False)
 
         context['links'] = [
             dict(d) for d in LinkSerializer(links, many=True).data
         ]
+        context['definition'] = {
+            'PluginType': {
+                name: value for name, value in vars(Type).items() if
+                name.isupper()
+            },
+            'PluginOperation': {
+                name: value for name, value in vars(Operation).items() if
+                name.isupper()
+            },
+            'PluginLayerUsed': {
+                name: value for name, value in vars(LayerUsed).items() if
+                name.isupper()
+            },
+        }
         return context
 
     @property

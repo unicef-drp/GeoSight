@@ -18,7 +18,7 @@ function receive(data, error = null) {
 }
 
 export function fetch(dispatch) {
-  fetching(dispatch, urls.indicatorURLData, {}, receive)
+  fetching(dispatch, urls.dashboardReferenceLayerData, {}, receive)
   return request();
 }
 

@@ -29,12 +29,13 @@
   const csrfmiddlewaretoken = '{{ csrf_token }}';
   const preferences = {{ preferences|safe }};
   const links = {{ links|safe }};
+  const definition = {{ definition|safe }};
   const urls = {
     'login': "{% url 'login' %}",
     'logout': "{% url 'logout' %}",
     'admin': "{% url 'admin:index' %}",
     'dashboardData': '{% url 'dashboard-data-api' slug=dashboard.id %}',
-    'indicatorURLData': '{{ url_template }}',
+    'dashboardReferenceLayerData': '{% url 'dashboard-ref-layer-api' slug=dashboard.id %}',
   }
 </script>
 {% block render_bundle %}

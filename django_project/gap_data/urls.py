@@ -9,10 +9,12 @@ from gap_dashboard.views.dashboard.admin.instance import (
 from gap_dashboard.views.dashboard.admin.instance import InstanceManagementView
 from gap_dashboard.views.instances import InstancesView
 from gap_data.api.context_analysis import ContextAnalysisData
-from gap_data.api.dashboard import DashboardData
+from gap_data.api.dashboard import DashboardData, DashboardReferenceGeojson
 from gap_data.api.download import DownloadMasterData, DownloadMasterDataCheck
-from gap_data.api.download_file import DownloadSharepointFile, \
+from gap_data.api.download_file import (
+    DownloadSharepointFile,
     DownloadBackupsFile
+)
 from gap_data.api.geometry import GeometryGeojsonAPI, GeometryDetailAPI
 from gap_data.api.indicator import (
     IndicatorValues, IndicatorValuesByGeometryAndLevel,
@@ -20,8 +22,10 @@ from gap_data.api.indicator import (
     IndicatorValuesByGeometry, IndicatorReportingUnits, IndicatorValuesBatch,
     IndicatorShow, IndicatorHide, IndicatorDetailAPI
 )
-from gap_data.api.indicators import IndicatorsValuesByGeometryDate, \
+from gap_data.api.indicators import (
+    IndicatorsValuesByGeometryDate,
     IndicatorsList
+)
 
 geometry_api = [
     url(
@@ -126,6 +130,11 @@ instance_url = [
 ]
 
 api = [
+    url(
+        r'^dashboard/(?P<slug>[^/]+)/reference-layer.geojson$',
+        DashboardReferenceGeojson.as_view(),
+        name='dashboard-ref-layer-api'
+    ),
     url(
         r'^dashboard/(?P<slug>[^/]+)$',
         DashboardData.as_view(),

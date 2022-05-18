@@ -7,13 +7,13 @@ import { numberWithCommas } from '../../../utils/main'
 
 /**
  * General widget to show summary of data
- * @param {string} title Title of widget
+ * @param {string} name Name of widget
  * @param {string} unit Unit of data
  * @param {list} data List of data {value, date}
  * @param {string} operation Operation of data
  */
-export default function GeneralWidget(
-  { title, unit, data, operation }
+export default function SummaryWidget(
+  { name, unit, data, operation }
 ) {
 
   /**
@@ -23,10 +23,12 @@ export default function GeneralWidget(
   function getValue() {
     if (data !== null) {
       switch (operation) {
-        case 'Sum':
+        case definition.PluginOperation.SUM:
           let value = 0;
           data.forEach(function (rowData) {
-            value += rowData.value;
+            if (parseFloat(rowData.value) !== NaN) {
+              value += parseFloat(rowData.value);
+            }
           })
           return <span>{numberWithCommas(value)} {unit}</span>
         default:
@@ -39,7 +41,7 @@ export default function GeneralWidget(
   return (
     <div className='widget__gw'>
       <div className='widget__gw__title'>{getValue()}</div>
-      <div>{title}</div>
+      <div>{name}</div>
     </div>
   )
 }
