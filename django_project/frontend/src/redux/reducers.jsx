@@ -13,5 +13,5 @@ export { REFERENCE_LAYER_ACTION_NAME } from './reducers/referenceLayer';
 export default combineReducers({
   dashboard: dashboardReducer,
   map: mapReducer,
-  referenceLayer: referenceLayerReducer,
+  referenceLayerJson: referenceLayerReducer,
 });

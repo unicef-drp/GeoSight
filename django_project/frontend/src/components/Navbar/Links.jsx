@@ -8,10 +8,10 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
+/**
+ * Link dropdown
+ * **/
 export default function Links() {
-  /**
-   * Link dropdown
-   * **/
   const navbarLinks = links;
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);

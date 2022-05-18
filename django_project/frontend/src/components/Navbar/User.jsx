@@ -10,10 +10,10 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import LoginModal from '../Login'
 
+/**
+ * User dropdown
+ * **/
 export default function User() {
-  /**
-   * User dropdown
-   * **/
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {

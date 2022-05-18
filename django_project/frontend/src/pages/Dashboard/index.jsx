@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import App from '../../app';
-import { render } from '../../app';
+import App, { render } from '../../app';
 
 import Actions from '../../redux/actions/actions'
 
@@ -12,7 +11,6 @@ import RightPanel from '../../components/Dashboard/RightPanel'
 import './style.scss';
 
 export default function Dashboard() {
-  const { data } = useSelector(state => state.dashboard);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -21,10 +19,9 @@ export default function Dashboard() {
     )
   }, []);
 
-  const { selectedBasemap } = useSelector(state => state.map);
   return (
     <App className='dashboard'>
-      <LeftPanel data={data}/>
+      <LeftPanel />
       <Map/>
       <RightPanel/>
     </App>

@@ -11,7 +11,7 @@ import Actions from '../../../redux/actions/actions'
  * Reference Layer
  */
 export default function ReferenceLayer() {
-  const { data } = useSelector(state => state.referenceLayer);
+  const { data } = useSelector(state => state.referenceLayerJson);
   const dispatch = useDispatch();
 
   useEffect(() => {

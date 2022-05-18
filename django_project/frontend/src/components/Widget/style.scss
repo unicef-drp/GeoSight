@@ -40,7 +40,12 @@
   text-align: center;
 
   .widget__gw__title {
+    color: $base-font-color;
     font-size: 1.5rem;
     margin-bottom: 10px;
   }
+}
+
+.widget__error {
+  color: red;
 }

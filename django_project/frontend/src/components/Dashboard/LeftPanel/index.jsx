@@ -13,12 +13,17 @@ import Basemaps from './Basemaps'
 import ContextLayers from './ContextLayers'
 
 import './style.scss';
+import { useSelector } from "react-redux";
 
 /**
  * Left panel
- * @param {object} data Data of dashboard
  */
-export default function LeftPanel({ data }) {
+export default function LeftPanel() {
+  const {
+    referenceLayer,
+    basemapsLayers,
+    contextLayers
+  } = useSelector(state => state.dashboard.data);
   const [state, setState] = useState(LEFT);
 
   const onLeft = () => {
@@ -34,9 +39,6 @@ export default function LeftPanel({ data }) {
   };
 
   const className = `dashboard__panel dashboard__left_side ${state} ${expanded ? 'expanded' : ''}`
-  const basemapsLayers = data ? data.basemapsLayers : undefined;
-  const contextLayers = data ? data.contextLayers : undefined;
-  const referenceLayer = data ? data.referenceLayer : undefined
 
   return (
     <section className={className}>

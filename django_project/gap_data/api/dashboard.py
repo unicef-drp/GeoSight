@@ -1,4 +1,5 @@
 """Context Analysis API.."""
+from django.contrib.gis.geos import Polygon
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -21,6 +22,15 @@ class DashboardData(APIView):
             raise Http404('Indicator not found')
 
         reference_layer = IndicatorSerializer(indicator).data
+        extent = Polygon(
+            (
+                (39.5409183, 12.854323),
+                (55.014220, 12.854323),
+                (55.014220, -2.365759),
+                (39.5409183, 2.365759),
+                (39.5409183, 12.854323)
+            )
+        )
         context = {
             'referenceLayer': reference_layer,
             'basemapsLayers': BasemapLayerSerializer(
@@ -29,5 +39,19 @@ class DashboardData(APIView):
             'contextLayers': ContextLayerSerializer(
                 indicator.instance.context_layers, many=True
             ).data,
+            'extent': extent.extent,
+            'plugins': [
+                {
+                    'id': 1,
+                    'title': indicator.name,
+                    'description': indicator.description,
+                    'unit': indicator.unit,
+                    'type': 'GeneralWidget',
+                    'column': 'value',
+                    'operation': 'Sum',
+                    'layer_id': indicator.id,
+                    'layer_type': 'Reference Layer'
+                }
+            ]
         }
         return Response(context)

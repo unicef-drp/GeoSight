@@ -14,14 +14,21 @@ import ReferenceLayer from "./ReferenceLayer";
  */
 export default function Map() {
   const {
-    contextLayers,
     basemapLayer,
-    referenceLayer
+    referenceLayer,
+    contextLayers
   } = useSelector(state => state.map);
+
+  const { extent } = useSelector(state => state.dashboard.data);
   const [map, setMap] = useState(null);
   const [basemapLayerGroup, setBasemapLayerGroup] = useState(null);
   const [referenceLayerGroup, setReferenceLayerGroup] = useState(null);
   const [contextLayerGroup, setContextLayerGroup] = useState(null);
+
+  // Pane identifier
+  const basemapPane = 'basemapPane';
+  const referenceLayerPane = 'referenceLayerPane';
+  const contextLayerPane = 'contextLayerPane';
 
   useEffect(() => {
     const basemapLayerGroup = L.layerGroup([]);
@@ -32,13 +39,26 @@ export default function Map() {
     setContextLayerGroup(contextLayerGroup);
 
     const map = L.map('map', {
-      center: [5.6544108, 46.5339302],
+      center: [0, 0],
       zoom: 6,
-      layers: [basemapLayerGroup, referenceLayerGroup, contextLayerGroup],
+      layers: [basemapLayerGroup, contextLayerGroup, referenceLayerGroup],
       zoomControl: false
     });
+    map.createPane(basemapPane);
+    map.createPane(referenceLayerPane);
+    map.createPane(contextLayerPane);
     setMap(map);
   }, []);
+
+  /** EXTENT CHANGED */
+  useEffect(() => {
+    if (map && extent) {
+      map.fitBounds([
+        [extent[1], extent[0]],
+        [extent[3], extent[2]]
+      ])
+    }
+  }, [map, extent]);
 
   /** BASEMAP CHANGED */
   useEffect(() => {
@@ -46,6 +66,7 @@ export default function Map() {
       basemapLayerGroup.eachLayer(function (layer) {
         basemapLayerGroup.removeLayer(layer);
       });
+      basemapLayer.options.pane = basemapPane;
       basemapLayerGroup.addLayer(basemapLayer);
     }
   }, [basemapLayer]);
@@ -56,8 +77,12 @@ export default function Map() {
       contextLayerGroup.eachLayer(function (layer) {
         contextLayerGroup.removeLayer(layer);
       });
-      for (const [key, layer] of Object.entries(contextLayers)) {
-        contextLayerGroup.addLayer(layer);
+      for (const [key, contextLayer] of Object.entries(contextLayers)) {
+        if (contextLayer.render && contextLayer.layer) {
+          const layer = contextLayer.layer;
+          layer.options.pane = contextLayerPane;
+          contextLayerGroup.addLayer(contextLayer.layer);
+        }
       }
     }
   }, [contextLayers]);
@@ -68,6 +93,7 @@ export default function Map() {
       referenceLayerGroup.eachLayer(function (layer) {
         referenceLayerGroup.removeLayer(layer);
       });
+      referenceLayer.options.pane = referenceLayerPane;
       referenceLayerGroup.addLayer(referenceLayer);
     }
   }, [referenceLayer]);

@@ -1,6 +1,4 @@
 """Test for Basemap model."""
-import urllib.parse
-
 from django.test.testcases import TestCase
 
 from gap_data.serializer.context_layer import ContextLayerSerializer

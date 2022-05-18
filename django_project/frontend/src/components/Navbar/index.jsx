@@ -11,6 +11,9 @@ import Links from './Links'
 
 import './style.scss';
 
+/**
+ * Navbar
+ * **/
 export default function NavBar() {
   const { icon, site_title } = preferences;
   return (

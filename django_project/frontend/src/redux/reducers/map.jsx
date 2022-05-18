@@ -21,7 +21,10 @@ export default function mapReducer(state = mapInitialState, action) {
     }
     case MAP_ADD_CONTEXTLAYERS: {
       const contextLayers = Object.assign({}, state.contextLayers);
-      contextLayers[action.id] = action.payload
+      contextLayers[action.id] = {
+        'render': true,
+        'layer': action.payload
+      }
       return {
         ...state,
         contextLayers: contextLayers
@@ -29,7 +32,9 @@ export default function mapReducer(state = mapInitialState, action) {
     }
     case MAP_REMOVE_CONTEXTLAYERS: {
       const contextLayers = Object.assign({}, state.contextLayers);
-      delete contextLayers[action.id]
+      if (contextLayers[action.id]) {
+        contextLayers[action.id].render = false
+      }
       return {
         ...state,
         contextLayers: contextLayers

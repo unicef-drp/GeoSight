@@ -181,7 +181,7 @@ function ContextLayerInput({ data }) {
 }
 
 /**
- * Basemaps selector
+ * Context Layer selector
  * @param {list} data ContextLayers list
  */
 export default function ContextLayers({ data }) {

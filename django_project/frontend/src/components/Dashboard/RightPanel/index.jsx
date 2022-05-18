@@ -3,14 +3,16 @@
    ========================================================================== */
 
 import React, { useState } from 'react';
+import { useSelector } from "react-redux";
 
 import LeftRightToggleButton, { LEFT, RIGHT } from '../../ToggleButton'
-import Widget, { GeneralWidget } from '../../Widget'
+import Widget from '../../Widget'
 
 import './style.scss';
 
 export default function RightPanel() {
   const [state, setState] = useState(RIGHT);
+  const { plugins } = useSelector(state => state.dashboard.data);
 
   const onLeft = () => {
     setState(LEFT);
@@ -28,24 +30,14 @@ export default function RightPanel() {
         onRight={onRight}/>
       <div className='dashboard__content-wrapper'>
         <div className='dashboard__content'>
-          <Widget title='Test' description='This is description'>
-            <GeneralWidget title='Test' unit='person' value={1}/>
-          </Widget>
-          <Widget title='Test' description='This is description'>
-            <GeneralWidget title='Test' unit='person' value={1}/>
-          </Widget>
-          <Widget title='Test' description='This is description'>
-            <GeneralWidget title='Test' unit='person' value={1}/>
-          </Widget>
-          <Widget title='Test' description='This is description'>
-            <GeneralWidget title='Test' unit='person' value={1}/>
-          </Widget>
-          <Widget title='Test' description='This is description'>
-            <GeneralWidget title='Test' unit='person' value={1}/>
-          </Widget>
-          <Widget title='Test' description='This is description'>
-            <GeneralWidget title='Test' unit='person' value={1}/>
-          </Widget>
+          {
+            plugins ?
+              plugins.map(
+                plugin => (
+                  <Widget key={plugin.id} data={plugin}/>
+                )
+              ) : <div className='dashboard__right_side__loading'>Loading</div>
+          }
         </div>
       </div>
     </section>
