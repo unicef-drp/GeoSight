@@ -3,7 +3,6 @@ from django.contrib.gis.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from gap_data.models.indicator.indicator import Indicator
-from gap_data.models.scenario import ScenarioLevel
 
 
 class IndicatorScenarioRule(models.Model):
@@ -14,10 +13,6 @@ class IndicatorScenarioRule(models.Model):
     )
     indicator = models.ForeignKey(
         Indicator,
-        on_delete=models.CASCADE
-    )
-    scenario_level = models.ForeignKey(
-        ScenarioLevel,
         on_delete=models.CASCADE
     )
     rule = models.CharField(
@@ -37,7 +32,7 @@ class IndicatorScenarioRule(models.Model):
     )
 
     class Meta:  # noqa: D106
-        unique_together = ('indicator', 'scenario_level')
+        unique_together = ('indicator', 'name')
 
     @property
     def rule_str(self):

@@ -5,7 +5,7 @@ from django.shortcuts import redirect, reverse, render, get_object_or_404
 from gap_dashboard.forms.indicator import IndicatorForm
 from gap_dashboard.views.dashboard.admin._base import AdminView
 from gap_data.models import (
-    Indicator, Instance, ScenarioLevel, IndicatorScenarioRule
+    Indicator, Instance, IndicatorScenarioRule
 )
 
 
@@ -66,20 +66,21 @@ class IndicatorEditView(AdminView):
         )
         if form.is_valid():
             indicator = form.save()
-            for scenario in ScenarioLevel.objects.order_by('level'):
-                rule = request.POST.get(f'scenario_{scenario.id}_rule', None)
-                name = request.POST.get(f'scenario_{scenario.id}_name', None)
-                color = request.POST.get(f'scenario_{scenario.id}_color', None)
-                if name:
-                    scenario_rule, created = \
-                        IndicatorScenarioRule.objects.get_or_create(
-                            indicator=indicator,
-                            scenario_level=scenario
-                        )
-                    scenario_rule.name = name
-                    scenario_rule.rule = rule
-                    scenario_rule.color = color
-                    scenario_rule.save()
+
+            # save the scenario
+            # rule = request.POST.get(f'scenario_{scenario.id}_rule', None)
+            # name = request.POST.get(f'scenario_{scenario.id}_name', None)
+            # color = request.POST.get(f'scenario_{scenario.id}_color', None)
+            # if name:
+            #     scenario_rule, created = \
+            #         IndicatorScenarioRule.objects.get_or_create(
+            #             indicator=indicator,
+            #             scenario_level=scenario
+            #         )
+            #     scenario_rule.name = name
+            #     scenario_rule.rule = rule
+            #     scenario_rule.color = color
+            #     scenario_rule.save()
             return redirect(
                 reverse(
                     'indicator-management-view', args=[self.instance.slug]

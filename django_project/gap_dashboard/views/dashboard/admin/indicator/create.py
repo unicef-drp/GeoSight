@@ -4,7 +4,7 @@ from django.shortcuts import redirect, reverse, render, get_object_or_404
 from gap_dashboard.forms.indicator import IndicatorForm
 from gap_dashboard.views.dashboard.admin._base import AdminView
 from gap_data.models import (
-    Instance, ScenarioLevel, IndicatorScenarioRule, Indicator
+    Instance, IndicatorScenarioRule, Indicator
 )
 
 
@@ -27,14 +27,6 @@ class IndicatorCreateView(AdminView):
         """Return context data."""
         context = super().get_context_data(**kwargs)
         scenarios = []
-        for scenario in ScenarioLevel.objects.order_by('level'):
-            scenarios.append({
-                'id': scenario.id,
-                'name': scenario.name,
-                'rule_name': scenario.name,
-                'rule_color': scenario.background_color
-            })
-
         from_id = self.request.GET.get('from')
         initial = None
         if from_id:

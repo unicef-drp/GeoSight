@@ -6,8 +6,7 @@ from django.test.testcases import TestCase
 from gap_data.models.indicator.indicator import Indicator, AggregationMethod
 from gap_data.tests.model_factories import (
     IndicatorF, InstanceF, IndicatorGroupF, IndicatorFrequencyF,
-    GeometryLevelNameF, GeometryF, IndicatorValueF, IndicatorScenarioRuleF,
-    ScenarioLevelF
+    GeometryLevelNameF, GeometryF, IndicatorValueF, IndicatorScenarioRuleF
 )
 
 
@@ -108,30 +107,14 @@ class IndicatorTest(TestCase):
         ]
         for rule in rules:
             self.assertTrue(rule.name in indicator.legends.keys())
-            self.assertEquals(rule.color,
-                              indicator.legends[rule.name]['color'])
-            self.assertEquals(rule.scenario_level.level,
-                              indicator.legends[rule.name]['level'])
-
-        # check scenario rules
-        self.assertEquals(
-            indicator.scenario_rule(rules[0].scenario_level.level), rules[0])
-
-        # check rules by value
-        self.assertEquals(indicator.scenario_level(1), rules[0].scenario_level)
-        self.assertEquals(indicator.scenario_level(2), rules[1].scenario_level)
-        self.assertEquals(indicator.scenario_level(4), rules[2].scenario_level)
-        self.assertEquals(indicator.scenario_level(6), rules[3].scenario_level)
-        self.assertEquals(indicator.scenario_level(0), rules[4].scenario_level)
+            self.assertEquals(
+                rule.color,
+                indicator.legends[rule.name]['color']
+            )
 
     def test_value(self):
         """Test value."""
         instance = InstanceF()
-        level_1 = ScenarioLevelF(name='Level 1', level=1)
-        level_2 = ScenarioLevelF(name='Level 2', level=2)
-        level_3 = ScenarioLevelF(name='Level 3', level=3)
-        level_4 = ScenarioLevelF(name='Level 4', level=4)
-
         country = GeometryLevelNameF(name='country')
         province = GeometryLevelNameF(name='province')
         geom_country = GeometryF(name='Country', geometry_level=country)
@@ -155,18 +138,16 @@ class IndicatorTest(TestCase):
         )
         rules = [
             IndicatorScenarioRuleF(
-                indicator=indicator, rule='x==1', scenario_level=level_1
+                indicator=indicator, rule='x==1'
             ),
             IndicatorScenarioRuleF(
-                indicator=indicator, rule='x==2 or x==3',
-                scenario_level=level_2
+                indicator=indicator, rule='x==2 or x==3'
             ),
             IndicatorScenarioRuleF(
-                indicator=indicator, rule='x>=4 and x<=5',
-                scenario_level=level_3
+                indicator=indicator, rule='x>=4 and x<=5'
             ),
             IndicatorScenarioRuleF(
-                indicator=indicator, rule='x>5', scenario_level=level_4
+                indicator=indicator, rule='x>5'
             )
         ]
         # set value

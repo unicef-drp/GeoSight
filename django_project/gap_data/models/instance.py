@@ -36,11 +36,6 @@ class Instance(SlugTerm, IconTerm):
         ordering = ('name',)
 
     @property
-    def scenario_levels(self):
-        """Return scenarios of the instance."""
-        return self.scenariolevel_set.all()
-
-    @property
     def indicators(self):
         """Return indicators of the instance."""
         from gap_data.models.indicator.indicator import Indicator

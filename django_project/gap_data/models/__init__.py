@@ -6,5 +6,3 @@ from .geometry_uploader import *
 from .indicator import *
 from .instance import *
 from .link import *
-from .program import *
-from .scenario import *

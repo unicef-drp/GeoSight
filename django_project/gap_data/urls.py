@@ -8,7 +8,6 @@ from gap_dashboard.views.dashboard.admin.instance import (
 )
 from gap_dashboard.views.dashboard.admin.instance import InstanceManagementView
 from gap_dashboard.views.instances import InstancesView
-from gap_data.api.context_analysis import ContextAnalysisData
 from gap_data.api.dashboard import DashboardData, DashboardReferenceGeojson
 from gap_data.api.download import DownloadMasterData, DownloadMasterDataCheck
 from gap_data.api.download_file import (
@@ -22,10 +21,7 @@ from gap_data.api.indicator import (
     IndicatorValuesByGeometry, IndicatorReportingUnits, IndicatorValuesBatch,
     IndicatorShow, IndicatorHide, IndicatorDetailAPI
 )
-from gap_data.api.indicators import (
-    IndicatorsValuesByGeometryDate,
-    IndicatorsList
-)
+from gap_data.api.indicators import IndicatorsList
 
 geometry_api = [
     url(
@@ -89,18 +85,9 @@ indicator_api = [
         IndicatorsList.as_view(), name='indicator-list-api'
     ),
 ]
-indicators_api = [
-    # API for returning all indicators
-    url(
-        r'^values/(?P<geometry_identifier>.+)/(?P<geometry_level>.+)/(?P<date>.+)',  # noqa: E501
-        IndicatorsValuesByGeometryDate.as_view(),
-        name='indicators-values-by-geometry-level-date-api'
-    ),
-]
 instance_api = [
     url(r'^geometry/', include(geometry_api)),
     url(r'^indicator/', include(indicator_api)),
-    url(r'^indicators/', include(indicators_api)),
     url(
         r'^download-master-data/(?P<date>.+)/check',
         DownloadMasterDataCheck.as_view(),
@@ -115,11 +102,6 @@ instance_api = [
         r'^download/sharepoint',
         DownloadSharepointFile.as_view(),
         name='download-sharepoint'
-    ),
-    url(
-        r'^context-analysis',
-        ContextAnalysisData.as_view(),
-        name='context-analysis'
     ),
 ]
 
