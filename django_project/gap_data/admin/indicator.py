@@ -49,8 +49,7 @@ class IndicatorAdmin(admin.ModelAdmin):
 class IndicatorGroupAdmin(admin.ModelAdmin):
     """IndicatorGroup admin."""
 
-    list_display = ('name', 'instance')
-    list_filter = ('instance',)
+    list_display = ('name',)
 
 
 admin.site.register(IndicatorGroup, IndicatorGroupAdmin)

@@ -25,7 +25,7 @@ class UsingExposedAPI(BaseHarvester):
         if 'instance' in kwargs and 'indicator' in kwargs:
             api_url = reverse(
                 'indicator-values-api',
-                args=[kwargs['instance'].slug, kwargs['indicator'].id]
+                args=[kwargs['indicator'].id]
             )
         return {
             'token': {

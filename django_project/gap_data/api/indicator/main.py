@@ -16,7 +16,6 @@ from gap_data.models.indicator import (
     Indicator, IndicatorValue,
     IndicatorValueRejectedError
 )
-from gap_data.models.instance import Instance
 from gap_data.models.reference_layer import Geometry, GeometryLevelName
 from gap_data.serializer.indicator import (
     IndicatorValueSerializer,
@@ -31,31 +30,30 @@ class IndicatorValuesByGeometry(APIView):
         IsAuthenticated, AdminAuthenticationPermission,
     )
 
-    def get(self, request, slug, pk, geometry_pk):
+    def get(self, request, pk, geometry_pk):
         """Return values of the indicator.
 
-        :param slug: slug of the instance
         :param pk: pk of the indicator
         :param geometry_pk: the geometry id
         :return:
         """
-        instance = get_object_or_404(
-            Instance, slug=slug
-        )
         geometry = get_object_or_404(
             Geometry, id=geometry_pk
         )
+        indicator = get_object_or_404(
+            Indicator, id=pk
+        )
         try:
-            indicator = instance.indicators.get(id=pk)
             values = indicator.indicatorvalue_set.filter(
-                geometry=geometry).order_by('-date')
+                geometry=geometry
+            ).order_by('-date')
             return Response(IndicatorValueSerializer(values, many=True).data)
         except GeometryLevelName.DoesNotExist:
             raise Http404('The geometry level is not recognized')
         except ValueError:
             return HttpResponseBadRequest('Date format is not correct')
 
-    def post(self, request, slug, pk, geometry_pk):
+    def post(self, request, pk, geometry_pk):
         """Return values of the indicator.
 
         :param slug: slug of the instance
@@ -63,13 +61,12 @@ class IndicatorValuesByGeometry(APIView):
         :param geometry_pk: the geometry id
         :return:
         """
-        instance = get_object_or_404(
-            Instance, slug=slug
-        )
         geometry = get_object_or_404(
             Geometry, id=geometry_pk
         )
-        indicator = instance.indicators.get(id=pk)
+        indicator = get_object_or_404(
+            Indicator, id=pk
+        )
         try:
             value = float(request.POST['value'])
             indicator.save_value(request.POST['date'], geometry, value)
@@ -88,7 +85,7 @@ class IndicatorValuesByDate(APIView):
     """
 
     def values(
-            self, slug, pk, geometry_identifier, geometry_level, date,
+            self, pk, geometry_identifier, geometry_level, date,
             use_exact_date=False, more_information=True
     ):
         """Return values of the indicator.
@@ -99,13 +96,10 @@ class IndicatorValuesByDate(APIView):
         :param date: the date of data
         :return:
         """
-        instance = get_object_or_404(
-            Instance, slug=slug
-        )
         indicator = get_object_or_404(
-            instance.indicators, id=pk
+            Indicator, id=pk
         )
-        geometry = instance.geometries().get(
+        geometry = Geometry.objects.get(
             identifier__iexact=geometry_identifier)
         geometry_level = GeometryLevelName.objects.get(
             name__iexact=geometry_level)
@@ -116,14 +110,14 @@ class IndicatorValuesByDate(APIView):
         )
 
     def get(
-            self, request, slug, pk,
+            self, request, pk,
             geometry_identifier, geometry_level, date
     ):
         """Return values of the indicator."""
         try:
             return Response(
                 self.values(
-                    slug, pk, geometry_identifier, geometry_level, date,
+                    pk, geometry_identifier, geometry_level, date,
                     use_exact_date=False, more_information=True
                 )
             )
@@ -140,15 +134,11 @@ class IndicatorValuesByDateAndGeojson(IndicatorValuesByDate):
     Return as geojson of geometry
     """
 
-    def get(
-            self, request, slug, pk,
-            geometry_identifier, geometry_level, date
-    ):
+    def get(self, request, pk, geometry_identifier, geometry_level, date):
         """Return geojson Scenario value for the specific geometry."""
         try:
             values = self.values(
-                slug, pk,
-                geometry_identifier, geometry_level, date
+                pk, geometry_identifier, geometry_level, date
             )
             features = []
             for value in values:
@@ -185,7 +175,7 @@ class IndicatorValuesByGeometryAndLevel(APIView):
     Geometry level is the level that the value needs to get
     """
 
-    def values(self, slug, pk, geometry_identifier, geometry_level):
+    def values(self, pk, geometry_identifier, geometry_level):
         """Return values of the indicator.
 
         :param pk: pk of the indicator
@@ -193,14 +183,12 @@ class IndicatorValuesByGeometryAndLevel(APIView):
         :param geometry_level: the geometry level that will be checked
         :return:
         """
-        instance = get_object_or_404(
-            Instance, slug=slug
-        )
         indicator = get_object_or_404(
-            instance.indicators, id=pk
+            Indicator, id=pk
         )
-        geometry = instance.geometries().get(
-            identifier__iexact=geometry_identifier)
+        geometry = Geometry.objects.get(
+            identifier__iexact=geometry_identifier
+        )
         geometry_level = GeometryLevelName.objects.get(
             name__iexact=geometry_level)
         dates = indicator.indicatorvalue_set.values_list(
@@ -222,11 +210,12 @@ class IndicatorValuesByGeometryAndLevel(APIView):
                     dates_found.append(value['date'])
         return values
 
-    def get(self, request, slug, pk, geometry_identifier, geometry_level):
+    def get(self, request, pk, geometry_identifier, geometry_level):
         """Return values of the indicator."""
         try:
             return Response(
-                self.values(slug, pk, geometry_identifier, geometry_level))
+                self.values(pk, geometry_identifier, geometry_level)
+            )
         except GeometryLevelName.DoesNotExist:
             raise Http404('The geometry level is not recognized')
         except ValueError:
@@ -240,40 +229,7 @@ class IndicatorValues(APIView):
         IndicatorHarvesterTokenAndBearerAuthentication,
     )
 
-    def get(self, request, slug, pk):
-        """Get values for specific indicator."""
-        try:
-            instance = get_object_or_404(
-                Instance, slug=slug
-            )
-            indicator = instance.indicators.get(id=pk)
-            geometry = instance.geometries().first()
-            if geometry:
-                try:
-                    date = datetime.strptime(
-                        request.GET.get('date'),
-                        "%Y-%m-%d"
-                    ).date() if request.GET.get(
-                        'date', None
-                    ) else datetime.today()
-                except ValueError:
-                    return HttpResponseBadRequest(
-                        'Date format should be YYYY-MM-DD')
-
-                return Response(
-                    indicator.values(
-                        geometry, indicator.geometry_reporting_level, date,
-                        serializer=IndicatorDetailValueSerializer
-                    )
-                )
-            else:
-                raise Http404('No geometry for the instance')
-        except GeometryLevelName.DoesNotExist:
-            raise Http404('The geometry level is not recognized')
-        except Indicator.DoesNotExist:
-            raise Http404('The indicator does not exist')
-
-    def post(self, request, slug, pk):
+    def post(self, request, pk):
         """Save value for specific date.
 
         :param slug: slug of the instance
@@ -281,12 +237,11 @@ class IndicatorValues(APIView):
         :return:
         """
         try:
-            instance = get_object_or_404(
-                Instance, slug=slug
+            indicator = get_object_or_404(
+                Indicator, id=pk
             )
             data = request.data
-            indicator = instance.indicators.get(id=pk)
-            geometry = instance.geometries().get(
+            geometry = Geometry.objects.get(
                 identifier__iexact=data['geometry_code']
             )
             if geometry.geometry_level != indicator.geometry_reporting_level:
@@ -334,8 +289,6 @@ class IndicatorValues(APIView):
             return Response(
                 IndicatorDetailValueSerializer(indicator_value).data
             )
-        except Indicator.DoesNotExist:
-            return HttpResponseBadRequest('Indicator does not exist')
         except Geometry.DoesNotExist:
             return HttpResponseBadRequest('Geometry does not exist')
         except KeyError as e:
@@ -351,19 +304,17 @@ class IndicatorValuesBatch(APIView):
         IndicatorHarvesterTokenAndBearerAuthentication,
     )
 
-    def post(self, request, slug, pk):
+    def post(self, request, pk):
         """Save value for specific date.
 
-        :param slug: slug of the instance
         :param pk: pk of the indicator
         :return:
         """
         try:
-            instance = get_object_or_404(
-                Instance, slug=slug
-            )
             rows = request.data
-            indicator = instance.indicators.get(id=pk)
+            indicator = get_object_or_404(
+                Indicator, id=pk
+            )
 
             replace = False
             if 'replace' in request.query_params:
@@ -374,7 +325,7 @@ class IndicatorValuesBatch(APIView):
 
             indicator_values = []
             for data in rows:
-                geometry = instance.geometries().get(
+                geometry = Geometry.objects.get(
                     identifier__iexact=data['geometry_code']
                 )
                 geometry_reporting_level = indicator.geometry_reporting_level
@@ -433,34 +384,3 @@ class IndicatorValuesBatch(APIView):
             return HttpResponseBadRequest(
                 'replace needs to be True or False'
             )
-
-
-class IndicatorReportingUnits(APIView):
-    """Change reporting units of indicator."""
-
-    permission_classes = (IsAuthenticated, AdminAuthenticationPermission,)
-
-    def post(self, request, slug, pk):
-        """Save reporting units of indicator.
-
-        :param slug: slug of the instance
-        :param pk: pk of the indicator
-        :return:
-        """
-        try:
-            instance = get_object_or_404(
-                Instance, slug=slug
-            )
-            indicator = instance.indicators.get(id=pk)
-            indicator.geometry_reporting_units.clear()
-            ids = request.POST['ids'].split(',')
-            if len(ids) > 0:
-                if ids[0]:
-                    indicator.geometry_reporting_units.add(
-                        *Geometry.objects.filter(id__in=ids)
-                    )
-            return Response('OK')
-        except Indicator.DoesNotExist:
-            raise Http404('Indicator does not exist')
-        except KeyError:
-            return HttpResponseBadRequest('ids is needed in data')

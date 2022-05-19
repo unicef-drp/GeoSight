@@ -31,7 +31,7 @@ class SharepointTest(BaseHarvesterTest):
             indicator=self.indicator,
             harvester_class=SharepointHarvester[0]
         )
-        harvester.save_default_attributes(instance=self.instance)
+        harvester.save_default_attributes()
         harvester.save_attributes(
             {
                 'file': filepath,

@@ -8,7 +8,7 @@ from pyexcel_xls import get_data as xls_get
 from pyexcel_xlsx import get_data as xlsx_get
 
 from gap_data.models import (
-    Instance, Geometry, Indicator, IndicatorValue
+    Geometry, Indicator, IndicatorValue
 )
 from gap_harvester.harveters._base import (
     BaseHarvester, HarvestingError
@@ -56,17 +56,12 @@ class ExcelHarvester(BaseHarvester):
                     "The name of column in "
                     "the file contains administration code"
                 )
-            },
-            'instance_slug': {
-                'title': "Slug of the instance",
-                'description': "The instance slug of this harvester"
-            },
+            }
         }
         try:
-            instance = kwargs['instance']
-            for indicator in instance.indicators.order_by('name'):
+            for indicator in Indicator.objects.all().order_by('name'):
                 shortcode = indicator.shortcode
-                attr[indicator.id] = {
+                attr[f'{indicator.id}'] = {
                     'title': "Column Name: " + indicator.full_name,
                     'description': indicator.description,
                     'class': 'indicator-name',
@@ -115,15 +110,6 @@ class ExcelHarvester(BaseHarvester):
         # fetch data
         self._update('Fetching data')
 
-        try:
-            instance = Instance.objects.get(
-                slug=self.attributes['instance_slug']
-            )
-        except Instance.DoesNotExist:
-            raise HarvestingError(
-                'The instance is not found, please reupload.'
-            )
-
         # date
         date = now().date()
         if self.attributes['date']:
@@ -158,7 +144,7 @@ class ExcelHarvester(BaseHarvester):
                 raise HarvestingError(str(e).replace(
                     'is not in list', '') + ' column is not found')
 
-        for indicator in instance.indicators:
+        for indicator in Indicator.objects.all():
             try:
                 indicators_column[
                     headers.index(self.attributes[str(indicator.id)])

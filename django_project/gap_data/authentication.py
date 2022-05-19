@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import authentication
 from rest_framework import exceptions
 
-from gap_data.models import Instance
+from gap_data.models.indicator import Indicator
 from gap_harvester.models.harvester import UsingExposedAPI, Harvester
 
 
@@ -47,11 +47,8 @@ class IndicatorHarvesterTokenAndBearerAuthentication(
 
         kwargs = request.parser_context['kwargs']
 
-        instance = get_object_or_404(
-            Instance, slug=kwargs.get('slug', '')
-        )
         indicator = get_object_or_404(
-            instance.indicators, pk=kwargs.get('pk', 0)
+            Indicator, pk=kwargs.get('pk', 0)
         )
         try:
             if not indicator.harvester or \

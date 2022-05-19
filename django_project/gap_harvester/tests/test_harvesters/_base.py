@@ -2,7 +2,7 @@
 from django.test.testcases import TestCase
 
 from gap_data.tests.model_factories import (
-    IndicatorF, InstanceF, IndicatorGroupF,
+    IndicatorF, IndicatorGroupF,
     GeometryLevelNameF, GeometryF,
     IndicatorScenarioRuleF
 )
@@ -13,12 +13,9 @@ class BaseHarvesterTest(TestCase):
 
     def setUp(self):
         """To setup tests."""
-        self.instance = InstanceF()
         level = GeometryLevelNameF()
         self.indicator = IndicatorF(
-            group=IndicatorGroupF(
-                instance=self.instance
-            ),
+            group=IndicatorGroupF(),
             geometry_reporting_level=level
         )
         IndicatorScenarioRuleF(indicator=self.indicator, rule='x==1'),
@@ -28,18 +25,15 @@ class BaseHarvesterTest(TestCase):
 
         GeometryF(
             identifier='A',
-            instance=self.instance,
             geometry_level=level
         )
 
         GeometryF(
             identifier='B',
-            instance=self.instance,
             geometry_level=level
         )
 
         GeometryF(
             identifier='C',
-            instance=self.instance,
             geometry_level=level
         )

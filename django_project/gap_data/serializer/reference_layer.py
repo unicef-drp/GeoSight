@@ -24,15 +24,10 @@ class GeometryContextSerializer(GeoFeatureModelSerializer):
     """Serializer for GeometryContext."""
 
     child_of = serializers.SerializerMethodField()
-    active_date_to = serializers.SerializerMethodField()
 
     def get_child_of(self, obj: Geometry):
         """Return child_of."""
         return obj.child_of.id if obj.child_of else 'null'
-
-    def get_active_date_to(self, obj: Geometry):
-        """Return active_date_to."""
-        return obj.active_date_to if obj.active_date_to else 'null'
 
     class Meta:  # noqa: D106
         model = Geometry

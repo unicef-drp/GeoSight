@@ -7,7 +7,6 @@ from rest_framework.views import APIView
 
 from core.permissions import AdminAuthenticationPermission
 from gap_data.models.indicator import Indicator
-from gap_data.models.instance import Instance
 
 
 class IndicatorShow(APIView):
@@ -15,13 +14,12 @@ class IndicatorShow(APIView):
 
     permission_classes = (IsAuthenticated, AdminAuthenticationPermission,)
 
-    def patch(self, request, slug, pk):
+    def patch(self, request, pk):
         """Show indicator."""
         try:
-            instance = get_object_or_404(
-                Instance, slug=slug
+            indicator = get_object_or_404(
+                Indicator, id=pk
             )
-            indicator = instance.indicators.get(id=pk)
             indicator.show_in_context_analysis = True
             indicator.save()
             return Response()
@@ -36,13 +34,12 @@ class IndicatorHide(APIView):
         IsAuthenticated, AdminAuthenticationPermission,
     )
 
-    def patch(self, request, slug, pk):
+    def patch(self, request, pk):
         """Hide indicator."""
         try:
-            instance = get_object_or_404(
-                Instance, slug=slug
+            indicator = get_object_or_404(
+                Indicator, id=pk
             )
-            indicator = instance.indicators.get(id=pk)
             indicator.show_in_context_analysis = False
             indicator.save()
             return Response()

@@ -5,7 +5,7 @@ from django.test.testcases import TestCase
 
 from gap_data.models.indicator.indicator import Indicator, AggregationMethod
 from gap_data.tests.model_factories import (
-    IndicatorF, InstanceF, IndicatorGroupF, IndicatorFrequencyF,
+    IndicatorF, IndicatorGroupF, IndicatorFrequencyF,
     GeometryLevelNameF, GeometryF, IndicatorValueF, IndicatorScenarioRuleF
 )
 
@@ -19,9 +19,7 @@ class IndicatorTest(TestCase):
 
     def test_create(self):
         """Test create."""
-        group = IndicatorGroupF(
-            instance=InstanceF()
-        )
+        group = IndicatorGroupF()
         frequency = IndicatorFrequencyF()
         geometry_reporting_level = GeometryLevelNameF()
 
@@ -34,8 +32,8 @@ class IndicatorTest(TestCase):
         self.assertEquals(indicator.name, self.name)
         self.assertEquals(indicator.group, group)
         self.assertEquals(indicator.frequency, frequency)
-        self.assertEquals(indicator.geometry_reporting_level,
-                          geometry_reporting_level)
+        self.assertEquals(
+            indicator.geometry_reporting_level, geometry_reporting_level)
 
     def test_allow_to_harvest_new_data(self):
         """Test allow harvest new data."""
@@ -44,9 +42,7 @@ class IndicatorTest(TestCase):
         )
         indicator = IndicatorF(
             name=self.name,
-            group=IndicatorGroupF(
-                instance=InstanceF()
-            ),
+            group=IndicatorGroupF(),
             frequency=frequency,
             geometry_reporting_level=GeometryLevelNameF()
         )
@@ -70,9 +66,7 @@ class IndicatorTest(TestCase):
 
     def test_list(self):
         """Test list method."""
-        group = IndicatorGroupF(
-            instance=InstanceF()
-        )
+        group = IndicatorGroupF()
         geometry_reporting_level = GeometryLevelNameF()
         IndicatorF(
             name='Name 1',
@@ -93,9 +87,7 @@ class IndicatorTest(TestCase):
         geometry_reporting_level = GeometryLevelNameF()
         indicator = IndicatorF(
             name='Name 1',
-            group=IndicatorGroupF(
-                instance=InstanceF()
-            ),
+            group=IndicatorGroupF(),
             geometry_reporting_level=geometry_reporting_level
         )
         rules = [
@@ -114,25 +106,22 @@ class IndicatorTest(TestCase):
 
     def test_value(self):
         """Test value."""
-        instance = InstanceF()
         country = GeometryLevelNameF(name='country')
         province = GeometryLevelNameF(name='province')
         geom_country = GeometryF(name='Country', geometry_level=country)
         geom_province_1 = GeometryF(
-            instance=instance, name='Province 1',
+            name='Province 1',
             geometry_level=province, child_of=geom_country)
         geom_province_2 = GeometryF(
-            instance=instance, name='Province 2',
+            name='Province 2',
             geometry_level=province, child_of=geom_country)
         geom_province_3 = GeometryF(
-            instance=instance, name='Province 3',
+            name='Province 3',
             geometry_level=province, child_of=geom_country)
         # indicator 1
         indicator = IndicatorF(
             name='Name 1',
-            group=IndicatorGroupF(
-                instance=instance
-            ),
+            group=IndicatorGroupF(),
             geometry_reporting_level=province,
             aggregation_method=AggregationMethod.MAJORITY
         )

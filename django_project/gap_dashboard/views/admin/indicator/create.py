@@ -2,10 +2,8 @@
 from django.shortcuts import redirect, reverse, render, get_object_or_404
 
 from gap_dashboard.forms.indicator import IndicatorForm
-from gap_dashboard.views.dashboard.admin._base import AdminView
-from gap_data.models import (
-    Instance, IndicatorScenarioRule, Indicator
-)
+from gap_dashboard.views.admin._base import AdminView
+from gap_data.models import Indicator
 
 
 class IndicatorCreateView(AdminView):
@@ -31,7 +29,7 @@ class IndicatorCreateView(AdminView):
         initial = None
         if from_id:
             try:
-                indicator = self.instance.indicators.get(id=from_id)
+                indicator = Indicator.objects.get(id=from_id)
                 initial = IndicatorForm.model_to_initial(indicator)
                 initial['name'] = None
                 initial['description'] = None
@@ -42,7 +40,6 @@ class IndicatorCreateView(AdminView):
         context.update(
             {
                 'form': IndicatorForm(
-                    indicator_instance=self.instance,
                     initial=initial,
                 ),
                 'scenarios': scenarios,
@@ -53,12 +50,8 @@ class IndicatorCreateView(AdminView):
 
     def post(self, request, **kwargs):
         """Create indicator."""
-        self.instance = get_object_or_404(
-            Instance, slug=kwargs.get('slug', '')
-        )
         form = IndicatorForm(
-            request.POST,
-            indicator_instance=self.instance
+            request.POST
         )
         if form.is_valid():
             indicator = form.save()

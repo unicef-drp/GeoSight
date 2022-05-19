@@ -2,25 +2,21 @@
 from django.conf.urls import url
 from django.urls import include
 
-from gap_dashboard.views.dashboard.admin.harvesters import (
+from gap_dashboard.views.admin.harvesters import (
     HarvesterDetail, HarvesterIndicatorDetail
 )
-from gap_dashboard.views.dashboard.admin.harvesters.forms import (
+from gap_dashboard.views.admin.harvesters.forms import (
     HarvesterAPIWithGeographyAndDateView,
     HarvestedUsingExposedAPIByExternalClientView,
     HarvesterAPIWithGeographyAndTodayDateView, MetaIngestorView,
     SharepointHarvesterView
 )
-from gap_dashboard.views.dashboard.admin.indicator import (
+from gap_dashboard.views.admin.indicator import (
     IndicatorCreateView,
-    IndicatorManagementView, IndicatorEditView, IndicatorReportingUnitView,
+    IndicatorManagementView, IndicatorEditView,
     IndicatorValueManagementMapView, IndicatorValueManagementTableView,
     IndicatorMultiEditView
 )
-from gap_dashboard.views.dashboard.admin.instance import (
-    InstanceEditView
-)
-from gap_dashboard.views.dashboard.list import DashboardListView
 
 harvester_form_url = [
     url(r'^update/api-with-geography-and-date',
@@ -90,16 +86,9 @@ dashboard_url = [
         HarvesterDetail.as_view(),
         name='harvester-detail'
     ),
-    url(r'^', DashboardListView.as_view(), name='dashboard-list-view'),
 ]
 
-
 admin_indicator_url = [
-    url(
-        r'^(?P<pk>\d+)/reporting-unit',
-        IndicatorReportingUnitView.as_view(),
-        name='indicator-reporting-unit'
-    ),
     url(
         r'^(?P<pk>\d+)/edit',
         IndicatorEditView.as_view(),
@@ -121,13 +110,9 @@ admin_indicator_url = [
         name='indicator-management-view'
     ),
 ]
-admin_instance_url = [
-    url(r'^edit', InstanceEditView.as_view(), name='instance-management-edit'),
-]
 
 admin_url = [
     url(r'^indicator/', include(admin_indicator_url)),
-    url(r'^instance/', include(admin_instance_url)),
 ]
 
 urlpatterns = [

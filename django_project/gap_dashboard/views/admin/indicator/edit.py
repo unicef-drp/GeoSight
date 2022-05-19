@@ -3,10 +3,8 @@ from django.http import Http404
 from django.shortcuts import redirect, reverse, render, get_object_or_404
 
 from gap_dashboard.forms.indicator import IndicatorForm
-from gap_dashboard.views.dashboard.admin._base import AdminView
-from gap_data.models import (
-    Indicator, Instance, IndicatorScenarioRule
-)
+from gap_dashboard.views.admin._base import AdminView
+from gap_data.models import Indicator
 
 
 class IndicatorEditView(AdminView):
@@ -18,8 +16,8 @@ class IndicatorEditView(AdminView):
     def content_title(self):
         """Return content title."""
         try:
-            indicator = self.instance.indicators.get(
-                id=self.kwargs.get('pk', '')
+            indicator = get_object_or_404(
+                Indicator, id=self.kwargs.get('pk', '')
             )
         except Indicator.DoesNotExist:
             raise Http404('Indicator does not exist')
@@ -29,8 +27,8 @@ class IndicatorEditView(AdminView):
         """Return context data."""
         context = super().get_context_data(**kwargs)
         try:
-            indicator = self.instance.indicators.get(
-                id=self.kwargs.get('pk', '')
+            indicator = get_object_or_404(
+                Indicator, id=self.kwargs.get('pk', '')
             )
         except Indicator.DoesNotExist:
             raise Http404('Indicator does not exist')
@@ -39,8 +37,7 @@ class IndicatorEditView(AdminView):
         context.update(
             {
                 'form': IndicatorForm(
-                    initial=IndicatorForm.model_to_initial(indicator),
-                    indicator_instance=self.instance,
+                    initial=IndicatorForm.model_to_initial(indicator)
                 ),
                 'scenarios': scenarios
             }
@@ -49,20 +46,16 @@ class IndicatorEditView(AdminView):
 
     def post(self, request, **kwargs):
         """Save indicator."""
-        self.instance = get_object_or_404(
-            Instance, slug=kwargs.get('slug', '')
-        )
         try:
-            indicator = self.instance.indicators.get(
-                id=self.kwargs.get('pk', '')
+            indicator = get_object_or_404(
+                Indicator, id=self.kwargs.get('pk', '')
             )
         except Indicator.DoesNotExist:
             raise Http404('Indicator does not exist')
 
         form = IndicatorForm(
             request.POST,
-            instance=indicator,
-            indicator_instance=self.instance
+            instance=indicator
         )
         if form.is_valid():
             indicator = form.save()
@@ -83,7 +76,7 @@ class IndicatorEditView(AdminView):
             #     scenario_rule.save()
             return redirect(
                 reverse(
-                    'indicator-management-view', args=[self.instance.slug]
+                    'indicator-management-view', args=[]
                 )
             )
         context = self.get_context_data(**kwargs)

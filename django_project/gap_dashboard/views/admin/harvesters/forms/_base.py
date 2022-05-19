@@ -1,16 +1,18 @@
 """Harvester base."""
+from abc import ABC
+
 from django.http import Http404, HttpResponseBadRequest
-from django.shortcuts import get_object_or_404, redirect, reverse
+from django.shortcuts import redirect, reverse
 from django.utils.module_loading import import_string
 
-from gap_dashboard.views.dashboard.admin._base import AdminView
-from gap_data.models import Indicator, Instance
+from gap_dashboard.views.admin._base import AdminView
+from gap_data.models import Indicator
 from gap_harvester.models import (
     HARVESTERS, Harvester, HarvesterAttribute, HarvesterMappingValue
 )
 
 
-class HarvesterFormView(AdminView):
+class HarvesterFormView(AdminView, ABC):
     """HarvesterForm Base View."""
 
     indicator = None
@@ -24,7 +26,7 @@ class HarvesterFormView(AdminView):
     def get_indicator(self):
         """Return indicator and save it as attribute."""
         try:
-            self.indicator = self.instance.indicators.get(
+            self.indicator = Indicator.objects.get(
                 id=self.kwargs.get('pk', '')
             )
             return self.indicator
@@ -102,9 +104,7 @@ class HarvesterFormView(AdminView):
                             harvester[0]
                         ).description,
                         'url': reverse(
-                            harvester[0], args=[
-                                self.instance.slug, self.indicator.id
-                            ]
+                            harvester[0], args=[self.indicator.id]
                         ) if self.indicator else ''
                     } for harvester in self.harvesters
                 ],
@@ -121,9 +121,6 @@ class HarvesterFormView(AdminView):
 
     def post(self, request, **kwargs):
         """POST save harvester."""
-        self.instance = get_object_or_404(
-            Instance, slug=kwargs.get('slug', '')
-        )
         indicator = self.get_indicator()
         try:
             data = request.POST.copy()
@@ -154,7 +151,6 @@ class HarvesterFormView(AdminView):
 
             harvester.harvester_class = harvester_class
             harvester.save()
-            harvester.save_default_attributes(instance=self.instance)
 
             for key, value in data.items():
                 if value:
@@ -201,7 +197,7 @@ class HarvesterFormView(AdminView):
                 return redirect(
                     reverse(
                         'harvester-indicator-detail', args=[
-                            self.instance.slug, indicator.id
+                            indicator.id
                         ]
                     )
                 )
@@ -209,7 +205,7 @@ class HarvesterFormView(AdminView):
                 return redirect(
                     reverse(
                         'harvester-detail', args=[
-                            self.instance.slug, str(harvester.unique_id)
+                            str(harvester.unique_id)
                         ]
                     )
                 )

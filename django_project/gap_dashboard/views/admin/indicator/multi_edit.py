@@ -1,10 +1,10 @@
 """Multi Indicator Editor View."""
 from django.http import Http404
-from django.shortcuts import redirect, reverse, get_object_or_404
+from django.shortcuts import redirect, reverse
 
 from gap_dashboard.forms.indicator import IndicatorForm
-from gap_dashboard.views.dashboard.admin._base import AdminView
-from gap_data.models import Indicator, Instance
+from gap_dashboard.views.admin._base import AdminView
+from gap_data.models import Indicator
 
 
 class IndicatorMultiEditView(AdminView):
@@ -26,7 +26,7 @@ class IndicatorMultiEditView(AdminView):
         ids = self.request.GET.get('ids')
         for _id in ids.split(','):
             try:
-                indicator = self.instance.indicators.get(id=_id)
+                indicator = Indicator.objects.get(id=_id)
                 indicators.append(indicator)
                 initial_model = IndicatorForm.model_to_initial(indicator)
                 initial_model['name'] = None
@@ -70,7 +70,6 @@ class IndicatorMultiEditView(AdminView):
         context.update(
             {
                 'form': IndicatorForm(
-                    indicator_instance=self.instance,
                     initial=initial,
                 ),
                 'indicators': indicators,
@@ -81,18 +80,12 @@ class IndicatorMultiEditView(AdminView):
 
     def post(self, request, **kwargs):
         """Save indicators."""
-        self.instance = get_object_or_404(
-            Instance, slug=kwargs.get('slug', '')
-        )
         ids = self.request.GET.get('ids')
         for _id in ids.split(','):
             try:
-                indicator = self.instance.indicators.get(id=_id)
+                indicator = Indicator.objects.get(id=_id)
                 data = request.POST.copy()
-                data['instance'] = self.instance.id
-                for key, field in IndicatorForm(
-                        indicator_instance=self.instance
-                ).fields.items():
+                for key, field in IndicatorForm().fields.items():
                     if key not in data:
                         value = getattr(indicator, key)
                         try:
@@ -108,8 +101,7 @@ class IndicatorMultiEditView(AdminView):
 
                 form = IndicatorForm(
                     data,
-                    instance=indicator,
-                    indicator_instance=self.instance
+                    instance=indicator
                 )
                 if form.is_valid():
                     indicator = form.save()
@@ -139,6 +131,6 @@ class IndicatorMultiEditView(AdminView):
                 raise Http404(f'Indicator with id {_id} does not exist')
         return redirect(
             reverse(
-                'indicator-management-view', args=[self.instance.slug]
+                'indicator-management-view', args=[]
             )
         )

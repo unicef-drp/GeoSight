@@ -2,11 +2,10 @@
 import json
 
 from django.http import HttpResponseBadRequest
-from django.shortcuts import get_object_or_404, redirect, reverse
+from django.shortcuts import redirect, reverse
 
-from gap_dashboard.views.dashboard.admin._base import AdminView
+from gap_dashboard.views.admin._base import AdminView
 from gap_data.models.indicator import Indicator, IndicatorGroup
-from gap_data.models.instance import Instance
 from gap_harvester.models.harvester import UsingExposedAPI
 
 
@@ -23,16 +22,8 @@ class IndicatorManagementView(AdminView):
     def get_context_data(self, **kwargs) -> dict:
         """Return context data."""
         context = super().get_context_data(**kwargs)
-        indicators_in_groups = self.instance.get_indicators(self.request.user)
-        for excluded_group in self.instance.indicatorgroup_set.exclude(
-                name__in=indicators_in_groups.keys()):
-            indicators_in_groups[excluded_group.name] = {
-                'indicators': []
-            }
-
         context.update(
             {
-                'indicators_in_groups': indicators_in_groups,
                 'external_exposed_api': UsingExposedAPI[0]
             }
         )
@@ -40,16 +31,13 @@ class IndicatorManagementView(AdminView):
 
     def post(self, request, **kwargs):
         """Save indicator orders."""
-        self.instance = get_object_or_404(
-            Instance, slug=kwargs.get('slug', '')
-        )
         orders = request.POST.get('orders', None)
         if not orders:
             return HttpResponseBadRequest('Orders is required')
 
         orders = json.loads(orders)
-        indicators = self.instance.indicators
-        groups = self.instance.indicatorgroup_set.all()
+        indicators = Indicator.objects.all()
+        groups = IndicatorGroup.objects.all()
         idx = 1
         for group_name, ids in orders.items():
             try:
@@ -67,6 +55,6 @@ class IndicatorManagementView(AdminView):
                 pass
         return redirect(
             reverse(
-                'indicator-management-view', args=[self.instance.slug]
+                'indicator-management-view', args=[]
             )
         )

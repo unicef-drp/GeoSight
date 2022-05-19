@@ -2,8 +2,8 @@
 from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, reverse, redirect
 
-from gap_dashboard.views.dashboard.admin._base import AdminView
-from gap_data.models import Indicator, Instance
+from gap_dashboard.views.admin._base import AdminView
+from gap_data.models import Indicator
 from gap_harvester.models import Harvester, ExcelHarvester, UsingExposedAPI
 from gap_harvester.tasks import run_harvester
 
@@ -23,7 +23,6 @@ class HarvesterIndicatorDetail(AdminView):
         """Parse context."""
         context = {
             'edit_url': edit_url,
-            'instance': self.instance,
             'harvester': harvester,
             'harvester_attributes': harvester.get_attributes(),
             'current_log': harvester.harvesterlog_set.first(),
@@ -40,12 +39,9 @@ class HarvesterIndicatorDetail(AdminView):
     def get_context_data(self, **kwargs) -> dict:
         """Return context data."""
         context = super().get_context_data(**kwargs)
-        try:
-            self.indicator = self.instance.indicators.get(
-                id=self.kwargs.get('pk', '')
-            )
-        except Indicator.DoesNotExist:
-            raise Http404('Indicator does not exist')
+        self.indicator = get_object_or_404(
+            Indicator, id=self.kwargs.get('pk', '')
+        )
 
         try:
             harvester = self.indicator.harvester
@@ -56,24 +52,18 @@ class HarvesterIndicatorDetail(AdminView):
             self.get_context(
                 harvester, reverse(
                     self.indicator.harvester.harvester_class,
-                    args=[self.instance.slug, self.indicator.id]
+                    args=[self.indicator.id]
                 )
             )
         )
         return context
 
-    def post(self, request, slug, pk):
+    def post(self, request, pk):
         """POST to force harvester to harvest."""
-        instance = get_object_or_404(
-            Instance, slug=slug
-        )
 
-        try:
-            self.indicator = instance.indicators.get(
-                id=self.kwargs.get('pk', '')
-            )
-        except Indicator.DoesNotExist:
-            raise Http404('Indicator does not exist')
+        self.indicator = get_object_or_404(
+            Indicator, id=self.kwargs.get('pk', '')
+        )
         try:
             harvester = self.indicator.harvester
             run_harvester.delay(harvester.pk)
@@ -81,7 +71,7 @@ class HarvesterIndicatorDetail(AdminView):
             return redirect(
                 reverse(
                     'harvester-indicator-detail',
-                    args=[instance.slug, self.indicator.pk]
+                    args=[self.indicator.pk]
                 )
             )
         except Harvester.DoesNotExist:
@@ -112,19 +102,15 @@ class HarvesterDetail(HarvesterIndicatorDetail):
             self.get_context(
                 harvester, reverse(
                     'meta-ingestor-uuid-view', args=[
-                        self.instance.slug, self.kwargs.get('uuid', '')
+                        self.kwargs.get('uuid', '')
                     ]
                 )
             )
         )
         return context
 
-    def post(self, request, slug, uuid):
+    def post(self, request, uuid):
         """POST to force harvester to harvest."""
-        instance = get_object_or_404(
-            Instance, slug=slug
-        )
-
         try:
             harvester = Harvester.objects.get(
                 unique_id=self.kwargs.get('uuid', '')
@@ -142,7 +128,7 @@ class HarvesterDetail(HarvesterIndicatorDetail):
             return redirect(
                 reverse(
                     'harvester-detail',
-                    args=[instance.slug, str(harvester.unique_id)]
+                    args=[str(harvester.unique_id)]
                 )
             )
         except Harvester.DoesNotExist:

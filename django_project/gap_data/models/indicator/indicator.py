@@ -5,12 +5,12 @@ from django.contrib.gis.db import models
 from django.db.models import Count, Sum, Avg
 from django.shortcuts import reverse
 from django.utils.translation import ugettext_lazy as _
-from gap_data.models.reference_layer import Geometry, GeometryLevelName
 
 from core.models.general import AbstractTerm, AbstractSource, PermissionModel
 from gap_data.models.indicator.indicator_attributes import (
     IndicatorFrequency, IndicatorGroup
 )
+from gap_data.models.reference_layer import Geometry, GeometryLevelName
 
 
 # AGGREGATION BEHAVIOURS
@@ -158,11 +158,6 @@ class Indicator(AbstractTerm, AbstractSource, PermissionModel):
         return f'{self.group}/{self.name}'
 
     @property
-    def instance(self):
-        """Return instance of indicator."""
-        return self.group.instance
-
-    @property
     def allow_to_harvest_new_data(self):
         """For checking if the new data can be harvested.
 
@@ -213,6 +208,21 @@ class Indicator(AbstractTerm, AbstractSource, PermissionModel):
                 except NameError:
                     pass
         return None
+
+    def scenarios_dict(self):
+        """
+        Return scenarios in list of dict
+        """
+        scenarios = []
+        for scenario in self.indicatorscenariorule_set.all():
+            scenarios.append({
+                'id': scenario.id,
+                'name': scenario.name,
+                'rule_name': scenario.name,
+                'rule_value': scenario.rule,
+                'rule_color': scenario.color,
+            })
+        return scenarios
 
     def scenario_rule_by_value(self, value):
         """Return scenario level of the value."""
@@ -406,55 +416,17 @@ class Indicator(AbstractTerm, AbstractSource, PermissionModel):
         it does not have geometry_reporting_units.
         """
         if self.geometry_reporting_units.count() == 0:
-            return self.group.instance.geometries().filter(
+            return Geometry.objects.filter(
                 geometry_level=self.geometry_reporting_level)
         else:
             return self.geometry_reporting_units.all()
-
-    @property
-    def url_geojson_template(self):
-        """For returning url for the data as geojson."""
-        instance = self.group.instance
-        country_level = instance.geometry_instance_levels.filter(
-            parent=None).first()
-        if country_level:
-            country_level = country_level.level
-            geometry_country = instance.geometries().filter(
-                geometry_level=country_level).first()
-            if geometry_country:
-                return reverse('indicator-values-by-date-geojson-api', args=[
-                    self.group.instance.slug, self.pk,
-                    geometry_country.identifier,
-                    'level',
-                    date.today()
-                ])
-        return None
-
-    @property
-    def url_data_template(self):
-        """For returning url for the data to in list."""
-        instance = self.group.instance
-        country_level = instance.geometry_instance_levels.filter(
-            parent=None).first()
-        if country_level:
-            country_level = country_level.level
-            geometry_country = instance.geometries().filter(
-                geometry_level=country_level).first()
-            if geometry_country:
-                return reverse('indicator-values-by-date-api', args=[
-                    self.group.instance.slug, self.pk,
-                    geometry_country.identifier,
-                    'level',
-                    'date'
-                ])
-        return None
 
     @property
     def create_harvester_url(self):
         """Create the first harvester url for this indicator."""
         from gap_harvester.models.harvester import HARVESTERS
         return reverse(
-            HARVESTERS[0][0], args=[self.group.instance.slug, self.id]
+            HARVESTERS[0][0], args=[self.id]
         )
 
     def save_value(
