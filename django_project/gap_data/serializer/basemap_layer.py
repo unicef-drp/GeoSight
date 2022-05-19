@@ -21,10 +21,11 @@ class BasemapLayerSerializer(serializers.ModelSerializer):
             value = parameter.value
             parameters[parameter.name] = value
 
-        for param in urls[1].split('&'):
-            params = param.split('=')
-            if params[1].lower() != 'bbox':
-                parameters[params[0]] = params[1]
+        if len(urls) > 1:
+            for param in urls[1].split('&'):
+                params = param.split('=')
+                if params[0].lower() != 'bbox':
+                    parameters[params[0]] = '='.join(params[1:])
         return parameters
 
     class Meta:  # noqa: D106

@@ -4,7 +4,7 @@ from django.test.testcases import TestCase
 
 from gap_data.models.indicator.indicator import AggregationMethod
 from gap_data.tests.model_factories import (
-    InstanceF, ContextLayerF, ScenarioLevelF,
+    InstanceF, ScenarioLevelF,
     GeometryF, GeometryLevelNameF, GeometryLevelInstanceF,
     IndicatorF, IndicatorValueF, IndicatorGroupF, IndicatorScenarioRuleF
 )
@@ -43,34 +43,6 @@ class InstanceTest(TestCase):
         )
         self.assertEquals(
             instance_1.scenario_levels[2].name, 'Scenario Level 3'
-        )
-
-    def test_context_layers(self):
-        """Test for context of the instance."""
-        instance_1 = InstanceF()
-        instance_2 = InstanceF()
-
-        # create ContextLayer for global
-        ContextLayerF(name='Context Global', instance=None)
-
-        # create ContextLayer for each instance
-        ContextLayerF(name='Context Instance 1', instance=instance_1)
-        ContextLayerF(
-            name='Context Instance 2 1', instance=instance_2,
-            show_on_map=False
-        )
-        ContextLayerF(name='Context Instance 2 2', instance=instance_2)
-
-        self.assertEquals(instance_1.context_layers.count(), 2)
-        self.assertEquals(instance_1.context_layers[0].name, 'Context Global')
-        self.assertEquals(
-            instance_1.context_layers[1].name, 'Context Instance 1'
-        )
-
-        self.assertEquals(instance_2.context_layers.count(), 2)
-        self.assertEquals(instance_2.context_layers[0].name, 'Context Global')
-        self.assertEquals(
-            instance_2.context_layers[1].name, 'Context Instance 2 2'
         )
 
     def test_geometries(self):

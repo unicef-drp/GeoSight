@@ -2,15 +2,8 @@
 from django.contrib import admin
 
 from gap_data.models.context_layer import (
-    ContextLayerGroup, ContextLayer, ContextLayerParameter, ContextLayerStyle
+    ContextLayerGroup, ContextLayer, ContextLayerStyle
 )
-
-
-class ContextLayerParameterInline(admin.TabularInline):
-    """ContextLayerParameter inline."""
-
-    model = ContextLayerParameter
-    extra = 0
 
 
 class ContextLayerStyleInline(admin.TabularInline):
@@ -24,19 +17,16 @@ class ContextLayerAdmin(admin.ModelAdmin):
     """ContextLayer admin."""
 
     list_display = (
-        'name', 'layer_type', 'group', 'show_on_map',
-        'enable_by_default', 'order', 'instance', 'url'
+        'name', 'layer_type', 'group', 'url'
     )
-    inlines = (ContextLayerParameterInline, ContextLayerStyleInline)
-    list_filter = ('instance', 'group')
-    list_editable = ('show_on_map', 'enable_by_default', 'order')
+    inlines = (ContextLayerStyleInline,)
+    list_filter = ('group',)
 
 
 class ContextLayerGroupAdmin(admin.ModelAdmin):
     """ContextLayerGroup admin."""
 
-    list_display = ('name', 'order')
-    list_editable = ('order',)
+    list_display = ('name',)
 
 
 admin.site.register(ContextLayerGroup, ContextLayerGroupAdmin)

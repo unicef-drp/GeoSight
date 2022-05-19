@@ -4,7 +4,7 @@ import urllib.parse
 from rest_framework import serializers
 
 from gap_data.models.context_layer import (
-    ContextLayer, ContextLayerParameter, ContextLayerStyle
+    ContextLayer, ContextLayerStyle
 )
 
 
@@ -24,15 +24,11 @@ class ContextLayerSerializer(serializers.ModelSerializer):
         """Return parameters."""
         urls = obj.url.split('?')
         parameters = {}
-        if len(urls) == 1:
-            for parameter in obj.contextlayerparameter_set.all():
-                value = parameter.value
-                parameters[parameter.name] = value
-        else:
+        if len(urls) > 1:
             for param in urls[1].split('&'):
                 params = param.split('=')
-                if params[1].lower() != 'bbox':
-                    parameters[params[0]] = params[1]
+                if params[0].lower() != 'bbox':
+                    parameters[params[0]] = '='.join(params[1:])
         return parameters
 
     def get_style(self, obj: ContextLayer):
@@ -53,14 +49,6 @@ class ContextLayerSerializer(serializers.ModelSerializer):
 
     class Meta:  # noqa: D106
         model = ContextLayer
-        fields = '__all__'
-
-
-class ContextLayerParameterSerializer(serializers.ModelSerializer):
-    """Serializer for ContextLayerParameter."""
-
-    class Meta:  # noqa: D106
-        model = ContextLayerParameter
         fields = '__all__'
 
 
