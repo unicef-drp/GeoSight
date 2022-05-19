@@ -69,11 +69,6 @@ class IconTerm(models.Model):
         null=True,
         blank=True
     )
-    white_icon = models.FileField(
-        upload_to='icons',
-        null=True,
-        blank=True
-    )
 
     class Meta:  # noqa: D106
         abstract = True

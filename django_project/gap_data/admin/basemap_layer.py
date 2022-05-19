@@ -17,10 +17,9 @@ class BasemapLayerAdmin(admin.ModelAdmin):
     """BasemapLayer admin."""
 
     list_display = (
-        'name', 'url', 'icon', 'show_on_map', 'enable_by_default', 'instance'
+        'name', 'url', 'icon'
     )
     inlines = (BasemapLayerParameterInline,)
-    list_editable = ('show_on_map', 'enable_by_default')
 
 
 admin.site.register(BasemapLayer, BasemapLayerAdmin)
