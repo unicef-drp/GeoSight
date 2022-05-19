@@ -1,15 +1,15 @@
 """Indicator Creation View."""
-from django.shortcuts import redirect, reverse, render, get_object_or_404
+from django.shortcuts import redirect, reverse, render
 
 from gap_dashboard.forms.indicator import IndicatorForm
 from gap_dashboard.views.admin._base import AdminView
-from gap_data.models import Indicator
+from gap_data.models import Indicator, IndicatorRule
 
 
 class IndicatorCreateView(AdminView):
     """Indicator Creation View."""
 
-    template_name = 'dashboard/admin/indicator/form.html'
+    template_name = 'admin/indicator/form.html'
 
     @property
     def page_title(self):
@@ -24,7 +24,7 @@ class IndicatorCreateView(AdminView):
     def get_context_data(self, **kwargs) -> dict:
         """Return context data."""
         context = super().get_context_data(**kwargs)
-        scenarios = []
+        rules = []
         from_id = self.request.GET.get('from')
         initial = None
         if from_id:
@@ -33,7 +33,7 @@ class IndicatorCreateView(AdminView):
                 initial = IndicatorForm.model_to_initial(indicator)
                 initial['name'] = None
                 initial['description'] = None
-                scenarios = indicator.scenarios_dict()
+                rules = indicator.rules_dict()
             except Indicator.DoesNotExist:
                 pass
 
@@ -42,7 +42,7 @@ class IndicatorCreateView(AdminView):
                 'form': IndicatorForm(
                     initial=initial,
                 ),
-                'scenarios': scenarios,
+                'rules': rules,
                 'is_create': True
             }
         )
@@ -50,27 +50,27 @@ class IndicatorCreateView(AdminView):
 
     def post(self, request, **kwargs):
         """Create indicator."""
-        form = IndicatorForm(
-            request.POST
-        )
+        form = IndicatorForm(request.POST)
         if form.is_valid():
             indicator = form.save()
-            # rule = request.POST.get(f'scenario_{scenario.id}_rule', None)
-            # name = request.POST.get(f'scenario_{scenario.id}_name', None)
-            # color = request.POST.get(f'scenario_{scenario.id}_color', None)
-            # if rule and name:
-            #     scenario_rule, created = \
-            #         IndicatorScenarioRule.objects.get_or_create(
-            #             indicator=indicator,
-            #             scenario_level=scenario
-            #         )
-            #     scenario_rule.name = name
-            #     scenario_rule.rule = rule
-            #     scenario_rule.color = color
-            #     scenario_rule.save()
+            for req_key, value in request.POST.dict().items():
+                if 'rule_name_' in req_key:
+                    idx = req_key.replace('rule_name_', '')
+                    name = request.POST.get(f'rule_name_{idx}', None)
+                    rule = request.POST.get(f'rule_rule_{idx}', None)
+                    color = request.POST.get(f'rule_color_{idx}', None)
+                    if rule and name:
+                        indicator_rule, created = \
+                            IndicatorRule.objects.get_or_create(
+                                indicator=indicator,
+                                name=name
+                            )
+                        indicator_rule.rule = rule
+                        indicator_rule.color = color
+                        indicator_rule.save()
             return redirect(
                 reverse(
-                    'indicator-management-view', args=[self.instance.slug]
+                    'indicator-management-view', args=[]
                 )
             )
         context = self.get_context_data(**kwargs)

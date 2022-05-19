@@ -183,3 +183,16 @@ form .header span {
     background: var(--almost-white-color);
     cursor: not-allowed;
 }
+
+.fa-plus-circle,
+.fa-minus-circle {
+    cursor: pointer;
+}
+
+.fa-plus-circle {
+    color: green;
+}
+
+.fa-minus-circle {
+    color: red;
+}

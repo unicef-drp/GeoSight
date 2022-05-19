@@ -1,4 +1,4 @@
-{% extends 'dashboard/admin/indicator/form.html' %}
+{% extends 'admin/indicator/form.html' %}
 {% load static %}
 {% block extrastyle %}
     <style>
@@ -10,7 +10,7 @@
         }
 
         p label input,
-        .scenario-name-rule input {
+        .name-rule input {
             margin-right: 5px;
             cursor: pointer;
         }
@@ -18,7 +18,7 @@
 {% endblock %}
 {% block extrascripts %}
     <script>
-        $('#content-view p label, .scenario-name-rule').prepend('<input type="checkbox">')
+        $('#content-view p label, .name-rule').prepend('<input type="checkbox">')
         $('p[data-field-name="name"] input').remove();
         $('p[data-field-name="name"] br').remove();
         $('p[data-field-name="name"]').append('<div id="name-list"></div>');
@@ -27,15 +27,16 @@
         {% endfor %}
         $('p[data-field-name="description"]').remove();
         $('#content-view select, #content-view input').prop('disabled', true);
-        $('.scenario-name-rule input').prop('disabled', false);
+        $('.name-rule input').prop('disabled', false);
         $('#content-view p label input').prop('disabled', false);
         $('#content-view p label input').click(function () {
             $(this).closest('p').find('select, input').prop('disabled', !$(this).is(':checked'));
             $(this).prop('disabled', false);
         })
-        $('.scenario-name-rule input').click(function () {
+        $('.name-rule input').click(function () {
             $(this).closest('tr').find('select, input').prop('disabled', !$(this).is(':checked'));
             $(this).prop('disabled', false);
         })
+        $('input[name="csrfmiddlewaretoken"]').prop('disabled', false);
     </script>
 {% endblock %}

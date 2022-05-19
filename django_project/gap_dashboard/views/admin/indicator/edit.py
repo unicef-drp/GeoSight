@@ -4,76 +4,73 @@ from django.shortcuts import redirect, reverse, render, get_object_or_404
 
 from gap_dashboard.forms.indicator import IndicatorForm
 from gap_dashboard.views.admin._base import AdminView
-from gap_data.models import Indicator
+from gap_data.models import Indicator, IndicatorRule
 
 
 class IndicatorEditView(AdminView):
     """Indicator Editor View."""
 
-    template_name = 'dashboard/admin/indicator/form.html'
+    template_name = 'admin/indicator/form.html'
+
+    @property
+    def page_title(self):
+        """Return page title."""
+        indicator = get_object_or_404(
+            Indicator, id=self.kwargs.get('pk', '')
+        )
+        return f'Edit Indicator : {indicator.full_name}'
 
     @property
     def content_title(self):
         """Return content title."""
-        try:
-            indicator = get_object_or_404(
-                Indicator, id=self.kwargs.get('pk', '')
-            )
-        except Indicator.DoesNotExist:
-            raise Http404('Indicator does not exist')
-        return f'<span>Edit Indicator : {indicator.full_name}</span>'
+        return ''
 
     def get_context_data(self, **kwargs) -> dict:
         """Return context data."""
         context = super().get_context_data(**kwargs)
-        try:
-            indicator = get_object_or_404(
-                Indicator, id=self.kwargs.get('pk', '')
-            )
-        except Indicator.DoesNotExist:
-            raise Http404('Indicator does not exist')
+        indicator = get_object_or_404(
+            Indicator, id=self.kwargs.get('pk', '')
+        )
 
-        scenarios = indicator.scenarios_dict()
+        rules = indicator.rules_dict()
         context.update(
             {
                 'form': IndicatorForm(
                     initial=IndicatorForm.model_to_initial(indicator)
                 ),
-                'scenarios': scenarios
+                'rules': rules
             }
         )
         return context
 
     def post(self, request, **kwargs):
         """Save indicator."""
-        try:
-            indicator = get_object_or_404(
-                Indicator, id=self.kwargs.get('pk', '')
-            )
-        except Indicator.DoesNotExist:
-            raise Http404('Indicator does not exist')
-
+        indicator = get_object_or_404(
+            Indicator, id=self.kwargs.get('pk', '')
+        )
         form = IndicatorForm(
             request.POST,
             instance=indicator
         )
         if form.is_valid():
             indicator = form.save()
+            indicator.indicatorrule_set.all().delete()
 
-            # save the scenario
-            # rule = request.POST.get(f'scenario_{scenario.id}_rule', None)
-            # name = request.POST.get(f'scenario_{scenario.id}_name', None)
-            # color = request.POST.get(f'scenario_{scenario.id}_color', None)
-            # if name:
-            #     scenario_rule, created = \
-            #         IndicatorScenarioRule.objects.get_or_create(
-            #             indicator=indicator,
-            #             scenario_level=scenario
-            #         )
-            #     scenario_rule.name = name
-            #     scenario_rule.rule = rule
-            #     scenario_rule.color = color
-            #     scenario_rule.save()
+            for req_key, value in request.POST.dict().items():
+                if 'rule_name_' in req_key:
+                    idx = req_key.replace('rule_name_', '')
+                    name = request.POST.get(f'rule_name_{idx}', None)
+                    rule = request.POST.get(f'rule_rule_{idx}', None)
+                    color = request.POST.get(f'rule_color_{idx}', None)
+                    if rule and name:
+                        indicator_rule, created = \
+                            IndicatorRule.objects.get_or_create(
+                                indicator=indicator,
+                                name=name
+                            )
+                        indicator_rule.rule = rule
+                        indicator_rule.color = color
+                        indicator_rule.save()
             return redirect(
                 reverse(
                     'indicator-management-view', args=[]

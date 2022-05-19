@@ -1,9 +1,9 @@
-{% extends 'dashboard/_base.html' %}
+{% extends '_base.html' %}
 {% load static %}
 
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static 'libs/leaflet/1.5.1/leaflet.css' %}"/>
-    <link rel="stylesheet" href="{% static 'css/dashboard/map.css' %}" type="text/css" media="screen, projection"/>
+    <link rel="stylesheet" href="{% static 'css/map.css' %}" type="text/css" media="screen, projection"/>
     <style>
         .feature-value-popup table {
             width: 100%;

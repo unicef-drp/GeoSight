@@ -16,8 +16,8 @@ class IndicatorSerializer(serializers.ModelSerializer):
 
     def get_rules(self, obj: Indicator):
         """Return rules."""
-        output = {}
-        for indicator_rule in obj.indicatorscenariorule_set.all():
+        output = []
+        for indicator_rule in obj.indicatorrule_set.all():
             rules = indicator_rule.rule.replace(' ', '').split('and')
             try:
                 rule = rules[1].replace(
@@ -31,25 +31,16 @@ class IndicatorSerializer(serializers.ModelSerializer):
             except ValueError:
                 rule = ''
 
-            output[str(indicator_rule.scenario_level.level)] = {
+            output.append({
                 'name': indicator_rule.name,
                 'threshold': rule
-            }
+            })
         return output
 
     class Meta:  # noqa: D106
         model = Indicator
         fields = ('id', 'group', 'name', 'show_in_context_analysis', 'rules',
                   'dashboard_link', 'source', 'description')
-
-    def to_representation(self, instance: Indicator):
-        """Return to_representation."""
-        data = super(IndicatorSerializer, self).to_representation(instance)
-        for indicator_rule in instance.indicatorscenariorule_set.all():
-            data[
-                f'scenario_{indicator_rule.scenario_level.level}'
-            ] = indicator_rule.name
-        return data
 
 
 class IndicatorValueSerializer(serializers.ModelSerializer):

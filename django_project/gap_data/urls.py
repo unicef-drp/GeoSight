@@ -3,13 +3,12 @@ from django.conf.urls import url
 from django.urls import include
 
 from gap_dashboard.views.backups import BackupsView
-from gap_dashboard.views.instances import InstancesView
+from gap_dashboard.views.dashboard import DashboardListView
 from gap_data.api.dashboard import DashboardData, DashboardReferenceGeojson
 from gap_data.api.download_file import (
     DownloadSharepointFile,
     DownloadBackupsFile
 )
-from gap_data.api.geometry import GeometryGeojsonAPI, GeometryDetailAPI
 from gap_data.api.indicator import (
     IndicatorValues, IndicatorValuesByGeometryAndLevel,
     IndicatorValuesByDateAndGeojson, IndicatorValuesByDate,
@@ -17,18 +16,6 @@ from gap_data.api.indicator import (
     IndicatorShow, IndicatorHide, IndicatorDetailAPI
 )
 
-geometry_api = [
-    url(
-        r'^(?P<geometry_level>.+)/(?P<date>.+).geojson',
-        GeometryGeojsonAPI.as_view(),
-        name='geometry-geojson-api'
-    ),
-    url(
-        r'^(?P<pk>.+)',
-        GeometryDetailAPI.as_view(),
-        name='geometry-detail-api'
-    ),
-]
 indicator_api = [
     url(
         r'^(?P<pk>\d+)/values/by-geometry/(?P<geometry_pk>\d+)/',
@@ -86,25 +73,27 @@ api = [
         DashboardData.as_view(),
         name='dashboard-data-api'
     ),
-    
-    url(r'^geometry/', include(geometry_api)),
+
     url(r'^indicator/', include(indicator_api)),
+]
+
+download = [
     url(
-        r'^download/sharepoint',
+        r'^sharepoint',
         DownloadSharepointFile.as_view(),
         name='download-sharepoint'
     ),
-]
-
-urlpatterns = [
-    url(r'^backups', BackupsView.as_view(), name='backups-view'),
     url(
-        r'^download/backups',
+        r'^backups',
         DownloadBackupsFile.as_view(),
         name='download-backups'
     ),
+]
+urlpatterns = [
+    url(r'^backups', BackupsView.as_view(), name='backups-view'),
+    url(r'^download/', include(download)),
     url(r'^api/', include(api)),
     url(r'^', include('gap_harvester.urls')),
     url(r'^', include('gap_dashboard.urls')),
-    url(r'^', InstancesView.as_view(), name='instances-view'),
+    url(r'^', DashboardListView.as_view(), name='dashboard-view'),
 ]

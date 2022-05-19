@@ -13,7 +13,7 @@ from core.views.proxy import ProxyView
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^django-admin/', admin.site.urls),
     url(r'^auth/', include('django.contrib.auth.urls')),
 ]
 

@@ -85,10 +85,10 @@ class SharepointHarvester(BaseHarvester):
         """Run the harvester."""
         indicator = self.harvester.indicator
         rule_names = [name.lower() for name in list(
-            indicator.indicatorscenariorule_set.values_list('name', flat=True)
+            indicator.indicatorrule_set.values_list('name', flat=True)
         )]
         rules = list(
-            indicator.indicatorscenariorule_set.values_list('rule', flat=True)
+            indicator.indicatorrule_set.values_list('rule', flat=True)
         )
         default_attr = SharepointHarvester.additional_attributes()
 

@@ -1,4 +1,8 @@
-"""Geometry model."""
+"""Geometry model.
+
+TODO:
+ This will be moved to georepo
+"""
 import datetime
 
 from django.contrib.gis.db import models

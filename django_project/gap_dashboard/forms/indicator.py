@@ -14,11 +14,16 @@ class IndicatorForm(forms.ModelForm):
     frequency = forms.IntegerField(
         help_text=frequency_help_text
     )
+    group = forms.ChoiceField()
 
     def __init__(self, *args, **kwargs):
         """Init."""
         super().__init__(*args, **kwargs)
         self.fields['aggregation_behaviour'].label = 'Reporting Behaviour'
+        self.fields['group'].choices = [('', '')] + [
+            (group.name, group.name)
+            for group in IndicatorGroup.objects.all().order_by('name')
+        ]
 
         try:
             if self.data['group']:

@@ -24,7 +24,7 @@ from gap_data.serializer.indicator import (
 
 
 class IndicatorValuesByGeometry(APIView):
-    """Return Scenario value for the specific geometry for all date."""
+    """Return value for the specific geometry for all date."""
 
     permission_classes = (
         IsAuthenticated, AdminAuthenticationPermission,
@@ -78,7 +78,7 @@ class IndicatorValuesByGeometry(APIView):
 
 
 class IndicatorValuesByDate(APIView):
-    """Return Scenario value for the specific geometry.
+    """Return value for the specific geometry.
 
     Geometry level is the level that the value needs to get
     Return as list of value
@@ -128,14 +128,14 @@ class IndicatorValuesByDate(APIView):
 
 
 class IndicatorValuesByDateAndGeojson(IndicatorValuesByDate):
-    """Return geojson Scenario value for the specific geometry.
+    """Return geojson value for the specific geometry.
 
     Geometry level is the level that the value needs to get
     Return as geojson of geometry
     """
 
     def get(self, request, pk, geometry_identifier, geometry_level, date):
-        """Return geojson Scenario value for the specific geometry."""
+        """Return geojson value for the specific geometry."""
         try:
             values = self.values(
                 pk, geometry_identifier, geometry_level, date
@@ -170,7 +170,7 @@ class IndicatorValuesByDateAndGeojson(IndicatorValuesByDate):
 
 
 class IndicatorValuesByGeometryAndLevel(APIView):
-    """Return Scenario value for the specific geometry.
+    """Return value for the specific geometry.
 
     Geometry level is the level that the value needs to get
     """
@@ -223,7 +223,7 @@ class IndicatorValuesByGeometryAndLevel(APIView):
 
 
 class IndicatorValues(APIView):
-    """Return Scenario value for country with the indicator geometry level."""
+    """Return value for country with the indicator geometry level."""
 
     authentication_classes = (
         IndicatorHarvesterTokenAndBearerAuthentication,
@@ -298,7 +298,7 @@ class IndicatorValues(APIView):
 
 
 class IndicatorValuesBatch(APIView):
-    """Return Scenario value for country with the indicator geometry level."""
+    """Return value for country with the indicator geometry level."""
 
     authentication_classes = (
         IndicatorHarvesterTokenAndBearerAuthentication,

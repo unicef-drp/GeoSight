@@ -4,9 +4,8 @@ from datetime import date
 from django.contrib.gis.db import models
 from django.db.models import Count, Sum, Avg
 from django.shortcuts import reverse
-from django.utils.translation import ugettext_lazy as _
 
-from core.models.general import AbstractTerm, AbstractSource, PermissionModel
+from core.models.general import AbstractTerm, AbstractSource
 from gap_data.models.indicator.indicator_attributes import (
     IndicatorFrequency, IndicatorGroup
 )
@@ -39,7 +38,7 @@ class IndicatorValueRejectedError(Exception):
     pass
 
 
-class Indicator(AbstractTerm, AbstractSource, PermissionModel):
+class Indicator(AbstractTerm, AbstractSource):
     """The indicator model."""
 
     shortcode = models.CharField(
@@ -65,12 +64,6 @@ class Indicator(AbstractTerm, AbstractSource, PermissionModel):
     )
     geometry_reporting_units = models.ManyToManyField(
         Geometry, blank=True
-    )
-    show_in_context_analysis = models.BooleanField(
-        default=True,
-        help_text=_(
-            'Showing this indicator on Context Analysis.'
-        )
     )
     unit = models.CharField(
         max_length=64,
@@ -135,22 +128,8 @@ class Indicator(AbstractTerm, AbstractSource, PermissionModel):
         )
     )
 
-    # order of indicator rendered on the list
-    order = models.IntegerField(
-        default=0
-    )
-
     def __str__(self):
         return self.full_name
-
-    def save(self, *args, **kwargs):
-        """Save model."""
-        if not self.order:
-            self.order = Indicator.objects.count()
-        super(Indicator, self).save(*args, **kwargs)
-
-    class Meta:  # noqa: D106
-        ordering = ('order',)
 
     @property
     def full_name(self):
@@ -173,62 +152,39 @@ class Indicator(AbstractTerm, AbstractSource, PermissionModel):
     @staticmethod
     def list():
         """Return list of indicators."""
-        return Indicator.objects.filter(show_in_context_analysis=True)
+        return Indicator.objects.all()
 
     @property
     def legends(self):
         """Return legend of indicator."""
         output = {}
-        for indicator_rule in self.indicatorscenariorule_set.all():
-            color = indicator_rule.color
-            if not indicator_rule.color:
-                color = indicator_rule.scenario_level.background_color
+        for indicator_rule in self.indicatorrule_set.all():
             output[indicator_rule.name] = {
-                'color': color,
+                'color': indicator_rule.color,
                 'rule_str': indicator_rule.rule_str
 
             }
         return output
 
-    def scenario_rule(self, level: int):
-        """Return scenario rule for specific level number."""
-        return self.indicatorscenariorule_set.filter(
-            scenario_level__level=level).first()
-
-    def scenario_level(self, value):
-        """Return scenario level of the value."""
-        if value is not None:
-            # check the rule
-            for indicator_rule in self.indicatorscenariorule_set.all():
-                try:
-                    if indicator_rule.rule and eval(
-                            indicator_rule.rule.replace(
-                                'x', f'{value}').lower()):
-                        return indicator_rule
-                except NameError:
-                    pass
-        return None
-
-    def scenarios_dict(self):
+    def rules_dict(self):
         """
-        Return scenarios in list of dict
+        Return rules in list of dict
         """
-        scenarios = []
-        for scenario in self.indicatorscenariorule_set.all():
-            scenarios.append({
-                'id': scenario.id,
-                'name': scenario.name,
-                'rule_name': scenario.name,
-                'rule_value': scenario.rule,
-                'rule_color': scenario.color,
+        rules = []
+        for rule in self.indicatorrule_set.all():
+            rules.append({
+                'id': rule.id,
+                'name': rule.name,
+                'value': rule.rule,
+                'color': rule.color,
             })
-        return scenarios
+        return rules
 
-    def scenario_rule_by_value(self, value):
-        """Return scenario level of the value."""
+    def rule_by_value(self, value):
+        """Return rules level of the value."""
         if value is not None:
             # check the rule
-            for indicator_rule in self.indicatorscenariorule_set.all():
+            for indicator_rule in self.indicatorrule_set.all():
                 try:
                     if eval(indicator_rule.rule.replace(
                             'x', f'{value}').lower()):
@@ -253,7 +209,7 @@ class Indicator(AbstractTerm, AbstractSource, PermissionModel):
 
     def serialize(self, geometry, value, attributes=None):
         """Serialize the data."""
-        scenario_rule = self.scenario_level(value)
+        rule = self.rule_by_value(value)
         values = {
             'indicator_id': self.id,
             'geometry_id': geometry.id,
@@ -261,10 +217,10 @@ class Indicator(AbstractTerm, AbstractSource, PermissionModel):
             'geometry_name': geometry.name,
             'value': value,
         }
-        if scenario_rule:
+        if rule:
             values.update({
-                'scenario_text': scenario_rule.name,
-                'background_color': scenario_rule.color,
+                'rule_text': rule.name,
+                'background_color': rule.color,
             })
         values.update(attributes if attributes else {})
         return values

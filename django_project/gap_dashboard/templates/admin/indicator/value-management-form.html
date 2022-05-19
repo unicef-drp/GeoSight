@@ -1,13 +1,13 @@
-{% extends 'dashboard/_base.html' %}main-button
+{% extends '_base.html' %}
 {% load static %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/dashboard/admin/indicator/value-management-form.css' %}" type="text/css" media="screen, projection"/>
+    <link rel="stylesheet" href="{% static 'css/admin/indicator/value-management-form.css' %}" type="text/css" media="screen, projection"/>
     <link rel="stylesheet" href="{% static 'libs/select2/4.1.0-rc.0/select2.min.css' %}" type="text/css" media="screen, projection"/>
     <script type="text/javascript" src="{% static 'libs/select2/4.1.0-rc.0/select2.min.js' %}"></script>
 {% endblock stylesheet %}
 
-{% block contentview %}
+{% block content %}
     <div class="modal" id="file-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <form class="modal-content">

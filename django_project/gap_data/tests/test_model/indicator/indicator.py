@@ -6,7 +6,7 @@ from django.test.testcases import TestCase
 from gap_data.models.indicator.indicator import Indicator, AggregationMethod
 from gap_data.tests.model_factories import (
     IndicatorF, IndicatorGroupF, IndicatorFrequencyF,
-    GeometryLevelNameF, GeometryF, IndicatorValueF, IndicatorScenarioRuleF
+    GeometryLevelNameF, GeometryF, IndicatorValueF, IndicatorRuleF
 )
 
 
@@ -71,16 +71,14 @@ class IndicatorTest(TestCase):
         IndicatorF(
             name='Name 1',
             group=group,
-            show_in_context_analysis=True,
             geometry_reporting_level=geometry_reporting_level
         )
         IndicatorF(
             name='Name 1',
             group=group,
-            show_in_context_analysis=False,
             geometry_reporting_level=geometry_reporting_level
         )
-        self.assertEquals(len(Indicator.list()), 1)
+        self.assertEquals(len(Indicator.list()), 2)
 
     def test_rules(self):
         """Check rules."""
@@ -91,11 +89,11 @@ class IndicatorTest(TestCase):
             geometry_reporting_level=geometry_reporting_level
         )
         rules = [
-            IndicatorScenarioRuleF(indicator=indicator, rule='x==1'),
-            IndicatorScenarioRuleF(indicator=indicator, rule='x==2 or x==3'),
-            IndicatorScenarioRuleF(indicator=indicator, rule='x>=4 and x<=5'),
-            IndicatorScenarioRuleF(indicator=indicator, rule='x>5'),
-            IndicatorScenarioRuleF(indicator=indicator, rule='x<5')
+            IndicatorRuleF(indicator=indicator, rule='x==1'),
+            IndicatorRuleF(indicator=indicator, rule='x==2 or x==3'),
+            IndicatorRuleF(indicator=indicator, rule='x>=4 and x<=5'),
+            IndicatorRuleF(indicator=indicator, rule='x>5'),
+            IndicatorRuleF(indicator=indicator, rule='x<5')
         ]
         for rule in rules:
             self.assertTrue(rule.name in indicator.legends.keys())
@@ -126,16 +124,16 @@ class IndicatorTest(TestCase):
             aggregation_method=AggregationMethod.MAJORITY
         )
         rules = [
-            IndicatorScenarioRuleF(
+            IndicatorRuleF(
                 indicator=indicator, rule='x==1'
             ),
-            IndicatorScenarioRuleF(
+            IndicatorRuleF(
                 indicator=indicator, rule='x==2 or x==3'
             ),
-            IndicatorScenarioRuleF(
+            IndicatorRuleF(
                 indicator=indicator, rule='x>=4 and x<=5'
             ),
-            IndicatorScenarioRuleF(
+            IndicatorRuleF(
                 indicator=indicator, rule='x>5'
             )
         ]
@@ -164,8 +162,8 @@ class IndicatorTest(TestCase):
             'geometry_code': geom_country.identifier,
             'geometry_name': geom_country.name,
             'value': 2.0,
-            'scenario_value': 2,
-            'scenario_text': rules[1].name,
+            'rule_value': 2,
+            'rule_text': rules[1].name,
             'text_color': None,
             'background_color': rules[1].color
         }

@@ -3,12 +3,14 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light box-shadow-bottom">
     <a class="navbar-brand mr-auto" href="/">
         <img src="{% if preferences.icon %}{{ preferences.icon }}{% endif %}">
-        <div class="title">{{ preferences.site_title }} {% if page_title %} - {{ page_title }}{% endif %}</div>
+        <div class="title">{{ preferences.site_title }} {% if page_title %} -
+            {{ page_title }}{% endif %}</div>
     </a>
     <div class="navigation-list row">
         {% if links %}
             <div class="navbar-options">
-                <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <a data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false">
                     Links <i class="fa fa-caret-down" aria-hidden="true"></i>
                 </a>
                 <ul class="dropdown-menu box-shadow-bottom">
@@ -22,8 +24,12 @@
         {% endif %}
         {% if user.is_authenticated %}
             <div class="navbar-options">
-                <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    {% if user.get_full_name %}{{ user.get_full_name }}{% else %}{{ user.get_username }}{% endif %} <i class="fa fa-caret-down" aria-hidden="true"></i>
+                <a data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false">
+                    {% if user.get_full_name %}
+                        {{ user.get_full_name }}{% else %}
+                        {{ user.get_username }}{% endif %} <i
+                        class="fa fa-caret-down" aria-hidden="true"></i>
                 </a>
                 <ul class="dropdown-menu box-shadow-bottom">
                     <li>
@@ -34,7 +40,7 @@
                             Staff section
                         </li>
                         <li>
-                            <a href="/admin/">{% trans "Django Admin" %}</a>
+                            <a href="{% url 'admin:index' %}">{% trans "Django Admin" %}</a>
                         </li>
                         <li>
                             <a href="{% url "backups-view" %}">{% trans "Backups" %}</a>
@@ -44,37 +50,21 @@
                         <li class="header-section">
                             Management
                         </li>
-                        {% if instance %}
-                            <li>
-                                <a id="nav-indicator-management" href="{% url "indicator-management-view" instance.slug %}" class="nav row" title="Indicator Management">
-                                    <table>
-                                        <tr>
-                                            <td class="icon"><i class="fa fa-th-list" aria-hidden="true"></i></td>
-                                            <td>Indicator</td>
-                                            <td class="right-icon"><a href="{% url "indicator-management-new" instance.slug %}"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></td>
-                                        </tr>
-                                    </table>
-                                </a>
-                            </li>
-                            <li>
-                                <a id="nav-geography-view" href="{% url "geography-management-view" instance.slug %}" class="nav" title="Geography Management">
-                                    <table>
-                                        <tr>
-                                            <td class="icon"><i class="fa fa-globe" aria-hidden="true"></i></td>
-                                            <td>Geography</td>
-                                            <td class="right-icon"><a href="{% url "geography-upload-view" instance.slug %}"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></td>
-                                        </tr>
-                                    </table>
-                                </a>
-                            </li>
-                        {% endif %}
                         <li>
-                            <a id="nav-instance-management" href="{% url "instance-management-view" %}" class="nav" title="Instance Management">
+                            <a id="nav-indicator-management"
+                               href="{% url "indicator-management-view" %}"
+                               class="nav row" title="Indicator Management">
                                 <table>
                                     <tr>
-                                        <td class="icon"><i class="fa fa-flag" aria-hidden="true"></i></td>
-                                        <td>Instance</td>
-                                        <td class="right-icon"><a href="{% url "instance-management-create" %}"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></td>
+                                        <td class="icon"><i
+                                                class="fa fa-th-list"
+                                                aria-hidden="true"></i></td>
+                                        <td>Indicator</td>
+                                        <td class="right-icon"><a
+                                                href="{% url "indicator-management-new" %}"><i
+                                                class="fa fa-plus-circle"
+                                                aria-hidden="true"></i></a>
+                                        </td>
                                     </tr>
                                 </table>
                             </a>
@@ -90,31 +80,4 @@
             </div>
         {% endif %}
     </div>
-    {% if instance %}
-        <div id="instance-selection-wrapper">
-            <div class="navbar-options">
-                <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    {{ instance }}
-                    <img src="{% if instance.icon %}{{ instance.icon.url }}{% else %}{% static "img/no-image-found.jpg" %}{% endif %}">
-                </a>
-                <ul class="dropdown-menu box-shadow-bottom">
-                    {% for category, instances in instance_categories.items %}
-                        <li class="header-section">{{ category }}</li>
-                        {% for instance in instances %}
-                            <li data-slug="{{ instance.slug }}">
-                                {{ instance.name }}
-                                <img src="{% if instance.icon %}{{ instance.icon }}{% else %}{% static "img/no-image-found.jpg" %}{% endif %}">
-                            </li>
-                        {% endfor %}
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    {% endif %}
 </nav>
-<script>
-    const currentInstance = {% if instance %} "{{ instance.slug }}" {% else %} "" {% endif %};
-    $('#instance-selection-wrapper li').click(function () {
-        window.location = window.location.href.replaceAll(currentInstance, $(this).data('slug'))
-    })
-</script>

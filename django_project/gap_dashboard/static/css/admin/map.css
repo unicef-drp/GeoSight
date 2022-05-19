@@ -67,10 +67,6 @@
     font-weight: 600;
 }
 
-#content .header .scenario-level {
-    float: right;
-}
-
 #content .header span {
     display: inline-block;
     padding-top: 3px;

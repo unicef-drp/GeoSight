@@ -63,13 +63,6 @@ html, body {
     padding: 7px;
 }
 
-#content .scenario-level {
-    display: inline-block;
-    margin-left: 5px;
-    font-weight: 300;
-    padding: 5px 10px;
-}
-
 #content .section {
     background: white;
     border-radius: 5px;

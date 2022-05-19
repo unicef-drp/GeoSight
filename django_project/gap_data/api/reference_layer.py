@@ -1,4 +1,7 @@
-"""Geometry API."""
+"""Geometry API.
+TODO:
+ This will be moved to georepo
+"""
 
 from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404

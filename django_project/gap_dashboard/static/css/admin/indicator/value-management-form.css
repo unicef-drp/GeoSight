@@ -140,10 +140,6 @@
     padding: 5px;
 }
 
-#content-view {
-    padding-top: 52px;
-}
-
 #content .section {
     overflow: visible !important;
     position: relative;
@@ -230,4 +226,8 @@
 
 .select2-selection__choice {
     margin-top: 0 !important;
+}
+
+.container-page-content {
+    padding: 0;
 }

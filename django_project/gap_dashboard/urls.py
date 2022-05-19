@@ -43,30 +43,42 @@ harvester_form_url = [
         SharepointHarvesterView.as_view(),
         name=str(SharepointHarvesterView.harvester_class).split("'")[1]
     ),
+    url(
+        r'^',
+        HarvesterIndicatorDetail.as_view(),
+        name='harvester-indicator-detail'
+    ),
 ]
 
 indicator_url = [
     url(
-        r'^(?P<pk>\d+)/harvester/',
+        r'^harvester/',
         include(harvester_form_url)
     ),
     url(
-        r'^(?P<pk>\d+)/harvester',
-        HarvesterIndicatorDetail.as_view(),
-        name='harvester-indicator-detail'
-    ),
-    url(
-        r'^(?P<pk>\d+)/value-manager-map',
+        r'^value-manager-map$',
         IndicatorValueManagementMapView.as_view(),
         name='indicator-value-mapview-manager'
     ),
     url(
-        r'^(?P<pk>\d+)/value-manager-form',
+        r'^value-manager-form',
         IndicatorValueManagementTableView.as_view(),
         name='indicator-value-form-manager'
     ),
+    url(
+        r'^edit',
+        IndicatorEditView.as_view(),
+        name='indicator-edit'
+    ),
+]
 
-    # this is for harvester with global indicators
+admin_indicator_url = [
+    url(r'^(?P<pk>\d+)/', include(indicator_url)),
+    url(
+        r'^harvester/(?P<uuid>[0-9a-f-]+)',
+        HarvesterDetail.as_view(),
+        name='harvester-detail'
+    ),
     url(
         r'^meta-ingestor/(?P<uuid>[0-9a-f-]+)',
         MetaIngestorView.as_view(),
@@ -76,23 +88,6 @@ indicator_url = [
         r'^meta-ingestor',
         MetaIngestorView.as_view(),
         name='meta-ingestor-view'
-    ),
-]
-
-dashboard_url = [
-    url(r'^indicator/', include(indicator_url)),
-    url(
-        r'^harvester/(?P<uuid>[0-9a-f-]+)',
-        HarvesterDetail.as_view(),
-        name='harvester-detail'
-    ),
-]
-
-admin_indicator_url = [
-    url(
-        r'^(?P<pk>\d+)/edit',
-        IndicatorEditView.as_view(),
-        name='indicator-edit'
     ),
     url(
         r'^create',
@@ -113,9 +108,13 @@ admin_indicator_url = [
 
 admin_url = [
     url(r'^indicator/', include(admin_indicator_url)),
+    url(
+        r'^harvester/(?P<uuid>[0-9a-f-]+)',
+        HarvesterDetail.as_view(),
+        name='harvester-detail'
+    ),
 ]
 
 urlpatterns = [
-    url(r'^dashboard/', include(dashboard_url)),
     url(r'^admin/', include(admin_url)),
 ]

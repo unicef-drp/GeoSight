@@ -2,7 +2,6 @@
 import datetime
 import json
 
-from django.http import Http404
 from django.shortcuts import redirect, reverse, get_object_or_404
 
 from gap_dashboard.views.admin._base import AdminView
@@ -14,103 +13,112 @@ from gap_data.serializer.reference_layer import GeometryContextSerializer
 class IndicatorValueManagementMapView(AdminView):
     """Indicator Value Management Map View."""
 
-    template_name = 'dashboard/admin/indicator/value-management-map.html'
+    template_name = 'admin/indicator/value-management-map.html'
     indicator = None
+
+    @property
+    def page_title(self):
+        """Return page title."""
+        self.indicator = get_object_or_404(
+            Indicator, id=self.kwargs.get('pk', '')
+        )
+        return f'Indicator Value Manager Map : {self.indicator.full_name} '
 
     @property
     def content_title(self):
         """Return content title."""
-        return f'Indicator Value Manager Map : {self.indicator.full_name} '
+        return ''
 
     def get_context_data(self, **kwargs) -> dict:
         """Return context data."""
+        self.indicator = get_object_or_404(
+            Indicator, id=self.kwargs.get('pk', '')
+        )
         context = super().get_context_data(**kwargs)
-        try:
-            self.indicator = self.instance.indicators.get(
-                id=self.kwargs.get('pk', '')
-            )
-
-            legends = {
-                'NODATA': {
-                    'name': 'No Data',
-                    'color': 'gray'
-                },
-                'LATESTDATAFOUND': {
-                    'name': 'Has Data',
-                    'color': 'green'
-                },
-                'NEEDUPDATE': {
-                    'name': 'Need Update Data',
-                    'color': 'red'
-                }
+        legends = {
+            'NODATA': {
+                'name': 'No Data',
+                'color': 'gray'
+            },
+            'LATESTDATAFOUND': {
+                'name': 'Has Data',
+                'color': 'green'
+            },
+            'NEEDUPDATE': {
+                'name': 'Need Update Data',
+                'color': 'red'
             }
-            context.update(
-                {
-                    'indicator': self.indicator,
-                    'geometry': json.loads(
-                        json.dumps(
-                            GeometryContextSerializer(
-                                self.indicator.reporting_units,
-                                many=True).data
+        }
+        context.update(
+            {
+                'indicator': self.indicator,
+                'geometry': json.loads(
+                    json.dumps(
+                        GeometryContextSerializer(
+                            self.indicator.reporting_units,
+                            many=True).data
+                    )
+                ),
+                'geometry_has_updated_value': list(
+                    set(
+                        self.indicator.query_value(
+                            datetime.date.today()
+                        ).values_list('geometry', flat=True)
+                    )
+                ),
+                'geometry_has_value': list(
+                    set(
+                        self.indicator.indicatorvalue_set.values_list(
+                            'geometry', flat=True
                         )
-                    ),
-                    'geometry_has_updated_value': list(
-                        set(
-                            self.indicator.query_value(
-                                datetime.date.today()
-                            ).values_list('geometry', flat=True)
-                        )
-                    ),
-                    'geometry_has_value': list(
-                        set(
-                            self.indicator.indicatorvalue_set.values_list(
-                                'geometry', flat=True
-                            )
-                        )
-                    ),
-                    'legends': legends,
-                    'url_value_by_geometry': reverse(
-                        'indicator-values-by-geometry', args=[
-                            self.indicator.id, 0
-                        ])
-                }
-            )
-            return context
-        except Indicator.DoesNotExist:
-            raise Http404('Indicator does not exist')
+                    )
+                ),
+                'legends': legends,
+                'url_value_by_geometry': reverse(
+                    'indicator-values-by-geometry', args=[
+                        self.indicator.id, 0
+                    ])
+            }
+        )
+        return context
 
 
 class IndicatorValueManagementTableView(AdminView):
     """Indicator Value Management Form View."""
 
-    template_name = 'dashboard/admin/indicator/value-management-form.html'
+    template_name = 'admin/indicator/value-management-form.html'
     indicator = None
 
     @property
-    def content_title(self):
-        """Return content title."""
+    def page_title(self):
+        """Return page title."""
+        self.indicator = get_object_or_404(
+            Indicator, id=self.kwargs.get('pk', '')
+        )
         return (
-            f'<span>Indicator Value Manager Form</span> : '
+            f'Indicator Value Manager Form : '
             f'{self.indicator.full_name} '
         )
 
     @property
-    def context_view(self) -> dict:
-        """Return context for specific view by instance."""
-        try:
-            self.indicator = self.instance.indicators.get(
-                id=self.kwargs.get('pk', '')
-            )
+    def content_title(self):
+        """Return content title."""
+        return ''
 
-            context = {
-                'indicator': self.indicator,
-                'geometry_reporting_units':
-                    self.indicator.reporting_units.order_by('name'),
-                'values': self.indicator.indicatorvalue_set.order_by('date')
-            }
-            return context
-        except Indicator.DoesNotExist:
-            raise Http404('Indicator does not exist')
+    @property
+    def context_view(self) -> dict:
+        """Return context."""
+        self.indicator = get_object_or_404(
+            Indicator, id=self.kwargs.get('pk', '')
+        )
+
+        context = {
+            'indicator': self.indicator,
+            'geometry_reporting_units':
+                self.indicator.reporting_units.order_by('name'),
+            'values': self.indicator.indicatorvalue_set.order_by('date')
+        }
+        return context
 
     def post(self, request, **kwargs):
         """Save value of indicator."""
@@ -160,6 +168,6 @@ class IndicatorValueManagementTableView(AdminView):
 
         return redirect(
             reverse(
-                'indicator-management-view', args=[self.instance.slug]
+                'indicator-management-view', args=[]
             )
         )

@@ -1,6 +1,6 @@
 """Multi Indicator Editor View."""
 from django.http import Http404
-from django.shortcuts import redirect, reverse
+from django.shortcuts import redirect, reverse, get_object_or_404
 
 from gap_dashboard.forms.indicator import IndicatorForm
 from gap_dashboard.views.admin._base import AdminView
@@ -10,17 +10,21 @@ from gap_data.models import Indicator
 class IndicatorMultiEditView(AdminView):
     """Multi Indicator Editor View."""
 
-    template_name = 'dashboard/admin/indicator/form-multi-edit.html'
+    template_name = 'admin/indicator/form-multi-edit.html'
+
+    @property
+    def page_title(self):
+        """Return page title."""
+        return 'Multi Edit Indicators'
 
     @property
     def content_title(self):
         """Return content title."""
-        return '<span>Multi Edit Indicators</span>'
+        return ''
 
     def get_context_data(self, **kwargs) -> dict:
         """Return context data."""
         context = super().get_context_data(**kwargs)
-        scenarios_by_id = {}
         initial = {}
         indicators = []
         ids = self.request.GET.get('ids')
@@ -40,40 +44,15 @@ class IndicatorMultiEditView(AdminView):
                     except KeyError:
                         initial[key] = value
 
-                # check scenario
-                # If there are differente scenarios values, put it empty
-                scenarios = indicator.scenarios_dict()
-                for scenario in scenarios:
-                    if scenario['id'] not in scenarios_by_id:
-                        scenarios_by_id[scenario['id']] = {}
-                        scenarios_by_id[scenario['id']][
-                            'id'] = scenario['id']
-                        scenarios_by_id[scenario['id']][
-                            'name'] = scenario['name']
-                    for key in ['rule_name', 'rule_color', 'rule_value']:
-                        try:
-                            if scenario[key] != scenarios_by_id[
-                                scenario['id']
-                            ][key]:
-                                scenarios_by_id[scenario['id']][key] = ''
-                        except KeyError:
-                            scenarios_by_id[scenario['id']][key] = scenario[
-                                key]
-
             except Indicator.DoesNotExist:
                 raise Http404(f'Indicator with id {_id} does not exist')
-
-        scenarios = []
-        for id, value in scenarios_by_id.items():
-            scenarios.append(value)
 
         context.update(
             {
                 'form': IndicatorForm(
                     initial=initial,
                 ),
-                'indicators': indicators,
-                'scenarios': scenarios
+                'indicators': indicators
             }
         )
         return context
@@ -82,53 +61,30 @@ class IndicatorMultiEditView(AdminView):
         """Save indicators."""
         ids = self.request.GET.get('ids')
         for _id in ids.split(','):
-            try:
-                indicator = Indicator.objects.get(id=_id)
-                data = request.POST.copy()
-                for key, field in IndicatorForm().fields.items():
-                    if key not in data:
-                        value = getattr(indicator, key)
-                        try:
-                            if key in ['group']:
-                                value = value.name
-                            elif key == 'frequency':
-                                value = value.frequency
-                            else:
-                                value = value.pk
-                        except AttributeError:
-                            pass
-                        data[key] = value
+            indicator = get_object_or_404(
+                Indicator, id=_id
+            )
+            data = request.POST.copy()
+            for key, field in IndicatorForm().fields.items():
+                if key not in data:
+                    value = getattr(indicator, key)
+                    try:
+                        if key in ['group']:
+                            value = value.name
+                        elif key == 'frequency':
+                            value = value.frequency
+                        else:
+                            value = value.pk
+                    except AttributeError:
+                        pass
+                    data[key] = value
 
-                form = IndicatorForm(
-                    data,
-                    instance=indicator
-                )
-                if form.is_valid():
-                    indicator = form.save()
-
-                    # save scenario
-                    # rule = request.POST.get(
-                    #     f'scenario_{scenario.id}_rule', None
-                    # )
-                    # name = request.POST.get(
-                    #     f'scenario_{scenario.id}_name', None
-                    # )
-                    # color = request.POST.get(
-                    #     f'scenario_{scenario.id}_color', None
-                    # )
-                    # if rule and name:
-                    #     scenario_rule, created = \
-                    #         IndicatorScenarioRule.objects.get_or_create(
-                    #             indicator=indicator,
-                    #             scenario_level=scenario
-                    #         )
-                    #     scenario_rule.name = name
-                    #     scenario_rule.rule = rule
-                    #     scenario_rule.color = color
-                    #     scenario_rule.save()
-
-            except Indicator.DoesNotExist:
-                raise Http404(f'Indicator with id {_id} does not exist')
+            form = IndicatorForm(
+                data,
+                instance=indicator
+            )
+            if form.is_valid():
+                indicator = form.save()
         return redirect(
             reverse(
                 'indicator-management-view', args=[]

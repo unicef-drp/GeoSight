@@ -4,7 +4,7 @@ from django.test.testcases import TestCase
 from gap_data.tests.model_factories import (
     IndicatorF, IndicatorGroupF,
     GeometryLevelNameF, GeometryF,
-    IndicatorScenarioRuleF
+    IndicatorRuleF
 )
 
 
@@ -18,10 +18,10 @@ class BaseHarvesterTest(TestCase):
             group=IndicatorGroupF(),
             geometry_reporting_level=level
         )
-        IndicatorScenarioRuleF(indicator=self.indicator, rule='x==1'),
-        IndicatorScenarioRuleF(indicator=self.indicator, rule='x==2'),
-        IndicatorScenarioRuleF(indicator=self.indicator, rule='x==3'),
-        IndicatorScenarioRuleF(indicator=self.indicator, rule='x==4'),
+        IndicatorRuleF(indicator=self.indicator, rule='x==1'),
+        IndicatorRuleF(indicator=self.indicator, rule='x==2'),
+        IndicatorRuleF(indicator=self.indicator, rule='x==3'),
+        IndicatorRuleF(indicator=self.indicator, rule='x==4'),
 
         GeometryF(
             identifier='A',

@@ -201,7 +201,7 @@ class ExcelHarvester(BaseHarvester):
                                     )
                                     continue
                             except ValueError:
-                                rules = indicator.indicatorscenariorule_set
+                                rules = indicator.indicatorrule_set
                                 rule = rules.filter(
                                     name__iexact=value).first()
                                 if not rule:

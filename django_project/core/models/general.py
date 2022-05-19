@@ -72,29 +72,3 @@ class IconTerm(models.Model):
 
     class Meta:  # noqa: D106
         abstract = True
-
-
-# AGGREGATION METHOD
-class PermissionLevels(object):
-    """Class that hold Permission Level quick variable with string."""
-
-    PUBLIC = 'Public'
-    SIGNIN = 'Signin'
-    ADMIN = 'Admin'
-
-
-class PermissionModel(models.Model):
-    """Abstract model for Permission."""
-
-    access_level = models.CharField(
-        max_length=126,
-        default=PermissionLevels.PUBLIC,
-        choices=(
-            (PermissionLevels.PUBLIC, 'Accessed in public.'),
-            (PermissionLevels.SIGNIN, 'Need login to access.'),
-            (PermissionLevels.ADMIN, 'Need admin level to access it.')
-        )
-    )
-
-    class Meta:  # noqa: D106
-        abstract = True

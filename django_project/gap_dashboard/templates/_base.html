@@ -25,13 +25,13 @@
         }
     </style>
 
-    {% block stylesheet %}
-    {% endblock %}
-
     <script type="text/javascript" src="{% static 'libs/jquery.js/3.4.1/jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'libs/jquery-ui/1.12.1/jquery-ui.js' %}"></script>
     <script type="text/javascript" src="{% static 'libs/bootstrap/4.5.2/bootstrap.bundle.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/shared.js' %}"></script>
+
+    {% block stylesheet %}
+    {% endblock %}
 </head>
 
 <body class="body">

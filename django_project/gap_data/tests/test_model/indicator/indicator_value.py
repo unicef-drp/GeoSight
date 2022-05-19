@@ -11,7 +11,7 @@ class IndicatorValueTest(TestCase):
 
     def setUp(self):
         """To setup test."""
-        self.name = 'Scenario Rule 1'
+        self.name = 'Rule 1'
         self.indicator_name = 'Indicator 1'
 
     def test_create(self):
