@@ -6,8 +6,6 @@ from django.shortcuts import get_object_or_404
 from frontend.views._base import BaseView
 from gap_data.models.dashboard import Dashboard
 from gap_data.models.dashboard.plugin import Type, LayerUsed, Operation
-from gap_data.models.link import Link
-from gap_data.serializer.link import LinkSerializer
 
 
 class BaseDashboardView(ABC, BaseView):
@@ -26,13 +24,6 @@ class BaseDashboardView(ABC, BaseView):
             'id': dashboard.slug
         }
 
-        links = Link.objects.filter(instance__isnull=True)
-        if not self.request.user.is_staff:
-            links = links.exclude(is_public=False)
-
-        context['links'] = [
-            dict(d) for d in LinkSerializer(links, many=True).data
-        ]
         context['definition'] = {
             'PluginType': {
                 name: value for name, value in vars(Type).items() if

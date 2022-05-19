@@ -21,7 +21,7 @@ class AbstractTerm(models.Model):
 
 
 class AbstractSource(models.Model):
-    """Abstract model for Source."""
+    """Abstract model with Source."""
 
     source = models.CharField(
         max_length=512,
@@ -33,7 +33,7 @@ class AbstractSource(models.Model):
 
 
 class SlugTerm(AbstractTerm):
-    """Abstract model for Term."""
+    """Abstract model with term."""
 
     slug = models.SlugField(
         max_length=512, unique=True
