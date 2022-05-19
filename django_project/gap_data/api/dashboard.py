@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from gap_data.models.dashboard import Dashboard
-from gap_data.models.geometry import GeometryLevelInstance, Geometry
+from gap_data.models.reference_layer import GeometryLevelName, Geometry
 from gap_data.serializer.basemap_layer import BasemapLayerSerializer
 from gap_data.serializer.context_layer import ContextLayerSerializer
 from gap_data.serializer.dashboard import (
@@ -55,11 +55,7 @@ class DashboardReferenceGeojson(APIView):
             Dashboard, slug=slug
         )
         default_indicator = dashboard.reference_layers.first()
-        geometry_level = GeometryLevelInstance.objects.filter(
-            instance=default_indicator.instance
-        ).filter(
-            parent__isnull=True
-        ).first()
+        geometry_level = GeometryLevelName.objects.get(name='Country')
 
         if not geometry_level:
             return HttpResponseBadRequest(

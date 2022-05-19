@@ -4,22 +4,6 @@ import os
 from django.templatetags.static import static
 
 
-def get_level_instance_in_tree(instance, level_instances) -> dict:
-    """Return level instance in tree."""
-    from gap_data.models import GeometryLevelInstance
-    levels = {}
-    for top in level_instances:
-        levels[top.level.id] = get_level_instance_in_tree(
-            instance,
-            GeometryLevelInstance.objects.filter(
-                instance=instance,
-                parent=top.level
-            )
-        )
-
-    return levels
-
-
 def sizeof_fmt(num, suffix="B"):
     """Bytes to human readable."""
     for unit in ["", "K", "M", "G", "T", "P", "E", "Z"]:

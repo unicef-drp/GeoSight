@@ -2,9 +2,6 @@
 from django.conf.urls import url
 from django.urls import include
 
-from gap_dashboard.views.dashboard.admin.geography import (
-    GeographyView, GeographyLevelManagementView, GeographyUploadView,
-)
 from gap_dashboard.views.dashboard.admin.harvesters import (
     HarvesterDetail, HarvesterIndicatorDetail
 )
@@ -96,23 +93,6 @@ dashboard_url = [
     url(r'^', DashboardListView.as_view(), name='dashboard-list-view'),
 ]
 
-admin_geography_url = [
-    url(
-        r'^upload',
-        GeographyUploadView.as_view(),
-        name='geography-upload-view'
-    ),
-    url(
-        r'^level-management',
-        GeographyLevelManagementView.as_view(),
-        name='geography-level-management-view'
-    ),
-    url(
-        r'^',
-        GeographyView.as_view(),
-        name='geography-management-view'
-    ),
-]
 
 admin_indicator_url = [
     url(
@@ -146,7 +126,6 @@ admin_instance_url = [
 ]
 
 admin_url = [
-    url(r'^geography/', include(admin_geography_url)),
     url(r'^indicator/', include(admin_indicator_url)),
     url(r'^instance/', include(admin_instance_url)),
 ]

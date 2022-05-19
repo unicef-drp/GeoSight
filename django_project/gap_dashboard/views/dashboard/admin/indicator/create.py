@@ -62,20 +62,19 @@ class IndicatorCreateView(AdminView):
         )
         if form.is_valid():
             indicator = form.save()
-            for scenario in ScenarioLevel.objects.order_by('level'):
-                rule = request.POST.get(f'scenario_{scenario.id}_rule', None)
-                name = request.POST.get(f'scenario_{scenario.id}_name', None)
-                color = request.POST.get(f'scenario_{scenario.id}_color', None)
-                if rule and name:
-                    scenario_rule, created = \
-                        IndicatorScenarioRule.objects.get_or_create(
-                            indicator=indicator,
-                            scenario_level=scenario
-                        )
-                    scenario_rule.name = name
-                    scenario_rule.rule = rule
-                    scenario_rule.color = color
-                    scenario_rule.save()
+            # rule = request.POST.get(f'scenario_{scenario.id}_rule', None)
+            # name = request.POST.get(f'scenario_{scenario.id}_name', None)
+            # color = request.POST.get(f'scenario_{scenario.id}_color', None)
+            # if rule and name:
+            #     scenario_rule, created = \
+            #         IndicatorScenarioRule.objects.get_or_create(
+            #             indicator=indicator,
+            #             scenario_level=scenario
+            #         )
+            #     scenario_rule.name = name
+            #     scenario_rule.rule = rule
+            #     scenario_rule.color = color
+            #     scenario_rule.save()
             return redirect(
                 reverse(
                     'indicator-management-view', args=[self.instance.slug]

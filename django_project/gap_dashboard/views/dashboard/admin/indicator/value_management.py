@@ -8,7 +8,7 @@ from django.shortcuts import redirect, reverse, get_object_or_404
 from gap_dashboard.views.dashboard.admin._base import AdminView
 from gap_data.models import Indicator, Instance, IndicatorExtraValue
 from gap_data.models.indicator.indicator import IndicatorValueRejectedError
-from gap_data.serializer.geometry import GeometryContextSerializer
+from gap_data.serializer.reference_layer import GeometryContextSerializer
 
 
 class IndicatorValueManagementMapView(AdminView):

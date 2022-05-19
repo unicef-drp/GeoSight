@@ -2,9 +2,7 @@
 import factory
 
 from gap_data.models.indicator import Indicator
-from gap_data.tests.model_factories.geometry import (
-    GeometryLevelNameF
-)
+from gap_data.tests.model_factories.reference_layer import GeometryLevelNameF
 from gap_data.tests.model_factories.indicator.indicator_attributes import (
     IndicatorGroupF, IndicatorFrequencyF
 )

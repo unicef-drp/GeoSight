@@ -4,9 +4,7 @@ from django.shortcuts import redirect, reverse, get_object_or_404
 
 from gap_dashboard.forms.indicator import IndicatorForm
 from gap_dashboard.views.dashboard.admin._base import AdminView
-from gap_data.models import (
-    Indicator, Instance, IndicatorScenarioRule
-)
+from gap_data.models import Indicator, Instance
 
 
 class IndicatorMultiEditView(AdminView):

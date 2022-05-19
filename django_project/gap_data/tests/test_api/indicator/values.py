@@ -8,7 +8,7 @@ from gap_data.models.indicator.indicator import Indicator
 from gap_data.tests.model_factories import (
     InstanceF, IndicatorGroupF, IndicatorF,
     GeometryF, IndicatorValueF, GeometryLevelNameF,
-    GeometryLevelInstanceF, UserF
+    UserF
 )
 
 User = get_user_model()
@@ -37,7 +37,6 @@ class IndicatorValuesAPITest(TestCase):
             geometry_reporting_level=self.level
         )
 
-        GeometryLevelInstanceF(instance=self.instance, level=self.level)
         self.geometry_country_1 = GeometryF(
             instance=self.instance,
             geometry_level=self.level

@@ -9,7 +9,7 @@ from django.conf import settings
 from django.contrib.gis.gdal import DataSource, GDALException
 from django.core.exceptions import ValidationError
 
-from gap_data.models.geometry import GeometryLevelName
+from gap_data.models.reference_layer import GeometryLevelName
 
 ADD_JUST_NEW = 'Just add new geometry'
 REPLACE_AND_ADD = 'Replace and add everything'

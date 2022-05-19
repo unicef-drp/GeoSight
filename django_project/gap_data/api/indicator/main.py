@@ -12,15 +12,12 @@ from core.permissions import AdminAuthenticationPermission
 from gap_data.authentication import (
     IndicatorHarvesterTokenAndBearerAuthentication
 )
-from gap_data.models.geometry import (
-    Geometry, GeometryLevelName,
-    GeometryLevelInstance
-)
 from gap_data.models.indicator import (
     Indicator, IndicatorValue,
     IndicatorValueRejectedError
 )
 from gap_data.models.instance import Instance
+from gap_data.models.reference_layer import Geometry, GeometryLevelName
 from gap_data.serializer.indicator import (
     IndicatorValueSerializer,
     IndicatorDetailValueSerializer
@@ -275,8 +272,6 @@ class IndicatorValues(APIView):
             raise Http404('The geometry level is not recognized')
         except Indicator.DoesNotExist:
             raise Http404('The indicator does not exist')
-        except GeometryLevelInstance.DoesNotExist:
-            raise Http404('The reporting level is not level of instance')
 
     def post(self, request, slug, pk):
         """Save value for specific date.

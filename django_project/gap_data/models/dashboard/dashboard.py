@@ -5,7 +5,6 @@ from django.utils.translation import ugettext_lazy as _
 from core.models.general import SlugTerm
 from gap_data.models.basemap_layer import BasemapLayer
 from gap_data.models.context_layer import ContextLayer
-from gap_data.models.geometry import Geometry
 from gap_data.models.indicator import Indicator
 
 
@@ -32,12 +31,5 @@ class Dashboard(SlugTerm):
         blank=True, null=True,
         help_text=_(
             'Extent of the dashboard. If empty, it is the whole map'
-        )
-    )
-    point_of_interests = models.ManyToManyField(
-        Geometry, blank=True,
-        help_text=_(
-            'Filters data by specific geometry. '
-            'Geometries is from the instance. '
         )
     )

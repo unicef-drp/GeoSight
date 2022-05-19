@@ -4,7 +4,7 @@ import datetime
 import factory
 
 from gap_data.models.indicator import IndicatorValue, IndicatorExtraValue
-from gap_data.tests.model_factories.geometry import GeometryF
+from gap_data.tests.model_factories.reference_layer import GeometryF
 from gap_data.tests.model_factories.indicator.indicator import IndicatorF
 
 

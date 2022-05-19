@@ -2,7 +2,7 @@
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
-from gap_data.models.geometry import Geometry
+from gap_data.models.reference_layer import Geometry
 
 
 class GeometrySerializer(GeoFeatureModelSerializer):

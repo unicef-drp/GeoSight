@@ -6,9 +6,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from gap_data.models.geometry import Geometry, GeometryLevelName
 from gap_data.models.instance import Instance
-from gap_data.serializer.geometry import GeometrySerializer
+from gap_data.models.reference_layer import Geometry, GeometryLevelName
+from gap_data.serializer.reference_layer import GeometrySerializer
 
 
 class GeometryGeojsonAPI(APIView):

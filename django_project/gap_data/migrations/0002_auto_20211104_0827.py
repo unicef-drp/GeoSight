@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import gap_data.models.geometry
+import gap_data.models.reference_layer
 import uuid
 
 
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='geometry',
             name='active_date_from',
-            field=models.DateField(default=gap_data.models.geometry.default_active_date_from),
+            field=models.DateField(default=gap_data.models.reference_layer.default_active_date_from),
         ),
         migrations.AddField(
             model_name='geometry',

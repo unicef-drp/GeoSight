@@ -5,9 +5,9 @@ from django.contrib.gis.db import models
 from django.db.models import Count, Sum, Avg
 from django.shortcuts import reverse
 from django.utils.translation import ugettext_lazy as _
+from gap_data.models.reference_layer import Geometry, GeometryLevelName
 
 from core.models.general import AbstractTerm, AbstractSource, PermissionModel
-from gap_data.models.geometry import Geometry, GeometryLevelName
 from gap_data.models.indicator.indicator_attributes import (
     IndicatorFrequency, IndicatorGroup
 )
@@ -448,19 +448,6 @@ class Indicator(AbstractTerm, AbstractSource, PermissionModel):
                     'date'
                 ])
         return None
-
-    @property
-    def levels(self):
-        """Return levels of indicators in tree."""
-        from gap_data.models import GeometryLevelInstance
-        level_instance = GeometryLevelInstance.objects.filter(
-            instance=self.group.instance,
-            level=self.geometry_reporting_level
-        ).first()
-        if level_instance:
-            return level_instance.get_level_tree()
-        else:
-            return []
 
     @property
     def create_harvester_url(self):

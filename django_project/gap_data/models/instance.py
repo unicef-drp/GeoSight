@@ -55,17 +55,12 @@ class Instance(SlugTerm, IconTerm):
     @property
     def geometry_levels(self):
         """Return geometry levels of the instance."""
-        from gap_data.models import GeometryLevelName
-        return GeometryLevelName.objects.filter(
-            pk__in=list(
-                self.geometrylevelinstance_set.values_list('level', flat=True)
-            )
-        )
+        return None
 
     @property
     def geometry_instance_levels(self):
         """Return geometry levels of the instance."""
-        return self.geometrylevelinstance_set.all()
+        return None
 
     @property
     def geometry_levels_in_order(self):
@@ -103,14 +98,14 @@ class Instance(SlugTerm, IconTerm):
 
     def geometries(self, date: date = date.today()):
         """Return geometries of the instance."""
-        from gap_data.models.geometry import Geometry
+        from gap_data.models.reference_layer import Geometry
         return Geometry.objects.by_date(date).filter(instance=self)
 
     # TODO:
     #  This is deprecated
     def get_indicators(self, user=None):
         """Return all indicators and overall scenario of the instance."""
-        from gap_data.models.geometry import Geometry, GeometryLevelName
+        from gap_data.models.reference_layer import Geometry, GeometryLevelName
         from gap_data.serializer.indicator import IndicatorSerializer
 
         indicators = []
@@ -165,7 +160,7 @@ class Instance(SlugTerm, IconTerm):
     #  This is deprecated
     def get_indicators_and_overall_scenario(self, user=None):
         """Return all indicators and overall scenario of the instance."""
-        from gap_data.models.geometry import Geometry, GeometryLevelName
+        from gap_data.models.reference_layer import Geometry, GeometryLevelName
         from gap_data.serializer.indicator import IndicatorSerializer
 
         indicators = []

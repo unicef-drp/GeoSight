@@ -2,7 +2,7 @@
 from django.contrib.gis.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from gap_data.models.geometry import Geometry
+from gap_data.models.reference_layer import Geometry
 from gap_data.models.indicator.indicator import Indicator
 
 

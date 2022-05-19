@@ -20,8 +20,7 @@ class DashboardAdmin(admin.ModelAdmin):
         'slug', 'name',
     )
     filter_horizontal = (
-        'reference_layers', 'basemap_layers', 'context_layers',
-        'point_of_interests'
+        'reference_layers', 'basemap_layers', 'context_layers'
     )
     inlines = (PluginInline,)
     prepopulated_fields = {'slug': ('name',)}
