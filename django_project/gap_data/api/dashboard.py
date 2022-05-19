@@ -11,9 +11,7 @@ from gap_data.models.dashboard import Dashboard
 from gap_data.models.reference_layer import GeometryLevelName, Geometry
 from gap_data.serializer.basemap_layer import BasemapLayerSerializer
 from gap_data.serializer.context_layer import ContextLayerSerializer
-from gap_data.serializer.dashboard import (
-    PluginSerializer
-)
+from gap_data.serializer.dashboard import WidgetSerializer
 from gap_data.serializer.indicator import IndicatorSerializer
 
 
@@ -39,8 +37,8 @@ class DashboardData(APIView):
                 dashboard.context_layers, many=True
             ).data,
             'extent': dashboard.extent.extent,
-            'plugins': PluginSerializer(
-                dashboard.plugin_set.all().order_by('pk'), many=True
+            'widgets': WidgetSerializer(
+                dashboard.widget_set.all().order_by('pk'), many=True
             ).data
         }
         return Response(context)

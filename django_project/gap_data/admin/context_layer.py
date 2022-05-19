@@ -16,9 +16,7 @@ class ContextLayerStyleInline(admin.TabularInline):
 class ContextLayerAdmin(admin.ModelAdmin):
     """ContextLayer admin."""
 
-    list_display = (
-        'name', 'layer_type', 'group', 'url'
-    )
+    list_display = ('name', 'layer_type', 'group', 'url')
     inlines = (ContextLayerStyleInline,)
     list_filter = ('group',)
 

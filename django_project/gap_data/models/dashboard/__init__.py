@@ -1,2 +1,2 @@
 from .dashboard import *
-from .plugin import *
+from .widget import *

@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from core.models.general import SlugTerm
 from gap_data.models.basemap_layer import BasemapLayer
 from gap_data.models.context_layer import ContextLayer
-from gap_data.models.indicator import Indicator
+from gap_data.models.reference_layer import ReferenceLayer
 
 
 class Dashboard(SlugTerm):
@@ -18,8 +18,13 @@ class Dashboard(SlugTerm):
     Basemap layers and context layers is based on the indicator's instance.
     """
 
-    reference_layers = models.ManyToManyField(
-        Indicator
+    # TODO:
+    #  When recreate all migrations from zero
+    #  Default it removed
+    reference_layer = models.ForeignKey(
+        ReferenceLayer,
+        on_delete=models.CASCADE,
+        blank=True, null=True
     )
     basemap_layers = models.ManyToManyField(
         BasemapLayer

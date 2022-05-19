@@ -1,7 +1,7 @@
 """Indicator Serializer."""
 from rest_framework import serializers
 
-from gap_data.models.indicator import Indicator, IndicatorValue
+from gap_data.models.indicator import Indicator, IndicatorValue, IndicatorRule
 
 
 class IndicatorSerializer(serializers.ModelSerializer):
@@ -50,6 +50,12 @@ class IndicatorValueSerializer(serializers.ModelSerializer):
         model = IndicatorValue
         fields = '__all__'
 
+class IndicatorRuleSerializer(serializers.ModelSerializer):
+    """Serializer for IndicatorRule."""
+
+    class Meta:  # noqa: D106
+        model = IndicatorRule
+        fields = '__all__'
 
 class IndicatorDetailValueSerializer(serializers.ModelSerializer):
     """Serializer for IndicatorDetailValue."""

@@ -26,7 +26,8 @@ class GeometryGeojsonAPI(APIView):
                 name__iexact=geometry_level
             )
             geometries = Geometry.objects.filter(
-                geometry_level=geometry_level)
+                geometry_level=geometry_level
+            )
             return Response(
                 GeometrySerializer(geometries, many=True).data
             )

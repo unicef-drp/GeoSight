@@ -1,14 +1,12 @@
 # coding=utf-8
 """Main django urls."""
-__author__ = 'Irwan Fathurrahman <meomancer@gmail.com>'
-__date__ = '13/10/21'
 
 from django.conf import settings
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 
-from core.views.proxy import ProxyView
+from core.api.proxy import ProxyView
 
 admin.autodiscover()
 

@@ -16,9 +16,7 @@ class BasemapLayerParameterInline(admin.TabularInline):
 class BasemapLayerAdmin(admin.ModelAdmin):
     """BasemapLayer admin."""
 
-    list_display = (
-        'name', 'url', 'icon'
-    )
+    list_display = ('name', 'url', 'icon')
     inlines = (BasemapLayerParameterInline,)
 
 

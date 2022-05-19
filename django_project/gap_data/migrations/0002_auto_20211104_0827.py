@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='geometry',
             name='active_date_from',
-            field=models.DateField(default=gap_data.models.reference_layer.default_active_date_from),
+            field=models.DateField(blank=True, null=True),
         ),
         migrations.AddField(
             model_name='geometry',

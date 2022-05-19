@@ -66,7 +66,6 @@ class HarvesterFormView(AdminView, ABC):
 
         harvester_class = str(self.harvester_class).split("'")[1]
         for name, attr in self.harvester_class.additional_attributes(
-                instance=self.instance,
                 indicator=self.indicator
         ).items():
             value = attr.get('value', '')

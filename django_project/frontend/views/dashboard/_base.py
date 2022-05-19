@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 
 from frontend.views._base import BaseView
 from gap_data.models.dashboard import Dashboard
-from gap_data.models.dashboard.plugin import Type, LayerUsed, Operation
+from gap_data.models.dashboard.widget import Type, LayerUsed, Operation
 
 
 class BaseDashboardView(ABC, BaseView):

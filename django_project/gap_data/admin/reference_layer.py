@@ -13,10 +13,7 @@ from gap_data.models.reference_layer import (
 class GeometryAdmin(admin.ModelAdmin):
     """Geometry admin."""
 
-    list_display = (
-        'identifier', 'name',
-        'geometry_level', 'child_of'
-    )
+    list_display = ('identifier', 'name', 'geometry_level', 'child_of')
     list_filter = ('geometry_level', 'child_of')
 
 
@@ -30,9 +27,7 @@ class ReferenceLayerLevelInline(admin.TabularInline):
 class ReferenceLayerAdmin(admin.ModelAdmin):
     """ReferenceLayer admin."""
 
-    list_display = (
-        'identifier', 'name', 'source'
-    )
+    list_display = ('identifier', 'name', 'source')
     filter_horizontal = ('geometries',)
     inlines = (ReferenceLayerLevelInline,)
 

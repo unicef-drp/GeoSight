@@ -10,7 +10,7 @@ from django.contrib.gis.db import models
 
 from core.models.general import AbstractTerm
 from gap_data.models.reference_layer.geometry import (
-    Geometry
+    Geometry, GeometryLevelName
 )
 
 
@@ -29,7 +29,7 @@ class ReferenceLayer(AbstractTerm):
         default=datetime.datetime.today
     )
     geometries = models.ManyToManyField(
-        Geometry, null=True, blank=True
+        Geometry, blank=True
     )
 
 
@@ -40,6 +40,9 @@ class ReferenceLayerLevel(models.Model):
         ReferenceLayer, on_delete=models.CASCADE
     )
     level = models.IntegerField()
+    level_name = models.ForeignKey(
+        GeometryLevelName, on_delete=models.CASCADE
+    )
 
     class Meta:  # noqa: D106
         unique_together = ('reference_layer', 'level')
