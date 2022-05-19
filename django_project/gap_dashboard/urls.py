@@ -75,24 +75,14 @@ indicator_url = [
 admin_indicator_url = [
     url(r'^(?P<pk>\d+)/', include(indicator_url)),
     url(
-        r'^harvester/(?P<uuid>[0-9a-f-]+)',
-        HarvesterDetail.as_view(),
-        name='harvester-detail'
-    ),
-    url(
-        r'^meta-ingestor/(?P<uuid>[0-9a-f-]+)',
-        MetaIngestorView.as_view(),
-        name='meta-ingestor-uuid-view'
+        r'^create',
+        IndicatorCreateView.as_view(),
+        name='indicator-management-new'
     ),
     url(
         r'^meta-ingestor',
         MetaIngestorView.as_view(),
         name='meta-ingestor-view'
-    ),
-    url(
-        r'^create',
-        IndicatorCreateView.as_view(),
-        name='indicator-management-new'
     ),
     url(
         r'^multi-edit',
@@ -103,6 +93,16 @@ admin_indicator_url = [
         r'^',
         IndicatorManagementView.as_view(),
         name='indicator-management-view'
+    ),
+    url(
+        r'^harvester/(?P<uuid>[0-9a-f-]+)',
+        HarvesterDetail.as_view(),
+        name='harvester-detail'
+    ),
+    url(
+        r'^meta-ingestor/(?P<uuid>[0-9a-f-]+)',
+        MetaIngestorView.as_view(),
+        name='meta-ingestor-uuid-view'
     ),
 ]
 
