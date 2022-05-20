@@ -56,12 +56,8 @@ class Indicator(AbstractTerm, AbstractSource):
         IndicatorFrequency, on_delete=models.SET_NULL,
         blank=True, null=True
     )
-
-    # TODO:
-    #  When recreate all migrations from zero
-    #  Default it removed
     reporting_level = models.CharField(
-        max_length=64, default='District'
+        max_length=64
     )
     unit = models.CharField(
         max_length=64,

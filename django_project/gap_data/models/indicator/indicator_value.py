@@ -15,12 +15,8 @@ class IndicatorValue(models.Model):
         _('Date'),
         help_text=_('The date of the value harvested.')
     )
-    # TODO:
-    #  When recreate all migrations from zero
-    #  Default it removed
     geom_identifier = models.CharField(
-        max_length=256,
-        null=True, blank=True
+        max_length=256
     )
     value = models.FloatField()
 

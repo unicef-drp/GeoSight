@@ -28,7 +28,6 @@ class IndicatorFrequency(AbstractTerm):
 class IndicatorGroup(AbstractTerm):
     """The group of indicator. """
 
-    # dashboard link
     dashboard_link = models.CharField(
         max_length=1024,
         null=True, blank=True,
