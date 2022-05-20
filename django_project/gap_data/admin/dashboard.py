@@ -18,7 +18,7 @@ class DashboardAdmin(admin.ModelAdmin):
 
     list_display = ('slug', 'name',)
     filter_horizontal = (
-        'basemap_layers', 'context_layers'
+        'basemap_layers', 'context_layers', 'indicators'
     )
     inlines = (WidgetInline,)
     prepopulated_fields = {'slug': ('name',)}

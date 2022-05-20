@@ -6,6 +6,7 @@ from core.models.general import SlugTerm
 from gap_data.models.basemap_layer import BasemapLayer
 from gap_data.models.context_layer import ContextLayer
 from gap_data.models.reference_layer import ReferenceLayer
+from gap_data.models.indicator import Indicator
 
 
 class Dashboard(SlugTerm):
@@ -28,6 +29,9 @@ class Dashboard(SlugTerm):
     )
     basemap_layers = models.ManyToManyField(
         BasemapLayer
+    )
+    indicators = models.ManyToManyField(
+        Indicator
     )
     context_layers = models.ManyToManyField(
         ContextLayer, blank=True
