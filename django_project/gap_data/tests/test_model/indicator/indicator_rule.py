@@ -1,9 +1,7 @@
 """Test for IndicatorRule model."""
 from django.test.testcases import TestCase
 
-from gap_data.tests.model_factories import (
-    IndicatorRuleF, IndicatorF
-)
+from gap_data.tests.model_factories import IndicatorRuleF, IndicatorF
 
 
 class IndicatorRuleTest(TestCase):

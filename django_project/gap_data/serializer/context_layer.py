@@ -3,9 +3,7 @@ import urllib.parse
 
 from rest_framework import serializers
 
-from gap_data.models.context_layer import (
-    ContextLayer, ContextLayerStyle
-)
+from gap_data.models.context_layer import ContextLayer, ContextLayerStyle
 
 
 class ContextLayerSerializer(serializers.ModelSerializer):

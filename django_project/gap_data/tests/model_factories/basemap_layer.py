@@ -6,6 +6,7 @@ from gap_data.models.basemap_layer import BasemapLayer, BasemapLayerParameter
 
 class BasemapLayerF(factory.django.DjangoModelFactory):
     """Factory for BasemapLayer."""
+
     name = factory.Sequence(lambda n: 'Basemap Layer {}'.format(n))
 
     class Meta:  # noqa: D106

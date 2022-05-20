@@ -4,7 +4,7 @@ from gap_data.serializer.link import LinkSerializer
 
 
 def global_context(request):
-    """Global context that will be returned for every request. """
+    """Global context that will be returned for every request."""
     links = Link.objects.filter(is_public=True)
     if request.user.is_staff:
         links = Link.objects.all()

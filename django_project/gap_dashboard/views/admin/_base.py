@@ -22,4 +22,3 @@ class AdminView(BaseView, ABC, SuperuserRequiredMixin):
     def page_title(self):
         """Return page title."""
         return 'Dashboard'
-

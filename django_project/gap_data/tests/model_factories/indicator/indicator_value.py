@@ -4,14 +4,13 @@ import datetime
 import factory
 
 from gap_data.models.indicator import IndicatorValue, IndicatorExtraValue
-from gap_data.tests.model_factories.reference_layer import GeometryF
 from gap_data.tests.model_factories.indicator.indicator import IndicatorF
 
 
 class IndicatorValueF(factory.django.DjangoModelFactory):
     """Factory of IndicatorValue."""
 
-    geometry = factory.SubFactory(GeometryF)
+    geom_identifier = factory.Sequence(lambda n: 'Geom {}'.format(n))
     value = factory.Sequence(lambda n: n)
     date = datetime.datetime.now()
     indicator = factory.SubFactory(IndicatorF)

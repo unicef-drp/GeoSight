@@ -1,9 +1,7 @@
 """SharepointHarvester Harvester view."""
 from django.conf import settings
 
-from gap_dashboard.views.admin.harvesters.forms._base import (
-    HarvesterFormView
-)
+from gap_dashboard.views.admin.harvesters.forms._base import HarvesterFormView
 from gap_data.utils import path_to_dict
 from gap_harvester.harveters.sharepoint_harvester import SharepointHarvester
 

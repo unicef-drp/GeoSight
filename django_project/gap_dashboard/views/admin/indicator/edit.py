@@ -1,5 +1,4 @@
 """Indicator Editor View."""
-from django.http import Http404
 from django.shortcuts import redirect, reverse, render, get_object_or_404
 
 from gap_dashboard.forms.indicator import IndicatorForm
@@ -18,7 +17,7 @@ class IndicatorEditView(AdminView):
         indicator = get_object_or_404(
             Indicator, id=self.kwargs.get('pk', '')
         )
-        return f'Edit Indicator : {indicator.full_name}'
+        return f'Edit Indicator : {indicator.__str__()}'
 
     @property
     def content_title(self):

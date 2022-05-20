@@ -4,9 +4,7 @@ from django.test.testcases import TestCase
 from django.urls import reverse
 
 from gap_data.models.indicator import Indicator
-from gap_data.tests.model_factories import (
-    IndicatorF, IndicatorGroupF, UserF
-)
+from gap_data.tests.model_factories import IndicatorF, IndicatorGroupF, UserF
 
 
 class IndicatorDetailApiTest(TestCase):

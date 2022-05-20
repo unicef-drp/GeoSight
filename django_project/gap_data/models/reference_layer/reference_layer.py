@@ -34,7 +34,7 @@ class ReferenceLayer(AbstractTerm):
 
 
 class ReferenceLayerLevel(models.Model):
-    """Reference layer level"""
+    """Reference layer level."""
 
     reference_layer = models.ForeignKey(
         ReferenceLayer, on_delete=models.CASCADE

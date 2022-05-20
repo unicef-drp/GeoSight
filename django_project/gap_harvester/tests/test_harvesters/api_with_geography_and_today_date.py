@@ -75,25 +75,25 @@ class APIWithGeograpyAndTodayDateTest(BaseHarvesterTest):
         self.assertEqual(log.status, 'Done')
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='A').value, 1
+                geom_identifier='A').value, 1
         )
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='A').date, today
+                geom_identifier='A').date, today
         )
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='B').value, 2
+                geom_identifier='B').value, 2
         )
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='B').date, today
+                geom_identifier='B').date, today
         )
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='C').value, 4
+                geom_identifier='C').value, 4
         )
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='C').date, today
+                geom_identifier='C').date, today
         )

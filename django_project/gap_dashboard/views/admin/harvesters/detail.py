@@ -60,7 +60,6 @@ class HarvesterIndicatorDetail(AdminView):
 
     def post(self, request, pk):
         """POST to force harvester to harvest."""
-
         self.indicator = get_object_or_404(
             Indicator, id=self.kwargs.get('pk', '')
         )

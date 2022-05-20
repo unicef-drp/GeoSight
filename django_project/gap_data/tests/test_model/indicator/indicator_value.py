@@ -20,7 +20,7 @@ class IndicatorValueTest(TestCase):
         geometry = GeometryF()
         value = IndicatorValueF(
             indicator=indicator,
-            geometry=geometry
+            geom_identifier=geometry.identifier
         )
         self.assertEquals(value.indicator, indicator)
-        self.assertEquals(value.geometry, geometry)
+        self.assertEquals(value.geom_identifier, geometry.identifier)

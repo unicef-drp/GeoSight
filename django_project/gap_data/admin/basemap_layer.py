@@ -1,9 +1,7 @@
 """Basemap layer admin."""
 from django.contrib import admin
 
-from gap_data.models.basemap_layer import (
-    BasemapLayer, BasemapLayerParameter
-)
+from gap_data.models.basemap_layer import BasemapLayer, BasemapLayerParameter
 
 
 class BasemapLayerParameterInline(admin.TabularInline):

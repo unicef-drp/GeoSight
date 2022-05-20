@@ -1,9 +1,7 @@
 """Harvester get the data from api with geography and date."""
 from datetime import datetime
 
-from gap_harvester.harveters._base import (
-    BaseHarvester, HarvestingError
-)
+from gap_harvester.harveters._base import BaseHarvester, HarvestingError
 
 
 class APIWithGeographyAndDate(BaseHarvester):

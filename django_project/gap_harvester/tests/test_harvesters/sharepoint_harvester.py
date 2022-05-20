@@ -49,29 +49,29 @@ class SharepointTest(BaseHarvesterTest):
         self.assertEqual(log.status, 'Done')
         self.assertEqual(
             self.indicator.indicatorvalue_set.get(
-                geometry__identifier='A').value, 3
+                geom_identifier='A').value, 3
         )
         self.assertEqual(
             self.indicator.indicatorvalue_set.get(
-                geometry__identifier='A'
+                geom_identifier='A'
             ).date.strftime("%Y-%m-%d"), '2020-12-01'
         )
         self.assertEqual(
             self.indicator.indicatorvalue_set.get(
-                geometry__identifier='B').value, 2
+                geom_identifier='B').value, 2
         )
         self.assertEqual(
             self.indicator.indicatorvalue_set.get(
-                geometry__identifier='B'
+                geom_identifier='B'
             ).date.strftime("%Y-%m-%d"), '2020-12-01'
         )
         self.assertEqual(
             self.indicator.indicatorvalue_set.get(
-                geometry__identifier='C'
+                geom_identifier='C'
             ).value, 1
         )
         self.assertEqual(
             self.indicator.indicatorvalue_set.get(
-                geometry__identifier='C'
+                geom_identifier='C'
             ).date.strftime("%Y-%m-%d"), '2020-12-01'
         )

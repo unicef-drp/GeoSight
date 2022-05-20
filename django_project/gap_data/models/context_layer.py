@@ -15,11 +15,13 @@ class LayerType(object):
 
 class ContextLayerGroup(AbstractTerm):
     """A model for the group of context layer."""
+
     pass
 
 
 class ContextLayer(AbstractTerm):
     """A model for the context layer."""
+
     group = models.ForeignKey(
         ContextLayerGroup,
         null=True, blank=True,

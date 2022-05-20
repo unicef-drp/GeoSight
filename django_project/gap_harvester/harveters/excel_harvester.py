@@ -7,12 +7,8 @@ from django.utils.timezone import now
 from pyexcel_xls import get_data as xls_get
 from pyexcel_xlsx import get_data as xlsx_get
 
-from gap_data.models import (
-    Geometry, Indicator, IndicatorValue
-)
-from gap_harvester.harveters._base import (
-    BaseHarvester, HarvestingError
-)
+from gap_data.models import Geometry, Indicator, IndicatorValue
+from gap_harvester.harveters._base import BaseHarvester, HarvestingError
 
 
 class ExcelHarvester(BaseHarvester):
@@ -62,7 +58,7 @@ class ExcelHarvester(BaseHarvester):
             for indicator in Indicator.objects.all().order_by('name'):
                 shortcode = indicator.shortcode
                 attr[f'{indicator.id}'] = {
-                    'title': "Column Name: " + indicator.full_name,
+                    'title': "Column Name: " + indicator.__str__(),
                     'description': indicator.description,
                     'class': 'indicator-name',
                     'required': False,
@@ -171,7 +167,7 @@ class ExcelHarvester(BaseHarvester):
 
                 geometry = None
                 try:
-                    geometry = indicator.reporting_units.get(
+                    geometry = Geometry.objects.get(
                         identifier=administrative_code
                     )
                 except Geometry.DoesNotExist:
@@ -221,7 +217,7 @@ class ExcelHarvester(BaseHarvester):
                                     IndicatorValue.objects.get_or_create(
                                         indicator=indicator,
                                         date=date,
-                                        geometry=geometry,
+                                        geom_identifier=geometry.identifier,
                                         defaults={
                                             'value': value
                                         }

@@ -16,7 +16,7 @@ class BaseHarvesterTest(TestCase):
         level = GeometryLevelNameF()
         self.indicator = IndicatorF(
             group=IndicatorGroupF(),
-            geometry_reporting_level=level
+            reporting_level=level.name
         )
         IndicatorRuleF(indicator=self.indicator, rule='x==1'),
         IndicatorRuleF(indicator=self.indicator, rule='x==2'),

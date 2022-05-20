@@ -1,11 +1,6 @@
 """Indicator Management View."""
-import json
-
-from django.http import HttpResponseBadRequest
-from django.shortcuts import redirect, reverse
-
 from gap_dashboard.views.admin._base import AdminView
-from gap_data.models.indicator import Indicator, IndicatorGroup
+from gap_data.models.indicator import IndicatorGroup
 from gap_harvester.models.harvester import UsingExposedAPI
 
 

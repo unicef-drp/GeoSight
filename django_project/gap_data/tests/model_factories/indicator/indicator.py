@@ -2,7 +2,6 @@
 import factory
 
 from gap_data.models.indicator import Indicator
-from gap_data.tests.model_factories.reference_layer import GeometryLevelNameF
 from gap_data.tests.model_factories.indicator.indicator_attributes import (
     IndicatorGroupF, IndicatorFrequencyF
 )
@@ -13,7 +12,7 @@ class IndicatorF(factory.django.DjangoModelFactory):
 
     group = factory.SubFactory(IndicatorGroupF)
     frequency = factory.SubFactory(IndicatorFrequencyF)
-    geometry_reporting_level = factory.SubFactory(GeometryLevelNameF)
+    reporting_level = factory.Sequence(lambda n: 'Level {}'.format(n))
     name = factory.Sequence(lambda n: 'Indicator {}'.format(n))
 
     class Meta:  # noqa: D106

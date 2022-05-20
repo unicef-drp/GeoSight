@@ -11,9 +11,7 @@ class IndicatorForm(forms.ModelForm):
     """Indicator form."""
 
     label_suffix = ""
-    frequency = forms.IntegerField(
-        help_text=frequency_help_text
-    )
+    frequency = forms.IntegerField(help_text=frequency_help_text)
     group = forms.ChoiceField()
 
     def __init__(self, *args, **kwargs):

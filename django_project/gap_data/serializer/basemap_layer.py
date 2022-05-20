@@ -2,9 +2,7 @@
 
 from rest_framework import serializers
 
-from gap_data.models.basemap_layer import (
-    BasemapLayerParameter, BasemapLayer
-)
+from gap_data.models.basemap_layer import BasemapLayerParameter, BasemapLayer
 
 
 class BasemapLayerSerializer(serializers.ModelSerializer):

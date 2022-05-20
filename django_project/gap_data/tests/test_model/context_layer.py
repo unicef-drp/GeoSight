@@ -2,9 +2,7 @@
 from django.test.testcases import TestCase
 
 from gap_data.serializer.context_layer import ContextLayerSerializer
-from gap_data.tests.model_factories import (
-    ContextLayerF, ContextLayerStyleF
-)
+from gap_data.tests.model_factories import ContextLayerF, ContextLayerStyleF
 
 
 class BasemapLayerTest(TestCase):

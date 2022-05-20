@@ -1,9 +1,7 @@
 """Basemap layer admin."""
 from django.contrib import admin
 
-from gap_data.models.dashboard import (
-    Dashboard, Widget
-)
+from gap_data.models.dashboard import Dashboard, Widget
 
 
 class WidgetInline(admin.StackedInline):

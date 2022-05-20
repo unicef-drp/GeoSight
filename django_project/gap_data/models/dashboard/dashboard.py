@@ -18,7 +18,7 @@ class Dashboard(SlugTerm):
 
     Basemap layers and context layers is based on the indicator's instance.
     """
-    
+
     reference_layer = models.ForeignKey(
         ReferenceLayer,
         on_delete=models.CASCADE

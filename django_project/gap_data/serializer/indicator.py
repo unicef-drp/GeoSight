@@ -50,12 +50,14 @@ class IndicatorValueSerializer(serializers.ModelSerializer):
         model = IndicatorValue
         fields = '__all__'
 
+
 class IndicatorRuleSerializer(serializers.ModelSerializer):
     """Serializer for IndicatorRule."""
 
     class Meta:  # noqa: D106
         model = IndicatorRule
         fields = '__all__'
+
 
 class IndicatorDetailValueSerializer(serializers.ModelSerializer):
     """Serializer for IndicatorDetailValue."""
