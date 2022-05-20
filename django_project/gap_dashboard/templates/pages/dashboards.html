@@ -7,8 +7,8 @@
 {% endblock %}
 
 {% block stylesheet %}
-    <link href="{% static 'libs/leaflet/1.5.1/leaflet.css' %}" rel="stylesheet" type="text/css" media="screen, projection"/>
-    <link href="{% static 'css/pages/instances.css' %}" rel="stylesheet" type="text/css" media="screen, projection"/>
+    <link href="{% static 'css/pages/dashboard.css' %}" rel="stylesheet"
+          type="text/css" media="screen, projection"/>
 {% endblock %}
 
 {% block header %}
@@ -16,19 +16,22 @@
 {% endblock %}
 
 {% block content %}
-    {% for category, category_instances in instance_categories.items %}
+    {% if not dashboards %}
         <div>
-            <h4>{{ category }}</h4>
+            <h4>You don't have any dashboard</h4>
         </div>
-        <div class="row">
-            {% for instance in category_instances %}
+    {% else %}
+        <div id="dashboard" class="row">
+            {% for dashboard in dashboards %}
                 <div class="col-2">
-                    <a href="{% url 'dashboard-list-view' instance.slug %}" class="instance">
-                        <img src="{% if instance.icon %}{{ instance.icon }}{% else %}{% static "img/no-image-found.jpg" %}{% endif %}">
-                        <span>{{ instance.name }}</span>
+                    <a href="{{ dashboard.url }}"
+                       class="dashboard">
+                        <img src="
+                                {% if dashboard.icon %}{{ dashboard.icon }}{% else %}{% static "img/no-image-found.jpg" %}{% endif %}">
+                        <span>{{ dashboard.name }}</span>
                     </a>
                 </div>
             {% endfor %}
         </div>
-    {% endfor %}
+    {% endif %}
 {% endblock %}

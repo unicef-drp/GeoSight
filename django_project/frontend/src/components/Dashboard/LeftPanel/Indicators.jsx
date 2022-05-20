@@ -9,7 +9,8 @@ import Actions from '../../../redux/actions/actions'
 import ReferenceLayer from '../Map/ReferenceLayer'
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Accordion from "@mui/material/Accordion";
 
 /**
  * Indicators selector
@@ -75,22 +76,30 @@ export function Indicators() {
 
 /**
  * Indicators selector
+ * @param {bool} expanded Is the accordion expanded
+ * @param {function} handleChange Function when the accordion show
  */
-export default function IndicatorsAccordion() {
+export default function IndicatorsAccordion({ expanded, handleChange }) {
   const { indicators } = useSelector(state => state.dashboard.data);
-  return <Fragment>
-    <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
-      <div>
-        Indicators
-        {
-          indicators !== undefined ?
-            <span>&nbsp;({indicators.length}) </span> :
-            <i>&nbsp;(Loading)</i>
-        }
-      </div>
-    </AccordionSummary>
-    <AccordionDetails>
-      <Indicators/>
-    </AccordionDetails>
-  </Fragment>
+  return (
+    <Accordion
+      expanded={expanded}
+      onChange={handleChange('indicators')}
+    >
+
+      <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+        <div>
+          Indicators
+          {
+            indicators !== undefined ?
+              <span>&nbsp;({indicators.length}) </span> :
+              <i>&nbsp;(Loading)</i>
+          }
+        </div>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Indicators/>
+      </AccordionDetails>
+    </Accordion>
+  )
 }

@@ -69,12 +69,10 @@ export default function LeftPanel() {
             }
           </AccordionDetails>
         </Accordion>
-        <Accordion
+        <IndicatorsAccordion
           expanded={expanded === 'indicators'}
-          onChange={handleChange('indicators')}
-        >
-          <IndicatorsAccordion/>
-        </Accordion>
+          handleChange={handleChange}
+        />
         <Accordion
           expanded={expanded === 'contextLayers'}
           onChange={handleChange('contextLayers')}
