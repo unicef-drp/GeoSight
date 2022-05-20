@@ -10,6 +10,7 @@ from gap_data.models.reference_layer import (
 
 class ReferenceLayerLevelSerializer(serializers.ModelSerializer):
     """Serializer for ReferenceLayerLevel."""
+
     level_name = serializers.SerializerMethodField()
     url = serializers.SerializerMethodField()
 
@@ -49,17 +50,17 @@ class GeometrySerializer(GeoFeatureModelSerializer):
     """Serializer for GeometryContext."""
 
     child_of = serializers.SerializerMethodField()
-    geometry_level_name = serializers.SerializerMethodField()
+    level_name = serializers.SerializerMethodField()
 
     def get_child_of(self, obj: Geometry):
         """Return child_of."""
         return obj.child_of.id if obj.child_of else 'null'
 
-    def get_geometry_level_name(self, obj: Geometry):
+    def get_level_name(self, obj: Geometry):
         """Return geometry_level_name."""
         return obj.geometry_level.name
 
     class Meta:  # noqa: D106
         model = Geometry
         geo_field = 'geometry'
-        fields = '__all__'
+        exclude = ('geometry_level',)

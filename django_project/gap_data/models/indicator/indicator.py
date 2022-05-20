@@ -187,7 +187,7 @@ class Indicator(AbstractTerm, AbstractSource):
         return indicator_value
 
     def query_value(self, date_data: date):
-        """ Return query of value"""
+        """Return query of value."""
         query = self.indicatorvalue_set.filter(date__lte=date_data)
         # update query by behaviour
         if self.aggregation_behaviour == AggregationBehaviour.USE_AVAILABLE:
@@ -197,9 +197,7 @@ class Indicator(AbstractTerm, AbstractSource):
         return query
 
     def rule_by_value(self, value):
-        """
-        Return scenario level of the value
-        """
+        """Return scenario level of the value."""
         if value is not None:
             # check the rule
             for indicator_rule in self.indicatorrule_set.all():
@@ -213,7 +211,7 @@ class Indicator(AbstractTerm, AbstractSource):
         return None
 
     def serialize(self, geometry_code, value, attributes=None):
-        """return data."""
+        """Return data."""
         rule = self.rule_by_value(value)
         background_color = rule.color if rule else ''
 
@@ -233,7 +231,6 @@ class Indicator(AbstractTerm, AbstractSource):
         If it is upper than the reporting geometry level,
         it will be aggregate to upper level
         """
-
         # get the geometries of data
         values = []
         query = self.query_value(date_data)
