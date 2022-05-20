@@ -12,7 +12,7 @@ import './style.scss';
 
 export default function RightPanel() {
   const [state, setState] = useState(RIGHT);
-  const { plugins } = useSelector(state => state.dashboard.data);
+  const { widgets } = useSelector(state => state.dashboard.data);
 
   const onLeft = () => {
     setState(LEFT);
@@ -31,10 +31,10 @@ export default function RightPanel() {
       <div className='dashboard__content-wrapper'>
         <div className='dashboard__content'>
           {
-            plugins ?
-              plugins.map(
-                plugin => (
-                  <Widget key={plugin.id} data={plugin}/>
+            widgets ?
+              widgets.map(
+                widget => (
+                  <Widget key={widget.id} data={widget}/>
                 )
               ) : <div className='dashboard__right_side__loading'>Loading</div>
           }

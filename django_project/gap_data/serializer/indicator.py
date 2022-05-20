@@ -1,7 +1,8 @@
 """Indicator Serializer."""
+from django.shortcuts import reverse
 from rest_framework import serializers
 
-from gap_data.models.indicator import Indicator, IndicatorValue, IndicatorRule
+from gap_data.models.indicator import Indicator, IndicatorRule
 
 
 class IndicatorSerializer(serializers.ModelSerializer):
@@ -9,6 +10,7 @@ class IndicatorSerializer(serializers.ModelSerializer):
 
     group = serializers.SerializerMethodField()
     rules = serializers.SerializerMethodField()
+    url = serializers.SerializerMethodField()
 
     def get_group(self, obj: Indicator):
         """Return group."""
@@ -37,18 +39,18 @@ class IndicatorSerializer(serializers.ModelSerializer):
             })
         return output
 
+    def get_url(self, obj: Indicator):
+        """Return url."""
+        return reverse(
+            'indicator-values-api',
+            args=[obj.id]
+        )
+
     class Meta:  # noqa: D106
         model = Indicator
-        fields = ('id', 'group', 'name', 'show_in_context_analysis', 'rules',
-                  'dashboard_link', 'source', 'description')
-
-
-class IndicatorValueSerializer(serializers.ModelSerializer):
-    """Serializer for IndicatorValue."""
-
-    class Meta:  # noqa: D106
-        model = IndicatorValue
-        fields = '__all__'
+        fields = (
+            'id', 'group', 'name', 'rules',
+            'dashboard_link', 'source', 'description', 'url')
 
 
 class IndicatorRuleSerializer(serializers.ModelSerializer):
@@ -57,30 +59,3 @@ class IndicatorRuleSerializer(serializers.ModelSerializer):
     class Meta:  # noqa: D106
         model = IndicatorRule
         fields = '__all__'
-
-
-class IndicatorDetailValueSerializer(serializers.ModelSerializer):
-    """Serializer for IndicatorDetailValue."""
-
-    geometry_code = serializers.SerializerMethodField()
-    geometry_name = serializers.SerializerMethodField()
-    extra_data = serializers.SerializerMethodField()
-
-    def get_geometry_code(self, obj: IndicatorValue):
-        """Return geometry_code."""
-        return obj.geometry.identifier
-
-    def get_geometry_name(self, obj: IndicatorValue):
-        """Return geometry_name."""
-        return obj.geometry.name
-
-    def get_extra_data(self, obj: IndicatorValue):
-        """Return extra_data."""
-        return {
-            extra.name: extra.value for extra in
-            obj.indicatorextravalue_set.all()
-        }
-
-    class Meta:  # noqa: D106
-        model = IndicatorValue
-        exclude = ('geometry', 'indicator')

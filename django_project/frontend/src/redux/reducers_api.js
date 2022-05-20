@@ -40,13 +40,14 @@ export function APIReducer(state, action, actionName) {
  * @param {string} url Url to query
  * @param {object} options Options of request
  * @param {Function} receiveAction Function on receiveing data
+ * @param {int} id ID of request
  */
-export const fetching = async function (dispatch, url, options, receiveAction) {
+export const fetching = async function (dispatch, url, options, receiveAction, id) {
   try {
     const response = await fetchJSON(url, options);
-    dispatch(receiveAction(response));
+    dispatch(receiveAction(response, null, id));
   } catch (error) {
-    dispatch(receiveAction(null, error));
+    dispatch(receiveAction(null, error, id));
   }
 };
 

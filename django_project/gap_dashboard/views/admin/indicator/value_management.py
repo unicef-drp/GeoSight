@@ -7,7 +7,7 @@ from django.shortcuts import redirect, reverse, get_object_or_404
 from gap_dashboard.views.admin._base import AdminView
 from gap_data.models import Indicator, IndicatorExtraValue
 from gap_data.models.indicator.indicator import IndicatorValueRejectedError
-from gap_data.serializer.reference_layer import GeometryContextSerializer
+from gap_data.serializer.reference_layer import GeometrySerializer
 
 
 class IndicatorValueManagementMapView(AdminView):
@@ -22,7 +22,7 @@ class IndicatorValueManagementMapView(AdminView):
         self.indicator = get_object_or_404(
             Indicator, id=self.kwargs.get('pk', '')
         )
-        return f'Indicator Value Manager Map : {self.indicator.full_name} '
+        return f'Indicator Value Manager Map : {self.indicator.__str__()} '
 
     @property
     def content_title(self):
@@ -54,7 +54,7 @@ class IndicatorValueManagementMapView(AdminView):
                 'indicator': self.indicator,
                 'geometry': json.loads(
                     json.dumps(
-                        GeometryContextSerializer(
+                        GeometrySerializer(
                             self.indicator.reporting_units,
                             many=True).data
                     )

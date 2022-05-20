@@ -2,9 +2,9 @@
  * MAP reducer
  */
 export const MAP_CHANGE_BASEMAP = `MAP/CHANGE_BASEMAP`;
+export const MAP_REFERENCE_LAYER_CHANGED = `MAP/REFERENCE_LAYER_CHANGED`;
 export const MAP_ADD_CONTEXTLAYERS = `MAP/ADD_CONTEXTLAYERS`;
 export const MAP_REMOVE_CONTEXTLAYERS = `MAP/REMOVE_CONTEXTLAYERS`;
-export const REFERENCE_LAYER_CHANGED = `MAP/REFERENCE_LAYER_CHANGED`;
 const mapInitialState = {
   referenceLayer: null,
   basemapLayer: null,
@@ -40,7 +40,7 @@ export default function mapReducer(state = mapInitialState, action) {
         contextLayers: contextLayers
       }
     }
-    case REFERENCE_LAYER_CHANGED: {
+    case MAP_REFERENCE_LAYER_CHANGED: {
       return {
         ...state,
         referenceLayer: action.payload

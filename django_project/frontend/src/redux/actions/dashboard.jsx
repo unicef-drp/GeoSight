@@ -1,15 +1,20 @@
-import { DASHBOARD_ACTION_NAME } from '../reducers'
 import { fetching } from "../reducers_api";
 
-export const REQUEST_DASHBOARD = 'REQUEST/' + DASHBOARD_ACTION_NAME;
-export const RECEIVE_DASHBOARD = 'RECEIVE/' + DASHBOARD_ACTION_NAME;
+import { DASHBOARD_ACTION_NAME } from '../reducers'
+
+const REQUEST_DASHBOARD = 'REQUEST/' + DASHBOARD_ACTION_NAME;
+const RECEIVE_DASHBOARD = 'RECEIVE/' + DASHBOARD_ACTION_NAME;
 
 function request() {
-  return { type: REQUEST_DASHBOARD };
+  return {
+    name: DASHBOARD_ACTION_NAME,
+    type: REQUEST_DASHBOARD
+  };
 }
 
 function receive(data, error = null) {
   return {
+    name: DASHBOARD_ACTION_NAME,
     type: RECEIVE_DASHBOARD,
     data,
     error,

@@ -120,6 +120,9 @@ class Indicator(AbstractTerm, AbstractSource):
         )
     )
 
+    class Meta:  # noqa: D106
+        ordering = ('group__name', 'name')
+
     def __str__(self):
         return f'{self.group}/{self.name}'
 
@@ -182,3 +185,73 @@ class Indicator(AbstractTerm, AbstractSource):
                 indicator_extra_value.value = extra_value
                 indicator_extra_value.save()
         return indicator_value
+
+    def query_value(self, date_data: date):
+        """ Return query of value"""
+        query = self.indicatorvalue_set.filter(date__lte=date_data)
+        # update query by behaviour
+        if self.aggregation_behaviour == AggregationBehaviour.USE_AVAILABLE:
+            if query.first():
+                last_date = query.first().date
+                query = query.filter(date=last_date)
+        return query
+
+    def rule_by_value(self, value):
+        """
+        Return scenario level of the value
+        """
+        if value is not None:
+            # check the rule
+            for indicator_rule in self.indicatorrule_set.all():
+                try:
+                    if indicator_rule.rule and eval(
+                            indicator_rule.rule.replace('x',
+                                                        f'{value}').lower()):
+                        return indicator_rule
+                except NameError:
+                    pass
+        return None
+
+    def serialize(self, geometry_code, value, attributes=None):
+        """return data."""
+        rule = self.rule_by_value(value)
+        background_color = rule.color if rule else ''
+
+        values = {
+            'indicator_id': self.id,
+            'geometry_code': geometry_code,
+            'value': value,
+            'text': rule.name,
+            'color': background_color,
+        }
+        values.update(attributes if attributes else {})
+        return values
+
+    def values(self, date_data: date):
+        """Return list data based on date.
+
+        If it is upper than the reporting geometry level,
+        it will be aggregate to upper level
+        """
+
+        # get the geometries of data
+        values = []
+        query = self.query_value(date_data)
+        query_report = query.order_by(
+            'geom_identifier', '-date').distinct(
+            'geom_identifier')
+        for indicator_value in query_report:
+            attributes = {
+                'date': indicator_value.date
+            }
+            attributes.update({
+                extra.name: extra.value for extra in
+                indicator_value.indicatorextravalue_set.all()
+            })
+            value = self.serialize(
+                indicator_value.geom_identifier,
+                indicator_value.value,
+                attributes
+            )
+            values.append(value)
+        return values

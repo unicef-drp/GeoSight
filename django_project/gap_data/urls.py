@@ -4,14 +4,18 @@ from django.urls import include
 
 from gap_dashboard.views.backups import BackupsView
 from gap_dashboard.views.dashboard import DashboardListView
-from gap_data.api.dashboard import DashboardData, DashboardReferenceGeojson
+from gap_data.api.dashboard import DashboardData, ReferenceLayerGeojson
 from gap_data.api.download_file import (
     DownloadSharepointFile,
     DownloadBackupsFile
 )
-from gap_data.api.indicator import IndicatorDetailAPI
+from gap_data.api.indicator import IndicatorDetailAPI, IndicatorValuesAPI
 
 indicator_api = [
+    url(
+        r'^(?P<pk>\d+)/values/latest',
+        IndicatorValuesAPI.as_view(), name='indicator-values-api'
+    ),
     url(
         r'^(?P<pk>\d+)',
         IndicatorDetailAPI.as_view(), name='indicator-detail-api'
@@ -20,9 +24,9 @@ indicator_api = [
 
 api = [
     url(
-        r'^dashboard/(?P<slug>[^/]+)/reference-layer.geojson$',
-        DashboardReferenceGeojson.as_view(),
-        name='dashboard-ref-layer-api'
+        r'^reference-layer/(?P<uuid>[0-9a-f-]+)/(?P<level>.+)$',
+        ReferenceLayerGeojson.as_view(),
+        name='reference-layer-api'
     ),
     url(
         r'^dashboard/(?P<slug>[^/]+)$',

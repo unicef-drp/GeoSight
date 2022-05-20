@@ -22,7 +22,7 @@ class Operation(object):
 class LayerUsed(object):
     """A quick couple variable for Layer That being used."""
 
-    REFERENCE_LAYER = 'ReferenceLayer'
+    INDICATOR = 'Indicator'
 
 
 class Widget(AbstractTerm):
@@ -31,9 +31,9 @@ class Widget(AbstractTerm):
     @property
     def layer_id(self):
         """Return layer based on layer used."""
-        if self.layer_used == LayerUsed.REFERENCE_LAYER \
-                and self.reference_layer:
-            return self.reference_layer.id
+        if self.layer_used == LayerUsed.INDICATOR \
+                and self.indicator:
+            return self.indicator.id
         elif self.context_layer:
             return self.context_layer.id
         else:
@@ -81,13 +81,13 @@ class Widget(AbstractTerm):
 
     layer_used = models.CharField(
         max_length=256,
-        default=LayerUsed.REFERENCE_LAYER,
+        default=LayerUsed.INDICATOR,
         choices=(
-            (LayerUsed.REFERENCE_LAYER, LayerUsed.REFERENCE_LAYER),
+            (LayerUsed.INDICATOR, LayerUsed.INDICATOR),
         )
     )
 
-    reference_layer = models.ForeignKey(
+    indicator = models.ForeignKey(
         Indicator,
         blank=True, null=True,
         on_delete=models.SET_NULL,

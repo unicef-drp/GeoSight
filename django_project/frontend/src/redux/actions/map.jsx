@@ -1,8 +1,8 @@
 import {
-  MAP_ADD_CONTEXTLAYERS,
   MAP_CHANGE_BASEMAP,
-  MAP_REMOVE_CONTEXTLAYERS,
-  REFERENCE_LAYER_CHANGED
+  MAP_REFERENCE_LAYER_CHANGED,
+  MAP_ADD_CONTEXTLAYERS,
+  MAP_REMOVE_CONTEXTLAYERS
 } from '../reducers'
 
 
@@ -15,7 +15,7 @@ function change_basemap(payload) {
 
 function change_reference_layer(payload) {
   return {
-    type: REFERENCE_LAYER_CHANGED,
+    type: MAP_REFERENCE_LAYER_CHANGED,
     payload: payload
   };
 }
