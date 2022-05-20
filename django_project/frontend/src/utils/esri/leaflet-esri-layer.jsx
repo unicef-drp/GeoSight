@@ -118,7 +118,7 @@ export default class EsriLeafletLayer {
           let leafletStyle = null;
           switch (style.classificationValueMethod) {
             case "classMaxValue":
-              $.each(style.classifications, function (index, classification) {
+              style.classifications.forEach(function (index, classification) {
                 if (value <= classification.classMaxValue) {
                   leafletStyle = classification.style;
                   return false;
@@ -129,7 +129,7 @@ export default class EsriLeafletLayer {
               }
               break
             case "classExactValue":
-              $.each(style.classifications, function (index, classification) {
+              style.classifications.forEach(function (index, classification) {
                 if ('' + value === '' + classification.value) {
                   leafletStyle = classification.style;
                   return false;
@@ -158,7 +158,7 @@ export default class EsriLeafletLayer {
 
           switch (style.classificationValueMethod) {
             case "classMaxValue":
-              $.each(style.classifications, function (index, classification) {
+              style.classifications.forEach(function (index, classification) {
                 if (value <= classification.classMaxValue) {
                   leafletStyle = classification.style;
                   return false;
@@ -169,7 +169,7 @@ export default class EsriLeafletLayer {
               }
               break
             case "classExactValue":
-              $.each(style.classifications, function (index, classification) {
+              style.classifications.forEach(function (index, classification) {
                 if ('' + value === '' + classification.value) {
                   leafletStyle = classification.style;
                   return false;

@@ -2,9 +2,7 @@
 from django.test.testcases import TestCase
 
 from gap_data.serializer.context_layer import ContextLayerSerializer
-from gap_data.tests.model_factories import (
-    ContextLayerF, ContextLayerParameterF, ContextLayerStyleF
-)
+from gap_data.tests.model_factories import ContextLayerF, ContextLayerStyleF
 
 
 class BasemapLayerTest(TestCase):
@@ -27,15 +25,11 @@ class BasemapLayerTest(TestCase):
     def test_create(self):
         """Test create."""
         context_layer = ContextLayerF(
-            name=self.name
-        )
-
-        for name, value in self.params.items():
-            ContextLayerParameterF(
-                context_layer=context_layer,
-                name=name,
-                value=value
+            name=self.name,
+            url='test?' + '&'.join(
+                [f'{key}={value}' for key, value in self.params.items()]
             )
+        )
         for name, value in self.style.items():
             ContextLayerStyleF(
                 context_layer=context_layer,

@@ -11,7 +11,7 @@ class IndicatorValueTest(TestCase):
 
     def setUp(self):
         """To setup test."""
-        self.name = 'Scenario Rule 1'
+        self.name = 'Rule 1'
         self.indicator_name = 'Indicator 1'
 
     def test_create(self):
@@ -20,7 +20,7 @@ class IndicatorValueTest(TestCase):
         geometry = GeometryF()
         value = IndicatorValueF(
             indicator=indicator,
-            geometry=geometry
+            geom_identifier=geometry.identifier
         )
         self.assertEquals(value.indicator, indicator)
-        self.assertEquals(value.geometry, geometry)
+        self.assertEquals(value.geom_identifier, geometry.identifier)

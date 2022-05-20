@@ -1,9 +1,7 @@
 """Harvester get the data from api with geography and today date."""
 from django.utils.timezone import now
 
-from gap_harvester.harveters._base import (
-    BaseHarvester, HarvestingError
-)
+from gap_harvester.harveters._base import BaseHarvester, HarvestingError
 
 
 class APIWithGeographyAndTodayDate(BaseHarvester):

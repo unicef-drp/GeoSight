@@ -3,6 +3,7 @@
    ========================================================================== */
 
 import React, { useState } from 'react';
+import { useSelector } from "react-redux";
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -11,9 +12,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LeftRightToggleButton, { LEFT, RIGHT } from '../../ToggleButton'
 import Basemaps from './Basemaps'
 import ContextLayers from './ContextLayers'
+import IndicatorsAccordion from './Indicators'
 
 import './style.scss';
-import { useSelector } from "react-redux";
 
 /**
  * Left panel
@@ -32,7 +33,7 @@ export default function LeftPanel() {
   const onRight = () => {
     setState(RIGHT);
   };
-  const [expanded, setExpanded] = useState('contextLayers');
+  const [expanded, setExpanded] = useState('indicators');
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -68,6 +69,10 @@ export default function LeftPanel() {
             }
           </AccordionDetails>
         </Accordion>
+        <IndicatorsAccordion
+          expanded={expanded === 'indicators'}
+          handleChange={handleChange}
+        />
         <Accordion
           expanded={expanded === 'contextLayers'}
           onChange={handleChange('contextLayers')}

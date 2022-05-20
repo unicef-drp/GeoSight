@@ -1,0 +1,37 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load indicator_tags %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block stylesheet %}
+    <link href="{% static 'css/pages/dashboard.css' %}" rel="stylesheet"
+          type="text/css" media="screen, projection"/>
+{% endblock %}
+
+{% block header %}
+    Select instance
+{% endblock %}
+
+{% block content %}
+    {% if not dashboards %}
+        <div>
+            <h4>You don't have any dashboard</h4>
+        </div>
+    {% else %}
+        <div id="dashboard" class="row">
+            {% for dashboard in dashboards %}
+                <div class="col-2">
+                    <a href="{{ dashboard.url }}"
+                       class="dashboard">
+                        <img src="
+                                {% if dashboard.icon %}{{ dashboard.icon }}{% else %}{% static "img/no-image-found.jpg" %}{% endif %}">
+                        <span>{{ dashboard.name }}</span>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

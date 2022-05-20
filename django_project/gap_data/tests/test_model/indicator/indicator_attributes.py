@@ -1,9 +1,7 @@
 """Test for IndicatorGroup model."""
 from django.test.testcases import TestCase
 
-from gap_data.tests.model_factories import (
-    IndicatorGroupF, IndicatorFrequencyF
-)
+from gap_data.tests.model_factories import IndicatorGroupF, IndicatorFrequencyF
 
 
 class IndicatorGroupTest(TestCase):

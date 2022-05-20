@@ -12,6 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from .contrib import *  # noqa
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 ALLOWED_HOSTS = ['*']
 ADMINS = (
     ('Irwan Fathurrahman', 'irwam@kartoza.com'),

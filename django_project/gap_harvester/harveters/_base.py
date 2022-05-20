@@ -9,9 +9,7 @@ from django.utils import timezone
 
 from gap_data.models import Geometry, IndicatorValue
 from gap_data.models.indicator.indicator import IndicatorValueRejectedError
-from gap_harvester.models import (
-    Harvester, HarvesterLog, LogStatus
-)
+from gap_harvester.models import Harvester, HarvesterLog, LogStatus
 
 User = get_user_model()
 
@@ -44,7 +42,7 @@ class BaseHarvester(ABC):
             self.mapping[attribute.remote_value] = attribute.platform_value
 
         if harvester.indicator:
-            self.reporting_units = harvester.indicator.reporting_units
+            self.reporting_units = Geometry.objects.all()
 
     @staticmethod
     def additional_attributes(**kwargs) -> dict:
@@ -155,7 +153,7 @@ class BaseHarvester(ABC):
         try:
             if value:
                 return self.harvester.indicator.save_value(
-                    date, geometry, float(value)
+                    date, geometry.identifier, float(value)
                 )
             else:
                 return None

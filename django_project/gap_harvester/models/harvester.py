@@ -150,24 +150,11 @@ class Harvester(models.Model):
 
     def get_attributes(self):
         """Get attributes keys."""
-        from gap_data.models.instance import Instance
         from gap_harvester.models import HarvesterAttribute
         ids = []
         attributes = []
-        instance = None
-        try:
-            instance = Instance.objects.get(
-                slug=self.harvesterattribute_set.get(
-                    name='instance_slug'
-                ).value
-            )
-        except (
-                HarvesterAttribute.DoesNotExist,
-                Instance.DoesNotExist
-        ):
-            pass
         for name, attribute in self.get_harvester_class.additional_attributes(
-                instance=instance
+
         ).items():
             try:
                 attr = self.harvesterattribute_set.get(name=name)

@@ -14,10 +14,7 @@ import './style.scss';
  * @param {string} data Data of widget
  */
 export default function Widget({ data }) {
-  const {
-    referenceLayer
-  } = useSelector(state => state.map);
-
+  const { indicators } = useSelector(state => state.dashboard.data);
   const [showInfo, setShowInfo] = useState(false);
   const {
     name, description, unit, type,
@@ -33,19 +30,24 @@ export default function Widget({ data }) {
    */
   function getData() {
     switch (layer_used) {
-      case definition.PluginLayerUsed.REFERENCE_LAYER:
-        const layer = referenceLayer;
-        if (layer) {
-          const output = [];
-          layer.getLayers().forEach(function (layer) {
-            if (layer.feature.properties[property]) {
-              output.push({
-                'date': layer.feature.properties['date'],
-                'value': layer.feature.properties[property],
-              })
-            }
+      case definition.PluginLayerUsed.INDICATOR:
+        if (indicators) {
+          const indicator = indicators.filter((indicator) => {
+            return indicator.id == layer_id;
           })
-          return output;
+
+          if (indicator[0] && indicator[0]['data']) {
+            const output = [];
+            indicator[0]['data'].forEach(function (indicatorData) {
+              if (indicatorData[property] !== undefined) {
+                output.push({
+                  'date': indicatorData['date'],
+                  'value': indicatorData[property],
+                })
+              }
+            })
+            return output;
+          }
         }
         return null;
       default:

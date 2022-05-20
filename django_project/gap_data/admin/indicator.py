@@ -3,21 +3,22 @@ from django.contrib import admin
 
 from gap_data.models.indicator import (
     Indicator, IndicatorGroup, IndicatorFrequency,
-    IndicatorValue, IndicatorScenarioRule, IndicatorExtraValue
+    IndicatorValue, IndicatorRule, IndicatorExtraValue
 )
+
+
+class IndicatorExtraValueRuleInline(admin.TabularInline):
+    """IndicatorExtraValue inline."""
+
+    model = IndicatorExtraValue
+    extra = 0
 
 
 class IndicatorValueAdmin(admin.ModelAdmin):
     """IndicatorValue admin."""
 
-    class IndicatorExtraValueRuleInline(admin.TabularInline):
-        """IndicatorExtraValue inline."""
-
-        model = IndicatorExtraValue
-        extra = 0
-
-    list_display = ('indicator', 'date', 'geometry', 'value')
-    list_filter = ('indicator', 'date', 'geometry')
+    list_display = ('indicator', 'date', 'geom_identifier', 'value')
+    list_filter = ('indicator', 'date', 'geom_identifier')
     search_fields = ('indicator',)
     inlines = (IndicatorExtraValueRuleInline,)
 
@@ -28,29 +29,25 @@ class IndicatorFrequencyAdmin(admin.ModelAdmin):
     list_display = ('name', 'frequency')
 
 
+class IndicatorRuleInline(admin.TabularInline):
+    """IndicatorRule inline."""
+
+    model = IndicatorRule
+    extra = 0
+
+
 class IndicatorAdmin(admin.ModelAdmin):
     """Indicator admin."""
 
-    class IndicatorScenarioRuleInline(admin.TabularInline):
-        """IndicatorScenarioRule inline."""
-
-        model = IndicatorScenarioRule
-        extra = 0
-
-    list_display = (
-        'name', 'group', 'frequency', 'show_in_context_analysis',
-        'geometry_reporting_level', 'access_level', 'order')
-    filter_horizontal = ('geometry_reporting_units',)
-    list_editable = ('show_in_context_analysis', 'access_level', 'order')
-    list_filter = ('group', 'show_in_context_analysis', 'access_level')
-    inlines = (IndicatorScenarioRuleInline,)
+    list_display = ('name', 'group', 'frequency', 'reporting_level')
+    list_filter = ('group',)
+    inlines = (IndicatorRuleInline,)
 
 
 class IndicatorGroupAdmin(admin.ModelAdmin):
     """IndicatorGroup admin."""
 
-    list_display = ('name', 'instance')
-    list_filter = ('instance',)
+    list_display = ('name',)
 
 
 admin.site.register(IndicatorGroup, IndicatorGroupAdmin)

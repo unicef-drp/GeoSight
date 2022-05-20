@@ -4,9 +4,7 @@ from django.test.testcases import TestCase
 from django.urls import reverse
 
 from gap_data.models.indicator import Indicator
-from gap_data.tests.model_factories import (
-    IndicatorF, InstanceF, IndicatorGroupF, UserF
-)
+from gap_data.tests.model_factories import IndicatorF, IndicatorGroupF, UserF
 
 
 class IndicatorDetailApiTest(TestCase):
@@ -15,17 +13,13 @@ class IndicatorDetailApiTest(TestCase):
     def setUp(self):
         """To setup test."""
         name = 'Indicator 1'
-        instance = InstanceF()
-        group = IndicatorGroupF(
-            instance=instance
-        )
+        group = IndicatorGroupF()
         self.indicator = IndicatorF(
             name=name,
             group=group
         )
         self.url = reverse(
             'indicator-detail-api', kwargs={
-                'slug': instance.slug,
                 'pk': self.indicator.pk
             }
         )

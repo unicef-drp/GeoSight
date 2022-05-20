@@ -21,7 +21,7 @@ class AbstractTerm(models.Model):
 
 
 class AbstractSource(models.Model):
-    """Abstract model for Source."""
+    """Abstract model with Source."""
 
     source = models.CharField(
         max_length=512,
@@ -33,7 +33,7 @@ class AbstractSource(models.Model):
 
 
 class SlugTerm(AbstractTerm):
-    """Abstract model for Term."""
+    """Abstract model with term."""
 
     slug = models.SlugField(
         max_length=512, unique=True
@@ -68,37 +68,6 @@ class IconTerm(models.Model):
         upload_to='icons',
         null=True,
         blank=True
-    )
-    white_icon = models.FileField(
-        upload_to='icons',
-        null=True,
-        blank=True
-    )
-
-    class Meta:  # noqa: D106
-        abstract = True
-
-
-# AGGREGATION METHOD
-class PermissionLevels(object):
-    """Class that hold Permission Level quick variable with string."""
-
-    PUBLIC = 'Public'
-    SIGNIN = 'Signin'
-    ADMIN = 'Admin'
-
-
-class PermissionModel(models.Model):
-    """Abstract model for Permission."""
-
-    access_level = models.CharField(
-        max_length=126,
-        default=PermissionLevels.PUBLIC,
-        choices=(
-            (PermissionLevels.PUBLIC, 'Accessed in public.'),
-            (PermissionLevels.SIGNIN, 'Need login to access.'),
-            (PermissionLevels.ADMIN, 'Need admin level to access it.')
-        )
     )
 
     class Meta:  # noqa: D106

@@ -9,4 +9,3 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         """Command handler."""
         call_command('loaddata', 'gap_data/fixtures/fixtures.json')
-        call_command('load_geometries')

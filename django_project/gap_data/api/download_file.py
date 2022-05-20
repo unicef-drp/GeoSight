@@ -3,8 +3,9 @@ import mimetypes
 import os
 
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseBadRequest, \
-    HttpResponseNotFound
+from django.http import (
+    HttpResponse, HttpResponseBadRequest, HttpResponseNotFound
+)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 

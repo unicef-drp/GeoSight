@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import L from 'leaflet';
 
 import './style.scss';
-import ReferenceLayer from "./ReferenceLayer";
 
 /**
  * Map component
@@ -100,7 +99,6 @@ export default function Map() {
 
   return <section className='dashboard__map'>
     <div id="map"></div>
-    <ReferenceLayer/>
   </section>
 }
 

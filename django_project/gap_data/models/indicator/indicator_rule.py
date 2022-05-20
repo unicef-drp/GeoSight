@@ -1,23 +1,18 @@
-"""Contains Indicator Scenario Rule model."""
+"""Contains Indicator Rule model."""
 from django.contrib.gis.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from gap_data.models.indicator.indicator import Indicator
-from gap_data.models.scenario import ScenarioLevel
 
 
-class IndicatorScenarioRule(models.Model):
-    """The rule of scenario model."""
+class IndicatorRule(models.Model):
+    """The rule of indicator."""
 
     name = models.CharField(
         max_length=512
     )
     indicator = models.ForeignKey(
         Indicator,
-        on_delete=models.CASCADE
-    )
-    scenario_level = models.ForeignKey(
-        ScenarioLevel,
         on_delete=models.CASCADE
     )
     rule = models.CharField(
@@ -32,12 +27,12 @@ class IndicatorScenarioRule(models.Model):
         max_length=16,
         null=True, blank=True,
         help_text=_(
-            'Color that override the scenario level color'
+            'Color of the rule'
         )
     )
 
     class Meta:  # noqa: D106
-        unique_together = ('indicator', 'scenario_level')
+        unique_together = ('indicator', 'name')
 
     @property
     def rule_str(self):

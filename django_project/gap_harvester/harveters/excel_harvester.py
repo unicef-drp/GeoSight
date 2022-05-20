@@ -7,12 +7,8 @@ from django.utils.timezone import now
 from pyexcel_xls import get_data as xls_get
 from pyexcel_xlsx import get_data as xlsx_get
 
-from gap_data.models import (
-    Instance, Geometry, Indicator, IndicatorValue
-)
-from gap_harvester.harveters._base import (
-    BaseHarvester, HarvestingError
-)
+from gap_data.models import Geometry, Indicator, IndicatorValue
+from gap_harvester.harveters._base import BaseHarvester, HarvestingError
 
 
 class ExcelHarvester(BaseHarvester):
@@ -56,18 +52,13 @@ class ExcelHarvester(BaseHarvester):
                     "The name of column in "
                     "the file contains administration code"
                 )
-            },
-            'instance_slug': {
-                'title': "Slug of the instance",
-                'description': "The instance slug of this harvester"
-            },
+            }
         }
         try:
-            instance = kwargs['instance']
-            for indicator in instance.indicators.order_by('name'):
+            for indicator in Indicator.objects.all().order_by('name'):
                 shortcode = indicator.shortcode
-                attr[indicator.id] = {
-                    'title': "Column Name: " + indicator.full_name,
+                attr[f'{indicator.id}'] = {
+                    'title': "Column Name: " + indicator.__str__(),
                     'description': indicator.description,
                     'class': 'indicator-name',
                     'required': False,
@@ -115,15 +106,6 @@ class ExcelHarvester(BaseHarvester):
         # fetch data
         self._update('Fetching data')
 
-        try:
-            instance = Instance.objects.get(
-                slug=self.attributes['instance_slug']
-            )
-        except Instance.DoesNotExist:
-            raise HarvestingError(
-                'The instance is not found, please reupload.'
-            )
-
         # date
         date = now().date()
         if self.attributes['date']:
@@ -158,7 +140,7 @@ class ExcelHarvester(BaseHarvester):
                 raise HarvestingError(str(e).replace(
                     'is not in list', '') + ' column is not found')
 
-        for indicator in instance.indicators:
+        for indicator in Indicator.objects.all():
             try:
                 indicators_column[
                     headers.index(self.attributes[str(indicator.id)])
@@ -185,7 +167,7 @@ class ExcelHarvester(BaseHarvester):
 
                 geometry = None
                 try:
-                    geometry = indicator.reporting_units.get(
+                    geometry = Geometry.objects.get(
                         identifier=administrative_code
                     )
                 except Geometry.DoesNotExist:
@@ -215,7 +197,7 @@ class ExcelHarvester(BaseHarvester):
                                     )
                                     continue
                             except ValueError:
-                                rules = indicator.indicatorscenariorule_set
+                                rules = indicator.indicatorrule_set
                                 rule = rules.filter(
                                     name__iexact=value).first()
                                 if not rule:
@@ -235,7 +217,7 @@ class ExcelHarvester(BaseHarvester):
                                     IndicatorValue.objects.get_or_create(
                                         indicator=indicator,
                                         date=date,
-                                        geometry=geometry,
+                                        geom_identifier=geometry.identifier,
                                         defaults={
                                             'value': value
                                         }

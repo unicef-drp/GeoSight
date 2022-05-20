@@ -22,10 +22,7 @@ export default function Basemaps({ data }) {
   // Onload, check the default one
   useEffect(() => {
     if (data) {
-      const enableByDefaults = data.filter((basemap) => {
-        return basemap.enable_by_default;
-      })
-      onSelected(enableByDefaults[0]?.id);
+      onSelected(data[0]?.id);
     }
   }, [data])
 

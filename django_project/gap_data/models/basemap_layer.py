@@ -3,7 +3,6 @@ from django.contrib.gis.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from core.models import AbstractTerm, IconTerm
-from gap_data.models.instance import Instance
 
 
 class BasemapLayerType(object):
@@ -16,12 +15,6 @@ class BasemapLayerType(object):
 class BasemapLayer(AbstractTerm, IconTerm):
     """Model of BasemapLayer."""
 
-    instance = models.ForeignKey(
-        Instance,
-        null=True, blank=True,
-        on_delete=models.CASCADE,
-        help_text="Make this empty to be used by every instance."
-    )
     url = models.CharField(
         max_length=256
     )
@@ -32,12 +25,6 @@ class BasemapLayer(AbstractTerm, IconTerm):
             (BasemapLayerType.XYZ_TILE, BasemapLayerType.XYZ_TILE),
             (BasemapLayerType.WMS, BasemapLayerType.WMS),
         )
-    )
-    show_on_map = models.BooleanField(
-        default=True
-    )
-    enable_by_default = models.BooleanField(
-        default=False
     )
 
     class Meta:  # noqa: D106

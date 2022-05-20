@@ -1,0 +1,129 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'libs/leaflet/1.5.1/leaflet.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/map.css' %}" type="text/css" media="screen, projection"/>
+    <style>
+        .feature-value-popup table {
+            width: 100%;
+        }
+
+        .feature-value-popup table th,
+        .feature-value-popup table td {
+            border-top: 1px solid var(--primary-color);
+            padding: 5px;
+        }
+
+        .feature-value-popup table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .leaflet-popup-content {
+            min-width: 400px;
+        }
+
+        .leaflet-popup-content .row {
+            height: 187px;
+        }
+
+        .leaflet-popup-content .col {
+            border: 1px solid var(--primary-color);
+            padding: 0;
+            max-height: 100%;
+            overflow-y: auto;
+        }
+
+        .leaflet-popup-content .popup-header {
+            text-align: left;
+            color: var(--primary-color);
+            padding-bottom: 5px;
+        }
+
+        .leaflet-popup-content form {
+            margin-top: -1px;
+        }
+
+
+        .leaflet-popup-content form input {
+            border: 1px solid var(--primary-color);
+            margin-top: 10px;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .leaflet-popup-content form input:focus,
+        .leaflet-popup-content form input:focus-visible {
+            outline: 1px solid var(--primary-color);
+        }
+
+        .leaflet-popup-content form > div {
+            padding: 10px;
+        }
+    </style>
+{% endblock stylesheet %}
+{% block content %}
+    {% csrf_token %}
+    <div id="map-section" class="section box-shadow-bottom">
+        <div id="map">
+
+        </div>
+        <div id="level-selection" class="box-shadow-bottom">
+            {% for key, level in instance_levels.items %}
+                <div data-level="{{ level.level }}" data-url="{{ level.url }}">{{ level.level }}</div>
+            {% endfor %}
+        </div>
+        <table id="legend" class="box-shadow-bottom">
+            {% for key, legend in legends.items %}
+                <tr>
+                    <td><span class="color" style="background: {{ legend.color }}"></span></td>
+                    <td><span class="text">{{ legend.name }}</span></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        const geometry = {{ geometry|safe }};
+        const legends = {{ legends|safe }};
+        const geometryHasValue = {{ geometry_has_value|safe }};
+        const geometryHasUpdatedValue = {{ geometry_has_updated_value|safe }};
+        const urlValueByGeometry = "{{ url_value_by_geometry }}";
+    </script>
+    <script type="text/javascript" src="{% static 'libs/underscore.js/1.9.1/underscore-min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/leaflet/1.5.1/leaflet.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/dashboard/admin/indicator-value-manager-map.js' %}"></script>
+
+    <script type='text/template' id='_on_each_feature'>
+        <div id="feature-value-<%= id %>" data-id="<%= id %>" class="feature-value-popup">
+            <div class="popup-header"><b><%= name %> (<%= identifier %>)</b></div>
+            <div class="row">
+                <div class="col" style="margin-right: 10px">
+                    <form method="post" action="<%= url %>">
+                        {% csrf_token %}
+                        <div>
+                            <div><b>Add new value</b></div>
+                            <input id="feature-value-date" type="text" name="date" placeholder="Date" autocomplete="off">
+                            <input id="feature-value-value" type="number" name="value" placeholder="Value" autocomplete="off" value="{{ indicator.min_value }}"
+                                   min="{{ indicator.min_value }}" max="{{ indicator.max_value }}">
+                            <input class="main-button" type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+                <div class="col">
+                    <table>
+                        <tr>
+                            <th><b>Date</b></th>
+                            <th>Value</th>
+                        </tr>
+                        <tr class="loading">
+                            <td colspan="2"><i>Loading</i></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </script>
+{% endblock %}

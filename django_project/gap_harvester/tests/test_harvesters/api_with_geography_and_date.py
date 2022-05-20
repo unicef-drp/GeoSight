@@ -77,32 +77,32 @@ class APIWithGeograpyAndDateTest(BaseHarvesterTest):
         self.assertEqual(log.status, 'Done')
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='A'
+                geom_identifier='A'
             ).value, 1
         )
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='A'
+                geom_identifier='A'
             ).date.strftime("%Y-%m-%d"), "2022-03-23"
         )
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='B'
+                geom_identifier='B'
             ).value, 2
         )
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='B'
+                geom_identifier='B'
             ).date.strftime("%Y-%m-%d"), "2022-03-11"
         )
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='C'
+                geom_identifier='C'
             ).value, 4
         )
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='C'
+                geom_identifier='C'
             ).date.strftime("%Y-%m-%d"), "2022-02-27"
         )
 
@@ -159,31 +159,31 @@ class APIWithGeograpyAndDateTest(BaseHarvesterTest):
         self.assertEqual(log.status, 'Done')
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='A'
+                geom_identifier='A'
             ).value, 1
         )
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='A'
+                geom_identifier='A'
             ).date.strftime("%Y-%m-%d"), "2010-01-01"
         )
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='B'
+                geom_identifier='B'
             ).value, 2
         )
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='B'
+                geom_identifier='B'
             ).date.strftime("%Y-%m-%d"), "2011-01-01"
         )
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='C'
+                geom_identifier='C'
             ).value, 4
         )
         self.assertEqual(
             harvester.indicator.indicatorvalue_set.get(
-                geometry__identifier='C'
+                geom_identifier='C'
             ).date.strftime("%Y-%m-%d"), "2013-01-01"
         )

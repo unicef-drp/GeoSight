@@ -8,12 +8,8 @@ from django.db import transaction
 from pyexcel_xls import get_data as xls_get
 from pyexcel_xlsx import get_data as xlsx_get
 
-from gap_data.models import (
-    Geometry, IndicatorValue, IndicatorExtraValue
-)
-from gap_harvester.harveters._base import (
-    BaseHarvester, HarvestingError
-)
+from gap_data.models import Geometry, IndicatorValue, IndicatorExtraValue
+from gap_harvester.harveters._base import BaseHarvester, HarvestingError
 
 
 class RecordError(Exception):
@@ -85,10 +81,10 @@ class SharepointHarvester(BaseHarvester):
         """Run the harvester."""
         indicator = self.harvester.indicator
         rule_names = [name.lower() for name in list(
-            indicator.indicatorscenariorule_set.values_list('name', flat=True)
+            indicator.indicatorrule_set.values_list('name', flat=True)
         )]
         rules = list(
-            indicator.indicatorscenariorule_set.values_list('rule', flat=True)
+            indicator.indicatorrule_set.values_list('rule', flat=True)
         )
         default_attr = SharepointHarvester.additional_attributes()
 
@@ -168,7 +164,7 @@ class SharepointHarvester(BaseHarvester):
                     # ------------------------------------------------------
                     geometry, date_time, year, month = None, None, None, None
                     try:
-                        geometry = self.reporting_units.get(
+                        geometry = Geometry.objects.get(
                             identifier=record[idx_administration_code]
                         )
                     except Geometry.DoesNotExist:
@@ -257,7 +253,7 @@ class SharepointHarvester(BaseHarvester):
                             IndicatorValue.objects.get_or_create(
                                 indicator=indicator,
                                 date=date_time,
-                                geometry=geometry,
+                                geom_identifier=geometry.identifier,
                                 defaults={
                                     'value': value
                                 }

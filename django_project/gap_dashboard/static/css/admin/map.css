@@ -1,0 +1,77 @@
+#content {
+    display: flex;
+    flex-flow: column;
+}
+
+#content-view {
+    flex-grow: 1;
+}
+
+#map-section {
+    position: relative;
+}
+
+#map-section, #map {
+    height: 100%;
+    width: 100%;
+}
+
+#level-selection, #legend {
+    background-clip: padding-box;
+    background: white;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 1000;
+}
+
+#level-selection {
+    right: 10px;
+    top: 10px;
+}
+
+#legend {
+    left: 10px;
+    bottom: 10px;
+}
+
+#legend td span {
+    display: inline-block;
+}
+
+#legend td .color {
+    border-radius: 5px;
+    height: 18px;
+    padding: 5px;
+    margin-top: 5px;
+    margin-left: 10px;
+    width: 30px;
+}
+
+#legend td .text {
+    padding: 5px;
+    margin-right: 10px;
+}
+
+#level-selection > div {
+    cursor: pointer;
+    padding: 10px;
+}
+
+#level-selection > div:hover {
+    background: var(--hovered-color);
+}
+
+#level-selection > div.active {
+    background-color: var(--hovered-color);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+#content .header span {
+    display: inline-block;
+    padding-top: 3px;
+}
+
+.popup-header {
+    padding: 5px 10px;
+}

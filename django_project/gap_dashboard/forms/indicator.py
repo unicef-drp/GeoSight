@@ -5,35 +5,22 @@ from django.forms.models import model_to_dict
 from gap_data.models.indicator import (
     Indicator, IndicatorFrequency, IndicatorGroup, frequency_help_text,
 )
-from gap_data.models.instance import Instance
 
 
 class IndicatorForm(forms.ModelForm):
     """Indicator form."""
 
     label_suffix = ""
-    instance = forms.ModelChoiceField(
-        Instance.objects.all()
-    )
-    frequency = forms.IntegerField(
-        help_text=frequency_help_text
-    )
+    frequency = forms.IntegerField(help_text=frequency_help_text)
     group = forms.ChoiceField()
 
     def __init__(self, *args, **kwargs):
         """Init."""
-        instance = kwargs.pop("indicator_instance")
         super().__init__(*args, **kwargs)
-        self.fields['instance'].initial = instance
-        self.fields['geometry_reporting_level'].choices = [
-            (u.id, u.name) for u in instance.geometry_levels_in_order
-        ]
         self.fields['aggregation_behaviour'].label = 'Reporting Behaviour'
         self.fields['group'].choices = [('', '')] + [
             (group.name, group.name)
-            for group in IndicatorGroup.objects.filter(
-                instance=instance
-            ).order_by('name')
+            for group in IndicatorGroup.objects.all().order_by('name')
         ]
 
         try:
@@ -64,10 +51,8 @@ class IndicatorForm(forms.ModelForm):
     def clean_group(self):
         """Return group."""
         group = self.cleaned_data['group']
-        instance = Instance.objects.get(id=self.data['instance'])
         indicator_group, created = IndicatorGroup.objects.get_or_create(
-            name=group,
-            instance=instance
+            name=group
         )
         return indicator_group
 

@@ -28,14 +28,6 @@ class SitePreferences(SingletonModel):
             'Put the hex color with # (e.g. #ffffff) '
             'or put the text of color. (e.g. blue)')
     )
-    secondary_color = models.CharField(
-        max_length=16,
-        null=True, blank=True,
-        default='#E34E09',
-        help_text=_(
-            'Put the hex color with # (e.g. #ffffff) '
-            'or put the text of color. (e.g. blue)')
-    )
     icon = models.FileField(
         upload_to='settings/icons',
         null=True,
