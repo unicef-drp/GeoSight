@@ -11,6 +11,7 @@ class Type(object):
     """A quick couple variable for Plugin Type."""
 
     SUMMARY_WIDGET = 'SummaryWidget'
+    SUMMARY_GROUP_WIDGET = 'SummaryGroupWidget'
 
 
 class Operation(object):
@@ -63,11 +64,20 @@ class Widget(AbstractTerm):
         )
     )
 
+    property_2 = models.CharField(
+        max_length=256,
+        null=True, blank=True,
+        help_text=(
+            "Second property that will be used for e.g: grouping."
+        )
+    )
+
     type = models.CharField(
         max_length=256,
         default=Type.SUMMARY_WIDGET,
         choices=(
             (Type.SUMMARY_WIDGET, Type.SUMMARY_WIDGET),
+            (Type.SUMMARY_GROUP_WIDGET, Type.SUMMARY_GROUP_WIDGET),
         )
     )
 

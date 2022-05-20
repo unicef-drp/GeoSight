@@ -50,12 +50,9 @@ export default function ReferenceLayer({ indicatorData }) {
       if (geojson.features) {
         const onEachFeature = (feature, layer) => {
           const properties = indicatorsByGeom[feature.properties.identifier]
-            ? indicatorsByGeom[feature.properties.identifier] : {}
+            ? indicatorsByGeom[feature.properties.identifier] : feature.properties
           layer.bindPopup(
-            featurePopupContent('Reference Layer', {
-              ...feature.properties,
-              ...properties
-            })
+            featurePopupContent('Reference Layer', properties)
           );
         }
         const layer = L.geoJson(geojson, {

@@ -24,13 +24,14 @@ export default function SummaryWidget(
     if (data !== null) {
       switch (operation) {
         case definition.PluginOperation.SUM:
-          let value = 0;
+          let total = 0;
           data.forEach(function (rowData) {
-            if (parseFloat(rowData.value) !== NaN) {
-              value += parseFloat(rowData.value);
+            const rowValue = parseFloat(rowData.value);
+            if (!isNaN(rowValue)) {
+              total += rowValue;
             }
           })
-          return <span>{numberWithCommas(value)} {unit}</span>
+          return <span>{numberWithCommas(total)} {unit}</span>
         default:
           return <div className='widget__error'>Operation Not Found</div>;
       }

@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { useSelector } from "react-redux";
 import InfoIcon from "@mui/icons-material/Info";
 import SummaryWidget from "./Types/SummaryWidget"
+import SummaryGroupWidget from "./Types/SummaryGroupWidget"
 
 import './style.scss';
 
@@ -18,7 +19,7 @@ export default function Widget({ data }) {
   const [showInfo, setShowInfo] = useState(false);
   const {
     name, description, unit, type,
-    layer_id, layer_used, property, operation
+    layer_id, layer_used, property, property_2, operation
   } = data
 
   const showInfoHandler = () => {
@@ -33,7 +34,7 @@ export default function Widget({ data }) {
       case definition.PluginLayerUsed.INDICATOR:
         if (indicators) {
           const indicator = indicators.filter((indicator) => {
-            return indicator.id == layer_id;
+            return indicator.id === layer_id;
           })
 
           if (indicator[0] && indicator[0]['data']) {
@@ -43,6 +44,7 @@ export default function Widget({ data }) {
                 output.push({
                   'date': indicatorData['date'],
                   'value': indicatorData[property],
+                  'value2': indicatorData[property_2],
                 })
               }
             })
@@ -61,6 +63,10 @@ export default function Widget({ data }) {
         return <SummaryWidget
           name={name} unit={unit} data={getData()} operation={operation}
         />;
+      case definition.PluginType.SUMMARY_GROUP_WIDGET:
+        return <SummaryGroupWidget
+          name={name} unit={unit} data={getData()} operation={operation}
+        />;
       default:
         return <div className='widget__error'>Widget Not Found</div>;
     }
@@ -71,7 +77,7 @@ export default function Widget({ data }) {
       <InfoIcon onClick={() => {
         showInfoHandler()
       }}/>
-      <div className='widget__content'>
+      <div className='widget__fill'>
         {renderWidget()}
       </div>
       {

@@ -27,8 +27,12 @@
     top: 5px;
   }
 
-  .widget__content {
+  .widget__fill {
     min-height: 2rem;
+
+    > .widget__error {
+      text-align: center;
+    }
   }
 
   .widget__info {
@@ -36,13 +40,38 @@
   }
 }
 
-.widget__gw {
+.widget__content {
+  margin-top: 5px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.widget__sw {
   text-align: center;
 
-  .widget__gw__title {
+  .widget__sw__title {
     color: $base-font-color;
     font-size: 1.5rem;
     margin-bottom: 10px;
+  }
+}
+
+.widget__sgw {
+  table {
+    width: 95%;
+    text-align: left;
+  }
+
+  .widget__sgw__row__name {
+    width: 1%;
+  }
+
+  .widget__sgw__row {
+    div {
+      background-color: $base-color;
+      color: white;
+      padding: 3px 5px;
+    }
   }
 }
 

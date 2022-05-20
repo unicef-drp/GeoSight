@@ -41,13 +41,20 @@ export default function dashboardReducer(
       if (state.data.indicators[action.id]
         && state.data.referenceLayer.data
         && state.data.referenceLayer.data.features) {
-        const geoms = [];
+        const geoms = {};
         state.data.referenceLayer.data.features.forEach(function (feature) {
-          geoms.push(feature.properties.identifier);
+          geoms[feature.properties.identifier] = feature.properties;
         })
-        data.data = data.data.filter((row) => {
-          return geoms.includes(row.geometry_code);
+        const newData = [];
+        data.data.forEach(function (row) {
+          if (geoms[row.geometry_code]) {
+            newData.push({
+              ...row,
+              ...geoms[row.geometry_code]
+            })
+          }
         })
+        data.data = newData;
         const newState = { ...state }
         newState.data.indicators[action.id] = {
           ...newState.data.indicators[action.id],
