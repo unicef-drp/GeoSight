@@ -43,8 +43,6 @@ export default function Dashboard() {
     }
   }, [referenceLayer]);
 
-  console.log('Render dashboard')
-
   return (
     <App className='dashboard'>
       {indicatorsData && referenceLayerData ?

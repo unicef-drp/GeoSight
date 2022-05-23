@@ -23,7 +23,8 @@ export default function LeftPanel() {
   const {
     basemapsLayers,
     referenceLayer,
-    contextLayers
+    contextLayers,
+    defaultBasemapLayer
   } = useSelector(state => state.dashboard.data);
   const [state, setState] = useState(LEFT);
 
@@ -40,8 +41,6 @@ export default function LeftPanel() {
   };
 
   const className = `dashboard__panel dashboard__left_side ${state} ${expanded ? 'expanded' : ''}`
-
-  console.log('Left Panel render')
 
   return (
     <section className={className}>
@@ -95,7 +94,8 @@ export default function LeftPanel() {
         </Accordion>
       </div>
       <div className='dashboard__left_side__basemaps'>
-        <Basemaps data={basemapsLayers}/>
+        <Basemaps data={basemapsLayers}
+                  defaultBasemapLayer={defaultBasemapLayer}/>
       </div>
     </section>
   )

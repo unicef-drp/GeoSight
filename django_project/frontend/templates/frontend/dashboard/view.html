@@ -7,5 +7,12 @@
           crossorigin=""/>
 {% endblock %}
 {% block render_bundle %}
-    {% render_bundle 'Dashboard' %}
+    {% render_bundle 'DashboardView' %}
+{% endblock %}
+{% block scripts %}
+    <script>
+      urls = Object.assign({}, urls, {
+        'dashboardData': '{% url 'dashboard-data-api' slug=dashboard.id %}'
+      });
+    </script>
 {% endblock %}

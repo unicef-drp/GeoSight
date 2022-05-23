@@ -6,13 +6,8 @@ from rest_framework.views import APIView
 
 from gap_data.models.dashboard import Dashboard
 from gap_data.models.reference_layer import ReferenceLayer
-from gap_data.serializer.basemap_layer import BasemapLayerSerializer
-from gap_data.serializer.context_layer import ContextLayerSerializer
-from gap_data.serializer.dashboard import WidgetSerializer
-from gap_data.serializer.indicator import IndicatorSerializer
-from gap_data.serializer.reference_layer import (
-    GeometrySerializer, ReferenceLayerSerializer
-)
+from gap_data.serializer.dashboard import DashboardSerializer
+from gap_data.serializer.reference_layer import GeometrySerializer
 
 
 class DashboardData(APIView):
@@ -21,25 +16,7 @@ class DashboardData(APIView):
     def get(self, request, slug):
         """Return all context analysis data."""
         dashboard = get_object_or_404(Dashboard, slug=slug)
-        context = {
-            'referenceLayer': ReferenceLayerSerializer(
-                dashboard.reference_layer
-            ).data,
-            'indicators': IndicatorSerializer(
-                dashboard.indicators, many=True
-            ).data,
-            'basemapsLayers': BasemapLayerSerializer(
-                dashboard.basemap_layers.order_by('id'), many=True
-            ).data,
-            'contextLayers': ContextLayerSerializer(
-                dashboard.context_layers, many=True
-            ).data,
-            'extent': dashboard.extent.extent,
-            'widgets': WidgetSerializer(
-                dashboard.widget_set.all().order_by('pk'), many=True
-            ).data
-        }
-        return Response(context)
+        return Response(DashboardSerializer(dashboard).data)
 
 
 class ReferenceLayerGeojson(APIView):

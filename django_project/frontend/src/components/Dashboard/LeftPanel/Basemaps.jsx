@@ -11,17 +11,18 @@ import Actions from '../../../redux/actions/actions'
 /**
  * Basemaps selector
  * @param {list} data Basemap list
+ * @param {int} defaultBasemapLayer Default basemap
  */
-export default function Basemaps({ data }) {
+export default function Basemaps({ data, defaultBasemapLayer }) {
   const dispatch = useDispatch();
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(defaultBasemapLayer);
   const onSelected = (id) => {
     setSelected(id);
   };
 
   // Onload, check the default one
   useEffect(() => {
-    if (data) {
+    if (data && !selected) {
       onSelected(data[0]?.id);
     }
   }, [data])

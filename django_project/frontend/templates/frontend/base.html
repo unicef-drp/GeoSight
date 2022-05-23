@@ -30,14 +30,15 @@
   const preferences = {{ preferences|safe }};
   const links = {{ links|safe }};
   const definition = {{ definition|safe }};
-  const urls = {
+  let urls = {
     'login': "{% url 'login' %}",
     'logout': "{% url 'logout' %}",
-    'admin': "{% url 'admin:index' %}",
-    'dashboardData': '{% url 'dashboard-data-api' slug=dashboard.id %}'
+    'admin': "{% url 'admin:index' %}"
   }
 </script>
 {% block render_bundle %}
+{% endblock %}
+{% block scripts %}
 {% endblock %}
 </body>
 </html>

@@ -26,6 +26,15 @@ class Dashboard(SlugTerm, IconTerm):
     basemap_layers = models.ManyToManyField(
         BasemapLayer
     )
+    default_basemap_layer = models.ForeignKey(
+        BasemapLayer,
+        null=True, blank=True,
+        on_delete=models.CASCADE,
+        help_text=_(
+            'If this is empty, the default will be latest basemap'
+        ),
+        related_name='dashboard_default_basemap_layer'
+    )
     indicators = models.ManyToManyField(
         Indicator
     )
