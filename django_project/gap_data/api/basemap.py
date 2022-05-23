@@ -1,5 +1,4 @@
-"""Basemap API.
-"""
+"""Basemap API."""
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,9 +11,7 @@ class BasemapListAPI(APIView):
     """Return BasemapLayer list."""
 
     def get(self, request):
-        """
-        Return BasemapLayer list.
-        """
+        """Return BasemapLayer list."""
         return Response(
             BasemapLayerSerializer(
                 BasemapLayer.objects.all(), many=True

@@ -18,9 +18,7 @@ class ReferenceLayerListAPI(APIView):
     """Return Reference Layer list."""
 
     def get(self, request):
-        """
-        Return Reference Layer list.
-        """
+        """Return Reference Layer list."""
         return Response(
             ReferenceLayerSerializer(
                 ReferenceLayer.objects.all(), many=True

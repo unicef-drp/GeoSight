@@ -15,9 +15,7 @@ class IndicatorListAPI(APIView):
     """API for list of indicator."""
 
     def get(self, request):
-        """
-        Return Indicatorslist.
-        """
+        """Return Indicatorslist."""
         return Response(
             IndicatorSerializer(
                 Indicator.objects.filter(group__isnull=False), many=True
