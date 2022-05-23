@@ -253,4 +253,29 @@
       width: 3rem;
     }
   }
+
+  .setting__button {
+    text-align: center;
+
+    .MuiSvgIcon-root {
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
+.modal__basemap__setting {
+  img {
+    margin-left: 5px;
+    height: 50px;
+  }
+}
+
+.setting__helper {
+  color: #111;
+  font-style: italic;
+  font-weight: 300;
 }

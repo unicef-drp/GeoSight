@@ -6,6 +6,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Checkbox } from "@mui/material";
 import SettingsIcon from '@mui/icons-material/Settings';
+import Tooltip from '@mui/material/Tooltip';
 
 import Modal, { ModalContent, ModalHeader } from "../../../Modal";
 import { fetchingData } from '../../../../redux/reducers_api'
@@ -21,7 +22,7 @@ export default function ReferenceLayerEditSection() {
   /** Get All Reference Layers */
   useEffect(() => {
     if (!referenceLayers) {
-      fetchingData(urls.referenceLayersAPI, {}, (response, error) => {
+      fetchingData(urls.referenceLayersListAPI, {}, (response, error) => {
         setReferenceLayers(response)
       })
     }
@@ -49,14 +50,16 @@ export default function ReferenceLayerEditSection() {
 
   return (
     <Fragment>
-      <SettingsIcon onClick={() => {
-        onOpen()
-      }}/>
+      <Tooltip title="Edit Reference Layer">
+        <SettingsIcon onClick={() => {
+          onOpen()
+        }}/>
+      </Tooltip>
 
       <Modal
         open={open}
         onClosed={onClosed}
-        className='modal__login'
+        className='modal__reference_layer__setting'
       >
         <ModalHeader>
           Select Reference Layer

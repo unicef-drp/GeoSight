@@ -14,8 +14,9 @@ class BasemapLayerParameterInline(admin.TabularInline):
 class BasemapLayerAdmin(admin.ModelAdmin):
     """BasemapLayer admin."""
 
-    list_display = ('name', 'url', 'icon')
+    list_display = ('name', 'url', 'icon', 'dashboard_default')
     inlines = (BasemapLayerParameterInline,)
+    list_editable = ('dashboard_default',)
 
 
 admin.site.register(BasemapLayer, BasemapLayerAdmin)

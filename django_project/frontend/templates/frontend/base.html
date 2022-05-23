@@ -39,7 +39,8 @@
   }
   if (editMode) {
     urls = Object.assign({}, urls, {
-      'referenceLayersAPI': '{% url 'reference-layer-list-api' %}'
+      'referenceLayersListAPI': '{% url 'reference-layer-list-api' %}',
+      'basemapListAPI': '{% url 'basemap-list-api' %}',
     })
   }
 </script>

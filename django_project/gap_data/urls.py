@@ -4,6 +4,7 @@ from django.urls import include
 
 from gap_dashboard.views.backups import BackupsView
 from gap_dashboard.views.dashboard import DashboardListView
+from gap_data.api.basemap import BasemapListAPI
 from gap_data.api.dashboard import DashboardData
 from gap_data.api.download_file import (
     DownloadSharepointFile,
@@ -26,6 +27,11 @@ indicator_api = [
 ]
 
 api = [
+    url(
+        r'^basemap/list$',
+        BasemapListAPI.as_view(),
+        name='basemap-list-api'
+    ),
     url(
         r'^reference-layer/list$',
         ReferenceLayerListAPI.as_view(),

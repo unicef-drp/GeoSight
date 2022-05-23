@@ -7,6 +7,11 @@ export const DASHBOARD_ACTION_NAME = 'DASHBOARD';
 export const REFERENCE_LAYER_ACTION_NAME = 'REFERENCE_LAYER';
 export const REFERENCE_LAYER_ACTION_TYPE_CHANGE = 'REFERENCE_LAYER/CHANGE';
 export const INDICATOR_ACTION_NAME = 'INDICATOR';
+export const BASEMAP_ACTION_NAME = 'BASEMAP';
+export const BASEMAP_ACTION_TYPE_ADD = 'BASEMAP/ADD';
+export const BASEMAP_ACTION_TYPE_REMOVE = 'BASEMAP/REMOVE';
+export const BASEMAP_DEFAULT_ACTION_NAME = 'BASEMAP_DEFAULT';
+export const BASEMAP_DEFAULT_ACTION_TYPE_CHANGE = 'BASEMAP_DEFAULT/CHANGE';
 
 const dashboardInitialState = {
   fetching: false,
@@ -19,10 +24,50 @@ export default function dashboardReducer(
   state = dashboardInitialState, action
 ) {
   switch (action.name) {
-
     // DASHBOARD DATA
     case DASHBOARD_ACTION_NAME: {
       return APIReducer(state, action, DASHBOARD_ACTION_NAME)
+    }
+    case BASEMAP_DEFAULT_ACTION_NAME: {
+      const newState = { ...state }
+      newState.data = {
+        ...newState.data,
+        defaultBasemapLayer: action.payload
+      }
+      return newState
+    }
+
+    // BASEMAP REDUCER
+    case BASEMAP_ACTION_NAME: {
+      switch (action.type) {
+        case BASEMAP_ACTION_TYPE_ADD: {
+          const newState = { ...state }
+          newState.data = {
+            ...newState.data,
+            basemapsLayers: [
+              ...newState.data.basemapsLayers,
+              action.payload
+            ]
+          }
+          return newState
+        }
+        case BASEMAP_ACTION_TYPE_REMOVE: {
+          const newState = { ...state }
+          const basemapLayers = []
+          newState.data.basemapsLayers.forEach(function (basemapLayer) {
+            if (basemapLayer.id !== action.payload.id) {
+              basemapLayers.push(basemapLayer)
+            }
+          })
+          newState.data = {
+            ...newState.data,
+            basemapsLayers: basemapLayers
+          }
+          return newState
+        }
+        default:
+          return state
+      }
     }
 
     // REFERENCE LAYER REDUCER

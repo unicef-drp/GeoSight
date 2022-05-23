@@ -8,9 +8,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from gap_data.models.reference_layer import (
-    ReferenceLayer
-)
+from gap_data.models.reference_layer import ReferenceLayer
 from gap_data.serializer.reference_layer import (
     GeometrySerializer, ReferenceLayerSerializer
 )

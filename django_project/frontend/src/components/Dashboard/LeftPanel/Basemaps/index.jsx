@@ -7,7 +7,8 @@ import { useDispatch } from 'react-redux';
 import L from 'leaflet';
 import { Tooltip } from '@mui/material';
 
-import Actions from '../../../redux/actions'
+import Actions from '../../../../redux/actions'
+import BasemapsEditSection from "./edit";
 
 /**
  * Basemaps selector
@@ -23,8 +24,14 @@ export default function Basemaps({ data, defaultBasemapLayer }) {
 
   // Onload, check the default one
   useEffect(() => {
-    if (data && !selected) {
-      onSelected(data[0]?.id);
+    if (data) {
+      const basemaps = data.map(function (basemap) {
+        basemap.id
+      })
+      if (!selected || !basemaps.includes(selected)) {
+        dispatch(Actions.Basemaps.changeDefault(data[0]?.id));
+        onSelected(data[0]?.id);
+      }
     }
   }, [data])
 
@@ -79,6 +86,7 @@ export default function Basemaps({ data, defaultBasemapLayer }) {
           )
           : <div>Loading</div>
       }
+      {editMode ? <BasemapsEditSection/> : ''}
     </Fragment>
   )
 }
