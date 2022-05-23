@@ -15,7 +15,7 @@ import './style.scss';
  * @param {string} data Data of widget
  */
 export default function Widget({ data }) {
-  const { indicators } = useSelector(state => state.dashboard.data);
+  const indicators = useSelector(state => state.indicators);
   const [showInfo, setShowInfo] = useState(false);
   const {
     name, description, unit, type,

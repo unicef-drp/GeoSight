@@ -40,8 +40,8 @@ export default function SummaryWidget(
   }
 
   return (
-    <div className='widget__gw'>
-      <div className='widget__gw__title'>{getValue()}</div>
+    <div className='widget__sw'>
+      <div className='widget__sw__title'>{getValue()}</div>
       <div>{name}</div>
     </div>
   )

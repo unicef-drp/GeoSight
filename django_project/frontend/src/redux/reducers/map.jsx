@@ -5,6 +5,7 @@ export const MAP_CHANGE_BASEMAP = `MAP/CHANGE_BASEMAP`;
 export const MAP_REFERENCE_LAYER_CHANGED = `MAP/REFERENCE_LAYER_CHANGED`;
 export const MAP_ADD_CONTEXTLAYERS = `MAP/ADD_CONTEXTLAYERS`;
 export const MAP_REMOVE_CONTEXTLAYERS = `MAP/REMOVE_CONTEXTLAYERS`;
+
 const mapInitialState = {
   referenceLayer: null,
   basemapLayer: null,

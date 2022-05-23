@@ -1,13 +1,20 @@
 import { combineReducers } from 'redux';
 
 import mapReducer from './reducers/map'
-import dashboardReducer from "./reducers/dashboard";
+import dashboardRequestReducer from './reducers/dashboard'
+import referenceLayerReducer from './reducers/referenceLayer'
+import indicatorsReducer from './reducers/indicators'
+import {
+  indicatorRequestReducer,
+  referenceLayerRequestReducer
+} from "./reducers/requests";
 
 export {
   DASHBOARD_ACTION_NAME,
   REFERENCE_LAYER_ACTION_NAME,
   INDICATOR_ACTION_NAME
-} from './reducers/dashboard';
+} from './reducers/requests';
+
 export {
   MAP_CHANGE_BASEMAP,
   MAP_REFERENCE_LAYER_CHANGED,
@@ -16,5 +23,11 @@ export {
 
 export default combineReducers({
   map: mapReducer,
-  dashboard: dashboardReducer,
+  referenceLayer: referenceLayerReducer,
+  indicators: indicatorsReducer,
+
+  // Requests
+  dashboard: dashboardRequestReducer,
+  indicatorRequest: indicatorRequestReducer,
+  referenceLayerRequest: referenceLayerRequestReducer,
 });

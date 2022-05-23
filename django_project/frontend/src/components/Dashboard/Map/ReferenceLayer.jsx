@@ -16,6 +16,7 @@ import Actions from '../../../redux/actions/actions'
 export default function ReferenceLayer({ indicatorData }) {
   const [level, setLevel] = useState(null);
   const { referenceLayer } = useSelector(state => state.dashboard.data);
+  const { data } = useSelector(state => state.referenceLayer);
   const dispatch = useDispatch();
 
   // When Reference Layer data ready
@@ -37,8 +38,8 @@ export default function ReferenceLayer({ indicatorData }) {
   // When reference geojson ready
   // Change color based on indicator if provided
   useEffect(() => {
-    if (referenceLayer && referenceLayer.data) {
-      const geojson = referenceLayer.data;
+    if (data) {
+      const geojson = data;
       // colors by geometry name
       const indicatorsByGeom = {}
       if (indicatorData) {
@@ -81,7 +82,7 @@ export default function ReferenceLayer({ indicatorData }) {
         )
       }
     }
-  }, [referenceLayer, indicatorData]);
+  }, [data, indicatorData]);
 
   return (<Fragment></Fragment>)
 }

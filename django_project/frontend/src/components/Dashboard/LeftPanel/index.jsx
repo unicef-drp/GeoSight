@@ -21,8 +21,8 @@ import './style.scss';
  */
 export default function LeftPanel() {
   const {
-    referenceLayer,
     basemapsLayers,
+    referenceLayer,
     contextLayers
   } = useSelector(state => state.dashboard.data);
   const [state, setState] = useState(LEFT);
@@ -40,6 +40,8 @@ export default function LeftPanel() {
   };
 
   const className = `dashboard__panel dashboard__left_side ${state} ${expanded ? 'expanded' : ''}`
+
+  console.log('Left Panel render')
 
   return (
     <section className={className}>

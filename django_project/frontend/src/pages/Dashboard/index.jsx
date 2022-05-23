@@ -11,7 +11,13 @@ import './style.scss';
 
 export default function Dashboard() {
   const dispatch = useDispatch();
-  const { data } = useSelector(state => state.dashboard);
+  const {
+    indicators,
+    referenceLayer
+  } = useSelector(state => state.dashboard.data);
+
+  const indicatorsData = useSelector(state => state.indicators);
+  const referenceLayerData = useSelector(state => state.referenceLayer);
 
   useEffect(() => {
     dispatch(
@@ -19,9 +25,29 @@ export default function Dashboard() {
     )
   }, []);
 
+  // Set indicators data
+  useEffect(() => {
+    if (indicators) {
+      dispatch(
+        Actions.Indicators.initData(indicators)
+      )
+    }
+  }, [indicators]);
+
+  // Set ReferenceLayer data
+  useEffect(() => {
+    if (referenceLayer) {
+      dispatch(
+        Actions.ReferenceLayer.initData(referenceLayer)
+      )
+    }
+  }, [referenceLayer]);
+
+  console.log('Render dashboard')
+
   return (
     <App className='dashboard'>
-      {data ?
+      {indicatorsData && referenceLayerData ?
         <Fragment>
           <LeftPanel/>
           <Map/>
