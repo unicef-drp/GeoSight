@@ -10,8 +10,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Accordion from "@mui/material/Accordion";
 
-import Actions from '../../../redux/actions'
-import ReferenceLayer from '../Map/ReferenceLayer'
+import Actions from '../../../../redux/actions'
+import ReferenceLayer from '../../Map/ReferenceLayer'
+import IndicatorsEditSection from "./edit";
 
 /**
  * Indicators selector
@@ -45,7 +46,7 @@ export function Indicators() {
   if (indicators && indicators[currentIndicator]) {
     selectedIndicatorData = indicators[currentIndicator].data;
   }
-
+  console.log(selectedIndicatorData)
   return (
     <Fragment>
       {
@@ -86,14 +87,13 @@ export default function IndicatorsAccordion({ expanded, handleChange }) {
     >
 
       <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
-        <div>
-          Indicators
-          {
-            indicators ?
-              <span>&nbsp;({indicators.length}) </span> :
-              <i>&nbsp;(Loading)</i>
-          }
-        </div>
+        Indicators
+        {
+          indicators ?
+            <span>&nbsp;({indicators.length}) </span> :
+            <i>&nbsp;(Loading)</i>
+        }
+        {editMode ? <IndicatorsEditSection/> : ''}
       </AccordionSummary>
       <AccordionDetails>
         {

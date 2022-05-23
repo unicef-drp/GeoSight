@@ -10,12 +10,19 @@ from gap_data.api.download_file import (
     DownloadSharepointFile,
     DownloadBackupsFile
 )
-from gap_data.api.indicator import IndicatorDetailAPI, IndicatorValuesAPI
+from gap_data.api.indicator import (
+    IndicatorListAPI,
+    IndicatorDetailAPI, IndicatorValuesAPI
+)
 from gap_data.api.reference_layer import (
     ReferenceLayerGeojson, ReferenceLayerListAPI
 )
 
 indicator_api = [
+    url(
+        r'^list',
+        IndicatorListAPI.as_view(), name='indicator-list-api'
+    ),
     url(
         r'^(?P<pk>\d+)/values/latest',
         IndicatorValuesAPI.as_view(), name='indicator-values-api'

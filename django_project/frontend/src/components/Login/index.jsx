@@ -43,9 +43,11 @@ export default function LoginModal({ open, onClosed }) {
                   className="modal__login__submit">
             Sign In
           </Button>
-          <Input
-            type="hidden" name="csrfmiddlewaretoken"
-            value={csrftoken}/>
+          <FormControl className='modal__login__token'>
+            <Input
+              type="hidden" name="csrfmiddlewaretoken"
+              value={csrftoken}/>
+          </FormControl>
         </form>
       </ModalContent>
     </Modal>

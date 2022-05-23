@@ -45,9 +45,7 @@ export default function Modal(
     >
       <Fade in={isOpen}>
         <Box className='modal--box'>
-          <div>
-            {children}
-          </div>
+          {children}
         </Box>
       </Fade>
     </BaseModal>
@@ -64,8 +62,10 @@ export function ModalHeader({ children }) {
 
 export function ModalContent({ children }) {
   return (
-    <div className='modal--content'>
-      {children}
+    <div className='modal--content--wrapper'>
+      <div className='modal--content'>
+        {children}
+      </div>
     </div>
   )
 }

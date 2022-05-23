@@ -12,23 +12,23 @@ import Actions from '../../../../redux/actions'
 import Modal, { ModalContent, ModalHeader } from "../../../Modal";
 import { fetchingData } from '../../../../redux/reducers_api'
 
-export default function BasemapsEditSection() {
+export default function IndicatorsEditSection() {
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false);
-  const [allBasemaps, setAllBasemaps] = useState(null);
-  const { basemapsLayers } = useSelector(state => state.dashboard.data);
+  const [allIndicators, setAllIndicators] = useState(null);
+  const { indicators } = useSelector(state => state.dashboard.data);
 
   /** Get All Reference Layers */
   useEffect(() => {
-    if (!allBasemaps) {
-      fetchingData(urls.basemapListAPI, {}, (response, error) => {
-        setAllBasemaps(response)
+    if (!allIndicators) {
+      fetchingData(urls.indicatorListAPI, {}, (response, error) => {
+        setAllIndicators(response)
       })
     }
-  }, [allBasemaps]);
+  }, [indicators]);
 
   // Modal open
-  const onOpen = () => {
+  const onOpen = (event) => {
     setOpen(true);
   };
 
@@ -39,15 +39,15 @@ export default function BasemapsEditSection() {
 
   // Update basemap list
   const change = (checked, idx) => {
-    if (allBasemaps[idx]) {
+    if (allIndicators[idx]) {
       if (checked) {
         dispatch(
-          Actions.Basemaps.add(allBasemaps[idx])
+          Actions.Indicators.add(allIndicators[idx])
         )
       } else {
-        if (basemapsLayers.length > 1) {
+        if (indicators.length > 1) {
           dispatch(
-            Actions.Basemaps.remove(allBasemaps[idx])
+            Actions.Indicators.remove(allIndicators[idx])
           )
         }
       }
@@ -56,18 +56,20 @@ export default function BasemapsEditSection() {
 
   // Get current basemaps that already added
   let ids = [];
-  if (basemapsLayers) {
-    ids = basemapsLayers.map(function (row) {
+  if (indicators) {
+    ids = indicators.map(function (row) {
       return row.id
     })
   }
 
   return (
     <Fragment>
-      <div className='setting__button'>
-        <Tooltip title="Edit Basemap List">
-          <SettingsIcon onClick={() => {
-            onOpen()
+      <div onClick={(event) => {
+        event.stopPropagation();
+      }}>
+        <Tooltip title="Edit Indicators List">
+          <SettingsIcon onClick={(event) => {
+            onOpen();
           }}/>
         </Tooltip>
 
@@ -77,16 +79,15 @@ export default function BasemapsEditSection() {
           className='modal__basemap__setting'
         >
           <ModalHeader>
-            Select Basemap List
+            Select Indicators List
             <div className='setting__helper'>
-              Select one or more basemaps and select on the map to make it as
-              default
+              Must select one or more indicators for the dashboard.
             </div>
           </ModalHeader>
           <ModalContent>
             {
-              allBasemaps ?
-                allBasemaps.map(
+              allIndicators ?
+                allIndicators.map(
                   (layer, idx) => (
                     <div className='dashboard__left_side__row'
                          key={idx}>
@@ -98,9 +99,7 @@ export default function BasemapsEditSection() {
                       <div className='text title'>
                         <div><b>Name :</b> {layer.name}</div>
                         <div><b>Url :</b> {layer.url}</div>
-                      </div>
-                      <div>
-                        <img src={layer.icon}/>
+                        <div><b>Source :</b> {layer.source}</div>
                       </div>
                     </div>
                   )

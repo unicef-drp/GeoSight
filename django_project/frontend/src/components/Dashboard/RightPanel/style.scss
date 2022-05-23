@@ -32,9 +32,14 @@
     border-bottom-left-radius: 5px;
     max-height: 100%;
     overflow-y: auto;
+    min-height: 3rem;
 
     @include media(small-down) {
       box-shadow: unset !important;
+    }
+
+    .dashboard__content {
+      min-height: 3rem;
     }
   }
 
