@@ -6,7 +6,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { featurePopupContent } from '../../../utils/main'
-import Actions from '../../../redux/actions/actions'
+import Actions from '../../../redux/actions'
 
 
 /**
@@ -16,12 +16,13 @@ import Actions from '../../../redux/actions/actions'
 export default function ReferenceLayer({ indicatorData }) {
   const [level, setLevel] = useState(null);
   const { referenceLayer } = useSelector(state => state.dashboard.data);
-  const { data } = useSelector(state => state.referenceLayer);
+
+  const data = referenceLayer ? referenceLayer.data : null;
   const dispatch = useDispatch();
 
   // When Reference Layer data ready
   useEffect(() => {
-    if (referenceLayer) {
+    if (referenceLayer && referenceLayer.levels) {
       setLevel(referenceLayer.levels[0])
     }
   }, [referenceLayer]);

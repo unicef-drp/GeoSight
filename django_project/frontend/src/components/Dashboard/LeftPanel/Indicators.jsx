@@ -5,12 +5,12 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Checkbox } from "@mui/material";
-import Actions from '../../../redux/actions/actions'
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Accordion from "@mui/material/Accordion";
 
+import Actions from '../../../redux/actions'
 import ReferenceLayer from '../Map/ReferenceLayer'
 
 /**
@@ -18,8 +18,9 @@ import ReferenceLayer from '../Map/ReferenceLayer'
  */
 export function Indicators() {
   const dispatch = useDispatch();
-  const indicators = useSelector(state => state.indicators);
-  const referenceLayer = useSelector(state => state.referenceLayer.data);
+  const {
+    indicators, referenceLayer
+  } = useSelector(state => state.dashboard.data);
   const [currentIndicator, setCurrentIndicator] = useState(null);
 
   const change = (checked, id) => {
@@ -32,11 +33,9 @@ export function Indicators() {
 
   // Get indicator data
   useEffect(() => {
-    if (indicators && referenceLayer && Object.keys(referenceLayer).length > 0) {
+    if (indicators && referenceLayer && referenceLayer.data) {
       indicators.forEach(function (indicator, idx) {
-        if (!indicator.data) {
-          Actions.Indicators.fetch(dispatch, idx, indicator.url, referenceLayer)
-        }
+        Actions.Indicators.fetch(dispatch, idx, indicator.url)
       })
     }
   }, [indicators, referenceLayer]);

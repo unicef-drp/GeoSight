@@ -1,6 +1,6 @@
 import { fetching } from "../reducers_api";
 
-import { DASHBOARD_ACTION_NAME } from '../reducers'
+import { DASHBOARD_ACTION_NAME } from '../reducers/dashboard'
 
 const REQUEST_DASHBOARD = 'REQUEST/' + DASHBOARD_ACTION_NAME;
 const RECEIVE_DASHBOARD = 'RECEIVE/' + DASHBOARD_ACTION_NAME;

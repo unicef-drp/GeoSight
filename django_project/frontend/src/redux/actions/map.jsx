@@ -1,9 +1,9 @@
 import {
+  MAP_ADD_CONTEXTLAYERS,
   MAP_CHANGE_BASEMAP,
   MAP_REFERENCE_LAYER_CHANGED,
-  MAP_ADD_CONTEXTLAYERS,
   MAP_REMOVE_CONTEXTLAYERS
-} from '../reducers'
+} from '../reducers/map'
 
 
 function change_basemap(payload) {

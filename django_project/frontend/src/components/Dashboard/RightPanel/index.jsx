@@ -5,8 +5,8 @@
 import React, { useState } from 'react';
 import { useSelector } from "react-redux";
 
-import LeftRightToggleButton, { LEFT, RIGHT } from '../../ToggleButton'
 import Widget from '../../Widget'
+import LeftRightToggleButton, { LEFT, RIGHT } from '../../ToggleButton'
 
 import './style.scss';
 

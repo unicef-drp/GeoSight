@@ -61,18 +61,18 @@ export default function Map() {
 
   /** BASEMAP CHANGED */
   useEffect(() => {
-    if (basemapLayerGroup) {
+    if (basemapLayerGroup && basemapLayer) {
       basemapLayerGroup.eachLayer(function (layer) {
         basemapLayerGroup.removeLayer(layer);
       });
       basemapLayer.options.pane = basemapPane;
       basemapLayerGroup.addLayer(basemapLayer);
     }
-  }, [basemapLayer]);
+  }, [basemapLayerGroup, basemapLayer]);
 
   /** CONTEXT LAYERS CHANGED */
   useEffect(() => {
-    if (contextLayerGroup) {
+    if (contextLayerGroup && contextLayers) {
       contextLayerGroup.eachLayer(function (layer) {
         contextLayerGroup.removeLayer(layer);
       });
@@ -84,18 +84,18 @@ export default function Map() {
         }
       }
     }
-  }, [contextLayers]);
+  }, [contextLayerGroup, contextLayers]);
 
   /** REFERENCE LAYER CHANGED */
   useEffect(() => {
-    if (referenceLayerGroup) {
+    if (referenceLayerGroup && referenceLayer) {
       referenceLayerGroup.eachLayer(function (layer) {
         referenceLayerGroup.removeLayer(layer);
       });
       referenceLayer.options.pane = referenceLayerPane;
       referenceLayerGroup.addLayer(referenceLayer);
     }
-  }, [referenceLayer]);
+  }, [referenceLayerGroup, referenceLayer]);
 
   return <section className='dashboard__map'>
     <div id="map"></div>

@@ -23,4 +23,5 @@ class DashboardDetailView(BaseDashboardView):
         )
 
         context['dashboard'] = {'id': dashboard.slug}
+        context['edit_mode'] = True
         return context

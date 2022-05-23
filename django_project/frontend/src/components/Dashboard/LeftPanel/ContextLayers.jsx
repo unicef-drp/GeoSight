@@ -8,9 +8,9 @@ import $ from "jquery";
 import L from 'leaflet';
 import { Checkbox } from '@mui/material'
 
-import Actions from '../../../redux/actions/actions'
-import EsriLeafletLayer from '../../../utils/esri/leaflet-esri-layer'
+import Actions from '../../../redux/actions'
 import { featurePopupContent } from '../../../utils/main'
+import EsriLeafletLayer from '../../../utils/esri/leaflet-esri-layer'
 
 function ContextLayerInput({ data }) {
   const dispatch = useDispatch();

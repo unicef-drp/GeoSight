@@ -36,19 +36,35 @@ export function APIReducer(state, action, actionName) {
 /**
  * PerformFetchingData
  *
- * @param {Function} dispatch Url to query
+ * @param {Function} dispatch Dispatch
  * @param {string} url Url to query
  * @param {object} options Options of request
  * @param {Function} receiveAction Function on receiveing data
  * @param {int} id ID of request
- * @param {object} otherData Other data that can be used
  */
-export const fetching = async function (dispatch, url, options, receiveAction, id, otherData) {
+export const fetching = async function (dispatch, url, options, receiveAction, id) {
   try {
     const response = await fetchJSON(url, options);
-    dispatch(receiveAction(response, null, id, otherData));
+    dispatch(receiveAction(response, null, id));
   } catch (error) {
     dispatch(receiveAction(null, error, id));
+  }
+};
+/**
+ * PerformFetchingData
+ *
+ * @param {string} url Url to query
+ * @param {object} options Options of request
+ * @param {Function} receiveAction Function on receiveing data
+ */
+export const fetchingData = async function (
+  url, options, receiveAction
+) {
+  try {
+    const response = await fetchJSON(url, options);
+    receiveAction(response, null);
+  } catch (error) {
+    receiveAction(null, error);
   }
 };
 
@@ -58,19 +74,27 @@ export const fetching = async function (dispatch, url, options, receiveAction, i
  * @param {string} url Url to query
  * @param {object} options Options for fetch
  */
+// TODO:
+//  Make cache in elegant way
+const responseCaches = {}
+
 export async function fetchJSON(url, options) {
-  try {
-    const response = await fetch(url, options);
-    const json = await response.json();
+  if (!responseCaches[url]) {
+    try {
+      const response = await fetch(url, options);
+      const json = await response.json();
 
-    if (response.status >= 400) {
-      const err = new Error(json.message);
-      err.data = json;
-      throw err;
+      if (response.status >= 400) {
+        const err = new Error(json.message);
+        err.data = json;
+        throw err;
+      }
+      responseCaches[url] = json;
+      return json;
+    } catch (error) {
+      throw error;
     }
-
-    return json;
-  } catch (error) {
-    throw error;
+  } else {
+    return responseCaches[url]
   }
 }

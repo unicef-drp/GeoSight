@@ -4,12 +4,15 @@ from django.urls import include
 
 from gap_dashboard.views.backups import BackupsView
 from gap_dashboard.views.dashboard import DashboardListView
-from gap_data.api.dashboard import DashboardData, ReferenceLayerGeojson
+from gap_data.api.dashboard import DashboardData
 from gap_data.api.download_file import (
     DownloadSharepointFile,
     DownloadBackupsFile
 )
 from gap_data.api.indicator import IndicatorDetailAPI, IndicatorValuesAPI
+from gap_data.api.reference_layer import (
+    ReferenceLayerGeojson, ReferenceLayerListAPI
+)
 
 indicator_api = [
     url(
@@ -23,6 +26,11 @@ indicator_api = [
 ]
 
 api = [
+    url(
+        r'^reference-layer/list$',
+        ReferenceLayerListAPI.as_view(),
+        name='reference-layer-list-api'
+    ),
     url(
         r'^reference-layer/(?P<uuid>[0-9a-f-]+)/(?P<level>.+)$',
         ReferenceLayerGeojson.as_view(),

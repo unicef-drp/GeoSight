@@ -11,8 +11,7 @@ const minimized = !isDev;
 
 let conf = {
   entry: {
-    DashboardView: ['./src/pages/Dashboard/View'],
-    DashboardEdit: ['./src/pages/Dashboard/Edit'],
+    Dashboard: ['./src/pages/Dashboard'],
   },
   output: {
     path: path.resolve(__dirname, "./bundles/frontend"),

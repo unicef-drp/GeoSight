@@ -13,6 +13,7 @@ import LeftRightToggleButton, { LEFT, RIGHT } from '../../ToggleButton'
 import Basemaps from './Basemaps'
 import ContextLayers from './ContextLayers'
 import IndicatorsAccordion from './Indicators'
+import ReferenceLayerSection from './ReferenceLayer'
 
 import './style.scss';
 
@@ -22,7 +23,6 @@ import './style.scss';
 export default function LeftPanel() {
   const {
     basemapsLayers,
-    referenceLayer,
     contextLayers,
     defaultBasemapLayer
   } = useSelector(state => state.dashboard.data);
@@ -49,27 +49,7 @@ export default function LeftPanel() {
         onLeft={onLeft}
         onRight={onRight}/>
       <div className='dashboard__content-wrapper'>
-        <Accordion
-          expanded={true}
-          className='reference-dataset'
-        >
-          <AccordionSummary>
-            <div>
-              Reference Dataset
-            </div>
-          </AccordionSummary>
-          <AccordionDetails>
-            {
-              referenceLayer !== undefined ?
-                <div>
-                  <div><b>Name :</b> {referenceLayer.name}</div>
-                  <div><b>Description :</b> {referenceLayer.description}</div>
-                  <div><b>Source :</b> {referenceLayer.source}</div>
-                </div>
-                : <div>Loading</div>
-            }
-          </AccordionDetails>
-        </Accordion>
+        <ReferenceLayerSection/>
         <IndicatorsAccordion
           expanded={expanded === 'indicators'}
           handleChange={handleChange}

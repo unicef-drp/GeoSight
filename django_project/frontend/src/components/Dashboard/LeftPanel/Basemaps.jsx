@@ -4,9 +4,10 @@
 
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Tooltip } from '@mui/material';
 import L from 'leaflet';
-import Actions from '../../../redux/actions/actions'
+import { Tooltip } from '@mui/material';
+
+import Actions from '../../../redux/actions'
 
 /**
  * Basemaps selector

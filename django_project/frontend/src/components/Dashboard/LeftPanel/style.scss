@@ -153,6 +153,16 @@
   }
 }
 
+.MuiAccordionSummary-content {
+  .MuiSvgIcon-root {
+    margin-left: 5px;
+
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+}
+
 /** -----------------------------------------------
   ROWS
  ----------------------------------------------- **/
