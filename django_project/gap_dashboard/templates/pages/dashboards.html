@@ -11,8 +11,14 @@
           type="text/css" media="screen, projection"/>
 {% endblock %}
 
-{% block header %}
-    Select instance
+{% block content_title %}
+    Select Dashboards
+    <a href="{% url "dashboard-create-view" %}">
+        <button class="white-button pull-right">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            Create New Dashboard
+        </button>
+    </a>
 {% endblock %}
 
 {% block content %}
@@ -27,6 +33,9 @@
                     <a href="{{ dashboard.url }}"
                        class="dashboard">
                         <img src="
+
+
+
                                 {% if dashboard.icon %}{{ dashboard.icon }}{% else %}{% static "img/no-image-found.jpg" %}{% endif %}">
                         <span>{{ dashboard.name }}</span>
                     </a>
