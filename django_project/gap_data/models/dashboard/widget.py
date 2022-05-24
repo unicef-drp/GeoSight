@@ -114,8 +114,13 @@ class Widget(AbstractTerm):
         )
     )
 
+    # order of indicator rendered on the list
+    order = models.IntegerField(
+        default=0
+    )
+
     def __str__(self):
         return self.name
 
     class Meta:  # noqa: D106
-        ordering = ('name',)
+        ordering = ('order',)

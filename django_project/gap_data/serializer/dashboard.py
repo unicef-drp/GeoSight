@@ -71,7 +71,7 @@ class DashboardSerializer(serializers.ModelSerializer):
         """Return widgets."""
         if obj.id:
             return WidgetSerializer(
-                obj.widget_set.all().order_by('pk'), many=True
+                obj.widget_set.all(), many=True
             ).data
         else:
             return []
