@@ -274,6 +274,14 @@
   }
 }
 
+.modal__setting {
+  .title {
+    b {
+      font-weight: 500;
+    }
+  }
+}
+
 .setting__helper {
   color: #111;
   font-style: italic;

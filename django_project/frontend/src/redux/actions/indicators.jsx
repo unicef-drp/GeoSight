@@ -1,10 +1,9 @@
-import { fetching } from "../reducers_api";
-
 import {
   INDICATOR_ACTION_NAME,
   INDICATOR_ACTION_TYPE_ADD,
   INDICATOR_ACTION_TYPE_REMOVE
 } from '../reducers/dashboard'
+import { fetchingData } from "../../Requests";
 
 export const REQUEST_INDICATOR = 'REQUEST/' + INDICATOR_ACTION_NAME;
 export const RECEIVE_INDICATOR = 'RECEIVE/' + INDICATOR_ACTION_NAME;
@@ -29,7 +28,13 @@ function receive(data, error, id) {
 }
 
 export function fetch(dispatch, id, url) {
-  fetching(dispatch, url, {}, receive, id)
+  fetchingData(
+    url, {}, function (response, error) {
+      dispatch(
+        receive(response, error, id)
+      )
+    }
+  )
   return request(id);
 }
 

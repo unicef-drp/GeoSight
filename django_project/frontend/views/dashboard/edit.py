@@ -1,17 +1,18 @@
-"""Dashboard Create View."""
+"""Dashboard Edit View."""
 
 from braces.views import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseBadRequest
+from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect, reverse
 
 from frontend.views.dashboard._base import BaseDashboardView
-from gap_data.api.dashboard import CREATE_SLUG
 from gap_data.forms.dashboard import DashboardForm
 from gap_data.models.dashboard import Dashboard
 
 
-class DashboardCreateView(LoginRequiredMixin, BaseDashboardView):
-    """Dashboard Detail View."""
+class DashboardEditView(LoginRequiredMixin, BaseDashboardView):
+    """Dashboard Edit View."""
 
     template_name = 'frontend/dashboard/view.html'
 
@@ -20,27 +21,36 @@ class DashboardCreateView(LoginRequiredMixin, BaseDashboardView):
         """Return content title."""
         return 'Dashboard crate'
 
-    def get_context_data(self, **kwargs) -> dict:
+    def get_context_data(self, slug, **kwargs) -> dict:
         """Return context data."""
         context = super().get_context_data(**kwargs)
-        context['dashboard'] = {'id': CREATE_SLUG}
+        dashboard = get_object_or_404(
+            Dashboard, slug=slug
+        )
+        if not dashboard.can_edit(self.request.user):
+            raise PermissionDenied()
+
+        context['dashboard'] = {'id': dashboard.slug}
         context['edit_mode'] = True
         return context
 
-    def post(self, request, **kwargs):
+    def post(self, request, slug, **kwargs):
         """Create dashboard."""
-        data = DashboardForm.update_data(
-            request.POST.copy().dict()
+        data = DashboardForm.update_data(request.POST.copy().dict())
+        dashboard = get_object_or_404(
+            Dashboard, slug=slug
         )
-        data['creator'] = request.user
+        data['creator'] = dashboard.creator
         try:
-            Dashboard.objects.get(slug=data['slug'])
+            Dashboard.objects.exclude(id=dashboard.id).get(slug=data['slug'])
             return HttpResponseBadRequest(
-                f'Dashboard with name {data["name"]} '
-                f'is exist. Please choose other name.'
+                f'Dashboard with name {data["name"]} is exist. '
+                f'Please choose other name.'
             )
         except Dashboard.DoesNotExist:
-            form = DashboardForm(data, request.FILES)
+            form = DashboardForm(
+                data, request.FILES, instance=dashboard
+            )
             if form.is_valid():
                 dashboard = form.save()
                 return redirect(

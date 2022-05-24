@@ -32,7 +32,7 @@ export default function Map() {
   const contextLayerPane = 'contextLayerPane';
 
   useEffect(() => {
-    if (!map) {
+    if (!map && basemapLayer) {
       const basemapLayerGroup = L.layerGroup([]);
       const referenceLayerGroup = L.layerGroup([]);
       const contextLayerGroup = L.layerGroup([]);
@@ -51,7 +51,7 @@ export default function Map() {
       newMap.createPane(contextLayerPane);
       setMap(newMap);
     }
-  }, []);
+  }, [basemapLayer]);
 
   /** EXTENT CHANGED */
   useEffect(() => {

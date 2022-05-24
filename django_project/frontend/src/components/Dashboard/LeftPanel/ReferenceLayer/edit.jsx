@@ -14,9 +14,9 @@ import EditSection from "../edit";
 export function EditRow({ layer }) {
   return <Fragment>
     <div className='text title'>
-      <div><b>Name :</b> {layer.name}</div>
-      <div><b>Description :</b> {layer.description}</div>
-      <div><b>Source :</b> {layer.source}</div>
+      <div><b className='light'>{layer.name}</b></div>
+      <div>{layer.description}</div>
+      <div>{layer.source}</div>
     </div>
   </Fragment>
 }

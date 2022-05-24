@@ -18,8 +18,8 @@ export function EditRow({ layer }) {
       <img src={layer.icon}/>
     </div>
     <div className='text title'>
-      <div><b>Name :</b> {layer.name}</div>
-      <div><b>Url :</b> {layer.url}</div>
+      <div><b className='light'>{layer.name}</b></div>
+      <div> {layer.url}</div>
     </div>
   </Fragment>
 }

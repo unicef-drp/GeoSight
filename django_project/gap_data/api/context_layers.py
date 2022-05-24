@@ -14,6 +14,6 @@ class ContextLayerListAPI(APIView):
         """Return ContextLayer list."""
         return Response(
             ContextLayerSerializer(
-                ContextLayer.objects.all(), many=True
+                ContextLayer.objects.order_by('name'), many=True
             ).data
         )

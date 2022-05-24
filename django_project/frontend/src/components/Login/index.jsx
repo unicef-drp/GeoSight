@@ -43,7 +43,7 @@ export default function LoginModal({ open, onClosed }) {
                   className="modal__login__submit">
             Sign In
           </Button>
-          <FormControl className='modal__login__token'>
+          <FormControl className='MuiFormControl-hidden'>
             <Input
               type="hidden" name="csrfmiddlewaretoken"
               value={csrftoken}/>

@@ -52,7 +52,10 @@ class Dashboard(SlugTerm, IconTerm):
     )
     creator = models.ForeignKey(
         User,
-        null=True, blank=True,
         help_text=_('User who create the dashboard.'),
         on_delete=models.CASCADE
     )
+
+    def can_edit(self, user: User):
+        """Is dashboard can be edited by user."""
+        return user.is_staff or self.creator == user

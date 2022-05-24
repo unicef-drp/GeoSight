@@ -14,6 +14,6 @@ class BasemapListAPI(APIView):
         """Return BasemapLayer list."""
         return Response(
             BasemapLayerSerializer(
-                BasemapLayer.objects.all(), many=True
+                BasemapLayer.objects.order_by('name'), many=True
             ).data
         )

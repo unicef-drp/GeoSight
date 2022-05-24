@@ -9,7 +9,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import Tooltip from '@mui/material/Tooltip';
 
 import Modal, { ModalContent, ModalHeader } from "../../Modal";
-import { fetchingData } from '../../../redux/reducers_api'
+import { fetchingData } from '../../../Requests'
 
 /**
  * Edit section for the panel.

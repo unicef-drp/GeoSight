@@ -21,7 +21,7 @@ class ReferenceLayerListAPI(APIView):
         """Return Reference Layer list."""
         return Response(
             ReferenceLayerSerializer(
-                ReferenceLayer.objects.all(), many=True
+                ReferenceLayer.objects.order_by('name'), many=True
             ).data
         )
 

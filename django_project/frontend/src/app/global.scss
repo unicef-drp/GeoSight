@@ -66,6 +66,9 @@ a:hover {
   opacity: $base-hovered-opacity;
 }
 
+b.light {
+  font-weight: 500 !important;
+}
 
 .leaflet-popup-content {
   margin: 0;
