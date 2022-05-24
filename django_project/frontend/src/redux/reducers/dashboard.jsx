@@ -14,8 +14,12 @@ export const INDICATOR_ACTION_TYPE_REMOVE = 'INDICATOR/REMOVE';
 export const BASEMAP_ACTION_NAME = 'BASEMAP';
 export const BASEMAP_ACTION_TYPE_ADD = 'BASEMAP/ADD';
 export const BASEMAP_ACTION_TYPE_REMOVE = 'BASEMAP/REMOVE';
+
 export const BASEMAP_DEFAULT_ACTION_NAME = 'BASEMAP_DEFAULT';
 export const BASEMAP_DEFAULT_ACTION_TYPE_CHANGE = 'BASEMAP_DEFAULT/CHANGE'
+
+export const EXTENT_DEFAULT_ACTION_NAME = 'EXTENT';
+export const EXTENT_DEFAULT_ACTION_TYPE_CHANGE = 'EXTENT/CHANGE'
 
 export const CONTEXT_LAYER_ACTION_NAME = 'CONTEXT_LAYER';
 export const CONTEXT_LAYER_ACTION_TYPE_ADD = 'CONTEXT_LAYER/ADD';
@@ -36,11 +40,23 @@ export default function dashboardReducer(
     case DASHBOARD_ACTION_NAME: {
       return APIReducer(state, action, DASHBOARD_ACTION_NAME)
     }
+
+    // BASEMAP DEFAULT REDUCER
     case BASEMAP_DEFAULT_ACTION_NAME: {
       const newState = { ...state }
       newState.data = {
         ...newState.data,
         defaultBasemapLayer: action.payload
+      }
+      return newState
+    }
+
+    // EXTENT DEFAULT REDUCER
+    case EXTENT_DEFAULT_ACTION_NAME: {
+      const newState = { ...state }
+      newState.data = {
+        ...newState.data,
+        extent: action.payload
       }
       return newState
     }

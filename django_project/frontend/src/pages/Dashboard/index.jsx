@@ -21,7 +21,7 @@ export default function Dashboard() {
 
   return (
     <App className='dashboard'>
-      {data ?
+      {Object.keys(data).length > 0 ?
         <Fragment>
           <LeftPanel/>
           <Map/>

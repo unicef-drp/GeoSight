@@ -3,10 +3,11 @@
    ========================================================================== */
 
 import React, { useEffect, useState } from 'react';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import L from 'leaflet';
 
 import './style.scss';
+import Actions from '../../../redux/actions'
 
 /**
  * Map component.
@@ -18,6 +19,7 @@ export default function Map() {
     contextLayers
   } = useSelector(state => state.map);
 
+  const dispatcher = useDispatch();
   const { extent } = useSelector(state => state.dashboard.data);
   const [map, setMap] = useState(null);
   const [basemapLayerGroup, setBasemapLayerGroup] = useState(null);
@@ -30,23 +32,25 @@ export default function Map() {
   const contextLayerPane = 'contextLayerPane';
 
   useEffect(() => {
-    const basemapLayerGroup = L.layerGroup([]);
-    const referenceLayerGroup = L.layerGroup([]);
-    const contextLayerGroup = L.layerGroup([]);
-    setBasemapLayerGroup(basemapLayerGroup);
-    setReferenceLayerGroup(referenceLayerGroup);
-    setContextLayerGroup(contextLayerGroup);
+    if (!map) {
+      const basemapLayerGroup = L.layerGroup([]);
+      const referenceLayerGroup = L.layerGroup([]);
+      const contextLayerGroup = L.layerGroup([]);
+      setBasemapLayerGroup(basemapLayerGroup);
+      setReferenceLayerGroup(referenceLayerGroup);
+      setContextLayerGroup(contextLayerGroup);
 
-    const map = L.map('map', {
-      center: [0, 0],
-      zoom: 6,
-      layers: [basemapLayerGroup, contextLayerGroup, referenceLayerGroup],
-      zoomControl: false
-    });
-    map.createPane(basemapPane);
-    map.createPane(referenceLayerPane);
-    map.createPane(contextLayerPane);
-    setMap(map);
+      const newMap = L.map('map', {
+        center: [0, 0],
+        zoom: 6,
+        layers: [basemapLayerGroup, contextLayerGroup, referenceLayerGroup],
+        zoomControl: false
+      });
+      newMap.createPane(basemapPane);
+      newMap.createPane(referenceLayerPane);
+      newMap.createPane(contextLayerPane);
+      setMap(newMap);
+    }
   }, []);
 
   /** EXTENT CHANGED */
@@ -56,8 +60,19 @@ export default function Map() {
         [extent[1], extent[0]],
         [extent[3], extent[2]]
       ])
+
+      // Init moveend
+      // Change extend default when the map moved
+      map.on("moveend", function () {
+        const bounds = map.getBounds();
+        const newExtent = [
+          bounds._southWest.lng, bounds._southWest.lat,
+          bounds._northEast.lng, bounds._northEast.lat
+        ]
+        dispatcher(Actions.Extent.changeDefault(newExtent))
+      });
     }
-  }, [map, extent]);
+  }, [map]);
 
   /** BASEMAP CHANGED */
   useEffect(() => {
