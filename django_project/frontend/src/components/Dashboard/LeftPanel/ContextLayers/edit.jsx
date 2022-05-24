@@ -1,5 +1,5 @@
 /* ==========================================================================
-   INDICATORS editor
+   CONTEXT LAYER editor
    ========================================================================== */
 
 import React, { Fragment } from 'react';
@@ -22,19 +22,19 @@ export function EditRow({ layer }) {
 }
 
 /**
- * Indicators Editor Section Handler
+ * Context Layers Editor Section Handler
  */
-export default function IndicatorsEditSection() {
-  const { indicators } = useSelector(state => state.dashboard.data);
+export default function ContextLayersEditSection() {
+  const { contextLayers } = useSelector(state => state.dashboard.data);
   return <EditSection
-    title='Edit Indicators List'
-    description='Must select one or more indicators for the dashboard.'
-    required={true}
-    className='modal__indicators__setting'
-    currentLayers={indicators}
-    urlAPI={urls.indicatorListAPI}
-    actionAddLayer={Actions.Indicators.add}
-    actionRemoveLayer={Actions.Indicators.remove}>
+    title='Edit Context Layers List'
+    description='Select one or more Context Layers for the dashboard.'
+    required={false}
+    className='modal__context_layers__setting'
+    currentLayers={contextLayers}
+    urlAPI={urls.contextLayerListAPI}
+    actionAddLayer={Actions.ContextLayers.add}
+    actionRemoveLayer={Actions.ContextLayers.remove}>
     <EditRow/>
   </EditSection>
 }

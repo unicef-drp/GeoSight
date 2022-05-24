@@ -3,14 +3,20 @@
    ========================================================================== */
 
 import React, { Fragment, useEffect, useState } from 'react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import $ from "jquery";
 import L from 'leaflet';
-import { Checkbox } from '@mui/material'
 
-import Actions from '../../../redux/actions'
-import { featurePopupContent } from '../../../utils/main'
-import EsriLeafletLayer from '../../../utils/esri/leaflet-esri-layer'
+import { Checkbox } from '@mui/material'
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AccordionDetails from "@mui/material/AccordionDetails";
+
+import Actions from '../../../../redux/actions'
+import ContextLayersEditSection from "./edit";
+import { featurePopupContent } from '../../../../utils/main'
+import EsriLeafletLayer from '../../../../utils/esri/leaflet-esri-layer'
 
 function ContextLayerInput({ data }) {
   const dispatch = useDispatch();
@@ -22,7 +28,7 @@ function ContextLayerInput({ data }) {
   const [showLegend, setShowLegend] = useState(false);
 
   /**
-   * Initiate layer from the data
+   * Initiate layer from the data.
    */
   const getLayer = function (layerData) {
     const layerType = layerData.layer_type;
@@ -181,21 +187,37 @@ function ContextLayerInput({ data }) {
 }
 
 /**
- * Context Layer selector
- * @param {list} data ContextLayers list
+ * Context Layer Accordion.
+ * @param {bool} expanded Is the accordion expanded.
+ * @param {function} handleChange Function when the accordion show.
  */
-export default function ContextLayers({ data }) {
+export default function ContextLayersAccordion({ expanded, handleChange }) {
+  const { contextLayers } = useSelector(state => state.dashboard.data);
   return (
-    <Fragment>
-      {
-        data !== undefined ?
-          data.map(
-            layer => (
-              <ContextLayerInput key={layer.id} data={layer}/>
+    <Accordion
+      expanded={expanded}
+      onChange={handleChange('contextLayers')}
+    >
+      <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+        Context Layers
+        {
+          contextLayers !== undefined ?
+            <span>&nbsp;({contextLayers.length}) </span> :
+            <i>&nbsp;(Loading)</i>
+        }
+        {editMode ? <ContextLayersEditSection/> : ''}
+      </AccordionSummary>
+      <AccordionDetails>
+        {
+          contextLayers !== undefined ?
+            contextLayers.map(
+              layer => (
+                <ContextLayerInput key={layer.id} data={layer}/>
+              )
             )
-          )
-          : <div>Loading</div>
-      }
-    </Fragment>
+            : <div>Loading</div>
+        }
+      </AccordionDetails>
+    </Accordion>
   )
 }

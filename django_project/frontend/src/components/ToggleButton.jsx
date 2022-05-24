@@ -8,10 +8,10 @@ export const LEFT = 'left';
 export const RIGHT = 'right';
 
 /**
- * Left-Right toggle button
- * @param {string} initState Initial state of toggle between left or right
- * @param {function} onLeft Function when state is on lft
- * @param {function} onRight Function when state is on right
+ * Left-Right toggle button.
+ * @param {string} initState Initial state of toggle between left or right.
+ * @param {function} onLeft Function when state is on lft.
+ * @param {function} onRight Function when state is on right.
  */
 export default function LeftRightToggleButton(
   { initState, onLeft, onRight }
@@ -25,6 +25,7 @@ export default function LeftRightToggleButton(
   const change = () => {
     const newState = state === RIGHT ? LEFT : RIGHT;
     setState(newState);
+
     if (newState === LEFT) {
       onLeft()
     } else if (newState === RIGHT) {

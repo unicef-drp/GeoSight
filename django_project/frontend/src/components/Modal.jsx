@@ -10,11 +10,11 @@ import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
 
 /**
- * Base modal component
- * @param {bool} open Initial state if modal is open or not
- * @param {function} onClosed Function when modal closed
- * @param {string} className Class name for modal
- * @param {React.Component} children React component to be rendered
+ * Base modal component.
+ * @param {bool} open Initial state if modal is open or not.
+ * @param {function} onClosed Function when modal closed.
+ * @param {string} className Class name for modal.
+ * @param {React.Component} children React component to be rendered.
  */
 export default function Modal(
   { open, onClosed, className, children }
@@ -62,10 +62,8 @@ export function ModalHeader({ children }) {
 
 export function ModalContent({ children }) {
   return (
-    <div className='modal--content--wrapper'>
-      <div className='modal--content'>
-        {children}
-      </div>
+    <div className='modal--content'>
+      {children}
     </div>
   )
 }

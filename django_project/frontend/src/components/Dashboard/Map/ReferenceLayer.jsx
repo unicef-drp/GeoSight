@@ -10,8 +10,8 @@ import Actions from '../../../redux/actions'
 
 
 /**
- * ReferenceLayer selector
- * @param {list} indicatorData Indicator that will be used
+ * ReferenceLayer selector.
+ * @param {list} indicatorData Indicator that will be used.
  */
 export default function ReferenceLayer({ indicatorData }) {
   const [level, setLevel] = useState(null);

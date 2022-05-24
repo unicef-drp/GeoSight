@@ -14,8 +14,8 @@ html, body {
 .dashboard {
   main {
     height: 100%;
-    width: 100%;
     position: relative;
+    width: 100%;
 
     @include media(small-down) {
       height: fit-content;
@@ -25,14 +25,14 @@ html, body {
   .dashboard__panel {
     box-sizing: border-box;
     height: 100%;
-    z-index: 1001;
-    padding-top: 5px;
     padding-bottom: 5px;
+    padding-top: 5px;
     pointer-events: none;
+    z-index: 1001;
 
     .dashboard__content-wrapper {
-      box-shadow: $base-shadow-box;
       background-color: white;
+      box-shadow: $base-shadow-box;
       width: 100%;
     }
 

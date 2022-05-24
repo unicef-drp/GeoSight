@@ -19,7 +19,10 @@ export default function ReferenceLayerSection() {
     >
       <AccordionSummary>
         Reference Dataset
-        {editMode ? <ReferenceLayerEditSection/> : ''}
+        {
+          editMode && referenceLayer !== undefined ?
+            <ReferenceLayerEditSection/> : ''
+        }
       </AccordionSummary>
       <AccordionDetails>
         {

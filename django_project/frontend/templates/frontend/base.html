@@ -25,29 +25,20 @@
 
 <div id="app"></div>
 <script>
-  let editMode = {% if edit_mode %} true {% else %} false {% endif %};
   const user = {{ user|safe }};
   const csrfmiddlewaretoken = '{{ csrf_token }}';
   const preferences = {{ preferences|safe }};
   const links = {{ links|safe }};
-  const definition = {{ definition|safe }};
   let urls = {
     'login': "{% url 'login' %}",
     'logout': "{% url 'logout' %}",
     'admin': "{% url 'admin:index' %}",
     'dashboardData': '{% url 'dashboard-data-api' slug=dashboard.id %}'
   }
-  if (editMode) {
-    urls = Object.assign({}, urls, {
-      'referenceLayersListAPI': '{% url 'reference-layer-list-api' %}',
-      'basemapListAPI': '{% url 'basemap-list-api' %}',
-      'indicatorListAPI': '{% url 'indicator-list-api' %}',
-    })
-  }
 </script>
-{% block render_bundle %}
-{% endblock %}
 {% block scripts %}
+{% endblock %}
+{% block render_bundle %}
 {% endblock %}
 </body>
 </html>

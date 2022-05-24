@@ -9,7 +9,7 @@ import L from 'leaflet';
 import './style.scss';
 
 /**
- * Map component
+ * Map component.
  */
 export default function Map() {
   const {

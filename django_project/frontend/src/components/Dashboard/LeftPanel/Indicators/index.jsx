@@ -15,7 +15,7 @@ import ReferenceLayer from '../../Map/ReferenceLayer'
 import IndicatorsEditSection from "./edit";
 
 /**
- * Indicators selector
+ * Indicators selector.
  */
 export function Indicators() {
   const dispatch = useDispatch();

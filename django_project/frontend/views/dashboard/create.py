@@ -1,10 +1,12 @@
 """Dashboard Create View."""
 
+from braces.views import LoginRequiredMixin
+
 from frontend.views.dashboard._base import BaseDashboardView
 from gap_data.api.dashboard import CREATE_SLUG
 
 
-class DashboardCreateView(BaseDashboardView):
+class DashboardCreateView(LoginRequiredMixin, BaseDashboardView):
     """Dashboard Detail View."""
 
     template_name = 'frontend/dashboard/view.html'

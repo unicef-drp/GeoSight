@@ -5,13 +5,14 @@
 import React, { useState } from 'react';
 import { useSelector } from "react-redux";
 import InfoIcon from "@mui/icons-material/Info";
+
 import SummaryWidget from "./Types/SummaryWidget"
 import SummaryGroupWidget from "./Types/SummaryGroupWidget"
 
 import './style.scss';
 
 /**
- * Base widget that handler widget rendering
+ * Base widget that handler widget rendering.
  * @param {string} data Data of widget
  */
 export default function Widget({ data }) {
@@ -27,7 +28,7 @@ export default function Widget({ data }) {
   };
 
   /**
-   * Return data from leaflet layer
+   * Return data from leaflet layer.
    */
   function getData() {
     switch (layer_used) {
@@ -83,7 +84,7 @@ export default function Widget({ data }) {
       {
         showInfo ?
           <div className='widget__info'>
-            <div className='widget__info__title'>{name}</div>
+            {/*<div className='widget__info__title'>{name}</div>*/}
             <div className='widget__info__content'>{description}</div>
           </div> : ''
       }

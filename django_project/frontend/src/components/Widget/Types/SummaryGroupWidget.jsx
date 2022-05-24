@@ -5,7 +5,7 @@
 import React from 'react';
 
 /**
- * General widget to show summary of data
+ * General widget to show summary of data.
  * @param {string} name Name of widget
  * @param {string} unit Unit of data
  * @param {list} data List of data {value, date}

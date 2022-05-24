@@ -20,28 +20,32 @@
 
 // MODALS
 .MuiModal-root {
-  padding: 20px;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .modal--box {
-  margin-left: 50%;
-  margin-right: 50%;
-  width: fit-content;
-  min-width: 40rem;
-  border-radius: .3rem;
-  border: 1px solid rgba(0, 0, 0, .2);
   background-color: #fff;
   background-clip: padding-box;
-  transform: translate(-50%, 0);
-  max-height: 100%;
-
-
-  display: grid;
-  grid-template-rows: max-content auto;
-  grid-template-columns: auto;
+  border-radius: .3rem;
+  height: fit-content;
+  margin: 1.75rem auto;
+  max-width: 500px;
+  min-width: 40rem;
+  overflow: hidden;
+  position: relative;
+  transform: translate(0, 0);
+  transition: transform .3s ease-out, -webkit-transform .3s ease-out;
+  width: auto;
 
   &:focus-visible {
     outline: none;
+  }
+
+  @include media(xsmall-only) {
+    max-width: unset;
   }
 }
 
@@ -50,14 +54,9 @@
   border-bottom: 1px solid #ddd;
 }
 
-.modal--content--wrapper {
-  height: 80vh;
-  width: 100%;
-  overflow-y: auto;
-}
-
 .modal--content {
   padding: 20px;
+  overflow-x: auto;
 }
 
 .left-right-toggle-button {

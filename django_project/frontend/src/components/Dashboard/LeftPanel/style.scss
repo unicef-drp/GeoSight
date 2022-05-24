@@ -5,11 +5,11 @@
 @import '../../../app/variables';
 
 .dashboard__left_side {
-  position: absolute;
   left: 0;
+  position: absolute;
   top: 0;
-  width: 20%;
   transition: left 0.3s;
+  width: 20%;
 
   &.right {
     left: -20%;
@@ -269,7 +269,7 @@
 
 .modal__basemap__setting {
   img {
-    margin-left: 5px;
+    margin-right: 5px;
     height: 50px;
   }
 }

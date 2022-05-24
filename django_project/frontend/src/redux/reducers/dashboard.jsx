@@ -6,14 +6,20 @@ import { APIReducer } from '../reducers_api';
 export const DASHBOARD_ACTION_NAME = 'DASHBOARD';
 export const REFERENCE_LAYER_ACTION_NAME = 'REFERENCE_LAYER';
 export const REFERENCE_LAYER_ACTION_TYPE_CHANGE = 'REFERENCE_LAYER/CHANGE';
+
 export const INDICATOR_ACTION_NAME = 'INDICATOR';
 export const INDICATOR_ACTION_TYPE_ADD = 'INDICATOR/ADD';
 export const INDICATOR_ACTION_TYPE_REMOVE = 'INDICATOR/REMOVE';
+
 export const BASEMAP_ACTION_NAME = 'BASEMAP';
 export const BASEMAP_ACTION_TYPE_ADD = 'BASEMAP/ADD';
 export const BASEMAP_ACTION_TYPE_REMOVE = 'BASEMAP/REMOVE';
 export const BASEMAP_DEFAULT_ACTION_NAME = 'BASEMAP_DEFAULT';
-export const BASEMAP_DEFAULT_ACTION_TYPE_CHANGE = 'BASEMAP_DEFAULT/CHANGE';
+export const BASEMAP_DEFAULT_ACTION_TYPE_CHANGE = 'BASEMAP_DEFAULT/CHANGE'
+
+export const CONTEXT_LAYER_ACTION_NAME = 'CONTEXT_LAYER';
+export const CONTEXT_LAYER_ACTION_TYPE_ADD = 'CONTEXT_LAYER/ADD';
+export const CONTEXT_LAYER_ACTION_TYPE_REMOVE = 'CONTEXT_LAYER/REMOVE';
 
 const dashboardInitialState = {
   fetching: false,
@@ -92,6 +98,39 @@ export default function dashboardReducer(
           }
           return newState
         }
+      }
+    }
+
+    // CONTEXT LAYERS REDUCER
+    case CONTEXT_LAYER_ACTION_NAME: {
+      switch (action.type) {
+        case CONTEXT_LAYER_ACTION_TYPE_ADD: {
+          const newState = { ...state }
+          newState.data = {
+            ...newState.data,
+            contextLayers: [
+              ...newState.data.contextLayers,
+              action.payload
+            ]
+          }
+          return newState
+        }
+        case CONTEXT_LAYER_ACTION_TYPE_REMOVE: {
+          const newState = { ...state }
+          const contextLayers = []
+          newState.data.contextLayers.forEach(function (contextLayer) {
+            if (contextLayer.id !== action.payload.id) {
+              contextLayers.push(contextLayer)
+            }
+          })
+          newState.data = {
+            ...newState.data,
+            contextLayers: contextLayers
+          }
+          return newState
+        }
+        default:
+          return state
       }
     }
 

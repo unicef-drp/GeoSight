@@ -10,9 +10,9 @@ import Modal, { ModalContent, ModalHeader } from '../Modal'
 import './style.scss';
 
 /**
- * Modal for login
- * @param {bool} open Initial state if modal is open or not
- * @param {function} onClosed Function when modal closed
+ * Modal for login.
+ * @param {bool} open Initial state if modal is open or not.
+ * @param {function} onClosed Function when modal closed.
  */
 export default function LoginModal({ open, onClosed }) {
   const authUrl = `${urls.login}?next=${window.location.pathname}` // eslint-disable-line no-undef

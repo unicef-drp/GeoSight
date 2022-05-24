@@ -11,9 +11,9 @@ import Actions from '../../../../redux/actions'
 import BasemapsEditSection from "./edit";
 
 /**
- * Basemaps selector
- * @param {list} data Basemap list
- * @param {int} defaultBasemapLayer Default basemap
+ * Basemaps selector.
+ * @param {list} data Basemap list.
+ * @param {int} defaultBasemapLayer Default basemap.
  */
 export default function Basemaps({ data, defaultBasemapLayer }) {
   const dispatch = useDispatch();

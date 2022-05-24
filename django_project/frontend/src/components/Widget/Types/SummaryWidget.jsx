@@ -1,12 +1,12 @@
 /* ==========================================================================
-   GENERAL WIDGET FOR SHOWING SUMMARY OF DATA
+   GENERAL WIDGET FOR SHOWING SUMMARY OF DATA PER GROUP
    ========================================================================== */
 
 import React from 'react';
 import { numberWithCommas } from '../../../utils/main'
 
 /**
- * General widget to show summary of data
+ * General widget to show summary of data.
  * @param {string} name Name of widget
  * @param {string} unit Unit of data
  * @param {list} data List of data {value, date}
