@@ -4,11 +4,6 @@
 
 @import '../../app/variables';
 
-.dashboard__content {
-  background-color: #eee;
-  padding: 10px 10px 5px 10px;
-}
-
 .widget {
   background-color: #F6F8FA;
   border: 0.5px solid rgba(0, 0, 0, 0.12);
@@ -42,7 +37,6 @@
 
 .widget__content {
   margin-top: 5px;
-  max-height: 400px;
   overflow-y: auto;
 }
 

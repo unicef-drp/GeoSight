@@ -114,9 +114,15 @@ export function capitalize(target) {
  */
 export function featurePopupContent(title, properties) {
   let defaultHtml = '';
+  let color = '#eee';
   for (const [key, prop] of Object.entries(properties)) {
-    let value = typeof prop === 'object' ? JSON.stringify(prop) : numberWithCommas(prop);
-    defaultHtml += `<tr><td valign="top"><b>${capitalize(key)}</b></td><td valign="top">${value}</td></tr>`
+    if (key.toLowerCase() === 'color') {
+      color = prop
+    }
+    if (!['color'].includes(key.toLowerCase())) {
+      let value = typeof prop === 'object' ? JSON.stringify(prop) : numberWithCommas(prop);
+      defaultHtml += `<tr><td valign="top"><b>${capitalize(key)}</b></td><td valign="top">${value}</td></tr>`
+    }
   }
-  return '<table><tr><td colspan="2" style="text-align: center; background: #eee"><b>' + title + '</b></td></tr>' + defaultHtml + '</table>'
+  return `<div class="table__header" style="background: ${color}"><b>` + title + '</b></div><div class="table__content"><table><tbody>' + defaultHtml + '</tbody></table></div>'
 }

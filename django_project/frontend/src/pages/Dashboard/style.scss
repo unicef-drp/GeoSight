@@ -40,6 +40,11 @@ html, body {
       pointer-events: auto;
     }
   }
+
+  .dashboard__content {
+    background-color: #eee;
+    padding: 10px 10px 5px 10px;
+  }
 }
 
 .modal--header {

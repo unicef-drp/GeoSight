@@ -46,7 +46,7 @@ export function Indicators() {
   if (indicators && indicators[currentIndicator]) {
     selectedIndicatorData = indicators[currentIndicator].data;
   }
-  console.log(selectedIndicatorData)
+
   return (
     <Fragment>
       {
