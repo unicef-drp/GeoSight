@@ -1,4 +1,5 @@
 """Dashboard model."""
+from django.contrib.auth import get_user_model
 from django.contrib.gis.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -7,6 +8,8 @@ from gap_data.models.basemap_layer import BasemapLayer
 from gap_data.models.context_layer import ContextLayer
 from gap_data.models.indicator import Indicator
 from gap_data.models.reference_layer import ReferenceLayer
+
+User = get_user_model()
 
 
 class Dashboard(SlugTerm, IconTerm):
@@ -46,4 +49,10 @@ class Dashboard(SlugTerm, IconTerm):
         help_text=_(
             'Extent of the dashboard. If empty, it is the whole map'
         )
+    )
+    creator = models.ForeignKey(
+        User,
+        null=True, blank=True,
+        help_text=_('User who create the dashboard.'),
+        on_delete=models.CASCADE
     )

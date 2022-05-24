@@ -88,11 +88,22 @@ export default function Map() {
   /** CONTEXT LAYERS CHANGED */
   useEffect(() => {
     if (contextLayerGroup && contextLayers) {
+      const ids = []
+      const idsKeep = []
+      for (const [key, contextLayer] of Object.entries(contextLayers)) {
+        if (contextLayer.layer) {
+          ids.push(contextLayer.layer._leaflet_id);
+        }
+      }
       contextLayerGroup.eachLayer(function (layer) {
-        contextLayerGroup.removeLayer(layer);
+        if (!ids.includes(layer._leaflet_id)) {
+          contextLayerGroup.removeLayer(layer);
+        } else {
+          idsKeep.push(layer._leaflet_id)
+        }
       });
       for (const [key, contextLayer] of Object.entries(contextLayers)) {
-        if (contextLayer.render && contextLayer.layer) {
+        if (contextLayer.layer && !idsKeep.includes(contextLayer.layer._leaflet_id)) {
           const layer = contextLayer.layer;
           layer.options.pane = contextLayerPane;
           contextLayerGroup.addLayer(contextLayer.layer);
