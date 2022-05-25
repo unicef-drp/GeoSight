@@ -34,7 +34,7 @@ export function Indicators() {
 
   // Get indicator data
   useEffect(() => {
-    if (indicators && referenceLayer && referenceLayer.data) {
+    if (indicators) {
       indicators.forEach(function (indicator, idx) {
         Actions.Indicators.fetch(dispatch, idx, indicator.url)
       })

@@ -89,6 +89,10 @@
     width: 95%;
   }
 
+  .widget__content {
+    max-height: 200px;
+  }
+
   .widget__sgw__row__name {
     width: 1%;
   }
@@ -104,6 +108,7 @@
 
 .widget__error {
   color: red;
+  padding: 0 2rem;
 }
 
 .widget__selection__member {

@@ -208,6 +208,13 @@ export default function dashboardReducer(
               ...data
             }
             return newState
+          } else if (Object.keys(state.data.referenceLayer).length === 0) {
+            const newState = { ...state }
+            newState.data.indicators[action.id] = {
+              ...newState.data.indicators[action.id],
+              ...data
+            }
+            return newState
           }
           return state
       }

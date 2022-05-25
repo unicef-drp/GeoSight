@@ -5,7 +5,6 @@
 import React, { Fragment } from 'react';
 import { numberWithCommas } from '../../../utils/main'
 import { DEFINITION } from "../index"
-import SummaryWidgetEditSection from "./edit";
 
 /**
  * General widget to show summary of data.
@@ -27,7 +26,7 @@ export default function SummaryWidget(
   function getValue() {
     if (data !== null) {
       switch (operation) {
-        case DEFINITION.PluginOperation.SUM:
+        case DEFINITION.WidgetOperation.SUM:
           let total = 0;
           data.forEach(function (rowData) {
             const rowValue = parseFloat(rowData.value);
@@ -45,7 +44,6 @@ export default function SummaryWidget(
 
   return (
     <Fragment>
-      {editMode ? <SummaryWidgetEditSection idx={idx} data={widgetData}/> : ''}
       <div className='widget__sw'>
         <div className='widget__sw__title'>{getValue()}</div>
         <div>{name}</div>

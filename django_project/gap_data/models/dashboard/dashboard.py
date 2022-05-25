@@ -59,3 +59,57 @@ class Dashboard(SlugTerm, IconTerm):
     def can_edit(self, user: User):
         """Is dashboard can be edited by user."""
         return user.is_staff or self.creator == user
+
+    def save_widgets(self, widget_data):
+        """Save widgets from data."""
+        from .widget import Widget, LayerUsed
+        ids = []
+
+        # Remove all not found ids
+        for data in widget_data:
+            if 'id' in data:
+                ids.append(data['id'])
+
+        # Remove all not found ids
+        self.widget_set.exclude(id__in=ids).delete()
+
+        # Save data
+        for data in widget_data:
+            try:
+                try:
+                    widget = Widget.objects.get(
+                        id=data['id']
+                    )
+                    print('widget found')
+                except (KeyError, Widget.DoesNotExist):
+                    widget = Widget(dashboard=self)
+
+                widget.name = data['name']
+                widget.type = data['type']
+                widget.description = data['description']
+                widget.operation = data['operation']
+                widget.unit = data['unit']
+                widget.property = data['property']
+                widget.layer_used = data['layer_used']
+
+                if widget.layer_used == LayerUsed.INDICATOR:
+                    try:
+                        widget.indicator = Indicator.objects.get(
+                            id=data['layer_id']
+                        )
+                    except Indicator.DoesNotExist:
+                        pass
+
+                # optional data
+                try:
+                    widget.property_2 = data['property_2']
+                except KeyError:
+                    pass
+                widget.save()
+            except KeyError:
+                pass
+
+
+
+
+

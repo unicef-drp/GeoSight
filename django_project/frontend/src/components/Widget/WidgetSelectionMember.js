@@ -26,7 +26,7 @@ export default function WidgetSelectionMember(
     dispatcher(Actions.Widget.add(defaultData));
   }
   return <div className="widget__selection__member" onClick={clicked}>
-    <div><b>{title}</b></div>
+    <div><b className='light'>{title}</b></div>
     <div className="setting__helper">{description}</div>
   </div>
 }

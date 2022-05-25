@@ -48,4 +48,5 @@ class DashboardForm(forms.ModelForm):
             id=other_data['defaultBasemapLayer']
         )
         data['context_layers'] = other_data['contextLayers']
+        data['widgets'] = other_data['widgets']
         return data

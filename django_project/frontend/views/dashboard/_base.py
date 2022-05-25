@@ -15,7 +15,7 @@ class BaseDashboardView(ABC, BaseView):
         context = super().get_context_data(**kwargs)
 
         context['definition'] = {
-            'PluginLayerUsed': {
+            'WidgetLayerUsed': {
                 name: value for name, value in vars(LayerUsed).items() if
                 name.isupper()
             },

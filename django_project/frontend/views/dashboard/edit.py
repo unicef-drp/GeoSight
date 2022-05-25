@@ -53,6 +53,7 @@ class DashboardEditView(LoginRequiredMixin, BaseDashboardView):
             )
             if form.is_valid():
                 dashboard = form.save()
+                dashboard.save_widgets(data['widgets'])
                 return redirect(
                     reverse(
                         'dashboard-detail-view', args=[dashboard.slug]

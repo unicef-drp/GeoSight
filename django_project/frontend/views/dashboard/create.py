@@ -43,6 +43,7 @@ class DashboardCreateView(LoginRequiredMixin, BaseDashboardView):
             form = DashboardForm(data, request.FILES)
             if form.is_valid():
                 dashboard = form.save()
+                dashboard.save_widgets(data['widgets'])
                 return redirect(
                     reverse(
                         'dashboard-detail-view', args=[dashboard.slug]

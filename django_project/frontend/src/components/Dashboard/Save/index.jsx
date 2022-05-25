@@ -3,12 +3,14 @@
    ========================================================================== */
 
 import React, { useState } from 'react';
+import $ from 'jquery';
 import { useSelector } from "react-redux";
 import { Button, FormControl, Input, InputLabel } from '@mui/material'
-import './style.scss';
 import Modal, { ModalContent, ModalHeader } from "../../Modal";
 
 import { postData } from "../../../Requests"
+
+import './style.scss';
 
 export default function SaveDashboard() {
   const csrftoken = csrfmiddlewaretoken; // eslint-disable-line no-undef
@@ -51,6 +53,9 @@ export default function SaveDashboard() {
     }
     if (basemapsLayers.length === 0) {
       error.push('Basemap is empty, please select one or more basemap.')
+    }
+    if ($('.widget__error').length > 0) {
+      error.push('There is widget that error, please fix it.')
     }
     setError(error.join('<br>'));
 
@@ -128,7 +133,7 @@ export default function SaveDashboard() {
               <InputLabel>Title</InputLabel>
               <Input type="text" name="name" placeholder="Dashboard title"
                      value={nameData}
-                     onChange={(event)=>{
+                     onChange={(event) => {
                        setNameData(event.target.value)
                      }}
                      required={true}/>
@@ -137,7 +142,7 @@ export default function SaveDashboard() {
               <InputLabel>Description</InputLabel>
               <Input type="text" name="description"
                      value={descriptionData}
-                     onChange={(event)=>{
+                     onChange={(event) => {
                        setDescriptionData(event.target.value)
                      }}
                      placeholder="Dashboard description"/>

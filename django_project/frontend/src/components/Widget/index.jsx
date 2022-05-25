@@ -3,21 +3,25 @@
    ========================================================================== */
 
 import React, { Fragment, useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import InfoIcon from "@mui/icons-material/Info";
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+
 import SummaryWidget from "./SummaryWidget"
 import SummaryGroupWidget from "./SummaryGroupWidget"
 import WidgetSelectionSection from "./WidgetSelection"
-import Actions from "../../redux/actions"
+import EditSection from "./edit";
+import SummaryGroupWidgetEditSection from "./SummaryGroupWidget/edit";
+import SummaryWidgetEditSection from "./SummaryWidget/edit";
+import { cleanLayerData } from "../../utils/indicatorData"
+
 import './style.scss';
 
 export const DEFINITION = {
-  "PluginType": {
+  "WidgetType": {
     "SUMMARY_WIDGET": "SummaryWidget",
     "SUMMARY_GROUP_WIDGET": "SummaryGroupWidget"
   },
-  "PluginOperation": {
+  "WidgetOperation": {
     "SUM": "Sum"
   }
 }
@@ -28,12 +32,11 @@ export const DEFINITION = {
  * @param {string} data Data of widget
  */
 export function Widget({ idx, data }) {
-  const dispatch = useDispatch()
   const { indicators } = useSelector(state => state.dashboard.data);
   const [showInfo, setShowInfo] = useState(false);
   const {
     name, description, type,
-    layer_id, layer_used, property, property_2
+    layer_id, layer_used, property
   } = data
 
   const showInfoHandler = () => {
@@ -41,73 +44,78 @@ export function Widget({ idx, data }) {
   };
 
   /**
-   * Return data from leaflet layer.
-   */
-  function getData() {
+   * Render widget by type
+   * **/
+  function renderWidgetByType() {
+    // get layers by layer used
+    let layers = null
     switch (layer_used) {
-      case definition.PluginLayerUsed.INDICATOR:
-        if (indicators) {
-          const indicator = indicators.filter((indicator) => {
-            return indicator.id === layer_id;
-          })
-
-          if (indicator[0] && indicator[0]['data']) {
-            const output = [];
-            indicator[0]['data'].forEach(function (indicatorData) {
-              if (indicatorData[property] !== undefined) {
-                output.push({
-                  'date': indicatorData['date'],
-                  'value': indicatorData[property],
-                  'value2': indicatorData[property_2],
-                })
-              }
-            })
-            return output;
-          }
-        }
-        return null;
-      default:
-        return null;
+      case definition.WidgetLayerUsed.INDICATOR:
+        layers = indicators
+        break;
     }
-  }
 
-  function renderWidget() {
+    // render widget by the type
     switch (type) {
-      case DEFINITION.PluginType.SUMMARY_WIDGET:
+      case DEFINITION.WidgetType.SUMMARY_WIDGET:
         return <SummaryWidget
-          idx={idx} data={getData()} widgetData={data}
+          idx={idx}
+          data={cleanLayerData(layer_id, layer_used, layers, property)}
+          widgetData={data}
         />;
-      case DEFINITION.PluginType.SUMMARY_GROUP_WIDGET:
+      case DEFINITION.WidgetType.SUMMARY_GROUP_WIDGET:
         return <SummaryGroupWidget
-          idx={idx} data={getData()} widgetData={data}
+          idx={idx}
+          data={cleanLayerData(layer_id, layer_used, layers, property)}
+          widgetData={data}
         />;
       default:
-        return <div className='widget__error'>Widget Not Found</div>;
+        throw new Error("Widget type does not recognized.");
     }
   }
 
-  // Delete widget
-  const deleteWidget = () => {
-    dispatch(Actions.Widget.remove(idx));
+  /**
+   * Render edit by type
+   * **/
+  function renderEditByType() {
+    switch (type) {
+      case DEFINITION.WidgetType.SUMMARY_WIDGET:
+        return <SummaryWidgetEditSection/>;
+      case DEFINITION.WidgetType.SUMMARY_GROUP_WIDGET:
+        return <SummaryGroupWidgetEditSection/>;
+      default:
+        return ''
+    }
+  }
+
+  // Render widget based on the type and raise error
+  const renderWidget = () => {
+    try {
+      return renderWidgetByType()
+    } catch (error) {
+      return <div className='widget__error'>{'' + error}</div>
+    }
   }
 
   return (
     <div className='widget'>
-      {
-        editMode ? <RemoveCircleIcon
-          className="remove__button"
-          onClick={deleteWidget}/> : ''
-      }
       <InfoIcon className="info__button" onClick={() => {
         showInfoHandler()
       }}/>
+      {
+        editMode ?
+          <EditSection idx={idx} data={data}>
+            {renderEditByType()}
+          </EditSection> : ''
+      }
       <div className='widget__fill'>
         {renderWidget()}
       </div>
       {
         showInfo ?
           <div className='widget__info'>
-            <div className='widget__info__title'><b>{name}</b></div>
+            <div className='widget__info__title'><b
+              className='light'>{name}</b></div>
             <div className='widget__info__content'>{description}</div>
           </div> : ''
       }
