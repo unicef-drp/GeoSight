@@ -108,8 +108,3 @@ class Dashboard(SlugTerm, IconTerm):
                 widget.save()
             except KeyError:
                 pass
-
-
-
-
-
