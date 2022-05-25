@@ -148,7 +148,7 @@ export default function SaveDashboard() {
             </FormControl>
             <br/>
             <Button variant="primary" type="submit"
-                    className="modal__login__submit"
+                    className="dashboard__submit__button"
                     disabled={submitting}
             >
               Submit

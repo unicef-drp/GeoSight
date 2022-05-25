@@ -25,6 +25,11 @@ export const CONTEXT_LAYER_ACTION_NAME = 'CONTEXT_LAYER';
 export const CONTEXT_LAYER_ACTION_TYPE_ADD = 'CONTEXT_LAYER/ADD';
 export const CONTEXT_LAYER_ACTION_TYPE_REMOVE = 'CONTEXT_LAYER/REMOVE';
 
+export const WIDGET_ACTION_NAME = 'WIDGET';
+export const WIDGET_ACTION_TYPE_ADD = 'WIDGET/ADD';
+export const WIDGET_ACTION_TYPE_REMOVE = 'WIDGET/REMOVE';
+export const WIDGET_ACTION_TYPE_UPDATE = 'WIDGET/UPDATE';
+
 const dashboardInitialState = {
   fetching: false,
   fetched: false,
@@ -204,6 +209,47 @@ export default function dashboardReducer(
             }
             return newState
           }
+          return state
+      }
+    }
+
+    // WIDGET REDUCER
+    case WIDGET_ACTION_NAME: {
+      switch (action.type) {
+        case WIDGET_ACTION_TYPE_ADD: {
+          const newState = { ...state }
+          newState.data = {
+            ...newState.data,
+            widgets: [
+              ...newState.data.widgets,
+              action.payload
+            ]
+          }
+          return newState
+        }
+        case WIDGET_ACTION_TYPE_REMOVE: {
+          const newState = { ...state }
+          const widgets = [...newState.data.widgets]
+          if (widgets[action.payload]) {
+            widgets.splice(action.payload, 1)
+          }
+          newState.data = {
+            ...newState.data,
+            widgets: widgets
+          }
+          return newState
+        }
+        case WIDGET_ACTION_TYPE_UPDATE: {
+          const newState = { ...state }
+          const widgets = [...newState.data.widgets]
+          widgets[action.idx] = action.payload
+          newState.data = {
+            ...newState.data,
+            widgets: widgets
+          }
+          return newState
+        }
+        default:
           return state
       }
     }

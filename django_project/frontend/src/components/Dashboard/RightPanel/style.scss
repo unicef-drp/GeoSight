@@ -49,6 +49,14 @@
     top: 5px;
     border-radius: 5px 0 0 5px;
   }
+
+  .setting__button {
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.5;
+    }
+  }
 }
 
 .dashboard__right_side__loading {

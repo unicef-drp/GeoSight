@@ -21,7 +21,7 @@ class WidgetSerializer(serializers.ModelSerializer):
 
     class Meta:  # noqa: D106
         model = Widget
-        exclude = ('indicator', 'context_layer')
+        exclude = ('indicator', 'context_layer', 'dashboard')
 
 
 class DashboardSerializer(serializers.ModelSerializer):

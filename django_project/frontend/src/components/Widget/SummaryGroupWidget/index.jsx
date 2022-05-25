@@ -2,18 +2,22 @@
    GENERAL WIDGET FOR SHOWING SUMMARY OF DATA
    ========================================================================== */
 
-import React from 'react';
+import React, { Fragment } from 'react';
+import { DEFINITION } from "../index"
+import SummaryGroupWidgetEditSection from "./edit";
 
 /**
  * General widget to show summary of data.
- * @param {string} name Name of widget
- * @param {string} unit Unit of data
+ * @param {int} idx Index of widget
  * @param {list} data List of data {value, date}
- * @param {string} operation Operation of data
+ * @param {object} widgetData Widget Data
  */
-export default function SummaryGroupWidget(
-  { name, unit, data, operation }
+export default function Index(
+  { idx, data, widgetData }
 ) {
+  const {
+    name, operation
+  } = widgetData
 
   /**
    * Return value of widget
@@ -22,7 +26,7 @@ export default function SummaryGroupWidget(
   function getValue() {
     if (data !== null) {
       switch (operation) {
-        case definition.PluginOperation.SUM:
+        case DEFINITION.PluginOperation.SUM:
           let maxValue = 0;
           let byGroup = {}
           data.forEach(function (rowData) {
@@ -80,9 +84,13 @@ export default function SummaryGroupWidget(
   }
 
   return (
-    <div className='widget__sw widget__sgw'>
-      <div className='widget__gw__title'>{name}</div>
-      <div className='widget__content'>{getValue()}</div>
-    </div>
+    <Fragment>
+      {editMode ?
+        <SummaryGroupWidgetEditSection idx={idx} data={widgetData}/> : ''}
+      <div className='widget__sw widget__sgw'>
+        <div className='widget__gw__title'>{name}</div>
+        <div className='widget__content'>{getValue()}</div>
+      </div>
+    </Fragment>
   )
 }
