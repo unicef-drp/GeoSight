@@ -2,6 +2,12 @@
    Materialize Form
    ========================================================================== */
 
+.MuiFormControl-hidden {
+  .MuiInput-root {
+    display: none !important;
+  }
+}
+
 .MuiFormControl-root {
   margin-top: 1.5rem !important;
   display: block !important;

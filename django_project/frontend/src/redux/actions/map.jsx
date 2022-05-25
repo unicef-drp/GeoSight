@@ -1,9 +1,10 @@
 import {
+  MAP_ADD_CONTEXTLAYERS,
   MAP_CHANGE_BASEMAP,
   MAP_REFERENCE_LAYER_CHANGED,
-  MAP_ADD_CONTEXTLAYERS,
-  MAP_REMOVE_CONTEXTLAYERS
-} from '../reducers'
+  MAP_REMOVE_CONTEXTLAYERS,
+  MAP_REMOVE_CONTEXTLAYERS_ALL
+} from '../reducers/map'
 
 
 function change_basemap(payload) {
@@ -35,9 +36,17 @@ function remove_context_layer(id, payload) {
   };
 }
 
+function remove_all_context_layer() {
+  return {
+    type: MAP_REMOVE_CONTEXTLAYERS_ALL,
+    id: id
+  };
+}
+
 export default {
   change_basemap,
   add_context_layer,
   remove_context_layer,
-  change_reference_layer
+  change_reference_layer,
+  remove_all_context_layer
 }

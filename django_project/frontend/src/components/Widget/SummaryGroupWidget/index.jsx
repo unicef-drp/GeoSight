@@ -2,18 +2,22 @@
    GENERAL WIDGET FOR SHOWING SUMMARY OF DATA
    ========================================================================== */
 
-import React from 'react';
+import React, { Fragment } from 'react';
+import { DEFINITION } from "../index"
+import { numberWithCommas } from '../../../utils/main'
 
 /**
- * General widget to show summary of data
- * @param {string} name Name of widget
- * @param {string} unit Unit of data
+ * General widget to show summary of data.
+ * @param {int} idx Index of widget
  * @param {list} data List of data {value, date}
- * @param {string} operation Operation of data
+ * @param {object} widgetData Widget Data
  */
-export default function SummaryGroupWidget(
-  { name, unit, data, operation }
+export default function Index(
+  { idx, data, widgetData }
 ) {
+  const {
+    name, operation, property_2
+  } = widgetData
 
   /**
    * Return value of widget
@@ -22,19 +26,20 @@ export default function SummaryGroupWidget(
   function getValue() {
     if (data !== null) {
       switch (operation) {
-        case definition.PluginOperation.SUM:
+        case DEFINITION.WidgetOperation.SUM:
           let maxValue = 0;
           let byGroup = {}
           data.forEach(function (rowData) {
             const rowValue = parseFloat(rowData.value);
+            const groupName = rowData[property_2];
             if (!isNaN(rowValue)) {
-              if (!byGroup[rowData.value2]) {
-                byGroup[rowData.value2] = {
+              if (!byGroup[groupName]) {
+                byGroup[groupName] = {
                   value: 0,
                   perc: 0
                 }
               }
-              byGroup[rowData.value2].value += parseFloat(rowData.value)
+              byGroup[groupName].value += parseFloat(rowData.value)
             }
           })
 
@@ -65,7 +70,7 @@ export default function SummaryGroupWidget(
                   <td className='widget__sgw__row__name'>{value[0]}</td>
                   <td>
                     <div
-                      style={{ width: value[1].perc + '%' }}>{value[1].value}</div>
+                      style={{ width: value[1].perc + '%' }}>{numberWithCommas(value[1].value)}</div>
                   </td>
                 </tr>
               ))
@@ -80,9 +85,11 @@ export default function SummaryGroupWidget(
   }
 
   return (
-    <div className='widget__sw widget__sgw'>
-      <div className='widget__gw__title'>{name}</div>
-      <div className='widget__content'>{getValue()}</div>
-    </div>
+    <Fragment>
+      <div className='widget__sw widget__sgw'>
+        <div className='widget__gw__title'>{name}</div>
+        <div className='widget__content'>{getValue()}</div>
+      </div>
+    </Fragment>
   )
 }

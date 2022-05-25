@@ -9,7 +9,7 @@ import Menu from "@mui/material/Menu";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 /**
- * Link dropdown
+ * Link dropdown.
  * **/
 export default function Links() {
   const navbarLinks = links;

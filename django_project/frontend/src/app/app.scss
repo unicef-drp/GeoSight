@@ -19,29 +19,45 @@
 }
 
 // MODALS
+.MuiModal-root {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+}
+
 .modal--box {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  border-radius: .3rem;
-  border: 1px solid rgba(0, 0, 0, .2);
   background-color: #fff;
   background-clip: padding-box;
-  transform: translate(-50%, 0);
+  border-radius: .3rem;
+  height: fit-content;
+  margin: 1.75rem auto;
+  max-width: 500px;
+  min-width: 40rem;
+  overflow: hidden;
+  position: relative;
+  transform: translate(0, 0);
+  transition: transform .3s ease-out, -webkit-transform .3s ease-out;
+  width: auto;
 
   &:focus-visible {
     outline: none;
   }
+
+  @include media(xsmall-only) {
+    max-width: unset;
+  }
 }
 
 .modal--header {
+  font-weight: 500;
   padding: 10px 20px;
   border-bottom: 1px solid #ddd;
 }
 
 .modal--content {
-  margin: auto;
-  padding: 10px 20px;
+  padding: 20px;
+  overflow-x: auto;
 }
 
 .left-right-toggle-button {

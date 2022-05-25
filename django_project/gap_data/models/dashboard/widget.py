@@ -7,19 +7,6 @@ from gap_data.models.dashboard.dashboard import Dashboard
 from gap_data.models.indicator import Indicator
 
 
-class Type(object):
-    """A quick couple variable for Plugin Type."""
-
-    SUMMARY_WIDGET = 'SummaryWidget'
-    SUMMARY_GROUP_WIDGET = 'SummaryGroupWidget'
-
-
-class Operation(object):
-    """A quick couple variable for Plugin Operation."""
-
-    SUM = 'Sum'
-
-
 class LayerUsed(object):
     """A quick couple variable for Layer That being used."""
 
@@ -74,19 +61,12 @@ class Widget(AbstractTerm):
 
     type = models.CharField(
         max_length=256,
-        default=Type.SUMMARY_WIDGET,
-        choices=(
-            (Type.SUMMARY_WIDGET, Type.SUMMARY_WIDGET),
-            (Type.SUMMARY_GROUP_WIDGET, Type.SUMMARY_GROUP_WIDGET),
-        )
+        default="SummaryWidget"
     )
 
     operation = models.CharField(
         max_length=256,
-        default=Operation.SUM,
-        choices=(
-            (Operation.SUM, Operation.SUM),
-        )
+        default="Sum"
     )
 
     layer_used = models.CharField(
@@ -114,8 +94,13 @@ class Widget(AbstractTerm):
         )
     )
 
+    # order of indicator rendered on the list
+    order = models.IntegerField(
+        default=0
+    )
+
     def __str__(self):
         return self.name
 
     class Meta:  # noqa: D106
-        ordering = ('name',)
+        ordering = ('order',)

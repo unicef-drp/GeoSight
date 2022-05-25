@@ -11,8 +11,14 @@
           type="text/css" media="screen, projection"/>
 {% endblock %}
 
-{% block header %}
-    Select instance
+{% block content_title %}
+    Select Dashboards
+    <a href="{% url "dashboard-create-view" %}">
+        <button class="white-button pull-right">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            Create New Dashboard
+        </button>
+    </a>
 {% endblock %}
 
 {% block content %}
@@ -23,13 +29,17 @@
     {% else %}
         <div id="dashboard" class="row">
             {% for dashboard in dashboards %}
-                <div class="col-2">
-                    <a href="{{ dashboard.url }}"
-                       class="dashboard">
+                <div class="col-2 dashboard">
+                    <a href="{{ dashboard.url }}">
                         <img src="
                                 {% if dashboard.icon %}{{ dashboard.icon }}{% else %}{% static "img/no-image-found.jpg" %}{% endif %}">
                         <span>{{ dashboard.name }}</span>
                     </a>
+                    {% if dashboard.can_edit %}
+                        <a href="{% url 'dashboard-edit-view' dashboard.slug %}"><i
+                                class="fa fa-cog"
+                                aria-hidden="true"></i></a>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>

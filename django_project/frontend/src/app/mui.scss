@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Bootstrap
+    Materialize
    ========================================================================== */
 @import './variables.scss';
 
@@ -23,4 +23,8 @@
   background-color: $base-color !important;
   border-color: $base-color !important;
   color: $base-color-reverse !important;
+}
+
+.MuiInputLabel-root {
+  background-color: white;
 }

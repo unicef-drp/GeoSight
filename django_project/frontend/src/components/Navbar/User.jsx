@@ -11,8 +11,8 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import LoginModal from '../Login'
 
 /**
- * User dropdown
- * **/
+ * User dropdown.
+ **/
 export default function User() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -24,7 +24,7 @@ export default function User() {
   };
 
   /**
-   * Signin Modal Functions
+   * Signin Modal Functions.
    **/
   const { username, is_staff } = user;
   const [modalIsOpen, setModalIsOpen] = useState(false);

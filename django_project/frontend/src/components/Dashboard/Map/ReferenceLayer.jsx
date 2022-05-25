@@ -6,21 +6,23 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { featurePopupContent } from '../../../utils/main'
-import Actions from '../../../redux/actions/actions'
+import Actions from '../../../redux/actions'
 
 
 /**
- * ReferenceLayer selector
- * @param {list} indicatorData Indicator that will be used
+ * ReferenceLayer selector.
+ * @param {list} indicatorData Indicator that will be used.
  */
 export default function ReferenceLayer({ indicatorData }) {
   const [level, setLevel] = useState(null);
   const { referenceLayer } = useSelector(state => state.dashboard.data);
+
+  const data = referenceLayer ? referenceLayer.data : null;
   const dispatch = useDispatch();
 
   // When Reference Layer data ready
   useEffect(() => {
-    if (referenceLayer) {
+    if (referenceLayer && referenceLayer.levels) {
       setLevel(referenceLayer.levels[0])
     }
   }, [referenceLayer]);
@@ -37,8 +39,8 @@ export default function ReferenceLayer({ indicatorData }) {
   // When reference geojson ready
   // Change color based on indicator if provided
   useEffect(() => {
-    if (referenceLayer && referenceLayer.data) {
-      const geojson = referenceLayer.data;
+    if (data) {
+      const geojson = data;
       // colors by geometry name
       const indicatorsByGeom = {}
       if (indicatorData) {
@@ -81,7 +83,7 @@ export default function ReferenceLayer({ indicatorData }) {
         )
       }
     }
-  }, [referenceLayer, indicatorData]);
+  }, [data, indicatorData]);
 
   return (<Fragment></Fragment>)
 }

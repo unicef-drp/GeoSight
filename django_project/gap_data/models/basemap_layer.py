@@ -26,6 +26,12 @@ class BasemapLayer(AbstractTerm, IconTerm):
             (BasemapLayerType.WMS, BasemapLayerType.WMS),
         )
     )
+    dashboard_default = models.BooleanField(
+        default=False,
+        help_text=_(
+            "Is the basemap used as default on dashboard editor."
+        )
+    )
 
     class Meta:  # noqa: D106
         ordering = ('name',)

@@ -3,13 +3,14 @@
    ========================================================================== */
 
 import React, { useEffect, useState } from 'react';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import L from 'leaflet';
 
 import './style.scss';
+import Actions from '../../../redux/actions'
 
 /**
- * Map component
+ * Map component.
  */
 export default function Map() {
   const {
@@ -18,6 +19,7 @@ export default function Map() {
     contextLayers
   } = useSelector(state => state.map);
 
+  const dispatcher = useDispatch();
   const { extent } = useSelector(state => state.dashboard.data);
   const [map, setMap] = useState(null);
   const [basemapLayerGroup, setBasemapLayerGroup] = useState(null);
@@ -30,24 +32,26 @@ export default function Map() {
   const contextLayerPane = 'contextLayerPane';
 
   useEffect(() => {
-    const basemapLayerGroup = L.layerGroup([]);
-    const referenceLayerGroup = L.layerGroup([]);
-    const contextLayerGroup = L.layerGroup([]);
-    setBasemapLayerGroup(basemapLayerGroup);
-    setReferenceLayerGroup(referenceLayerGroup);
-    setContextLayerGroup(contextLayerGroup);
+    if (!map && basemapLayer) {
+      const basemapLayerGroup = L.layerGroup([]);
+      const referenceLayerGroup = L.layerGroup([]);
+      const contextLayerGroup = L.layerGroup([]);
+      setBasemapLayerGroup(basemapLayerGroup);
+      setReferenceLayerGroup(referenceLayerGroup);
+      setContextLayerGroup(contextLayerGroup);
 
-    const map = L.map('map', {
-      center: [0, 0],
-      zoom: 6,
-      layers: [basemapLayerGroup, contextLayerGroup, referenceLayerGroup],
-      zoomControl: false
-    });
-    map.createPane(basemapPane);
-    map.createPane(referenceLayerPane);
-    map.createPane(contextLayerPane);
-    setMap(map);
-  }, []);
+      const newMap = L.map('map', {
+        center: [0, 0],
+        zoom: 6,
+        layers: [basemapLayerGroup, contextLayerGroup, referenceLayerGroup],
+        zoomControl: false
+      });
+      newMap.createPane(basemapPane);
+      newMap.createPane(referenceLayerPane);
+      newMap.createPane(contextLayerPane);
+      setMap(newMap);
+    }
+  }, [basemapLayer]);
 
   /** EXTENT CHANGED */
   useEffect(() => {
@@ -56,46 +60,68 @@ export default function Map() {
         [extent[1], extent[0]],
         [extent[3], extent[2]]
       ])
+
+      // Init moveend
+      // Change extend default when the map moved
+      map.on("moveend", function () {
+        const bounds = map.getBounds();
+        const newExtent = [
+          bounds._southWest.lng, bounds._southWest.lat,
+          bounds._northEast.lng, bounds._northEast.lat
+        ]
+        dispatcher(Actions.Extent.changeDefault(newExtent))
+      });
     }
-  }, [map, extent]);
+  }, [map]);
 
   /** BASEMAP CHANGED */
   useEffect(() => {
-    if (basemapLayerGroup) {
+    if (basemapLayerGroup && basemapLayer) {
       basemapLayerGroup.eachLayer(function (layer) {
         basemapLayerGroup.removeLayer(layer);
       });
       basemapLayer.options.pane = basemapPane;
       basemapLayerGroup.addLayer(basemapLayer);
     }
-  }, [basemapLayer]);
+  }, [basemapLayerGroup, basemapLayer]);
 
   /** CONTEXT LAYERS CHANGED */
   useEffect(() => {
-    if (contextLayerGroup) {
+    if (contextLayerGroup && contextLayers) {
+      const ids = []
+      const idsKeep = []
+      for (const [key, contextLayer] of Object.entries(contextLayers)) {
+        if (contextLayer.layer) {
+          ids.push(contextLayer.layer._leaflet_id);
+        }
+      }
       contextLayerGroup.eachLayer(function (layer) {
-        contextLayerGroup.removeLayer(layer);
+        if (!ids.includes(layer._leaflet_id)) {
+          contextLayerGroup.removeLayer(layer);
+        } else {
+          idsKeep.push(layer._leaflet_id)
+        }
       });
       for (const [key, contextLayer] of Object.entries(contextLayers)) {
-        if (contextLayer.render && contextLayer.layer) {
+        if (contextLayer.layer && !idsKeep.includes(contextLayer.layer._leaflet_id)) {
           const layer = contextLayer.layer;
           layer.options.pane = contextLayerPane;
           contextLayerGroup.addLayer(contextLayer.layer);
         }
       }
     }
-  }, [contextLayers]);
+  }, [contextLayerGroup, contextLayers]);
 
   /** REFERENCE LAYER CHANGED */
   useEffect(() => {
-    if (referenceLayerGroup) {
+    if (referenceLayerGroup && referenceLayer) {
       referenceLayerGroup.eachLayer(function (layer) {
         referenceLayerGroup.removeLayer(layer);
       });
       referenceLayer.options.pane = referenceLayerPane;
       referenceLayerGroup.addLayer(referenceLayer);
     }
-  }, [referenceLayer]);
+  }, [referenceLayerGroup, referenceLayer]);
 
   return <section className='dashboard__map'>
     <div id="map"></div>

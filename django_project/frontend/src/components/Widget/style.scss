@@ -4,11 +4,6 @@
 
 @import '../../app/variables';
 
-.dashboard__content {
-  background-color: #eee;
-  padding: 10px 10px 5px 10px;
-}
-
 .widget {
   background-color: #F6F8FA;
   border: 0.5px solid rgba(0, 0, 0, 0.12);
@@ -20,11 +15,38 @@
     padding: 0.5rem;
   }
 
-  .MuiSvgIcon-root {
+  .info__button {
     cursor: pointer;
-    right: 5px;
     position: absolute;
+    right: 5px;
     top: 5px;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .widget__button__editor {
+    cursor: pointer;
+    position: absolute;
+    right: 2rem;
+    top: 5px;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .remove__button {
+    color: red;
+    cursor: pointer;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 
   .widget__fill {
@@ -37,12 +59,17 @@
 
   .widget__info {
     border-top: 0.5px solid rgba(0, 0, 0, 0.12);
+
+    .widget__info__content {
+      text-align: center;
+      color: #555;
+      font-style: italic;
+    }
   }
 }
 
 .widget__content {
   margin-top: 5px;
-  max-height: 400px;
   overflow-y: auto;
 }
 
@@ -58,8 +85,12 @@
 
 .widget__sgw {
   table {
-    width: 95%;
     text-align: left;
+    width: 95%;
+  }
+
+  .widget__content {
+    max-height: 200px;
   }
 
   .widget__sgw__row__name {
@@ -77,4 +108,43 @@
 
 .widget__error {
   color: red;
+  padding: 0 2rem;
+}
+
+.widget__selection__member {
+  background-color: white;
+  border: 1px solid $base-color;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px;
+  margin-bottom: 5px;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.modal__widget__selection {
+  .modal--content {
+    background-color: #eee;
+  }
+}
+
+.widget__add__button {
+  color: green !important;
+  padding: 0 !important;
+  margin-bottom: 5px !important;
+  width: 100%;
+}
+
+.modal__widget__editor {
+  .MuiInput-root,
+  .MuiOutlinedInput-root {
+    width: 100%;
+  }
+
+  .modal__widget__editor__apply {
+    margin-top: 1rem;
+    width: 100%;
+  }
 }

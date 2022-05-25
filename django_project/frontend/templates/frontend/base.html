@@ -29,14 +29,15 @@
   const csrfmiddlewaretoken = '{{ csrf_token }}';
   const preferences = {{ preferences|safe }};
   const links = {{ links|safe }};
-  const definition = {{ definition|safe }};
-  const urls = {
+  let urls = {
     'login': "{% url 'login' %}",
     'logout': "{% url 'logout' %}",
     'admin': "{% url 'admin:index' %}",
     'dashboardData': '{% url 'dashboard-data-api' slug=dashboard.id %}'
   }
 </script>
+{% block scripts %}
+{% endblock %}
 {% block render_bundle %}
 {% endblock %}
 </body>

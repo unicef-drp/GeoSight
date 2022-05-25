@@ -1,6 +1,6 @@
-import { fetching } from "../reducers_api";
+import { fetchingData } from "../../Requests";
 
-import { DASHBOARD_ACTION_NAME } from '../reducers'
+import { DASHBOARD_ACTION_NAME } from '../reducers/dashboard'
 
 const REQUEST_DASHBOARD = 'REQUEST/' + DASHBOARD_ACTION_NAME;
 const RECEIVE_DASHBOARD = 'RECEIVE/' + DASHBOARD_ACTION_NAME;
@@ -23,7 +23,13 @@ function receive(data, error = null) {
 }
 
 export function fetch(dispatch) {
-  fetching(dispatch, urls.dashboardData, {}, receive)
+  fetchingData(
+    urls.dashboardData, {}, function (response, error) {
+      dispatch(
+        receive(response, error)
+      )
+    }
+  )
   return request();
 }
 

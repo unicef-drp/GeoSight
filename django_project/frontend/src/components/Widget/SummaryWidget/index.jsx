@@ -1,20 +1,23 @@
 /* ==========================================================================
-   GENERAL WIDGET FOR SHOWING SUMMARY OF DATA
+   GENERAL WIDGET FOR SHOWING SUMMARY OF DATA PER GROUP
    ========================================================================== */
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import { numberWithCommas } from '../../../utils/main'
+import { DEFINITION } from "../index"
 
 /**
- * General widget to show summary of data
- * @param {string} name Name of widget
- * @param {string} unit Unit of data
+ * General widget to show summary of data.
+ * @param {int} idx Index of widget
  * @param {list} data List of data {value, date}
- * @param {string} operation Operation of data
+ * @param {object} widgetData Widget Data
  */
 export default function SummaryWidget(
-  { name, unit, data, operation }
+  { idx, data, widgetData }
 ) {
+  const {
+    name, unit, operation
+  } = widgetData
 
   /**
    * Return value of widget
@@ -23,7 +26,7 @@ export default function SummaryWidget(
   function getValue() {
     if (data !== null) {
       switch (operation) {
-        case definition.PluginOperation.SUM:
+        case DEFINITION.WidgetOperation.SUM:
           let total = 0;
           data.forEach(function (rowData) {
             const rowValue = parseFloat(rowData.value);
@@ -40,9 +43,11 @@ export default function SummaryWidget(
   }
 
   return (
-    <div className='widget__gw'>
-      <div className='widget__gw__title'>{getValue()}</div>
-      <div>{name}</div>
-    </div>
+    <Fragment>
+      <div className='widget__sw'>
+        <div className='widget__sw__title'>{getValue()}</div>
+        <div>{name}</div>
+      </div>
+    </Fragment>
   )
 }

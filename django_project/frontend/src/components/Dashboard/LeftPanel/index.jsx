@@ -4,26 +4,23 @@
 
 import React, { useState } from 'react';
 import { useSelector } from "react-redux";
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import LeftRightToggleButton, { LEFT, RIGHT } from '../../ToggleButton'
 import Basemaps from './Basemaps'
-import ContextLayers from './ContextLayers'
+import ContextLayersAccordion from './ContextLayers'
 import IndicatorsAccordion from './Indicators'
+import ReferenceLayerSection from './ReferenceLayer'
 
 import './style.scss';
 
 /**
- * Left panel
+ * Left panel.
  */
 export default function LeftPanel() {
   const {
-    referenceLayer,
     basemapsLayers,
-    contextLayers
+    contextLayers,
+    defaultBasemapLayer
   } = useSelector(state => state.dashboard.data);
   const [state, setState] = useState(LEFT);
 
@@ -48,52 +45,20 @@ export default function LeftPanel() {
         onLeft={onLeft}
         onRight={onRight}/>
       <div className='dashboard__content-wrapper'>
-        <Accordion
-          expanded={true}
-          className='reference-dataset'
-        >
-          <AccordionSummary>
-            <div>
-              Reference Dataset
-            </div>
-          </AccordionSummary>
-          <AccordionDetails>
-            {
-              referenceLayer !== undefined ?
-                <div>
-                  <div><b>Name :</b> {referenceLayer.name}</div>
-                  <div><b>Description :</b> {referenceLayer.description}</div>
-                  <div><b>Source :</b> {referenceLayer.source}</div>
-                </div>
-                : <div>Loading</div>
-            }
-          </AccordionDetails>
-        </Accordion>
+        <ReferenceLayerSection/>
         <IndicatorsAccordion
           expanded={expanded === 'indicators'}
           handleChange={handleChange}
         />
-        <Accordion
+        <ContextLayersAccordion
           expanded={expanded === 'contextLayers'}
-          onChange={handleChange('contextLayers')}
-        >
-          <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
-            <div>
-              Context Layers
-              {
-                contextLayers !== undefined ?
-                  <span>&nbsp;({contextLayers.length}) </span> :
-                  <i>&nbsp;(Loading)</i>
-              }
-            </div>
-          </AccordionSummary>
-          <AccordionDetails>
-            <ContextLayers data={contextLayers}/>
-          </AccordionDetails>
-        </Accordion>
+          handleChange={handleChange}
+        />
       </div>
       <div className='dashboard__left_side__basemaps'>
-        <Basemaps data={basemapsLayers}/>
+        <Basemaps
+          data={basemapsLayers}
+          defaultBasemapLayer={defaultBasemapLayer}/>
       </div>
     </section>
   )

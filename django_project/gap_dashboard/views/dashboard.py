@@ -29,15 +29,18 @@ class DashboardListView(BaseView):
         if self.request.user.is_staff:
             context['dashboards'] = [
                 {
+                    'slug': dashboard.slug,
                     'name': dashboard.name,
                     'description': dashboard.description,
                     'icon': dashboard.icon.url,
+                    'edit': dashboard.icon.url,
+                    'can_edit': dashboard.can_edit(self.request.user),
                     'url': reverse(
                         'dashboard-detail-view',
                         args=[dashboard.slug]
                     )
                 }
-                for dashboard in Dashboard.objects.all()
+                for dashboard in Dashboard.objects.all().order_by('slug')
             ]
         else:
             context['dashboard'] = []
