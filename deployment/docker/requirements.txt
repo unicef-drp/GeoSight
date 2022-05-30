@@ -4,7 +4,7 @@ djangorestframework==3.13.1
 djangorestframework-gis==1.0
 
 requests==2.27.1
-celery==5.2.6
+celery==5.2.7
 Pillow==9.1.1
 psycopg2-binary==2.9.3
 pyexcel-xls==0.7.0
