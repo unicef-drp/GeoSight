@@ -4,10 +4,14 @@
 
 @import '../../app/variables';
 
-.page__header {
+header {
   background-color: $navbar-background-color;
-  height: 2rem;
   padding: ($global-spacing * 0.5) $global-spacing;
+}
+
+.page__header {
+  height: 2rem;
+  width: 100%;
   z-index: 1001;
 
   @include media(xsmall-only) {
