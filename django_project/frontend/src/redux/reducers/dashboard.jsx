@@ -1,4 +1,5 @@
 import { APIReducer } from '../reducers_api';
+import indicatorReducer, { INDICATOR_ACTION_NAME } from './indicators'
 
 /**
  * DASHBOARD REQUEST reducer
@@ -6,10 +7,6 @@ import { APIReducer } from '../reducers_api';
 export const DASHBOARD_ACTION_NAME = 'DASHBOARD';
 export const REFERENCE_LAYER_ACTION_NAME = 'REFERENCE_LAYER';
 export const REFERENCE_LAYER_ACTION_TYPE_CHANGE = 'REFERENCE_LAYER/CHANGE';
-
-export const INDICATOR_ACTION_NAME = 'INDICATOR';
-export const INDICATOR_ACTION_TYPE_ADD = 'INDICATOR/ADD';
-export const INDICATOR_ACTION_TYPE_REMOVE = 'INDICATOR/REMOVE';
 
 export const BASEMAP_ACTION_NAME = 'BASEMAP';
 export const BASEMAP_ACTION_TYPE_ADD = 'BASEMAP/ADD';
@@ -157,67 +154,17 @@ export default function dashboardReducer(
 
     // INDICATOR REDUCER
     case INDICATOR_ACTION_NAME: {
-      switch (action.type) {
-        case INDICATOR_ACTION_TYPE_ADD: {
-          const newState = { ...state }
-          newState.data = {
-            ...newState.data,
-            indicators: [
-              ...newState.data.indicators,
-              action.payload
-            ]
-          }
-          return newState
+      action.referenceLayer = state.data.referenceLayer;
+      const newIndicator = indicatorReducer(state.data.indicators, action);
+      if (newIndicator !== state.data.indicators) {
+        const newState = { ...state }
+        newState.data = {
+          ...newState.data,
+          indicators: newIndicator
         }
-        case INDICATOR_ACTION_TYPE_REMOVE: {
-          const newState = { ...state }
-          const indicators = []
-          newState.data.indicators.forEach(function (indicator) {
-            if (indicator.id !== action.payload.id) {
-              indicators.push(indicator)
-            }
-          })
-          newState.data = {
-            ...newState.data,
-            indicators: indicators
-          }
-          return newState
-        }
-        default:
-          const data = APIReducer(state, action, INDICATOR_ACTION_NAME)
-          if (state.data.indicators[action.id]
-            && state.data.referenceLayer.data
-            && state.data.referenceLayer.data.features) {
-            const geoms = {};
-            state.data.referenceLayer.data.features.forEach(function (feature) {
-              geoms[feature.properties.identifier] = feature.properties;
-            })
-            const newData = [];
-            data.data.forEach(function (row) {
-              if (geoms[row.geometry_code]) {
-                newData.push({
-                  ...row,
-                  ...geoms[row.geometry_code]
-                })
-              }
-            })
-            data.data = newData;
-            const newState = { ...state }
-            newState.data.indicators[action.id] = {
-              ...newState.data.indicators[action.id],
-              ...data
-            }
-            return newState
-          } else if (Object.keys(state.data.referenceLayer).length === 0) {
-            const newState = { ...state }
-            newState.data.indicators[action.id] = {
-              ...newState.data.indicators[action.id],
-              ...data
-            }
-            return newState
-          }
-          return state
+        return newState;
       }
+      return state
     }
 
     // WIDGET REDUCER

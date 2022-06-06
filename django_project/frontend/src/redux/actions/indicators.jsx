@@ -2,7 +2,7 @@ import {
   INDICATOR_ACTION_NAME,
   INDICATOR_ACTION_TYPE_ADD,
   INDICATOR_ACTION_TYPE_REMOVE
-} from '../reducers/dashboard'
+} from '../reducers/indicators'
 import { fetchingData } from "../../Requests";
 
 export const REQUEST_INDICATOR = 'REQUEST/' + INDICATOR_ACTION_NAME;

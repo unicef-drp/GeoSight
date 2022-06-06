@@ -4,7 +4,7 @@
 
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { Checkbox } from "@mui/material";
+import { Radio } from "@mui/material";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -55,7 +55,7 @@ export function Indicators() {
             (layer, idx) => (
               <div className='dashboard__left_side__row'
                    key={idx}>
-                <Checkbox
+                <Radio
                   checked={currentIndicator === idx}
                   onChange={() => {
                     change(event.target.checked, idx)
