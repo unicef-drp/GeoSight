@@ -40,7 +40,7 @@ export default function indicatorReducer(state = initialState, action) {
         const indicatorsByID = {}
         newState.forEach((indicator) => {
           indicator.data = indicator.rawData;
-          indicatorsByID['indicator_' + indicator.id] = indicator.rawData;
+          indicatorsByID[indicator.id] = indicator.rawData;
         });
 
         // we filter it all

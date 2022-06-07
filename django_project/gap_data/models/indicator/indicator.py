@@ -242,7 +242,7 @@ class Indicator(AbstractTerm, AbstractSource):
                 'date': indicator_value.date
             }
             attributes.update({
-                extra.name: extra.value for extra in
+                extra.key: extra.value for extra in
                 indicator_value.indicatorextravalue_set.all()
             })
             value = self.serialize(

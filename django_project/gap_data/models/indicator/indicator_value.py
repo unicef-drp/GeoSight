@@ -49,3 +49,8 @@ class IndicatorExtraValue(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+
+    @property
+    def key(self):
+        """Return key of extra value in pythonic."""
+        return self.name.replace(' ', '_').replace(':', '').lower()

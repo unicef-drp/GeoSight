@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import App, { render } from '../../app';
+import alasql from 'alasql';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Actions from '../../redux/actions'
@@ -19,6 +20,10 @@ export default function Dashboard() {
       Actions.Dashboard.fetch(dispatch)
     )
   }, []);
+
+  var test = [{ R: 1, b: 10 }, { a: 2, b: 20, c: 3 }, { a: 1, b: 30 }];
+  var test2 = [{ a: 1, b: 12 }, { a: 2, b: 20 }, { a: 1, b: 33 }];
+  var res = alasql('SELECT * FROM ? test LEFT JOIN ? test2 ON test.R = test2.a', [test, test2]);
 
   return (
     <App className='dashboard'>
