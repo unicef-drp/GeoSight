@@ -24,7 +24,7 @@ RUN pip install -r /requirements.txt
 RUN ln -s /usr/bin/python3 /usr/local/bin/python
 
 # setup node
-RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh
+RUN curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh
 RUN bash nodesource_setup.sh
 RUN apt-get install nodejs -y
 
