@@ -10,6 +10,7 @@ import Basemaps from './Basemaps'
 import ContextLayersAccordion from './ContextLayers'
 import IndicatorsAccordion from './Indicators'
 import ReferenceLayerSection from './ReferenceLayer'
+import FiltersAccordion from './Filters'
 
 import './style.scss';
 
@@ -52,6 +53,10 @@ export default function LeftPanel() {
         />
         <ContextLayersAccordion
           expanded={expanded === 'contextLayers'}
+          handleChange={handleChange}
+        />
+        <FiltersAccordion
+          expanded={expanded === 'filters'}
           handleChange={handleChange}
         />
       </div>

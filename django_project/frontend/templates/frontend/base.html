@@ -31,7 +31,7 @@
   const links = {{ links|safe }};
   let urls = {
     'login': "{% url 'login' %}",
-    'logout': "{% url 'logout' %}",
+    'logout': "{% url 'logout' %}?next=/",
     'admin': "{% url 'admin:index' %}",
     'dashboardData': '{% url 'dashboard-data-api' slug=dashboard.id %}'
   }

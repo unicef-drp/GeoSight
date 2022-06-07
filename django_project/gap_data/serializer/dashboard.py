@@ -1,12 +1,13 @@
 """Serializer for dashboard."""
 
+import json
 from rest_framework import serializers
 
 from gap_data.models.dashboard import Dashboard, Widget
 from gap_data.models.reference_layer import ReferenceLayer
 from gap_data.serializer.basemap_layer import BasemapLayerSerializer
 from gap_data.serializer.context_layer import ContextLayerSerializer
-from gap_data.serializer.indicator import IndicatorSerializer
+from gap_data.serializer.indicator import BasicIndicatorSerializer
 from gap_data.serializer.reference_layer import ReferenceLayerSerializer
 
 
@@ -34,6 +35,7 @@ class DashboardSerializer(serializers.ModelSerializer):
     widgets = serializers.SerializerMethodField()
     extent = serializers.SerializerMethodField()
     defaultBasemapLayer = serializers.SerializerMethodField()
+    filters = serializers.SerializerMethodField()
 
     def get_referenceLayer(self, obj: Dashboard):
         """Return reference_layer."""
@@ -45,7 +47,7 @@ class DashboardSerializer(serializers.ModelSerializer):
     def get_indicators(self, obj: Dashboard):
         """Return indicators."""
         if obj.id:
-            return IndicatorSerializer(obj.indicators, many=True).data
+            return BasicIndicatorSerializer(obj.indicators, many=True).data
         else:
             return []
 
@@ -85,11 +87,19 @@ class DashboardSerializer(serializers.ModelSerializer):
         return obj.default_basemap_layer.id \
             if obj.default_basemap_layer else None
 
+    def get_filters(self, obj: Dashboard):
+        """Return filters."""
+        if obj.filters:
+            return json.loads(obj.filters)
+        else:
+            return []
+
     class Meta:  # noqa: D106
         model = Dashboard
         fields = (
             'name', 'description',
             'referenceLayer', 'indicators',
             'basemapsLayers', 'contextLayers',
-            'widgets', 'extent', 'defaultBasemapLayer'
+            'widgets', 'extent', 'defaultBasemapLayer',
+            'filters'
         )

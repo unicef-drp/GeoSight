@@ -53,6 +53,24 @@ class IndicatorSerializer(serializers.ModelSerializer):
             'dashboard_link', 'source', 'description', 'url')
 
 
+class BasicIndicatorSerializer(serializers.ModelSerializer):
+    """Serializer for Indicator."""
+
+    url = serializers.SerializerMethodField()
+
+    def get_url(self, obj: Indicator):
+        """Return url."""
+        return reverse(
+            'indicator-values-api',
+            args=[obj.id]
+        )
+
+    class Meta:  # noqa: D106
+        model = Indicator
+        fields = (
+            'id', 'name', 'source', 'description', 'url')
+
+
 class IndicatorRuleSerializer(serializers.ModelSerializer):
     """Serializer for IndicatorRule."""
 

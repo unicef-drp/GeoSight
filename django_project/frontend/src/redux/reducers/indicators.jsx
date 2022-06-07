@@ -1,4 +1,5 @@
 import { APIReducer } from "../reducers_api";
+import { queryGeoms } from "../../utils/queryExtraction"
 
 /**
  * INDICATOR reducer
@@ -7,6 +8,7 @@ import { APIReducer } from "../reducers_api";
 export const INDICATOR_ACTION_NAME = 'INDICATOR';
 export const INDICATOR_ACTION_TYPE_ADD = 'INDICATOR/ADD';
 export const INDICATOR_ACTION_TYPE_REMOVE = 'INDICATOR/REMOVE';
+export const INDICATOR_ACTION_TYPE_FILTER = 'INDICATOR/FILTER';
 
 const initialState = []
 export default function indicatorReducer(state = initialState, action) {
@@ -17,6 +19,7 @@ export default function indicatorReducer(state = initialState, action) {
         action.payload
       ]
     }
+
     case INDICATOR_ACTION_TYPE_REMOVE: {
       const newState = []
       state.forEach(function (indicator) {
@@ -25,6 +28,46 @@ export default function indicatorReducer(state = initialState, action) {
         }
       })
       return newState
+    }
+
+    // For filter
+    case INDICATOR_ACTION_TYPE_FILTER: {
+      const filters = action.filters;
+      if (filters) {
+        let newState = [...state];
+
+        // filters all data of indicators
+        const indicatorsByID = {}
+        newState.forEach((indicator) => {
+          indicator.data = indicator.rawData;
+          indicatorsByID['indicator_' + indicator.id] = indicator.rawData;
+        });
+
+        // we filter it all
+        filters.forEach(function (filterGroup) {
+          let filtered = false;
+          let geoms = [];
+
+          // Check all options
+          filterGroup.options.forEach(function (filter) {
+            if (filter.checked) {
+              filtered = true;
+              geoms = geoms.concat(queryGeoms(indicatorsByID, filter.query));
+            }
+          })
+
+          // Filters all data of indicators by geom that found
+          // Filter per group is basically OR
+          if (filtered) {
+            newState.forEach((indicator) => {
+              indicator.data = indicator.data.filter(properties => {
+                return geoms.includes(properties.geometry_code);
+              })
+            });
+          }
+        })
+      }
+      return state
     }
     default:
       const data = APIReducer(state, action, INDICATOR_ACTION_NAME)

@@ -1,5 +1,6 @@
 import { APIReducer } from '../reducers_api';
 import indicatorReducer, { INDICATOR_ACTION_NAME } from './indicators'
+import filtersReducer, { FILTERS_ACTION_NAME } from './filters'
 
 /**
  * DASHBOARD REQUEST reducer
@@ -155,12 +156,27 @@ export default function dashboardReducer(
     // INDICATOR REDUCER
     case INDICATOR_ACTION_NAME: {
       action.referenceLayer = state.data.referenceLayer;
+      action.filters = state.data.filters;
       const newIndicator = indicatorReducer(state.data.indicators, action);
       if (newIndicator !== state.data.indicators) {
         const newState = { ...state }
         newState.data = {
           ...newState.data,
           indicators: newIndicator
+        }
+        return newState;
+      }
+      return state
+    }
+
+    // FILTERS REDUCER
+    case FILTERS_ACTION_NAME: {
+      const newFilters = filtersReducer(state.data.filters, action);
+      if (newFilters !== state.data.filters) {
+        const newState = { ...state }
+        newState.data = {
+          ...newState.data,
+          filters: newFilters
         }
         return newState;
       }

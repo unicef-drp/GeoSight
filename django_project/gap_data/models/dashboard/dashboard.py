@@ -55,6 +55,9 @@ class Dashboard(SlugTerm, IconTerm):
         help_text=_('User who create the dashboard.'),
         on_delete=models.CASCADE
     )
+    filters = models.TextField(
+        blank=True, null=True
+    )
 
     def can_edit(self, user: User):
         """Is dashboard can be edited by user."""

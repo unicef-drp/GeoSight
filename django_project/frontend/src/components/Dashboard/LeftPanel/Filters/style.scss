@@ -1,0 +1,25 @@
+/* ==========================================================================
+   Filter style
+   ========================================================================== */
+
+@import '../../../../app/variables';
+
+.dashboard__filter {
+  margin-bottom: 1rem;
+
+  .info__button {
+    height: 15px;
+    padding-top: 2px;
+    width: 15px;
+
+    .MuiSvgIcon-root {
+      cursor: pointer;
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
+
+.dashboard__filter__content {
+  padding-left: 1rem;
+}

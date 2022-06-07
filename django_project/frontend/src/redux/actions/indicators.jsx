@@ -1,6 +1,7 @@
 import {
   INDICATOR_ACTION_NAME,
   INDICATOR_ACTION_TYPE_ADD,
+  INDICATOR_ACTION_TYPE_FILTER,
   INDICATOR_ACTION_TYPE_REMOVE
 } from '../reducers/indicators'
 import { fetchingData } from "../../Requests";
@@ -54,6 +55,13 @@ export function remove(payload) {
   };
 }
 
+export function filter() {
+  return {
+    name: INDICATOR_ACTION_NAME,
+    type: INDICATOR_ACTION_TYPE_FILTER
+  };
+}
+
 export default {
-  fetch, add, remove
+  fetch, add, remove, filter
 }

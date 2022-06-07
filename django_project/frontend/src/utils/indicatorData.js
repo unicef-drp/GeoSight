@@ -19,7 +19,7 @@ export function cleanLayerData(
         })
 
         if (layers[0]) {
-          if (layers[0]['data']) {
+          if (layers[0]['data'] !== undefined) {
             const output = [];
             layers[0]['data'].forEach(function (layer) {
               if (ignore_property_value) {
