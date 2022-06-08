@@ -9,12 +9,12 @@ $base-hovered-opacity: 0.5;
 $base-black-color: rgba(0, 0, 0, 0.87);
 $base-color: var(--primary-color);
 $base-color-reverse: #FFFFFF;
-$base-alpha-color: rgba($base-color, 0.08);
+$base-alpha-color: #1CABE220;
 $base-shadow-box: 0 0 16px 4px rgba(#000000, 0.1);
 
 $navbar-background-color: $base-color;
 $navbar-font-color: $base-color-reverse;
-$black:    #000 !default;
+$black: #000 !default;
 
 /* Fonts */
 $root-font-size: 16px;

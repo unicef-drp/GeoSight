@@ -9,6 +9,8 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
 
+import './style.scss';
+
 /**
  * Base modal component.
  * @param {bool} open Initial state if modal is open or not.
@@ -63,6 +65,14 @@ export function ModalHeader({ children }) {
 export function ModalContent({ children }) {
   return (
     <div className='modal--content'>
+      {children}
+    </div>
+  )
+}
+
+export function ModalFooter({ children }) {
+  return (
+    <div className='modal--footer'>
       {children}
     </div>
   )

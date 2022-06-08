@@ -1,5 +1,5 @@
 import { APIReducer } from "../reducers_api";
-import { queryGeoms } from "../../utils/queryExtraction"
+import { indicatorsDataToById, queryGeoms } from "../../utils/queryExtraction"
 
 /**
  * INDICATOR reducer
@@ -37,11 +37,7 @@ export default function indicatorReducer(state = initialState, action) {
         let newState = [...state];
 
         // filters all data of indicators
-        const indicatorsByID = {}
-        newState.forEach((indicator) => {
-          indicator.data = indicator.rawData;
-          indicatorsByID[indicator.id] = indicator.rawData;
-        });
+        const indicatorsByID = indicatorsDataToById(newState);
 
         // we filter it all
         filters.forEach(function (filterGroup) {

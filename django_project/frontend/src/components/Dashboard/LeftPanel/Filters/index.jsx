@@ -12,7 +12,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Tooltip from '@mui/material/Tooltip';
 import InfoIcon from "@mui/icons-material/Info";
 
+import FilterEditSection from './edit'
 import Actions from '../../../../redux/actions'
+
 import './style.scss';
 
 /**
@@ -41,6 +43,9 @@ export function FilterInput({ groupId, filterId, filter }) {
         <InfoIcon/>
       </Tooltip>
     </div>
+    {editMode ? <FilterEditSection
+      groupId={groupId} filterId={filterId}
+      filterData={filter}/> : ''}
   </div>
 }
 
@@ -63,6 +68,7 @@ export default function FiltersAccordion({ expanded, handleChange }) {
             <span>&nbsp;({filters.length}) </span> :
             <i>&nbsp;(Loading)</i>
         }
+        {editMode ? <FilterEditSection/> : ''}
       </AccordionSummary>
       <AccordionDetails>
         {
