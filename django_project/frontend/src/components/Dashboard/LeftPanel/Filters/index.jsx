@@ -14,19 +14,19 @@ import InfoIcon from "@mui/icons-material/Info";
 
 import FilterEditSection from './edit'
 import Actions from '../../../../redux/actions'
+import { returnInGroup } from '../../../../utils/filters'
 
 import './style.scss';
 
 /**
  * Render input of filter.
- * @param {object} groupId ID of filter belong to.
  * @param {object} filterId ID of filter.
  * @param {object} filter Filter data.
  */
-export function FilterInput({ groupId, filterId, filter }) {
+export function FilterInput({ filterId, filter }) {
   const dispatch = useDispatch();
   const change = (checked) => {
-    dispatch(Actions.Filters.changeState(groupId, filterId, checked));
+    dispatch(Actions.Filters.changeState(filterId, checked));
     dispatch(Actions.Indicators.filter());
   };
 
@@ -44,7 +44,7 @@ export function FilterInput({ groupId, filterId, filter }) {
       </Tooltip>
     </div>
     {editMode ? <FilterEditSection
-      groupId={groupId} filterId={filterId}
+      filterId={filterId}
       filterData={filter}/> : ''}
   </div>
 }
@@ -56,6 +56,8 @@ export function FilterInput({ groupId, filterId, filter }) {
  */
 export default function FiltersAccordion({ expanded, handleChange }) {
   const { filters } = useSelector(state => state.dashboard.data);
+  let filtersInGroup = returnInGroup(filters);
+
   return (
     <Accordion
       expanded={expanded}
@@ -73,28 +75,28 @@ export default function FiltersAccordion({ expanded, handleChange }) {
       <AccordionDetails>
         {
           filters !== undefined ?
-            filters.map(
-              (filter, groupId) => (
-                <div key={groupId} className='dashboard__filter'>
+            Object.keys(filtersInGroup).map(
+              (groupName, idx) => (
+                <div key={groupName} className='dashboard__filter'>
                   {
-                    filter.options.length === 1 ? (
+                    filtersInGroup[groupName].length === 1 ? (
                       <FilterInput
                         key={0}
-                        groupId={groupId} filterId={0}
-                        filter={filter.options[0]}/>
+                        groupId={groupName} filterId={0}
+                        filter={filtersInGroup[groupName][0]}/>
                     ) : (
 
                       <Fragment>
                         <div
-                          className='dashboard__filter__name'>{filter.title}</div>
+                          className='dashboard__filter__name'>{groupName}</div>
                         <div className='dashboard__filter__content'>
                           {
-                            filter.options.map(
-                              (option, filterId) => (
+                            filtersInGroup[groupName].map(
+                              (filter) => (
                                 <FilterInput
-                                  key={filterId}
-                                  groupId={groupId} filterId={filterId}
-                                  filter={option}/>
+                                  key={filter.id}
+                                  filterId={filter.id}
+                                  filter={filter}/>
                               )
                             )
                           }

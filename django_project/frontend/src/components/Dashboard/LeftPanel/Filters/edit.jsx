@@ -15,12 +15,11 @@ import QueryEditor from './QueryEditor'
 
 /**
  * Filter Editor Section Handler
- * @param {object} groupId ID of filter belong to.
  * @param {object} filterId ID of filter.
  * @param {object} filterData Filter data.
  */
 export default function FilterEditSection(
-  { groupId, filterId, filterData }
+  { filterId, filterData }
 ) {
   const { indicators } = useSelector(state => state.dashboard.data);
   const [open, setOpen] = useState(false);

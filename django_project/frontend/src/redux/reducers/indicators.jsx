@@ -1,5 +1,6 @@
 import { APIReducer } from "../reducers_api";
 import { indicatorsDataToById, queryGeoms } from "../../utils/queryExtraction"
+import { returnInGroup } from "../../utils/filters";
 
 /**
  * INDICATOR reducer
@@ -39,13 +40,15 @@ export default function indicatorReducer(state = initialState, action) {
         // filters all data of indicators
         const indicatorsByID = indicatorsDataToById(newState);
 
+        let filtersInGroup = returnInGroup(filters);
+
         // we filter it all
-        filters.forEach(function (filterGroup) {
+        for (const [key, filterGroup] of Object.entries(filtersInGroup)) {
           let filtered = false;
           let geoms = [];
 
           // Check all options
-          filterGroup.options.forEach(function (filter) {
+          filterGroup.forEach(function (filter) {
             if (filter.checked) {
               filtered = true;
               geoms = geoms.concat(queryGeoms(indicatorsByID, filter.query));
@@ -61,7 +64,7 @@ export default function indicatorReducer(state = initialState, action) {
               })
             });
           }
-        })
+        }
       }
       return state
     }
