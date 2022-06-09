@@ -44,7 +44,8 @@ export function indicatorsToById(indicators) {
  */
 export function queryFilter(indicatorsByID, query) {
   parsingQuery(query)
-  const indicators_from = query.split('? ' + IDENTIFIER)
+  var separators = ['FROM ' + IDENTIFIER, 'JOIN ' + IDENTIFIER];
+  const indicators_from = query.split(new RegExp(separators.join('|'), 'g'))
   const indicators = [];
   indicators_from.forEach((indicator, idx) => {
     const indicatorData = indicatorsByID[indicator.split(" ")[0]]
@@ -52,7 +53,7 @@ export function queryFilter(indicatorsByID, query) {
       indicators.push(indicatorData)
     }
   })
-  return alasql(query, indicators)
+  return alasql(query.replaceAll('FROM', 'FROM ?').replaceAll('JOIN', 'JOIN ?'), indicators)
 }
 
 /**

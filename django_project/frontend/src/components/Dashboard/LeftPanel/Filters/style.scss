@@ -30,17 +30,53 @@
    Edit style
    ========================================================================== */
 .modal__filter__setting {
+  .modal--box {
+    max-width: 1000px;
+  }
+
   .MuiInput-root {
     width: 100%;
   }
 
-  .modal--box {
-    max-width: 1000px;
+  .MuiOutlinedInput-root {
+    height: fit-content;
+
+    fieldset {
+      padding: 0 !important;
+    }
+
+    .MuiSvgIcon-root {
+      right: 0;
+
+    }
   }
 
   .MuiFormControl-root {
     margin-top: 0 !important;
     margin-bottom: 1rem;
+  }
+
+  .MuiSelect-select {
+    background-color: white;
+    border: 1px solid $base-color;
+    color: $base-color;
+    padding: 5px 25px 5px 10px !important;
+  }
+
+  .MuiInputBase-empty {
+    .MuiSelect-select {
+      background-color: white;
+      border: 1px solid $base-black-color;
+      color: $base-black-color;
+    }
+
+    .MuiSvgIcon-root {
+      color: $base-black-color;
+    }
+  }
+
+  .MuiSvgIcon-root {
+    color: $base-color;
   }
 
   .section {
@@ -52,15 +88,33 @@
       margin-bottom: 0.5rem;
     }
 
+    .section__wrapper {
+      display: flex;
+    }
+
+    .section__divider {
+      padding: 15px 10px 0 10px;
+    }
+
     .content {
       background: $base-alpha-color;
       border-radius: 5px;
-      padding: 10px;
+      display: flex;
+      padding: 10px 10px;
+
+      &:last-child {
+        flex-grow: 1;
+      }
 
       .section__divider {
-        padding: 17px 10px 0 10px;
+        padding: 5px 10px 0 10px;
+
+        b {
+          margin-bottom: 0 !important;
+        }
       }
     }
+
   }
 
   .preview {
@@ -80,47 +134,8 @@
     border: 1px solid $base-color;
   }
 
-  .MuiSelect-select {
-    background-color: white;
-    border: 1px solid $base-color;
-    color: $base-color;
-  }
-
-  .MuiSvgIcon-root {
-    color: $base-color;
-  }
-
-  .MuiInputBase-empty {
-    .MuiSelect-select {
-      background-color: white;
-      border: 1px solid $base-black-color;
-      color: $base-black-color;
-    }
-
-    .MuiSvgIcon-root {
-      color: $base-black-color;
-    }
-  }
-
-  .section__wrapper {
-    display: flex;
-
-    .content {
-      display: flex;
-    }
-
-    .content:last-child {
-      flex-grow: 1;
-    }
-
-    .section__divider {
-      padding: 26px 10px 0 10px;
-    }
-  }
-
   .section__delete {
     color: red;
     cursor: pointer;
-    padding: 26px 10px 0 0;
   }
 }

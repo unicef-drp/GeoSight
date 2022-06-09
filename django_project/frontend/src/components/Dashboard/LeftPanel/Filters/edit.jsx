@@ -25,7 +25,7 @@ export default function FilterEditSection(
   const { indicators } = useSelector(state => state.dashboard.data);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState(filterData ? filterData.name : '');
-  const [query, setQuery] = useState(filterData ? 'SELECT * FROM ? indicator_49 INNER JOIN ? indicator_37 ON indicator_49.geometry_code = indicator_49.geometry_code INNER JOIN ? indicator_37 ON indicator_49.geometry_code = indicator_49.geometry_code' : '');
+  const [query, setQuery] = useState(filterData ? filterData.query : '');
 
   return <Fragment>
     <div className='setting__button' onClick={(event) => {

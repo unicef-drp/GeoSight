@@ -56,19 +56,15 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
 
   useEffect(() => {
     if (query) {
-      setAst(parser.parse(query.replaceAll(' ?', '')));
+      setAst(parser.parse(query));
     }
   }, [query]);
 
-  const [ast, setAst] = useState(parser.parse(query.replaceAll(' ?', '')));
+  const [ast, setAst] = useState(parser.parse(query));
   const indicatorById = indicatorsToById(indicators);
 
   const saveQuery = (query) => {
-    onQueryChangeFn(
-      query.replaceAll(
-        'FROM indicator_', 'FROM ? indicator_'
-      ).replaceAll('JOIN indicator_', 'JOIN ? indicator_')
-    );
+    onQueryChangeFn(query);
   }
   /**
    * Set new Ast for query
@@ -118,7 +114,7 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
       .replaceAll('RIGHT JOIN', 'RIGHT_JOIN RIGHT JOIN')
       .replaceAll('WHERE', '_WHERE WHERE')
     const splitted = currentQuery.split(new RegExp(separators.join('|'), 'g')).filter((split, splitIdx) => {
-      return splitIdx != idx
+      return splitIdx !== idx
     });
     saveQuery(splitted.join(''));
 
@@ -188,11 +184,13 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
         return <div key={idx} className='section'>
           <b className='light'>Join</b>
           <div className='section__wrapper'>
-            <CloseIcon
-              className='section__delete'
-              onClick={() => {
-                deleteJoin(idx)
-              }}/>
+            <div className='section__divider'>
+              <CloseIcon
+                className='section__delete'
+                onClick={() => {
+                  deleteJoin(idx)
+                }}/>
+            </div>
             <div className='content'>
               <SelectPlaceholder
                 placeholder='Pick an indicator'
@@ -243,9 +241,9 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
   const addJoin = () => {
     let query = parser.stringify(ast);
     if (query.includes('WHERE')) {
-      query = query.replaceAll('WHERE', 'INNER JOIN ? table ON field=field WHERE')
+      query = query.replaceAll('WHERE', 'INNER JOIN table ON field=field WHERE')
     } else {
-      query += ' INNER JOIN ? table ON field=field'
+      query += ' INNER JOIN table ON field=field'
     }
     saveQuery(query);
   }
