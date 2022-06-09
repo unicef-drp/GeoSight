@@ -2,14 +2,14 @@
    INDICATORS editor
    ========================================================================== */
 
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { FormControl, FormHelperText, Input, InputLabel } from "@mui/material";
 
 import Modal, { ModalContent, ModalFooter, ModalHeader } from "../../../Modal";
-import QueryEditor from './QueryEditor'
+import QueryEditor from './QueryEditor';
 
 // import {queryIndicators} from '../../../../utils/queryExtraction'
 
@@ -25,6 +25,13 @@ export default function FilterEditSection(
   const [open, setOpen] = useState(false);
   const [name, setName] = useState(filterData ? filterData.name : '');
   const [query, setQuery] = useState(filterData ? filterData.query : '');
+
+  // When Create Filter and onOpen, restart query
+  useEffect(() => {
+    if (!filterId) {
+      setQuery('');
+    }
+  }, [open]);
 
   return <Fragment>
     <div className='setting__button' onClick={(event) => {
@@ -54,7 +61,7 @@ export default function FilterEditSection(
           Filter Setting
           <div className='setting__helper'>
             {
-              filterData ? "Edit filter" : "Create new filter"
+              filterId ? "Edit filter" : "Create new filter"
             }
           </div>
         </ModalHeader>
