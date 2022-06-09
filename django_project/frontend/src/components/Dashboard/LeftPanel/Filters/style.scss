@@ -122,6 +122,14 @@
       color: $base-black-color;
       text-align: center;
     }
+
+    .error {
+      color: $error;
+    }
+
+    .table__preview {
+      height: 500px;
+    }
   }
 
   .save__button {
@@ -135,7 +143,11 @@
   }
 
   .section__delete {
-    color: red;
     cursor: pointer;
+    padding-left: 0 !important;
+
+    svg {
+      color: red;
+    }
   }
 }

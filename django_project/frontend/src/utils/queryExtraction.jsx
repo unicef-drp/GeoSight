@@ -43,7 +43,6 @@ export function indicatorsToById(indicators) {
  * @param {str} query
  */
 export function queryFilter(indicatorsByID, query) {
-  parsingQuery(query)
   var separators = ['FROM ' + IDENTIFIER, 'JOIN ' + IDENTIFIER];
   const indicators_from = query.split(new RegExp(separators.join('|'), 'g'))
   const indicators = [];
@@ -79,12 +78,4 @@ export function queryGeoms(indicatorsByID, query) {
   return queryFilter(indicatorsByID, query).map(data => {
     return data.geometry_code;
   })
-}
-
-/**
- * Return parsed query
- * @param {str} query
- */
-export function parsingQuery(query) {
-  const ast = parser.parse(query.replaceAll(' ?', ''));
 }

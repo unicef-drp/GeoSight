@@ -180,9 +180,8 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
         return <div key={idx} className='section'>
           <b className='light'>Join</b>
           <div className='section__wrapper'>
-            <div className='section__divider'>
+            <div className='section__divider section__delete'>
               <CloseIcon
-                className='section__delete'
                 onClick={() => {
                   deleteJoin(idx)
                 }}/>
