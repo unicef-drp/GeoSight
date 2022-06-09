@@ -15,6 +15,9 @@ import {
   queryIndicator
 } from '../../../../utils/queryExtraction'
 
+/***
+ * Return All From as List
+ */
 function getFrom(from, upperForm) {
   let fromQuery = []
   switch (from.type) {
@@ -22,7 +25,8 @@ function getFrom(from, upperForm) {
       fromQuery = fromQuery.concat([[from.value.value, upperForm, from]])
       break
     default:
-      fromQuery = fromQuery.concat(getFrom(from.left, null)).concat(getFrom(from.right, from));
+      fromQuery = fromQuery.concat(
+        getFrom(from.left, null)).concat(getFrom(from.right, from));
       break
   }
   return fromQuery;
@@ -36,7 +40,7 @@ function getFrom(from, upperForm) {
 export default function QueryEditor({ queryInit, onQueryChangeFn }) {
   const { indicators } = useSelector(state => state.dashboard.data);
 
-  // get indicator list
+  // Format indicator list
   const indicatorList = indicators.map(indicator => {
     return {
       'id': `${IDENTIFIER}${indicator.id}`,
@@ -44,10 +48,10 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
     }
   })
 
-  // Create query
   const [query, setQuery] = useState(
     queryInit ? queryInit : `SELECT *
                              FROM ${IDENTIFIER}0`);
+
   useEffect(() => {
     if (queryInit) {
       setQuery(queryInit);
@@ -66,25 +70,19 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
   const saveQuery = (query) => {
     onQueryChangeFn(query);
   }
-  /**
-   * Set new Ast for query
-   */
+  /** Set new Ast for query */
   const setNewAst = (newAst) => {
     setAst(newAst);
     saveQuery(parser.stringify(newAst));
   }
 
-  /**
-   * Change a value
-   */
+  /** Change a value */
   const change = (value, objForm) => {
     objForm.value = value;
     setNewAst({ ...ast })
   }
 
-  /**
-   * Change join type
-   */
+  /** Change join type */
   const changeJoin = (value, objForm) => {
     switch (value) {
       case "LEFT JOIN":
@@ -102,9 +100,7 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
     }
     setNewAst({ ...ast })
   }
-  /**
-   * Delete join from the query
-   */
+  /** Delete join from the query for specific idx */
   const deleteJoin = (idx) => {
     let currentQuery = parser.stringify(ast);
     var separators = ['INNER_JOIN', 'LEFT_JOIN', 'RIGHT_JOIN', '_WHERE'];
@@ -113,7 +109,9 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
       .replaceAll('LEFT JOIN', 'LEFT_JOIN LEFT JOIN')
       .replaceAll('RIGHT JOIN', 'RIGHT_JOIN RIGHT JOIN')
       .replaceAll('WHERE', '_WHERE WHERE')
-    const splitted = currentQuery.split(new RegExp(separators.join('|'), 'g')).filter((split, splitIdx) => {
+    const splitted = currentQuery.split(
+      new RegExp(separators.join('|'), 'g')
+    ).filter((split, splitIdx) => {
       return splitIdx !== idx
     });
     saveQuery(splitted.join(''));
@@ -124,10 +122,7 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
   let indicatorFields = []
   let indicatorFieldsIds = []
 
-  /**
-   * Render Join
-   * @returns {unknown[]}
-   */
+  /** Render From selector */
   const renderFrom = () => {
     return froms.map((from, idx) => {
       const indicator = indicatorById[from[0].replaceAll(IDENTIFIER, '')]
@@ -146,6 +141,7 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
       }
       indicatorFields = [...new Set(indicatorFields)];
 
+      // if idx 0, it is main data
       if (idx === 0) {
         return <div key={idx} className='section'>
           <b className='light'>Indicator</b>
@@ -241,7 +237,9 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
   const addJoin = () => {
     let query = parser.stringify(ast);
     if (query.includes('WHERE')) {
-      query = query.replaceAll('WHERE', 'INNER JOIN table ON field=field WHERE')
+      query = query.replaceAll(
+        'WHERE', 'INNER JOIN table ON field=field WHERE'
+      )
     } else {
       query += ' INNER JOIN table ON field=field'
     }

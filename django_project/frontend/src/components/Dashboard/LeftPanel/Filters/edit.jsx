@@ -2,7 +2,7 @@
    INDICATORS editor
    ========================================================================== */
 
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useSelector } from "react-redux";
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -26,28 +26,20 @@ export default function FilterEditSection(
   const [name, setName] = useState(filterData ? filterData.name : '');
   const [query, setQuery] = useState(filterData ? filterData.query : '');
 
-  // When Create Filter and onOpen, restart query
-  useEffect(() => {
-    if (!filterId) {
-      setQuery('');
-    }
-  }, [open]);
+  /** When opened, set all data to default **/
+  const onOpen = () => {
+    setOpen(true);
+    setQuery(filterData ? filterData.query : '')
+    setName(filterData ? filterData.name : '')
+  };
 
   return <Fragment>
     <div className='setting__button' onClick={(event) => {
       event.stopPropagation();
     }}>
-      {filterData ?
-        (
-          <SettingsIcon onClick={() => {
-            setOpen(true);
-          }}/>
-        ) :
-        (
-          <AddBoxIcon onClick={() => {
-            setOpen(true);
-          }}/>
-        )
+      {
+        filterData ?
+          <SettingsIcon onClick={onOpen}/> : <AddBoxIcon onClick={onOpen}/>
       }
 
       <Modal
@@ -60,9 +52,7 @@ export default function FilterEditSection(
         <ModalHeader>
           Filter Setting
           <div className='setting__helper'>
-            {
-              filterId ? "Edit filter" : "Create new filter"
-            }
+            {filterId ? "Edit filter" : "Create new filter"}
           </div>
         </ModalHeader>
         <ModalContent>
