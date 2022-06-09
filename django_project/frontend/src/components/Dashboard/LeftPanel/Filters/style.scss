@@ -114,7 +114,11 @@
         }
       }
     }
+  }
 
+  .section__add {
+    display: flex !important;
+    cursor: pointer;
   }
 
   .preview {
@@ -137,9 +141,15 @@
     margin-top: 1rem;
   }
 
+
+  .where__button,
   .filter__button {
     color: $base-color;
     border: 1px solid $base-color;
+  }
+
+  .filter__button {
+    margin-bottom: 1rem;
   }
 
   .section__delete {
@@ -148,6 +158,24 @@
 
     svg {
       color: red;
+    }
+  }
+
+  .MuiInput-root {
+    background-color: white;
+    border: 1px solid $base-color;
+    border-radius: 5px;
+    color: $base-color;
+    padding: 5px 10px;
+
+    input {
+      border: none;
+      padding: 0;
+    }
+
+    &:before,
+    &:after {
+      display: none !important;
     }
   }
 }

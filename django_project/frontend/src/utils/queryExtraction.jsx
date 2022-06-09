@@ -1,5 +1,4 @@
 import alasql from "alasql";
-import parser from 'js-sql-parser';
 
 export const IDENTIFIER = 'indicator_'
 
