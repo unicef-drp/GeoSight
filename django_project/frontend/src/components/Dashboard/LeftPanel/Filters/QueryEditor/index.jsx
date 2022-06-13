@@ -52,9 +52,11 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
   // Format indicator list
   const indicatorById = indicatorsToById(indicators);
   const indicatorList = indicators.map(indicator => {
+    const id = `${IDENTIFIER}${indicator.id}`;
     return {
-      'id': `${IDENTIFIER}${indicator.id}`,
-      'name': indicator.name
+      'id': id,
+      'name': indicator.name,
+      'subName': id
     }
   })
 

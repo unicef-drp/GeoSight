@@ -11,7 +11,8 @@ import {
   FormControl,
   FormHelperText,
   Input,
-  InputLabel
+  InputLabel,
+  TextareaAutosize
 } from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
 
@@ -140,6 +141,22 @@ export default function FilterEditSection({ filterId, filterData }) {
                 All filters in same group are OR operation.
               </FormHelperText>
             </FormControl>
+            <FormControl className='MuiFormControl-textarea'>
+              <TextareaAutosize
+                aria-label="empty textarea"
+                placeholder="Query"
+                className={isError ? 'error' : ''}
+                onChange={(event) => {
+                  setQuery(event.target.value)
+                }}
+                value={query}
+              />
+              <FormHelperText>
+                This is query that will be saved.
+                Can copy/paste/edit to change the query and can look the
+                Preview on the bottom and the form below too.
+              </FormHelperText>
+            </FormControl>
           </div>
         </ModalContent>
         <ModalFooter>
@@ -151,15 +168,11 @@ export default function FilterEditSection({ filterId, filterData }) {
             className='save__button'
             onClick={onSave}
             disabled={isError}>
-            Save
+            Update
           </Button>
         </ModalFooter>
         <ModalFooter>
           <div className='section preview'>
-            <b className='light'>Preview</b>
-            <div className='content'>
-              {query ? query : "Query is empty"}
-            </div>
             {returnPreviewTable()}
           </div>
         </ModalFooter>

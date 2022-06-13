@@ -12,16 +12,9 @@
   text-transform: unset !important;
 
   &:disabled {
-    pointer-events: auto!important;
+    pointer-events: auto !important;
     cursor: not-allowed !important;
     opacity: 0.5;
-  }
-}
-
-.MuiMenuItem-root {
-  a, a:link, a:visited, a:hover, a:active {
-    color: $base-color;
-    font-weight: 300;
   }
 }
 
@@ -29,17 +22,4 @@
   background-color: $base-color !important;
   border-color: $base-color !important;
   color: $base-color-reverse !important;
-}
-
-.MuiInputLabel-root {
-  background-color: white;
-}
-
-.MuiRadio-root {
-  padding: 0 !important;
-  padding-right: 5px !important;
-}
-
-.MuiMenuItem-placeholder {
-  display: none !important;
 }

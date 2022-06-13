@@ -10,9 +10,9 @@ const initialState = []
 export default function filtersReducer(state = initialState, action) {
   switch (action.type) {
     case FILTERS_ACTION_CHANGE_STATUS: {
-      const { filterId, payload } = action;
+      const { id, payload } = action;
       const newState = [...state]
-      newState[filterId].checked = payload
+      newState[id].checked = payload
       return newState
     }
     case FILTERS_ACTION_UPDATE: {

@@ -50,7 +50,10 @@ export default function SelectPlaceholder(
       list.map(data => {
         return <MenuItem
           key={data.id}
-          value={data.id}>{data.name}
+          value={data.id}>
+          <div>{data.name}</div>
+          {data.subName ?
+            <div className='MuiMenuItem-subname'>{data.subName}</div> : ''}
         </MenuItem>
       })
     }
