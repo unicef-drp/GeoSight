@@ -3,13 +3,20 @@
    ========================================================================== */
 
 import React, { Fragment, useEffect, useState } from 'react';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { FormControl, FormHelperText, Input, InputLabel } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  Input,
+  InputLabel
+} from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
 
 import QueryEditor from './QueryEditor';
+import Actions from '../../../../redux/actions'
 import Modal, { ModalContent, ModalFooter, ModalHeader } from "../../../Modal";
 import { queryIndicators } from '../../../../utils/queryExtraction'
 
@@ -19,12 +26,28 @@ import { queryIndicators } from '../../../../utils/queryExtraction'
  * @param {object} filterData Filter data.
  */
 export default function FilterEditSection({ filterId, filterData }) {
+  const dispatcher = useDispatch()
   const { indicators } = useSelector(state => state.dashboard.data);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState(filterData ? filterData.name : '');
   const [group, setGroup] = useState(filterData ? filterData.group : '');
   const [query, setQuery] = useState(filterData ? filterData.query : '');
   const [queryResult, setQueryResult] = useState('');
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    try {
+      const resultQuery = queryIndicators(indicators, query)
+      resultQuery.forEach((result, idx) => {
+        result.id = idx;
+      })
+      setQueryResult(resultQuery);
+      setIsError(false);
+    } catch (err) {
+      setQueryResult(err.toString());
+      setIsError(true);
+    }
+  }, [indicators, query]);
 
   /** When opened, set all data to default **/
   const onOpen = () => {
@@ -33,17 +56,20 @@ export default function FilterEditSection({ filterId, filterData }) {
     setName(filterData ? filterData.name : '')
   };
 
-  useEffect(() => {
-    try {
-      const resultQuery = queryIndicators(indicators, query)
-      resultQuery.forEach((result, idx) => {
-        result.id = idx;
-      })
-      setQueryResult(resultQuery)
-    } catch (err) {
-      setQueryResult(err.toString())
+  /** Save the new data when Save button clicked, also close editor.  **/
+  const onSave = () => {
+    if (!isError) {
+      setOpen(false);
+      const payload = {
+        'name': name,
+        'group': group,
+        'query': query
+      }
+      dispatcher(
+        Actions.Filters.update(filterId, payload)
+      );
     }
-  }, [indicators, query]);
+  };
 
   /**
    * Return preview table
@@ -120,6 +146,13 @@ export default function FilterEditSection({ filterId, filterData }) {
           <QueryEditor
             queryInit={query}
             onQueryChangeFn={setQuery}/>
+          <Button
+            variant="primary"
+            className='save__button'
+            onClick={onSave}
+            disabled={isError}>
+            Save
+          </Button>
         </ModalFooter>
         <ModalFooter>
           <div className='section preview'>

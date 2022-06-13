@@ -23,7 +23,8 @@ export default function SaveDashboard() {
     contextLayers,
     widgets,
     extent,
-    defaultBasemapLayer
+    defaultBasemapLayer,
+    filters
   } = useSelector(state => state.dashboard.data);
   const [error, setError] = useState('');
   const [open, setOpen] = useState(false);
@@ -74,7 +75,8 @@ export default function SaveDashboard() {
         }),
         'defaultBasemapLayer': defaultBasemapLayer,
         'extent': extent,
-        'widgets': widgets
+        'widgets': widgets,
+        'filters': filters
       }
       setData(JSON.stringify(data));
       onOpen();

@@ -5,7 +5,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import parser from 'js-sql-parser';
 import { useSelector } from "react-redux";
-import { Button } from "@mui/material";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import {
   IDENTIFIER,
@@ -147,6 +146,5 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
       ast={ast} saveQuery={saveQuery} updateAst={updateAst}
       indicatorFields={indicatorFields}
     />
-    <Button variant="primary" className='save__button'>Save</Button>
   </Fragment>
 }

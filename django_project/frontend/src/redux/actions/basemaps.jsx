@@ -6,6 +6,11 @@ import {
   BASEMAP_DEFAULT_ACTION_TYPE_CHANGE
 } from '../reducers/dashboard'
 
+
+/**
+ * Add new basemap data.
+ * @param {object} payload New basemap data.
+ */
 export function add(payload) {
   return {
     name: BASEMAP_ACTION_NAME,
@@ -14,6 +19,11 @@ export function add(payload) {
   };
 }
 
+
+/**
+ * Remove basemap data.
+ * @param {object} payload Basemap data.
+ */
 export function remove(payload) {
   return {
     name: BASEMAP_ACTION_NAME,
@@ -22,6 +32,11 @@ export function remove(payload) {
   };
 }
 
+
+/**
+ * Change default basemap
+ * @param {object} payload Basemap data.
+ */
 export function changeDefault(payload) {
   return {
     name: BASEMAP_DEFAULT_ACTION_NAME,
