@@ -15,7 +15,10 @@ import Actions from '../../../redux/actions'
  */
 export default function ReferenceLayer({ indicatorData }) {
   const [level, setLevel] = useState(null);
-  const { referenceLayer } = useSelector(state => state.dashboard.data);
+  const {
+    referenceLayer,
+    indicators
+  } = useSelector(state => state.dashboard.data);
 
   const data = referenceLayer ? referenceLayer.data : null;
   const dispatch = useDispatch();
@@ -26,6 +29,18 @@ export default function ReferenceLayer({ indicatorData }) {
       setLevel(referenceLayer.levels[0])
     }
   }, [referenceLayer]);
+
+  // Filter geometry_code based on indicators layer
+  const geometryCodes = []
+  if (indicators) {
+    indicators.forEach(indicatorData => {
+      if (indicatorData.data) {
+        indicatorData.data.forEach(indicator => {
+          geometryCodes.push(indicator.geometry_code)
+        })
+      }
+    })
+  }
 
   // When level changed
   useEffect(() => {
@@ -39,8 +54,16 @@ export default function ReferenceLayer({ indicatorData }) {
   // When reference geojson ready
   // Change color based on indicator if provided
   useEffect(() => {
-    if (data) {
-      const geojson = data;
+    if (data && Object.keys(data).length > 0) {
+
+      // Filter features for geojson with the geometryCodes
+      const geojson = {
+        ...data,
+        features: data.features.filter(feature => {
+          return geometryCodes.includes(feature.properties.identifier)
+        })
+      }
+
       // colors by geometry name
       const indicatorsByGeom = {}
       if (indicatorData) {
@@ -83,7 +106,7 @@ export default function ReferenceLayer({ indicatorData }) {
         )
       }
     }
-  }, [data, indicatorData]);
+  }, [data, indicatorData, geometryCodes]);
 
   return (<Fragment></Fragment>)
 }

@@ -66,9 +66,15 @@ export default function FilterEditSection({ filterId, filterData }) {
         'group': group,
         'query': query
       }
-      dispatcher(
-        Actions.Filters.update(filterId, payload)
-      );
+      if (filterId !== undefined) {
+        dispatcher(
+          Actions.Filters.update(filterId, payload)
+        );
+      } else {
+        dispatcher(
+          Actions.Filters.add(payload)
+        );
+      }
     }
   };
 
@@ -116,7 +122,7 @@ export default function FilterEditSection({ filterId, filterData }) {
         <ModalHeader>
           Filter Setting
           <div className='setting__helper'>
-            {filterId ? "Edit filter" : "Create new filter"}
+            {filterId !== undefined ? "Edit filter" : "Create new filter"}
           </div>
         </ModalHeader>
         <ModalContent>
@@ -168,7 +174,7 @@ export default function FilterEditSection({ filterId, filterData }) {
             className='save__button'
             onClick={onSave}
             disabled={isError}>
-            Update
+            {filterId !== undefined ? "Update" : "Create"}
           </Button>
         </ModalFooter>
         <ModalFooter>

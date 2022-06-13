@@ -53,7 +53,7 @@ export default function SelectPlaceholder(
           value={data.id}>
           <div>{data.name}</div>
           {data.subName ?
-            <div className='MuiMenuItem-subname'>{data.subName}</div> : ''}
+            <div className='MuiMenuItem-subname'>&nbsp;({data.subName})</div> : ''}
         </MenuItem>
       })
     }

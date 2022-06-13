@@ -18,7 +18,8 @@ class IndicatorListAPI(APIView):
         """Return Indicatorslist."""
         return Response(
             IndicatorSerializer(
-                Indicator.objects.filter(group__isnull=False).order_by('name'),
+                Indicator.objects.filter(group__isnull=False).order_by(
+                    'group__name', 'name'),
                 many=True
             ).data
         )
