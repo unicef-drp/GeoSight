@@ -23,3 +23,9 @@
   border-color: $base-color !important;
   color: $base-color-reverse !important;
 }
+
+.MuiListSubheader-root {
+  color: $base-color !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+}

@@ -3,6 +3,7 @@
    ========================================================================== */
 import React, { useEffect, useState } from 'react';
 import Select from "@mui/material/Select";
+import ListSubheader from '@mui/material/ListSubheader';
 import MenuItem from "@mui/material/MenuItem";
 
 /**
@@ -30,6 +31,22 @@ export default function SelectPlaceholder(
     }
   }, [initValue, list]);
 
+  // Make list to a group
+  const listInGroup = {}
+  const listAndGroup = []
+  if (list[0] && list[0].group) {
+    list.forEach(data => {
+      if (!listInGroup[data.group]) {
+        listAndGroup.push(data.group);
+        listInGroup[data.group] = [];
+      }
+      listAndGroup.push(data)
+    })
+  }
+
+  console.log(listAndGroup)
+  console.log(listAndGroup.length)
+
   return <Select
     onChange={
       event => {
@@ -47,15 +64,31 @@ export default function SelectPlaceholder(
     >{placeholder}
     </MenuItem>
     {
-      list.map(data => {
-        return <MenuItem
-          key={data.id}
-          value={data.id}>
-          <div>{data.name}</div>
-          {data.subName ?
-            <div className='MuiMenuItem-subname'>&nbsp;({data.subName})</div> : ''}
-        </MenuItem>
-      })
+      listAndGroup.length > 0 ? (
+        listAndGroup.map(data => {
+          return data.id ?
+            <MenuItem
+              key={data.id}
+              value={data.id}>
+              <div>{data.name}</div>
+              {data.subName ?
+                <div
+                  className='MuiMenuItem-subname'>&nbsp;({data.subName})</div> : ''}
+            </MenuItem> :
+            <ListSubheader key={data}>{data}</ListSubheader>
+        })
+      ) : (
+        list.map(data => {
+          return <MenuItem
+            key={data.id}
+            value={data.id}>
+            <div>{data.name}</div>
+            {data.subName ?
+              <div
+                className='MuiMenuItem-subname'>&nbsp;({data.subName})</div> : ''}
+          </MenuItem>
+        })
+      )
     }
   </Select>
 }
