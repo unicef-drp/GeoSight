@@ -82,6 +82,9 @@ export default function FilterEditSection({ filterId, filterData }) {
    * Return preview table
    */
   const returnPreviewTable = () => {
+    if (!query) {
+      return <div className='content error'>No query found. Please put the query or construct query using form.</div>
+    }
     if (!Array.isArray(queryResult)) {
       return <div className='content error'>{queryResult}</div>
     }
