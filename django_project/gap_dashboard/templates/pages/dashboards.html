@@ -13,12 +13,14 @@
 
 {% block content_title %}
     Select Dashboards
-    <a href="{% url "dashboard-create-view" %}">
-        <button class="white-button pull-right">
-            <i class="fa fa-plus-circle" aria-hidden="true"></i>
-            Create New Dashboard
-        </button>
-    </a>
+    {% if user.is_authenticated %}
+        <a href="{% url "dashboard-create-view" %}">
+            <button class="white-button pull-right">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                Create New Dashboard
+            </button>
+        </a>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -32,6 +34,7 @@
                 <div class="col-2 dashboard">
                     <a href="{{ dashboard.url }}">
                         <img src="
+
                                 {% if dashboard.icon %}{{ dashboard.icon }}{% else %}{% static "img/no-image-found.jpg" %}{% endif %}">
                         <span>{{ dashboard.name }}</span>
                     </a>

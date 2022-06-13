@@ -3,6 +3,11 @@ import {
   EXTENT_DEFAULT_ACTION_TYPE_CHANGE
 } from '../reducers/dashboard'
 
+
+/**
+ * Change default of extent.
+ * @param {object} payload New extent data.
+ */
 export function changeDefault(payload) {
   return {
     name: EXTENT_DEFAULT_ACTION_NAME,

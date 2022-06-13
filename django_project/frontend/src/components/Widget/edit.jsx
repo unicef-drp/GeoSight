@@ -66,7 +66,6 @@ export default function EditSection({ idx, data, children }) {
         property: property,
       }
     }
-    console.log(newData)
     dispatch(Actions.Widget.update(idx, newData));
     onClosed();
   }
@@ -84,9 +83,13 @@ export default function EditSection({ idx, data, children }) {
   try {
     if (layerID && layerType) {
       selectedData = cleanLayerData(layerID, layerType, indicators, null, true)[0]
+      if (!selectedData) {
+        selectedData = {}
+      }
     }
   } catch (error) {
   }
+
 
   return (
     <Fragment>

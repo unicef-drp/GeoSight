@@ -105,3 +105,19 @@ b.light {
   overflow: hidden;
   padding: 0;
 }
+
+textarea {
+  box-sizing: border-box;
+  border: 1px solid $base-color;
+  border-radius: 5px;
+  padding: 5px 10px;
+  width: 100%;
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  &.error {
+    border: 1px solid $error;
+  }
+}

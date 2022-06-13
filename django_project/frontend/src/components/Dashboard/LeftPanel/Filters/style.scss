@@ -1,0 +1,181 @@
+/* ==========================================================================
+   Filter style
+   ========================================================================== */
+
+@import '../../../../app/variables';
+
+.dashboard__filter {
+  margin-bottom: 1rem;
+
+  .MuiSvgIcon-root {
+    cursor: pointer;
+  }
+
+  .info__button {
+    height: 25px;
+    width: 25px;
+
+    .MuiSvgIcon-root {
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
+
+.dashboard__filter__content {
+  padding-left: 1rem;
+}
+
+/* ==========================================================================
+   Edit style
+   ========================================================================== */
+.modal__filter__setting {
+  .modal--box {
+    max-width: 1000px;
+  }
+
+  .MuiInput-root {
+    width: 100%;
+  }
+
+  .MuiOutlinedInput-root {
+    height: fit-content;
+
+    fieldset {
+      padding: 0 !important;
+    }
+
+    .MuiSvgIcon-root {
+      right: 0;
+
+    }
+  }
+
+  .MuiFormControl-root {
+    margin-top: 0 !important;
+    margin-bottom: 1rem;
+  }
+
+  .MuiSelect-select {
+    background-color: white;
+    border: 1px solid $base-color;
+    color: $base-color;
+    padding: 5px 25px 5px 10px !important;
+  }
+
+  .MuiInputBase-empty {
+    .MuiSelect-select {
+      background-color: white;
+      border: 1px solid $base-black-color;
+      color: $base-black-color;
+    }
+
+    .MuiSvgIcon-root {
+      color: $base-black-color;
+    }
+  }
+
+  .MuiSvgIcon-root {
+    color: $base-color;
+  }
+
+  .section {
+    margin-bottom: 1rem;
+
+    b {
+      color: $base-color;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .section__wrapper {
+      display: flex;
+    }
+
+    .section__divider {
+      padding: 15px 10px 0 10px;
+    }
+
+    .content {
+      background: $base-alpha-color;
+      border-radius: 5px;
+      display: flex;
+      padding: 10px 10px;
+
+      &:last-child {
+        flex-grow: 1;
+      }
+
+      .section__divider {
+        padding: 5px 10px 0 10px;
+
+        b {
+          margin-bottom: 0 !important;
+        }
+      }
+    }
+  }
+
+  .section__add {
+    display: flex !important;
+    cursor: pointer;
+  }
+
+  .preview {
+    b {
+      color: $base-black-color;
+      text-align: center;
+    }
+
+    .error {
+      color: $error;
+    }
+
+    .table__preview {
+      height: 500px;
+    }
+  }
+
+  .save__button {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+
+  .where__button,
+  .filter__button {
+    color: $base-color;
+    border: 1px solid $base-color;
+  }
+
+  .filter__button {
+    margin-bottom: 1rem;
+  }
+
+  .section__delete {
+    cursor: pointer;
+    padding-left: 0 !important;
+
+    svg {
+      color: red;
+    }
+  }
+
+  .MuiInput-root {
+    background-color: white;
+    border: 1px solid $base-color;
+    border-radius: 5px;
+    color: $base-color;
+    padding: 5px 10px;
+
+    input {
+      border: none;
+      padding: 0;
+    }
+
+    &:before,
+    &:after {
+      display: none !important;
+    }
+  }
+}

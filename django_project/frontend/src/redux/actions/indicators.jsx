@@ -1,8 +1,9 @@
 import {
   INDICATOR_ACTION_NAME,
   INDICATOR_ACTION_TYPE_ADD,
+  INDICATOR_ACTION_TYPE_FILTER,
   INDICATOR_ACTION_TYPE_REMOVE
-} from '../reducers/dashboard'
+} from '../reducers/indicators'
 import { fetchingData } from "../../Requests";
 
 export const REQUEST_INDICATOR = 'REQUEST/' + INDICATOR_ACTION_NAME;
@@ -38,6 +39,11 @@ export function fetch(dispatch, id, url) {
   return request(id);
 }
 
+
+/**
+ * Add new indicator data.
+ * @param {object} payload New indicator data.
+ */
 export function add(payload) {
   return {
     name: INDICATOR_ACTION_NAME,
@@ -46,6 +52,11 @@ export function add(payload) {
   };
 }
 
+
+/**
+ * Remove indicator.
+ * @param {object} payload Indicator indicator.
+ */
 export function remove(payload) {
   return {
     name: INDICATOR_ACTION_NAME,
@@ -54,6 +65,18 @@ export function remove(payload) {
   };
 }
 
+
+/**
+ * Filter indicators.
+ * It will use filters data and filter the indicators data.
+ */
+export function filter() {
+  return {
+    name: INDICATOR_ACTION_NAME,
+    type: INDICATOR_ACTION_TYPE_FILTER
+  };
+}
+
 export default {
-  fetch, add, remove
+  fetch, add, remove, filter
 }

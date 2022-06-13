@@ -36,9 +36,13 @@ class DashboardForm(forms.ModelForm):
         """Update data from POST data."""
         data['slug'] = slugify(data['name'])
         other_data = json.loads(data['data'])
+
+        # save polygon
         poly = Polygon.from_bbox(other_data['extent'])
         poly.srid = 4326
         data['extent'] = poly
+
+        # save others data
         data['reference_layer'] = ReferenceLayer.objects.get(
             id=other_data['referenceLayer']
         )
@@ -49,4 +53,6 @@ class DashboardForm(forms.ModelForm):
         )
         data['context_layers'] = other_data['contextLayers']
         data['widgets'] = other_data['widgets']
+
+        data['filters'] = json.dumps(other_data['filters'])
         return data
