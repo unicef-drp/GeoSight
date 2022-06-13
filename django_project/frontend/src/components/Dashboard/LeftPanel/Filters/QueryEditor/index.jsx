@@ -20,6 +20,9 @@ import Froms from './Froms'
  */
 function getFrom(from, upperForm) {
   let fromQuery = []
+  if (!from) {
+    return fromQuery;
+  }
   switch (from.type) {
     case "TableFactor":
       fromQuery = fromQuery.concat([[from.value.value, upperForm, from]])
@@ -115,7 +118,7 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
   // get indicator fields
   let indicatorFields = []
   let indicatorFieldsIds = []
-  const froms = getFrom(ast.value.from.value[0].value);
+  const froms = getFrom(ast?.value?.from?.value[0]?.value);
   froms.map((from, idx) => {
     const indicator = indicatorById[from[0].replaceAll(IDENTIFIER, '')]
     if (indicator && indicator.data) {
