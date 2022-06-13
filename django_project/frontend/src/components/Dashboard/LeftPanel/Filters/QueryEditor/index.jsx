@@ -127,6 +127,9 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
             'id': id,
             'name': `${indicator.name}.${key}`,
             'group': indicator.name,
+            'data': [...new Set(indicator.data.map(data => {
+              return data[key]
+            }))]
           })
           indicatorFieldsIds.push(id);
         }

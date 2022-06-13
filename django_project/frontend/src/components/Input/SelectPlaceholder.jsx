@@ -22,7 +22,7 @@ export default function SelectPlaceholder(
   // Get indicator data
   useEffect(() => {
     const selectedID = list.filter((data) => {
-      return data.id === initValue
+      return (data.id && data.id === initValue) || (data === initValue)
     })
     if (selectedID.length === 0) {
       setValue(0);
@@ -43,9 +43,6 @@ export default function SelectPlaceholder(
       listAndGroup.push(data)
     })
   }
-
-  console.log(listAndGroup)
-  console.log(listAndGroup.length)
 
   return <Select
     onChange={
@@ -80,9 +77,9 @@ export default function SelectPlaceholder(
       ) : (
         list.map(data => {
           return <MenuItem
-            key={data.id}
-            value={data.id}>
-            <div>{data.name}</div>
+            key={data.id ? data.id : data}
+            value={data.id ? data.id : data}>
+            <div>{data.id ? data.id : data}</div>
             {data.subName ?
               <div
                 className='MuiMenuItem-subname'>&nbsp;({data.subName})</div> : ''}

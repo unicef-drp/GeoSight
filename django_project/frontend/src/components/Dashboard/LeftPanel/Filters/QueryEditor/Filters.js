@@ -127,12 +127,24 @@ const changeWhereOperator = (value, obj, updateAst) => {
 export default function Filters(
   { ast, saveQuery, updateAst, indicatorFields }
 ) {
-  const wheres = getWhere(ast.value.where)
+  const wheres = getWhere(ast.value.where);
   return wheres.map((where, idx) => {
     const operatorWhere = where[3];
     const field = where[0];
     const operator = where[1];
     const valueField = where[2];
+    const indicatorField = [...indicatorFields].filter(data => {
+      return data.id === field[0]
+    })[0]
+
+    // Check if it is number or not
+    let options = [];
+    if (indicatorField && indicatorField.data && indicatorField.data.length > 0) {
+      if (isNaN(indicatorField.data[0])) {
+        options = indicatorField.data
+      }
+    }
+
     return <div key={idx} className='section'>
       <div className='section__wrapper'>
         <div className='section__divider section__delete'>
@@ -168,26 +180,39 @@ export default function Filters(
           <SelectPlaceholder
             placeholder='Pick an operation'
             list={
-              [
-                { id: '=', name: '=' },
-                { id: '>', name: '>' },
-                { id: '>=', name: '>=' },
-                { id: '<', name: '<' },
-                { id: '<=', name: '<=' },
-                { id: '<>', name: '<>' },
-              ]
+              options.length === 0 ?
+                [
+                  { id: '=', name: '=' },
+                  { id: '>', name: '>' },
+                  { id: '>=', name: '>=' },
+                  { id: '<', name: '<' },
+                  { id: '<=', name: '<=' },
+                  { id: '<>', name: '<>' },
+                ] : [
+                  { id: '=', name: '=' },
+                ]
             }
             initValue={operator[0]}
             onChangeFn={(value) => {
               changeWhereOperator(value, operator[1], updateAst)
             }}/>
-          <Input
-            type="text"
-            placeholder="Enter value"
-            value={valueField[0].replaceAll('"', '')}
-            onChange={(value) => {
-              changeWhereValue(value.target.value, valueField[1], updateAst)
-            }}/>
+          {
+            options.length > 0 ?
+              <SelectPlaceholder
+                placeholder='Pick the value'
+                list={options}
+                initValue={valueField[0].replaceAll('"', '')}
+                onChangeFn={(value) => {
+                  changeWhereValue(value, valueField[1], updateAst)
+                }}/> :
+              <Input
+                type="text"
+                placeholder="Enter value"
+                value={valueField[0].replaceAll('"', '')}
+                onChange={(value) => {
+                  changeWhereValue(value.target.value, valueField[1], updateAst)
+                }}/>
+          }
         </div>
       </div>
     </div>
