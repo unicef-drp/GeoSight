@@ -8,14 +8,9 @@ from gap_data.models.indicator import Indicator, IndicatorRule
 class IndicatorSerializer(serializers.ModelSerializer):
     """Serializer for Indicator."""
 
-    name = serializers.SerializerMethodField()
     group = serializers.SerializerMethodField()
     rules = serializers.SerializerMethodField()
     url = serializers.SerializerMethodField()
-
-    def get_name(self, obj: Indicator):
-        """Return group."""
-        return f'{obj.group.name} / {obj.name}'
 
     def get_group(self, obj: Indicator):
         """Return group."""

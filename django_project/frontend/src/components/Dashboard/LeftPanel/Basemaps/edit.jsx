@@ -6,7 +6,7 @@ import React, { Fragment } from 'react';
 import { useSelector } from "react-redux";
 
 import Actions from '../../../../redux/actions'
-import EditSection from '../edit'
+import EditSection from '../editSection'
 
 /**
  * Render each row on edit modal.
@@ -26,12 +26,16 @@ export function EditRow({ layer }) {
 
 /**
  * Basemap Editor Section Handler
+ * @param {boolean} expanded Expanded.
+ * @param {function} handleChange Handle the accordion opened.
  */
-export default function BasemapsEditSection() {
+export default function BasemapsEditSection({ expanded, handleChange }) {
   const { basemapsLayers } = useSelector(state => state.dashboard.data);
   return <EditSection
-    title='Edit Basemap List'
-    description='Select one or more basemaps and select on the map to make it as default.'
+    expanded={expanded}
+    handleChange={handleChange}
+    title='Basemap List'
+    description='Must select one or more basemaps and select on the map to make it as default.'
     required={true}
     className='modal__basemap__setting'
     currentLayers={basemapsLayers}
