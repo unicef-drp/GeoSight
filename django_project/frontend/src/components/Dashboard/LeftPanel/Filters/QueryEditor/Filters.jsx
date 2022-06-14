@@ -1,11 +1,12 @@
 /* ==========================================================================
    EDITOR FOR FILTERS
    ========================================================================== */
-import React from 'react';
+import React, { Fragment } from 'react';
 import CloseIcon from "@mui/icons-material/Close";
 import { SelectPlaceholder } from "../../../../Input";
 import { Input } from "@mui/material";
 import parser from "js-sql-parser";
+import AddBoxIcon from "@mui/icons-material/AddBox";
 
 /***
  * Return All Where as List
@@ -124,7 +125,7 @@ const changeWhereOperator = (value, obj, updateAst) => {
  * @param {function} updateAst Update Ast.
  * @param {array} indicatorFields Array of field name.
  * */
-export default function Filters(
+export function FiltersForm(
   { ast, saveQuery, updateAst, indicatorFields }
 ) {
   const wheres = getWhere(ast.value.where);
@@ -218,3 +219,44 @@ export default function Filters(
     </div>
   })
 };
+
+/**
+ * Render Filters selector
+ * @param {dict} ast Query data.
+ * @param {function} saveQuery Save query.
+ * @param {function} updateAst Update Ast.
+ * @param {array} indicatorFields Array of field name.
+ * */
+export default function Filters(
+  { ast, saveQuery, updateAst, indicatorFields }
+) {
+
+  /**
+   * Add new Where
+   */
+  const addWhere = () => {
+    let query = parser.stringify(ast);
+    if (!query.includes('WHERE')) {
+      query += ' WHERE field=""'
+    } else {
+      if (query.includes('ORDER BY')) {
+        query = query.replaceAll(
+          'ORDER BY', ' AND field="" ORDER BY'
+        )
+      } else {
+        query += ' AND field=""'
+      }
+    }
+    saveQuery(query);
+  }
+  return <Fragment>
+    <div className='section'>
+      <b className='light section__add'>WHERE <AddBoxIcon
+        onClick={addWhere}/></b>
+    </div>
+    <FiltersForm
+      ast={ast} saveQuery={saveQuery} updateAst={updateAst}
+      indicatorFields={indicatorFields}
+    />
+  </Fragment>
+}

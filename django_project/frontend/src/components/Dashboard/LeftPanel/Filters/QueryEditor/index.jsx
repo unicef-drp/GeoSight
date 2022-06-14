@@ -5,7 +5,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import parser from 'js-sql-parser';
 import { useSelector } from "react-redux";
-import AddBoxIcon from '@mui/icons-material/AddBox';
 import {
   IDENTIFIER,
   indicatorsToById,
@@ -93,25 +92,6 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
     setNewAst({ ...ast })
   }
 
-  /**
-   * Add new Where
-   */
-  const addWhere = () => {
-    let query = parser.stringify(ast);
-    if (!query.includes('WHERE')) {
-      query += ' WHERE field=""'
-    } else {
-      if (query.includes('ORDER BY')) {
-        query = query.replaceAll(
-          'ORDER BY', ' AND field="" ORDER BY'
-        )
-      } else {
-        query += ' AND field=""'
-      }
-    }
-    saveQuery(query);
-  }
-
   if (!ast) {
     return <div>The query is error</div>
   }
@@ -147,10 +127,6 @@ export default function QueryEditor({ queryInit, onQueryChangeFn }) {
       indicatorList={indicatorList}
       indicatorFields={indicatorFields}
     />
-    <div className='section'>
-      <b className='light section__add'>WHERE <AddBoxIcon
-        onClick={addWhere}/></b>
-    </div>
     <Filters
       ast={ast} saveQuery={saveQuery} updateAst={updateAst}
       indicatorFields={indicatorFields}
