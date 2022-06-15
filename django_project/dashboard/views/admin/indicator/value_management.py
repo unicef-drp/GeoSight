@@ -6,7 +6,9 @@ from django.shortcuts import redirect, reverse, get_object_or_404
 
 from dashboard.views.admin._base import AdminView
 from geosight.data.models import Indicator, IndicatorExtraValue
-from geosight.data.models.indicator.indicator import IndicatorValueRejectedError
+from geosight.data.models.indicator.indicator import (
+    IndicatorValueRejectedError
+)
 from geosight.data.serializer.reference_layer import GeometrySerializer
 
 

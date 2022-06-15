@@ -2,7 +2,9 @@
 
 from rest_framework import serializers
 
-from geosight.data.models.basemap_layer import BasemapLayerParameter, BasemapLayer
+from geosight.data.models.basemap_layer import (
+    BasemapLayerParameter, BasemapLayer
+)
 
 
 class BasemapLayerSerializer(serializers.ModelSerializer):

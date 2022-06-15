@@ -3,7 +3,9 @@ from datetime import datetime, timedelta
 
 from django.test.testcases import TestCase
 
-from geosight.data.models.indicator.indicator import Indicator, AggregationMethod
+from geosight.data.models.indicator.indicator import (
+    Indicator, AggregationMethod
+)
 from geosight.data.tests.model_factories import (
     IndicatorF, IndicatorGroupF, IndicatorFrequencyF,
     GeometryLevelNameF, GeometryF, IndicatorValueF, IndicatorRuleF

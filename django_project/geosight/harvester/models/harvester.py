@@ -116,7 +116,9 @@ class Harvester(models.Model):
 
     def save_attributes(self, data):
         """Save attributes for the harvesters."""
-        from geosight.harvester.models.harvester_attribute import HarvesterAttribute
+        from geosight.harvester.models.harvester_attribute import (
+            HarvesterAttribute
+        )
         for key, value in data.items():
             try:
                 attribute = self.harvesterattribute_set.get(

@@ -4,7 +4,9 @@ from django.shortcuts import get_object_or_404, reverse, redirect
 
 from dashboard.views.admin._base import AdminView
 from geosight.data.models import Indicator
-from geosight.harvester.models import Harvester, ExcelHarvester, UsingExposedAPI
+from geosight.harvester.models import (
+    Harvester, ExcelHarvester, UsingExposedAPI
+)
 from geosight.harvester.tasks import run_harvester
 
 

@@ -3,7 +3,9 @@ from django.conf import settings
 
 from dashboard.views.admin.harvesters.forms._base import HarvesterFormView
 from geosight.data.utils import path_to_dict
-from geosight.harvester.harveters.sharepoint_harvester import SharepointHarvester
+from geosight.harvester.harveters.sharepoint_harvester import (
+    SharepointHarvester
+)
 
 
 class SharepointHarvesterView(HarvesterFormView):

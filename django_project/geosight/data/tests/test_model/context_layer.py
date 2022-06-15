@@ -2,7 +2,9 @@
 from django.test.testcases import TestCase
 
 from geosight.data.serializer.context_layer import ContextLayerSerializer
-from geosight.data.tests.model_factories import ContextLayerF, ContextLayerStyleF
+from geosight.data.tests.model_factories import (
+    ContextLayerF, ContextLayerStyleF
+)
 
 
 class BasemapLayerTest(TestCase):

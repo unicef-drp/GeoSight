@@ -8,7 +8,9 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 
 from geosight.data.models import Geometry, IndicatorValue
-from geosight.data.models.indicator.indicator import IndicatorValueRejectedError
+from geosight.data.models.indicator.indicator import (
+    IndicatorValueRejectedError
+)
 from geosight.harvester.models import Harvester, HarvesterLog, LogStatus
 
 User = get_user_model()

@@ -4,7 +4,9 @@ from django.test.testcases import TestCase
 from django.urls import reverse
 
 from geosight.data.models.indicator import Indicator
-from geosight.data.tests.model_factories import IndicatorF, IndicatorGroupF, UserF
+from geosight.data.tests.model_factories import (
+    IndicatorF, IndicatorGroupF, UserF
+)
 
 
 class IndicatorDetailApiTest(TestCase):

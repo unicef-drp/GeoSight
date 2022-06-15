@@ -1,7 +1,9 @@
 """Factory for BasemapLayer."""
 import factory
 
-from geosight.data.models.basemap_layer import BasemapLayer, BasemapLayerParameter
+from geosight.data.models.basemap_layer import (
+    BasemapLayer, BasemapLayerParameter
+)
 
 
 class BasemapLayerF(factory.django.DjangoModelFactory):

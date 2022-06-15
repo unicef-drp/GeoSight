@@ -1,7 +1,9 @@
 """Test for IndicatorGroup model."""
 from django.test.testcases import TestCase
 
-from geosight.data.tests.model_factories import IndicatorGroupF, IndicatorFrequencyF
+from geosight.data.tests.model_factories import (
+    IndicatorGroupF, IndicatorFrequencyF
+)
 
 
 class IndicatorGroupTest(TestCase):
