@@ -24,7 +24,7 @@ class ExcelHarvesterTest(BaseHarvesterTest):
     def test_run(self):
         """Test run."""
         filepath = ABS_PATH(
-            'geosight.harvester', 'tests', 'test_harvesters',
+            'geosight', 'harvester', 'tests', 'test_harvesters',
             'fixtures', 'excel_test.xlsx'
         )
         harvester = HarvesterF(
