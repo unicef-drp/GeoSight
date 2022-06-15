@@ -17,6 +17,7 @@ export default function ReferenceLayer({ indicatorData }) {
   const [level, setLevel] = useState(null);
   const {
     referenceLayer,
+    extent,
     indicators
   } = useSelector(state => state.dashboard.data);
 
@@ -31,8 +32,9 @@ export default function ReferenceLayer({ indicatorData }) {
   }, [referenceLayer]);
 
   // Filter geometry_code based on indicators layer
-  const geometryCodes = []
-  if (indicators) {
+  let geometryCodes = null
+  if (indicators && indicators.length) {
+    geometryCodes = []
     indicators.forEach(indicatorData => {
       if (indicatorData.data) {
         indicatorData.data.forEach(indicator => {
@@ -60,11 +62,11 @@ export default function ReferenceLayer({ indicatorData }) {
       const geojson = {
         ...data,
         features: data.features.filter(feature => {
-          return geometryCodes.includes(feature.properties.identifier)
+          return !geometryCodes || geometryCodes.includes(feature.properties.identifier)
         })
       }
 
-      // colors by geometry name
+      // Colouring by geometry name
       const indicatorsByGeom = {}
       if (indicatorData) {
         indicatorData.forEach(function (data) {
@@ -104,6 +106,16 @@ export default function ReferenceLayer({ indicatorData }) {
         dispatch(
           Actions.Map.change_reference_layer(layer)
         )
+
+        // Init extent from reference layer
+        if (!extent[0] && !extent[1] && !extent[2] && !extent[3]) {
+          const bounds = layer.getBounds();
+          const newExtent = [
+            bounds._southWest.lng, bounds._southWest.lat,
+            bounds._northEast.lng, bounds._northEast.lat
+          ]
+          dispatch(Actions.Extent.changeDefault(newExtent))
+        }
       }
     }
   }, [data, indicatorData, geometryCodes]);

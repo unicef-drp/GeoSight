@@ -6,7 +6,7 @@ import React, { Fragment } from 'react';
 import { useSelector } from "react-redux";
 
 import Actions from '../../../../redux/actions'
-import EditSection from "../edit";
+import EditSection from "../editSection";
 
 /**
  * Render each row on edit modal.
@@ -24,10 +24,12 @@ export function EditRow({ layer }) {
 /**
  * Context Layers Editor Section Handler
  */
-export default function ContextLayersEditSection() {
+export default function ContextLayersEditSection({ expanded, handleChange }) {
   const { contextLayers } = useSelector(state => state.dashboard.data);
   return <EditSection
-    title='Edit Context Layers List'
+    expanded={expanded}
+    handleChange={handleChange}
+    title='Context Layers List'
     description='Select one or more Context Layers for the dashboard.'
     required={false}
     className='modal__context_layers__setting'

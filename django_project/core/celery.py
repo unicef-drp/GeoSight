@@ -11,7 +11,7 @@ app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
     'run-harvester': {
-        'task': 'gap_harvester.tasks.run_harvesters',
+        'task': 'geosight.harvester.tasks.run_harvesters',
         'schedule': crontab(hour=00)
     }
 }

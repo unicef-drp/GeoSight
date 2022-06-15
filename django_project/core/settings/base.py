@@ -51,14 +51,14 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     ABS_PATH('core', 'static'),
-    ABS_PATH('gap_dashboard', 'static'),
+    ABS_PATH('dashboard', 'static'),
     ABS_PATH('frontend', 'bundles'),
 )
 
 # Every cache key will get prefixed with this value - here we set it to
 # the name of the directory the project is in to try and use something
 # project specific.
-CACHE_MIDDLEWARE_KEY_PREFIX = 'gap_dashboard'
+CACHE_MIDDLEWARE_KEY_PREFIX = 'dashboard'
 
 MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -83,7 +83,7 @@ TEMPLATES = [
         'DIRS': [
             # Put Templates Hers
             ABS_PATH('core', 'templates'),
-            ABS_PATH('gap_dashboard', 'templates'),
+            ABS_PATH('dashboard', 'templates'),
             ABS_PATH('frontend', 'templates'),
         ],
         'OPTIONS': {
@@ -101,7 +101,10 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
                 'core.context_processors.global_context.global_context',
-                'gap_data.context_processors.global_context.global_context',
+                (
+                    'geosight.data.context_processors.'
+                    'global_context.global_context'
+                ),
             ],
         },
     },

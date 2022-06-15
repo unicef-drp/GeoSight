@@ -5,7 +5,7 @@
 import React, { Fragment } from 'react';
 import { useSelector } from "react-redux";
 import Actions from '../../../../redux/actions'
-import EditSection from "../edit";
+import EditSection from "../editSection";
 
 /**
  * Render each row on edit modal.
@@ -23,15 +23,21 @@ export function EditRow({ layer }) {
 
 /**
  * Reference Layer Editor Section Handler
+ * @param {boolean} expanded Expanded.
+ * @param {function} handleChange Handle the accordion opened.
  */
-export default function ReferenceLayerEditSection() {
+export default function ReferenceLayerEditSection({ expanded, handleChange }) {
   const { referenceLayer } = useSelector(state => state.dashboard.data);
   return <EditSection
-    title='Select Reference Layer'
+    expanded={expanded}
+    handleChange={handleChange}
+    title='Reference Layer'
     description='Must select one Reference Layer for the dashboard.'
     required={true}
     className='modal__reference_layer__setting'
-    currentLayers={[referenceLayer]}
+    currentLayers={
+      referenceLayer && Object.keys(referenceLayer).length > 0 ? [referenceLayer] : []
+    }
     urlAPI={urls.referenceLayersListAPI}
     actionAddLayer={Actions.ReferenceLayer.change}
     actionRemoveLayer={Actions.ReferenceLayer.change}>

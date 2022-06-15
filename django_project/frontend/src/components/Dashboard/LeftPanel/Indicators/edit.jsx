@@ -6,7 +6,7 @@ import React, { Fragment } from 'react';
 import { useSelector } from "react-redux";
 
 import Actions from '../../../../redux/actions'
-import EditSection from "../edit";
+import EditSection from "../editSection";
 
 /**
  * Render each row on edit modal.
@@ -15,7 +15,7 @@ import EditSection from "../edit";
 export function EditRow({ layer }) {
   return <Fragment>
     <div className='text title'>
-      <div><b className='light'>{layer.name}</b></div>
+      <div><b className='light'>{layer.group} / {layer.name}</b></div>
       <div>{layer.description}</div>
     </div>
   </Fragment>
@@ -23,11 +23,15 @@ export function EditRow({ layer }) {
 
 /**
  * Indicators Editor Section Handler
+ * @param {boolean} expanded Expanded.
+ * @param {function} handleChange Handle the accordion opened.
  */
-export default function IndicatorsEditSection() {
+export default function IndicatorsEditSection({ expanded, handleChange }) {
   const { indicators } = useSelector(state => state.dashboard.data);
   return <EditSection
-    title='Edit Indicators List'
+    expanded={expanded}
+    handleChange={handleChange}
+    title='Indicators List'
     description='Must select one or more indicators for the dashboard.'
     required={true}
     className='modal__indicators__setting'

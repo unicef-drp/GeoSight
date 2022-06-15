@@ -12,7 +12,6 @@ import Accordion from "@mui/material/Accordion";
 
 import Actions from '../../../../redux/actions'
 import ReferenceLayer from '../../Map/ReferenceLayer'
-import IndicatorsEditSection from "./edit";
 
 /**
  * Indicators selector.
@@ -93,7 +92,6 @@ export default function IndicatorsAccordion({ expanded, handleChange }) {
             <span>&nbsp;({indicators.length}) </span> :
             <i>&nbsp;(Loading)</i>
         }
-        {editMode ? <IndicatorsEditSection/> : ''}
       </AccordionSummary>
       <AccordionDetails>
         {

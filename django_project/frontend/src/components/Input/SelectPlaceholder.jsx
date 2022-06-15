@@ -79,7 +79,7 @@ export default function SelectPlaceholder(
           return <MenuItem
             key={data.id ? data.id : data}
             value={data.id ? data.id : data}>
-            <div>{data.id ? data.id : data}</div>
+            <div>{data.name ? data.name : data}</div>
             {data.subName ?
               <div
                 className='MuiMenuItem-subname'>&nbsp;({data.subName})</div> : ''}

@@ -1,17 +1,17 @@
 # Project Setup
 
-## Clone gis_geo_analytics-platform repository
+## Clone GeoSight repository
 
-This will clone the gis_geo_analytics-platform repository to your machine
+This will clone the GeoSight repository to your machine
 ```
-git clone https://github.com/unicef-drp/gis_geo_analytics-platform.git
+git clone https://github.com/unicef-drp/GeoSight
 ```
 
 ## Set up the project
 
-This will set up the gis_geo_analytics-platform project on your machine
+This will set up the GeoSight project on your machine
 ```
-cd gis_geo_analytics-platform
+cd GeoSight
 cd deployment
 cp docker-compose.override.template.yml docker-compose.override.yml
 cp .template.env .env
@@ -33,7 +33,7 @@ To set up different environment, for example the Default credential, or the port
 You can check the description below for each of variable.
 
 ```
-COMPOSE_PROJECT_NAME=gap
+COMPOSE_PROJECT_NAME=geosight
 NGINX_TAG=0.0.1  -> Change this for different nginx image
 DJANGO_TAG=0.0.1 -> Change this for different django image
 DJANGO_DEV_TAG=0.0.1 -> Change this for different django dev image

@@ -13,6 +13,7 @@ import ReferenceLayerSection from './ReferenceLayer'
 import FiltersAccordion from './Filters'
 
 import './style.scss';
+import Edit from "./edit";
 
 /**
  * Left panel.

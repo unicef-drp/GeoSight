@@ -5,9 +5,9 @@ from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, reverse
 
 from frontend.views.dashboard._base import BaseDashboardView
-from gap_data.api.dashboard import CREATE_SLUG
-from gap_data.forms.dashboard import DashboardForm
-from gap_data.models.dashboard import Dashboard
+from geosight.data.api.dashboard import CREATE_SLUG
+from geosight.data.forms.dashboard import DashboardForm
+from geosight.data.models.dashboard import Dashboard
 
 
 class DashboardCreateView(LoginRequiredMixin, BaseDashboardView):

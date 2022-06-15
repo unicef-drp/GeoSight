@@ -14,7 +14,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from "@mui/material/AccordionDetails";
 
 import Actions from '../../../../redux/actions'
-import ContextLayersEditSection from "./edit";
 import { featurePopupContent } from '../../../../utils/main'
 import EsriLeafletLayer from '../../../../utils/esri/leaflet-esri-layer'
 
@@ -205,7 +204,6 @@ export default function ContextLayersAccordion({ expanded, handleChange }) {
             <span>&nbsp;({contextLayers.length}) </span> :
             <i>&nbsp;(Loading)</i>
         }
-        {editMode ? <ContextLayersEditSection/> : ''}
       </AccordionSummary>
       <AccordionDetails>
         {

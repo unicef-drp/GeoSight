@@ -8,7 +8,6 @@ import L from 'leaflet';
 import { Tooltip } from '@mui/material';
 
 import Actions from '../../../../redux/actions'
-import BasemapsEditSection from "./edit";
 
 /**
  * Basemaps selector.
@@ -86,7 +85,6 @@ export default function Basemaps({ data, defaultBasemapLayer }) {
           )
           : <div>Loading</div>
       }
-      {editMode ? <BasemapsEditSection/> : ''}
     </Fragment>
   )
 }

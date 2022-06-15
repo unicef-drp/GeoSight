@@ -139,6 +139,10 @@
       min-height: 0 !important;
       height: fit-content !important;
       padding: 0.5rem 1rem 0.5rem 1rem;
+
+      &.Mui-focusVisible {
+        background: none !important;
+      }
     }
 
     .MuiAccordionSummary-root.Mui-expanded {
@@ -197,6 +201,27 @@
 
     &:hover {
       opacity: 0.8;
+    }
+  }
+}
+
+.dashboard__editor {
+  .MuiAccordionSummary-content {
+    display: block;
+  }
+
+  .MuiPaper-root {
+    margin: 0 !important;
+    overflow-x: auto;
+
+    &.error {
+      .MuiAccordionSummary-content {
+        color: $error;
+
+        .setting__helper {
+          color: $error;
+        }
+      }
     }
   }
 }
