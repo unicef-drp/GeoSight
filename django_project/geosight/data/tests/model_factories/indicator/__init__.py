@@ -1,4 +1,4 @@
+from .attributes import *  # noqa
 from .indicator import *  # noqa
-from .indicator_attributes import *  # noqa
-from .indicator_rule import *  # noqa
-from .indicator_value import *  # noqa
+from .rule import *  # noqa
+from .value import *  # noqa

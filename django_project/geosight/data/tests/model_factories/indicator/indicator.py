@@ -2,7 +2,7 @@
 import factory
 
 from geosight.data.models.indicator import Indicator
-from geosight.data.tests.model_factories.indicator import (
+from geosight.data.tests.model_factories.indicator.attributes import (
     IndicatorGroupF, IndicatorFrequencyF
 )
 
