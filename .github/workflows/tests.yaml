@@ -7,7 +7,7 @@ jobs:
     name: 'Django App'
     runs-on: ubuntu-latest
     env:
-      APP_IMAGE: kartoza/gap_django
+      APP_IMAGE: kartoza/geosight_django
     steps:
       - uses: actions/checkout@v2
       - name: Set up QEMU

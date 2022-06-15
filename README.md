@@ -1,16 +1,16 @@
-# Gis-geo Analytics Platform (GAP) Dashboard
+# GeoSight
 
-[![Tests](https://github.com/unicef-drp/gis_geo_analytics-platform/workflows/Tests/badge.svg)](https://github.com/unicef-drp/gis_geo_analytics-platform/actions/workflows/tests.yaml)
-[![Flake8](https://github.com/unicef-drp/gis_geo_analytics-platform/workflows/Flake8/badge.svg)](https://github.com/unicef-drp/gis_geo_analytics-platform/actions/workflows/flake8.yml)
-[![Documentation](https://github.com/unicef-drp/gis_geo_analytics-platform/workflows/Documentation/badge.svg)](https://unicef-drp.github.io/gis_geo_analytics-platform/)
+[![Tests](https://github.com/unicef-drp/GeoSight/workflows/Tests/badge.svg)](https://github.com/unicef-drp/GeoSight/actions/workflows/tests.yaml)
+[![Flake8](https://github.com/unicef-drp/GeoSight/workflows/Flake8/badge.svg)](https://github.com/unicef-drp/GeoSight/actions/workflows/flake8.yml)
+[![Documentation](https://github.com/unicef-drp/GeoSight/workflows/Documentation/badge.svg)](https://unicef-drp.github.io/GeoSight/)
 
 ## QUICK INSTALLATION GUIDE
 
 ### Production
 
 ```
-git clone https://github.com/unicef-drp/gis_geo_analytics-platform
-cd gis_geo_analytics-platform/deployment
+git clone https://github.com/unicef-drp/GeoSight
+cd GeoSight/deployment
 docker-compose up -d
 ```
 
@@ -31,12 +31,12 @@ docker-compose down
 ### Development
 
 ```
-git clone https://github.com/unicef-drp/gis_geo_analytics-platform
-cd gis_geo_analytics-platform/deployment
+git clone https://github.com/unicef-drp/GeoSight
+cd GeoSight/deployment
 cp .template.env .env
 docker-compose.override.template.yml docker-compose.override.yml
 
-cd gis_geo_analytics-platform
+cd GeoSight
 make up
 make dev
 ```

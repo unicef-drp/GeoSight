@@ -1,7 +1,7 @@
 {
-  "name": "gap-dashboard",
+  "name": "geo-sight-dashboard",
   "version": "0.0.1",
-  "description": "Gis-geo Analytics Platform (GAP) Dashboard.",
+  "description": "GeoSight Dashboard.",
   "main": "index.js",
   "scripts": {
     "dev": "webpack serve --mode development",
@@ -11,7 +11,7 @@
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "https://github.com/unicef-drp/gis_geo_analytics-platform"
+    "url": "https://github.com/unicef-drp/GeoSight"
   },
   "author": {
     "name": "Irwan Fathurrahman",
@@ -19,9 +19,9 @@
   },
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/unicef-drp/gis_geo_analytics-platform/issues"
+    "url": "https://github.com/unicef-drp/GeoSight/issues"
   },
-  "homepage": "https://unicef-drp.github.io/gis_geo_analytics-platform/",
+  "homepage": "https://github.com/unicef-drp/GeoSight",
   "devDependencies": {
     "@babel/core": "^7.17.10",
     "@babel/preset-env": "^7.17.10",

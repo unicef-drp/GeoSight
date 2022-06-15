@@ -52,9 +52,9 @@ LOCALE_PATHS = (ABS_PATH('locale'),)
 # Extra installed apps
 INSTALLED_APPS = INSTALLED_APPS + (
     'core',
-    'gap_data',
-    'gap_harvester',
-    'gap_dashboard',
+    'geosight.data',
+    'geosight.harvester',
+    'dashboard',
 )
 
 # -------------------------------------------------- #

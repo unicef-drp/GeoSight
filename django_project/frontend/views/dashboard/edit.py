@@ -7,8 +7,8 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect, reverse
 
 from frontend.views.dashboard._base import BaseDashboardView
-from gap_data.forms.dashboard import DashboardForm
-from gap_data.models.dashboard import Dashboard
+from geosight.data.forms.dashboard import DashboardForm
+from geosight.data.models.dashboard import Dashboard
 
 
 class DashboardEditView(LoginRequiredMixin, BaseDashboardView):

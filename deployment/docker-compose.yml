@@ -15,7 +15,7 @@ volumes:
 
 x-common-django:
   &default-common-django
-  image: kartoza/gap_django:${DJANGO_TAG:-0.0.1}
+  image: kartoza/geosight_django:${DJANGO_TAG:-0.0.1}
   environment:
     # editable in .env
     - DATABASE_NAME=${DATABASE_NAME:-django}
@@ -41,14 +41,14 @@ services:
   # Vanilla RabbitMQ service. This is needed by celery
   rabbitmq:
     image: rabbitmq:3.7-alpine
-    container_name: "gap_rabbitmq"
+    container_name: "geosight_rabbitmq"
     volumes:
       - rabbitmq:/var/lib/rabbitmq
     restart: on-failure
 
   db:
     image: kartoza/postgis:13.0
-    container_name: "gap_db"
+    container_name: "geosight_db"
     volumes:
       - database:/var/lib/postgresql/13
     environment:
@@ -60,11 +60,11 @@ services:
 
   dbbackups:
     image: kartoza/pg-backup:13.0
-    container_name: "gap_dbbackups"
+    container_name: "geosight_dbbackups"
     environment:
       # take care to let the project name below match that
       # declared in the top of the makefile
-      - DUMPPREFIX=PG_GAP
+      - DUMPPREFIX=PG_GeoSight
       # These are all defaults anyway, but setting explicitly in
       # case we ever want to ever use different credentials
       - POSTGRES_USER=${DATABASE_USERNAME:-docker}
@@ -78,19 +78,19 @@ services:
 
   django:
     <<: *default-common-django
-    container_name: "gap_django"
+    container_name: "geosight_django"
     command: 'uwsgi --ini /uwsgi.conf'
 
   # Celery worker that executes celery tasks created by Django.
   worker:
     <<: *default-common-django
-    container_name: "gap_worker"
+    container_name: "geosight_worker"
     command: celery -A core.celery:app worker -B -l debug
     entrypoint: [ ]
 
   nginx:
-    image: kartoza/gap_nginx:${NGINX_TAG:-0.0.1}
-    container_name: "gap_nginx"
+    image: kartoza/geosight_nginx:${NGINX_TAG:-0.0.1}
+    container_name: "geosight_nginx"
     hostname: nginx
     volumes:
       - static-data:/home/web/static:ro
@@ -102,7 +102,7 @@ services:
   # one drive service
   onedrive:
     image: driveone/onedrive:latest
-    container_name: "gap_onedrive"
+    container_name: "geosight_onedrive"
     restart: unless-stopped
     environment:
       - ONEDRIVE_UID=${PUID:-1000}

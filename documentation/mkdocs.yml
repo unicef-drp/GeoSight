@@ -1,8 +1,8 @@
-site_name: GAP 1.0
+site_name: GeoSight 1.0
 site_description: 'A platform provides a way to understand risk modalities across different geographic contexts.'
 site_author: 'Tim Sutton'
-repo_name: 'unicef-drp/gis_geo_analytics-platform'
-repo_url: 'https://github.com/unicef-drp/gis_geo_analytics-platform'
+repo_name: 'unicef-drp/GeoSight'
+repo_url: 'https://github.com/unicef-drp/GeoSight'
 copyright: Copyright Tim Sutton and Contributors, 2022
 
 # Navigation

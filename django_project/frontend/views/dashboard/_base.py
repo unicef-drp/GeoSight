@@ -2,7 +2,7 @@
 from abc import ABC
 
 from frontend.views._base import BaseView
-from gap_data.models.dashboard.widget import LayerUsed
+from geosight.data.models.dashboard.widget import LayerUsed
 
 
 class BaseDashboardView(ABC, BaseView):

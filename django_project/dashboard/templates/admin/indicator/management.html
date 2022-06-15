@@ -1,0 +1,210 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet"
+          href="{% static 'css/admin/indicator/management.css' %}"
+          type="text/css" media="screen, projection"/>
+{% endblock stylesheet %}
+{% block content %}
+    {% csrf_token %}
+    <div class="section">
+        <div style="margin: 10px 10px">
+            <div class="global-harvester-button">
+                <a href="{% url "meta-ingestor-view" %}">
+                    <button class=" main-button pull-right">
+                        Meta Ingestor
+                    </button>
+                </a>
+            </div>
+            <div id="drop-area-section">
+                <div id="drop-area">
+                    <div>
+                        <div class="drop-area-header">
+                            <div class="main-button-group row">
+                                <button
+                                        id="multi-edit" class="white-button"
+                                        style="margin-left: -1px">
+                                    Multi Edit
+                                </button>
+                            </div>
+                            {# Orders button #}
+                            <form id="orders-buttons" method="post"
+                                  class="row">
+                                {% csrf_token %}
+                                <input id="order-input"
+                                       type="text"
+                                       name="orders"
+                                       style="display: none">
+                                <button id="cancel-order"
+                                        class="white-button">
+                                    Cancel
+                                </button>
+                                <button id="submit-order"
+                                        class="main-button">
+                                    Save New Order
+                                </button>
+                            </form>
+                            {# Multi edit #}
+                            <div id="multi-edit-buttons">
+                                <button id="cancel-multi-edit"
+                                        class="white-button">
+                                    Cancel
+                                </button>
+                                <button id="to-multi-edit" class="main-button"
+                                        data-url="{% url 'indicator-multi-edit-view' %}"
+                                        disabled>
+                                    Multi Edit Form
+                                </button>
+                            </div>
+                        </div>
+                        <ul id="group-list" class="block block-group">
+                            {% for group, indicators in indicators_in_groups.items %}
+                                <li class="group-row" data-group="{{ group }}">
+                                    <div class="block-content group-name">
+                                        <div class="checkbox-indicator">
+                                            <input type="checkbox">
+                                        </div>
+                                        <span><b>{{ group }}</b></span>
+                                    </div>
+                                    <ul class="indicator-list">
+                                        {% for indicator in indicators %}
+                                            <li id="data-{{ indicator.id }}"
+                                                class="block block-value"
+                                                data-id="{{ indicator.id }}">
+                                                <div class="block-content row">
+                                                    <div class="col indicator-name">
+                                                        <div class="checkbox-indicator">
+                                                            <input type="checkbox">
+                                                        </div>
+                                                        <span class="indicator-name"> {{ indicator.name }}</span>
+                                                    </div>
+                                                    <div style="margin-right: 10px">
+                                                        {% if not indicator.harvester or indicator.harvester.harvester_class != external_exposed_api %}
+                                                            {% if indicator.harvester and  indicator.harvester.is_run %}
+                                                                <div style="border: 1px solid var(--primary-color); padding: 5px 15px">
+                                                                    Is
+                                                                    Harvesting
+                                                                </div>
+                                                            {% elif indicator.harvester %}
+                                                                <form action="{% url "harvester-indicator-detail"  indicator.id %}"
+                                                                      method="post"
+                                                                      enctype="multipart/form-data"
+                                                                      class="pull-right">
+                                                                    {% csrf_token %}
+                                                                    <button class="main-button"
+                                                                            type="submit">
+                                                                        Harvest
+                                                                        Now
+                                                                    </button>
+                                                                </form>
+                                                            {% else %}
+                                                                <a href="{% url "indicator-value-form-manager"  indicator.id %}">
+                                                                    <button class="main-button"
+                                                                            type="submit">
+                                                                        Data
+                                                                        Capture
+                                                                        Form
+                                                                    </button>
+                                                                </a>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </div>
+                                                    <div>
+                                                        <div class="navbar-options">
+                                                            <a data-toggle="dropdown"
+                                                               role="button"
+                                                               aria-haspopup="true"
+                                                               aria-expanded="true">
+                                                                <i class="fa fa-cog"
+                                                                   aria-hidden="true"></i>
+                                                            </a>
+                                                            <ul class="dropdown-menu box-shadow-bottom">
+                                                                <li>
+                                                                    <a href="{% url "indicator-edit"  indicator.id %}">
+                                                                        Edit
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="{% url "indicator-value-mapview-manager"  indicator.id %}">
+                                                                        Value
+                                                                        Manager
+                                                                        Map
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="{% url "indicator-value-form-manager"  indicator.id %}">
+                                                                        Value
+                                                                        Manager
+                                                                        Form
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    {% if indicator.harvester %}
+                                                                        <a href="{% url "harvester-indicator-detail"  indicator.id %}">Harvester</a>
+                                                                    {% else %}
+                                                                        <a class="create-harvester create"
+                                                                           href="{{ indicator.create_harvester_url }}">Create
+                                                                            Harvester</a>
+                                                                    {% endif %}
+                                                                </li>
+                                                                <li>
+                                                                    <a href="{% url "indicator-management-new" %}?from={{ indicator.id }}"
+                                                                       class="create">
+                                                                        Create
+                                                                        From
+                                                                        This
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a class="delete-harvester"
+                                                                       href="{% url "indicator-detail-api"  indicator.id %}"
+                                                                       onclick="deleteClick(this); return false;">Delete</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block content_title %}
+    {{ content_title|safe }}
+    <a href="{% url "indicator-management-new" %}">
+        <button class="white-button pull-right"><i class="fa fa-plus-circle"
+                                                   aria-hidden="true"></i>
+            Create new
+        </button>
+    </a>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript"
+            src="{% static 'js/admin/indicator/management.js' %}"></script>
+    <script>
+      $('#nav-indicator-management').addClass('active')
+
+      function deleteClick(element) {
+        if (confirm('Are you sure you want to delete this indicator?')) {
+          $.ajax({
+            url: $(element).attr('href'),
+            method: 'DELETE',
+            success: function () {
+              window.location.reload()
+            },
+            beforeSend: beforeAjaxSend
+          });
+          return false;
+        }
+        return false;
+      }
+    </script>
+{% endblock %}

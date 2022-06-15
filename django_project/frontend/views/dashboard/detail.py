@@ -2,7 +2,7 @@
 from django.shortcuts import get_object_or_404
 
 from frontend.views.dashboard._base import BaseDashboardView
-from gap_data.models.dashboard import Dashboard
+from geosight.data.models.dashboard import Dashboard
 
 
 class DashboardDetailView(BaseDashboardView):
