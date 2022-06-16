@@ -70,10 +70,11 @@ export function remove(payload) {
  * Filter indicators.
  * It will use filters data and filter the indicators data.
  */
-export function filter() {
+export function filter(query) {
   return {
     name: INDICATOR_ACTION_NAME,
-    type: INDICATOR_ACTION_TYPE_FILTER
+    type: INDICATOR_ACTION_TYPE_FILTER,
+    query: query
   };
 }
 

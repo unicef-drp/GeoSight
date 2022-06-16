@@ -40,10 +40,14 @@
 
   .FilterGroup {
     border: 1px solid $base-color;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    padding: 20px 5px 10px 5px;
+    margin-top: 20px;
+    padding: 15px 5px 10px 5px;
     position: relative;
+
+    .MuiPaper-root {
+      margin-top: 5px !important;
+      margin-bottom: 0 !important;
+    }
 
     .FilterGroupOption {
       height: 18px;

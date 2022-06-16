@@ -4,6 +4,8 @@
 
 import React, { Fragment, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
+import parser from "js-sql-parser";
+import { isArray } from "leaflet/src/core/Util";
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import Tooltip from '@mui/material/Tooltip'
 import {
@@ -13,7 +15,6 @@ import {
   OutlinedInput,
   Select
 } from "@mui/material"
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
 import MenuItem from '@mui/material/MenuItem';
 import Accordion from '@mui/material/Accordion'
@@ -21,34 +22,23 @@ import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
-import Actions from '../../../../redux/actions'
+import Switch from '@mui/material/Switch';
 
 import {
   IDENTIFIER,
   INIT_DATA,
   OPERATOR,
   queryIndicator,
-  returnDataToExpression,
-  returnSqlToDict,
+  returnWhereToDict,
   TYPE,
   WHERE_OPERATOR
 } from "../../../../utils/queryExtraction"
 
+import Actions from '../../../../redux/actions'
+import { capitalize } from "../../../../utils/main";
 import FilterEditorModal from './Modal'
-import Switch from '@mui/material/Switch';
 
 import './style.scss'
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
 
 /**
  * Control All Filter.
@@ -65,15 +55,16 @@ export function FilterControl({ filtersData, indicatorFields }) {
    * Update Filter
    */
   const updateFilter = () => {
-    setFilters({ ...filters })
-    dispatcher(Actions.Filters.update(filters));
-    dispatcher(Actions.Indicators.filter());
+    dispatcher(
+      Actions.Indicators.filter(filters)
+    );
   }
 
   /** --------------------------------------------------
    ** Render filter group.
    ** -------------------------------------------------- **/
   const FilterGroup = ({ where, upperWhere }) => {
+    const [operator, setOperator] = useState(where.operator)
 
     const addFolder = () => {
       where.queries.push(INIT_DATA.GROUP())
@@ -84,6 +75,7 @@ export function FilterControl({ filtersData, indicatorFields }) {
       updateFilter()
     }
     const switchWhere = (operator) => {
+      setOperator(operator);
       where.operator = operator;
       updateFilter()
     }
@@ -92,9 +84,9 @@ export function FilterControl({ filtersData, indicatorFields }) {
       <div className='FilterGroupOption'>
         <div className='FilterOperatorToggler' onClick={
           () => {
-            switchWhere(where.operator === WHERE_OPERATOR.AND ? WHERE_OPERATOR.OR : WHERE_OPERATOR.AND)
+            switchWhere(operator === WHERE_OPERATOR.AND ? WHERE_OPERATOR.OR : WHERE_OPERATOR.AND)
           }
-        }>{where.operator}</div>
+        }>{operator}</div>
         <div className='FilterGroupName'>
         </div>
         <Tooltip title="Add New Filter">
@@ -125,40 +117,49 @@ export function FilterControl({ filtersData, indicatorFields }) {
   /** --------------------------------------------------
    ** Render input of filter.
    ** -------------------------------------------------- **/
-  const FilterInput = ({ where, upperWhere }) => {
-    const [expanded, setExpanded] = useState(where.expanded)
-    const [active, setActive] = useState(where.active)
+  const FilterInput = ({ where }) => {
+    const [expanded, setExpanded] = useState(
+      where.expanded ? where.expanded : false
+    )
+    const [active, setActive] = useState(
+      where.active ? where.active : false
+    )
     const [open, setOpen] = useState(false)
 
     const updateExpanded = () => {
       where.expanded = !expanded
-      updateFilter()
+      setExpanded(!expanded)
     }
     const updateActive = () => {
       where.active = !active
+      setActive(!active)
       updateFilter()
     }
     const update = (newWhere) => {
-      where.name = newWhere.name
       where.query = newWhere.query
       updateFilter()
     }
+    const field = where.field
+    const operator = where.operator
+    const value = where.value
+    const indicator = indicatorFields.filter((indicatorField) => {
+      return indicatorField.id === field
+    })[0]
+    const fieldName = indicator?.name
+
     /**
      * Return filter input
      */
     const FilterInputElement = () => {
-      const sqlValue = returnSqlToDict(where.query)
-      const field = sqlValue.field
-      const operator = sqlValue.operator
-      const value = sqlValue.value
-
-      const indicator = indicatorFields.filter((indicatorField) => {
-        return indicatorField.id === field
-      })[0]
-      const fieldName = indicator?.name
       const [currentValue, setCurrentValue] = useState(value)
-      return <div
-        className={value !== currentValue ? 'FilterInputWrapperChanged' : ''}>
+      const updateValue = (value) => {
+        const cleanValue = !isNaN(value) ? Number(value) : value;
+        setCurrentValue(cleanValue)
+        where.value = cleanValue
+        updateFilter()
+      }
+
+      return <div>
         {fieldName ? fieldName : field} {OPERATOR[operator]}
         <div className='FilterInputWrapper'>
           {
@@ -168,7 +169,7 @@ export function FilterControl({ filtersData, indicatorFields }) {
                 multiple
                 value={currentValue}
                 onChange={(event) => {
-                  setCurrentValue(event.target.value)
+                  updateValue(event.target.value);
                 }
                 }
                 input={<OutlinedInput label="Tag"/>}
@@ -188,7 +189,7 @@ export function FilterControl({ filtersData, indicatorFields }) {
                     value={currentValue}
                     onChange={
                       (event) => {
-                        setCurrentValue(event.target.value)
+                        updateValue(event.target.value);
                       }
                     }
                   >
@@ -199,23 +200,21 @@ export function FilterControl({ filtersData, indicatorFields }) {
                     )) : ''}
                   </Select> :
                   <Input
+                    key="input1"
                     className='FilterInput'
                     type="text"
                     placeholder="Value"
                     value={currentValue}
                     onChange={(event) => {
-                      setCurrentValue(event.target.value)
-                    }}/>)
+                      updateValue(event.target.value);
+                    }}/>
+              )
 
           }
-          <CheckCircleIcon className='MuiButtonLike' onClick={() => {
-            where.query = returnDataToExpression(field, operator, currentValue)
-            where.active = true;
-            updateFilter();
-          }}/>
         </div>
       </div>
     }
+
     return <Accordion
       className='FilterExpression'
       expanded={expanded}
@@ -225,7 +224,7 @@ export function FilterControl({ filtersData, indicatorFields }) {
       >
         <Switch
           size="small"
-          checked={where.active}
+          checked={active}
           onClick={(event) => {
             event.stopPropagation()
           }}
@@ -233,7 +232,8 @@ export function FilterControl({ filtersData, indicatorFields }) {
             updateActive(event.target.checked)
           }}
         />
-        {where.name ? where.name : 'Filter'}
+        {fieldName ?
+          <span>{capitalize(fieldName.split('.')[1])}</span> : 'Loading'}
         <ModeEditIcon
           className='FilterEdit'
           onClick={(event) => {
@@ -246,10 +246,7 @@ export function FilterControl({ filtersData, indicatorFields }) {
           fields={indicatorFields} update={update}/>
       </AccordionSummary>
       <AccordionDetails>
-        {
-          !where.query ? 'Filter not defined' :
-            <FilterInputElement/>
-        }
+        <FilterInputElement/>
       </AccordionDetails>
     </Accordion>
   }
@@ -279,35 +276,44 @@ export function FilterControl({ filtersData, indicatorFields }) {
  * Filter section.
  */
 export default function FilterSection() {
-  const { filters, indicators } = useSelector(state => state.dashboard.data)
+  const { indicators } = useSelector(state => state.dashboard.data);
+  const query = 'SELECT * FROM indicator_49 INNER JOIN indicator_37 ON indicator_49.geometry_code=indicator_37.geometry_code WHERE indicator_49.needs__water>0 AND (indicator_49.geometry_code IN (\'\') AND indicator_49.needs__water>0)';
+  const sql = parser.parse(query);
+
+  let filters = returnWhereToDict(sql.value.where)
+  if (isArray(filters)) {
+    filters = {
+      ...INIT_DATA.GROUP(),
+      queries: filters,
+      operator: filters.filter(query => {
+        return query.type === TYPE.EXPRESSION;
+      })[0]?.whereOperator
+    }
+  }
 
   // get indicator fields
   let indicatorFields = []
   let indicatorFieldsIds = []
   indicators.map((indicator, idx) => {
-    const data = indicator.rawData;
-    if (data) {
-      const indicatorData = queryIndicator(data)[0]
-      for (const [key, value] of Object.entries(indicatorData)) {
+    if (indicator.rawData) {
+      const indicatorData = queryIndicator(indicator.rawData)[0]
+      Object.keys(indicatorData).forEach(key => {
         const id = `${IDENTIFIER}${indicator.id}.${key}`
-        if (!indicatorFieldsIds.includes(id)) {
-          indicatorFields.push({
-            'id': id,
-            'name': `${indicator.name}.${key}`,
-            'group': indicator.name,
-            'data': [
-              ...new Set(
-                data.map(data => {
-                  return data[key]
-                }))
-            ]
-          })
-          indicatorFieldsIds.push(id)
-        }
-      }
+        indicatorFields.push({
+          'id': id,
+          'name': `${indicator.name}.${key}`,
+          'group': indicator.name,
+          'data': [...new Set(
+            indicator.rawData.map(data => {
+              return data[key]
+            }))
+          ]
+        })
+      })
     }
     indicatorFields = [...new Set(indicatorFields)]
   })
+
   return <div className='FilterControl'>
     <FilterControl
       filtersData={Object.keys(filters).length ? filters : INIT_DATA.GROUP()}

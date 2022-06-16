@@ -37,16 +37,16 @@
     display: flex;
     flex-direction: column;
 
+    .filter-wrapper {
+      overflow-y: auto;
+    }
+
     &.DATASET .filter-wrapper {
       display: none !important;
     }
 
     &.FILTER .dataset-wrapper {
       display: none !important;
-    }
-
-    .filter-wrapper {
-      padding-top: 20px;
     }
   }
 
@@ -143,6 +143,7 @@
 
     > div.Mui-expanded {
       flex-grow: 1;
+      margin: 0 !important;
     }
 
     > .MuiPaper-root {
@@ -177,10 +178,6 @@
 
     .MuiCollapse-hidden {
       height: 0 !important;
-    }
-
-    .Mui-expanded {
-      margin: 0 !important;
     }
 
     .MuiAccordionSummary-root {

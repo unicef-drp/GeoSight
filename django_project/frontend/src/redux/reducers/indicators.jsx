@@ -32,14 +32,13 @@ export default function indicatorReducer(state = initialState, action) {
 
     // For filter
     case INDICATOR_ACTION_TYPE_FILTER: {
-      const filters = action.filters;
-      if (filters) {
+      const { query } = action;
+      if (query) {
         let newState = [...state];
-        let data = queryingFromDictionary(state, filters)
+        let data = queryingFromDictionary(state, query)
         let geoms = data.map((data) => {
           return data.geometry_code
         })
-        console.log(geoms)
         newState.forEach((indicator) => {
           indicator.data = indicator.rawData.filter(properties => {
             return geoms.includes(properties.geometry_code);
@@ -52,8 +51,10 @@ export default function indicatorReducer(state = initialState, action) {
     default:
       const data = APIReducer(state, action, INDICATOR_ACTION_NAME)
       const referenceLayer = action.referenceLayer;
+
       if (state[action.id]
         && !state[action.id].data
+        && Object.keys(data.data).length !== 0
         && referenceLayer
         && referenceLayer.data
         && referenceLayer.data.features) {
@@ -62,6 +63,7 @@ export default function indicatorReducer(state = initialState, action) {
         referenceLayer?.data?.features.forEach(function (feature) {
           geoms[feature.properties.identifier] = feature.properties;
         })
+
 
         const newData = [];
         data.data.forEach(function (row) {

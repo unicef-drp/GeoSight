@@ -35,7 +35,7 @@ export function Indicators() {
   useEffect(() => {
     if (indicators) {
       indicators.forEach(function (indicator, idx) {
-        Actions.Indicators.fetch(dispatch, idx, indicator.url)
+        dispatch(Actions.Indicators.fetch(dispatch, idx, indicator.url));
       })
     }
   }, [indicators, referenceLayer]);

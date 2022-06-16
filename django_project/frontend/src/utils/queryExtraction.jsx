@@ -29,17 +29,12 @@ export const INIT_DATA = {
   GROUP: () => {
     return Object.assign({}, {
       type: TYPE.GROUP,
-      operator: WHERE_OPERATOR.AND,
       queries: []
     })
   },
   WHERE: () => {
     return Object.assign({}, {
-      name: '',
-      type: TYPE.EXPRESSION,
-      query: '',
-      active: false,
-      expanded: true
+      type: TYPE.EXPRESSION
     })
   }
 }
@@ -50,19 +45,6 @@ export const INIT_DATA = {
  */
 export function queryIndicator(indicatorData) {
   return alasql('SELECT * FROM ?', [indicatorData])
-}
-
-/**
- * Change indicators to indicatorsByID
- * @param {array} indicators
- */
-export function indicatorsDataToById(indicators) {
-  const indicatorsByID = {}
-  indicators.forEach((indicator) => {
-    indicator.data = indicator.rawData;
-    indicatorsByID[indicator.id] = indicator.rawData;
-  });
-  return indicatorsByID
 }
 
 /**
@@ -83,7 +65,7 @@ function returnWhere(where) {
         })`
       }
     case TYPE.EXPRESSION:
-      return where.active && where.query ? where.query : ''
+      return where.active ? returnDataToExpression(where.field, where.operator, where.value) : ''
 
   }
 }
@@ -115,6 +97,61 @@ export function returnSqlToDict(query) {
     operator: operator,
     value: value
   }
+}
+
+/**
+ * Return SQL in human way
+ */
+export function returnWhereToDict(where, upperWhere) {
+  let fromQuery = []
+  if (where) {
+    switch (where.type) {
+      case "ComparisonBooleanPrimary": {
+        const field = where?.left?.value
+        let operator = where?.operator
+        let value = where?.right?.value
+        value = value ? value.replaceAll("'", '') : value
+        return {
+          ...INIT_DATA.WHERE(),
+          field: field,
+          operator: operator,
+          value: value,
+          whereOperator: upperWhere.operator
+        }
+      }
+      case "InExpressionListPredicate":
+        const field = where?.left?.value
+        let operator = 'IN'
+        let value = where?.right?.value
+        value = value.map(el => el.value.replaceAll("'", '').replaceAll('"', '')).filter(el => {
+          return el
+        })
+        return {
+          ...INIT_DATA.WHERE(),
+          field: field,
+          operator: operator,
+          value: value,
+          whereOperator: upperWhere.operator
+        }
+      case "OrExpression":
+        return [].concat(returnWhereToDict(where.left, where)).concat(returnWhereToDict(where.right, where))
+      case "AndExpression":
+        return [].concat(returnWhereToDict(where.left, where)).concat(returnWhereToDict(where.right, where))
+      case "SimpleExprParentheses":
+        let queries = []
+        where.value.value.forEach(query => {
+          queries = queries.concat(returnWhereToDict(query, where))
+        })
+        return {
+          ...INIT_DATA.GROUP(),
+          queries: queries,
+          operator: queries.filter(query => {
+            return query.type === TYPE.EXPRESSION;
+          })[0]?.whereOperator
+        }
+    }
+  }
+  return fromQuery;
 }
 
 /**
@@ -156,14 +193,15 @@ export function queryingFromDictionary(indicators, dictionary) {
       dataList.push(data);
     }
   })
+
   const where = returnWhere(dictionary);
   if (where) {
     query += ' WHERE ' + where;
   }
-  console.log(query)
   if (dataList.length === 0) {
     return []
   }
+
   try {
     return alasql(query, dataList)
   } catch (err) {
