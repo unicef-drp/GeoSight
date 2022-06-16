@@ -32,7 +32,7 @@ export const DEFINITION = {
  * @param {string} data Data of widget
  */
 export function Widget({ idx, data }) {
-  const { indicators } = useSelector(state => state.dashboard.data);
+  const indicators = useSelector(state => state.indicatorData);
   const [showInfo, setShowInfo] = useState(false);
   const {
     name, description, type,

@@ -1,5 +1,4 @@
 import { APIReducer } from "../reducers_api";
-import { queryingFromDictionary } from "../../utils/queryExtraction"
 
 /**
  * INDICATOR reducer
@@ -8,7 +7,6 @@ import { queryingFromDictionary } from "../../utils/queryExtraction"
 export const INDICATOR_ACTION_NAME = 'INDICATOR';
 export const INDICATOR_ACTION_TYPE_ADD = 'INDICATOR/ADD';
 export const INDICATOR_ACTION_TYPE_REMOVE = 'INDICATOR/REMOVE';
-export const INDICATOR_ACTION_TYPE_FILTER = 'INDICATOR/FILTER';
 
 const initialState = []
 export default function indicatorReducer(state = initialState, action) {
@@ -28,25 +26,6 @@ export default function indicatorReducer(state = initialState, action) {
         }
       })
       return newState
-    }
-
-    // For filter
-    case INDICATOR_ACTION_TYPE_FILTER: {
-      const { query } = action;
-      if (query) {
-        let newState = [...state];
-        let data = queryingFromDictionary(state, query)
-        let geoms = data.map((data) => {
-          return data.geometry_code
-        })
-        newState.forEach((indicator) => {
-          indicator.data = indicator.rawData.filter(properties => {
-            return geoms.includes(properties.geometry_code);
-          })
-        });
-        return newState
-      }
-      return state
     }
     default:
       const data = APIReducer(state, action, INDICATOR_ACTION_NAME)

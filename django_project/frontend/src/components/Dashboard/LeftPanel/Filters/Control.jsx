@@ -56,7 +56,7 @@ export function FilterControl({ filtersData, indicatorFields }) {
    */
   const updateFilter = () => {
     dispatcher(
-      Actions.Indicators.filter(filters)
+      Actions.IndicatorsData.filter(filters)
     );
   }
 

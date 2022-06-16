@@ -21,6 +21,7 @@ export function Indicators() {
   const {
     indicators, referenceLayer
   } = useSelector(state => state.dashboard.data);
+  const indicatorData = useSelector(state => state.indicatorData);
   const [currentIndicator, setCurrentIndicator] = useState(null);
 
   const change = (checked, id) => {
@@ -35,15 +36,17 @@ export function Indicators() {
   useEffect(() => {
     if (indicators) {
       indicators.forEach(function (indicator, idx) {
-        dispatch(Actions.Indicators.fetch(dispatch, idx, indicator.url));
+        if (!indicator.data) {
+          dispatch(Actions.Indicators.fetch(dispatch, idx, indicator.url));
+        }
       })
     }
   }, [indicators, referenceLayer]);
 
   // Get selected indicator data
   let selectedIndicatorData = null;
-  if (indicators && indicators[currentIndicator]) {
-    selectedIndicatorData = indicators[currentIndicator].data;
+  if (indicators && indicatorData[currentIndicator]) {
+    selectedIndicatorData = indicatorData[currentIndicator].data;
   }
 
   return (

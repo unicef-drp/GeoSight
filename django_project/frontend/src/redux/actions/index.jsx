@@ -4,6 +4,7 @@ import Dashboard from './dashboard'
 import Extent from './extent'
 import Filters from './filters'
 import Indicators from './indicators'
+import IndicatorsData from './indicatorsData'
 import Map from './map'
 import ReferenceLayer from './referenceLayer'
 import Widget from './widget'
@@ -15,6 +16,7 @@ const Actions = {
   Extent,
   Filters,
   Indicators,
+  IndicatorsData,
   Map,
   ReferenceLayer,
   Widget
