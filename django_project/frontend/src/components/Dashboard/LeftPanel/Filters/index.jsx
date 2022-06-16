@@ -15,21 +15,15 @@ import './style.scss';
 
 /**
  * Filters Accordion.
- * @param {bool} expanded Is the accordion expanded.
- * @param {function} handleChange Function when the accordion show.
  */
-export default function FiltersAccordion({ expanded, handleChange }) {
+export default function FiltersAccordion() {
   const { filters } = useSelector(state => state.dashboard.data);
 
   return (
     <Accordion
       className='FilterAccordion'
-      expanded={expanded}
-      onChange={handleChange('filters')}
+      expanded={true}
     >
-      <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
-        Filters
-      </AccordionSummary>
       <AccordionDetails>
         {
           filters !== undefined ? <FilterSection/>

@@ -33,6 +33,45 @@
     }
   }
 
+  .dashboard__content-wrapper {
+    display: flex;
+    flex-direction: column;
+
+    &.DATASET .filter-wrapper {
+      display: none !important;
+    }
+
+    &.FILTER .dataset-wrapper {
+      display: none !important;
+    }
+
+    .filter-wrapper {
+      padding-top: 20px;
+    }
+  }
+
+  .dashboard__content-wrapper__navbar {
+    background: white;
+    display: flex;
+    padding: 12px 0 0 0;
+    border-bottom: 1px solid #ddd;
+
+    div {
+      cursor: pointer;
+      padding: 0 1rem 5px;
+
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+
+    .active {
+      color: $base-color;
+      border-bottom: 2px solid $base-color;
+      font-weight: 500;
+    }
+  }
+
   &.expanded {
     .dashboard__content-wrapper {
       height: 100% !important;
@@ -84,10 +123,12 @@
   }
 
   // For accordion
-  .dashboard__content-wrapper {
+  .dashboard__content-wrapper__inner {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    padding-top: 10px;
 
     .reference-dataset {
       &.Mui-expanded {
