@@ -13,7 +13,6 @@ import ReferenceLayerSection from './ReferenceLayer'
 import FiltersAccordion from './Filters'
 
 import './style.scss';
-import Edit from "./edit";
 
 /**
  * Left panel.
@@ -21,7 +20,6 @@ import Edit from "./edit";
 export default function LeftPanel() {
   const {
     basemapsLayers,
-    contextLayers,
     defaultBasemapLayer
   } = useSelector(state => state.dashboard.data);
   const [state, setState] = useState(LEFT);

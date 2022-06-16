@@ -4,6 +4,12 @@
 
 @import '../../../../app/variables';
 
+.FilterAccordion {
+  .MuiAccordionDetails-root {
+    padding: 0 8px 16px;
+  }
+}
+
 .dashboard__filter {
   margin-bottom: 1rem;
 
@@ -24,6 +30,194 @@
 
 .dashboard__filter__content {
   padding-left: 1rem;
+}
+
+/* ==========================================================================
+   FILTERS CONTROL COMPONENT
+   ========================================================================== */
+.FilterControl {
+  font-size: 0.8rem;
+
+  .FilterGroup {
+    border: 1px solid $base-color;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding: 20px 5px 10px 5px;
+    position: relative;
+
+    .FilterGroupOption {
+      height: 18px;
+      position: absolute;
+      top: -7px;
+      left: 0;
+      width: 100%;
+      display: flex;
+
+      .FilterGroupName {
+        flex-grow: 1;
+      }
+
+      .FilterGroupEnd {
+        width: 5px;
+      }
+
+      .MuiButtonLike {
+        color: $base-color;
+        background: white;
+        height: 100%;
+        width: 24px;
+
+        &:hover {
+          opacity: 1;
+          color: #555;
+        }
+      }
+
+      .FilterOperatorToggler {
+        color: white;
+        padding: 2px 10px;
+        margin-left: 10px;
+        font-size: 12px;
+        margin-top: -2px;
+        background: $base-color;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .FilterNote {
+    color: $base-black-color;
+    font-style: italic;
+    opacity: $base-hovered-opacity;
+  }
+
+  .MuiPaper-root {
+    .MuiCollapse-vertical {
+      height: auto !important;
+    }
+
+    &::before {
+      display: none;
+    }
+  }
+
+  .FilterExpression {
+    background: none;
+
+    .MuiAccordionSummary-root {
+      background: #eee;
+      padding: 5px !important;
+      border: 1px solid #ddd;
+      margin-top: -1px;
+
+      &.Mui-focusVisible {
+        background: #ddd !important;
+      }
+
+      .MuiCheckbox-root {
+        padding: 0;
+        margin-right: 5px;
+
+        svg {
+          background-color: white;
+          border: 1px solid #ddd;
+        }
+      }
+
+      .MuiSwitch-root {
+        margin-top: -3px;
+        margin-right: 3px;
+      }
+
+      .FilterEdit {
+        margin-top: 2px;
+      }
+
+      .MuiSvgIcon-root {
+        height: 0.8rem;
+        width: 0.8rem;
+      }
+    }
+
+    .MuiAccordionDetails-root {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-top: -1px;
+    }
+  }
+
+  .FilterInputWrapperChanged {
+    .MuiSvgIcon-root {
+      color: green !important;
+    }
+  }
+
+  .FilterInputWrapper {
+    display: flex;
+    margin-top: 5px;
+    width: 100%;
+    border: 1px solid $base-color;
+
+    .MuiSvgIcon-root {
+      color: #ddd;
+      margin: 7px 3px;
+      width: 16px;
+    }
+
+    .MuiOutlinedInput-root {
+      .MuiSelect-select {
+        padding: 0;
+      }
+
+      fieldset {
+        display: none;
+      }
+
+      .MuiSvgIcon-root {
+        margin: 0;
+      }
+    }
+  }
+
+  .FilterInput {
+    padding: 2px 5px;
+    flex-grow: 1;
+
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+}
+
+.FilterEditModal {
+  .MuiFormControl-root {
+    margin-top: 0 !important;
+  }
+
+  .MuiInput-root {
+    width: 100%;
+  }
+
+  .FilterEditModalQueryWrapper {
+    margin-top: 30px;
+  }
+
+  .FilterEditModalQuery {
+    display: flex;
+    background: $base-alpha-color;
+    padding: 10px;
+
+    .MuiOutlinedInput-root {
+      background-color: white;
+    }
+  }
+
+  .MuiButton-root {
+    margin-top: 20px;
+    width: 100%;
+  }
 }
 
 /* ==========================================================================

@@ -1,6 +1,48 @@
 import alasql from "alasql";
+import parser from "js-sql-parser";
 
 export const IDENTIFIER = 'indicator_'
+export const JOIN_IDENTIFIER = 'geometry_code'
+
+/** TYPE WHERE SECTION */
+export const TYPE = {
+  GROUP: 'GROUP',
+  EXPRESSION: 'EXPRESSION'
+}
+export const OPERATOR = {
+  'IN': 'is any of',
+  '=': 'is equal',
+  '>': 'is more than',
+  '>=': 'is more and equal',
+  '<': 'is less than',
+  '<=': 'is less and equal',
+}
+
+/** OPERATOR BETWEEN WHERE */
+export const WHERE_OPERATOR = {
+  AND: 'AND',
+  OR: 'OR'
+}
+
+/** INIT DATA */
+export const INIT_DATA = {
+  GROUP: () => {
+    return Object.assign({}, {
+      type: TYPE.GROUP,
+      operator: WHERE_OPERATOR.AND,
+      queries: []
+    })
+  },
+  WHERE: () => {
+    return Object.assign({}, {
+      name: '',
+      type: TYPE.EXPRESSION,
+      query: '',
+      active: false,
+      expanded: true
+    })
+  }
+}
 
 /**
  * Return indicator query
@@ -24,57 +66,107 @@ export function indicatorsDataToById(indicators) {
 }
 
 /**
- * Change indicators to indicatorsByID
- * @param {array} indicators
+ * Return where
+ * @param where
  */
-export function indicatorsToById(indicators) {
-  const indicatorsByID = {}
-  indicators.forEach((indicator) => {
-    indicator.data = indicator.rawData;
-    indicatorsByID[indicator.id] = indicator;
-  });
-  return indicatorsByID
+function returnWhere(where) {
+  switch (where.type) {
+    case TYPE.GROUP:
+      const queries = where.queries.map(query => {
+        return returnWhere(query)
+      }).filter(el => el.length)
+      if (queries.length === 0) {
+        return ''
+      } else {
+        return `(${
+          queries.join(` ${where.operator} `)
+        })`
+      }
+    case TYPE.EXPRESSION:
+      return where.active && where.query ? where.query : ''
+
+  }
 }
 
 /**
- * Return data with querying
- * @param {dict} indicatorsByID
- * @param {str} query
+ * Return SQL in human way
  */
-export function queryFilter(indicatorsByID, query) {
-  var separators = ['FROM ' + IDENTIFIER, 'JOIN ' + IDENTIFIER];
-  const indicators_from = query.split(new RegExp(separators.join('|'), 'g'))
-  const indicators = [];
-  indicators_from.forEach((indicator, idx) => {
-    const indicatorData = indicatorsByID[indicator.split(" ")[0]]
-    if (indicatorData) {
-      indicators.push(indicatorData)
+export function returnSqlToDict(query) {
+  const sql = parser.parse(
+    `SELECT *
+     FROM test ${query ? 'WHERE ' + query : ''}`)
+
+  const field = sql?.value?.where?.left?.value
+  let operator = sql?.value?.where?.operator
+  let value = sql?.value?.where?.right?.value
+  try {
+    value = value.replaceAll("'", '')
+  } catch (err) {
+
+  }
+  if (sql?.value?.where?.type === "InExpressionListPredicate") {
+    operator = 'IN'
+    value = value.map(el => el.value.replaceAll("'", '').replaceAll('"', '')).filter(el => {
+      return el
+    })
+  }
+  return {
+    field: field,
+    operator: operator,
+    value: value
+  }
+}
+
+/**
+ * Return DATA in SQL
+ */
+export function returnDataToExpression(field, operator, value) {
+  const cleanOperator = operator === 'IN' ? ' ' + operator + ' ' : operator
+  let cleanValue = !value ? 0 : (isNaN(value) ? `'${value}'` : value);
+  if (operator === 'IN') {
+    if (value) {
+      cleanValue = value.map(val => (isNaN(val) ? `'${val}'` : val)).join(',')
+    }
+    if (cleanValue) {
+      cleanValue = `(${cleanValue})`
+    } else {
+      cleanValue = `('')`
+    }
+  }
+  return `${field}${cleanOperator}${cleanValue}`
+}
+
+/**
+ * Return query in dictionary
+ */
+export function queryingFromDictionary(indicators, dictionary) {
+  let query = 'SELECT * FROM '
+  let mainFrom = '';
+  const dataList = [];
+  indicators.map((indicator, idx) => {
+    const data = indicator.rawData;
+    if (data) {
+      const id = `${IDENTIFIER}${indicator.id}`;
+      if (idx === 0) {
+        mainFrom = `${id}`;
+        query += `? ${id}`;
+      } else {
+        query += ` INNER JOIN ? ${id} ON ${mainFrom}.${JOIN_IDENTIFIER}=${id}.${JOIN_IDENTIFIER}`
+      }
+      dataList.push(data);
     }
   })
-  return alasql(query.replaceAll('FROM', 'FROM ?').replaceAll('JOIN', 'JOIN ?'), indicators)
-}
-
-/**
- * Query indicators
- * @param {array} indicators
- * @param {str} query
- */
-export function queryIndicators(indicators, query) {
-  const indicatorsByID = {}
-  indicators.forEach((indicator) => {
-    indicator.data = indicator.rawData;
-    indicatorsByID[indicator.id] = indicator.rawData;
-  });
-  return queryFilter(indicatorsByID, query)
-}
-
-/**
- * Return geometry codes that working through the query
- * @param {dict} indicatorsByID
- * @param {str} query
- */
-export function queryGeoms(indicatorsByID, query) {
-  return queryFilter(indicatorsByID, query).map(data => {
-    return data.geometry_code;
-  })
+  const where = returnWhere(dictionary);
+  if (where) {
+    query += ' WHERE ' + where;
+  }
+  console.log(query)
+  if (dataList.length === 0) {
+    return []
+  }
+  try {
+    return alasql(query, dataList)
+  } catch (err) {
+    return dataList[0]
+  }
 }

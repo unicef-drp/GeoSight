@@ -33,3 +33,11 @@
 .MuiAccordionSummary-title {
   flex-grow: 1;
 }
+
+.MuiButtonLike {
+  cursor: pointer;
+
+  &:hover {
+    opacity: $base-hovered-opacity;
+  }
+}

@@ -1,6 +1,5 @@
 import { APIReducer } from "../reducers_api";
-import { indicatorsDataToById, queryGeoms } from "../../utils/queryExtraction"
-import { returnInGroup } from "../../utils/filters";
+import { queryingFromDictionary } from "../../utils/queryExtraction"
 
 /**
  * INDICATOR reducer
@@ -36,35 +35,17 @@ export default function indicatorReducer(state = initialState, action) {
       const filters = action.filters;
       if (filters) {
         let newState = [...state];
-
-        // filters all data of indicators
-        const indicatorsByID = indicatorsDataToById(newState);
-
-        let filtersInGroup = returnInGroup(filters);
-
-        // we filter it all
-        for (const [key, filterGroup] of Object.entries(filtersInGroup)) {
-          let filtered = false;
-          let geoms = [];
-
-          // Check all options
-          filterGroup.forEach(function (filter) {
-            if (filter.checked) {
-              filtered = true;
-              geoms = geoms.concat(queryGeoms(indicatorsByID, filter.query));
-            }
+        let data = queryingFromDictionary(state, filters)
+        let geoms = data.map((data) => {
+          return data.geometry_code
+        })
+        console.log(geoms)
+        newState.forEach((indicator) => {
+          indicator.data = indicator.rawData.filter(properties => {
+            return geoms.includes(properties.geometry_code);
           })
-
-          // Filters all data of indicators by geom that found
-          // Filter per group is basically OR
-          if (filtered) {
-            newState.forEach((indicator) => {
-              indicator.data = indicator.data.filter(properties => {
-                return geoms.includes(properties.geometry_code);
-              })
-            });
-          }
-        }
+        });
+        return newState
       }
       return state
     }
