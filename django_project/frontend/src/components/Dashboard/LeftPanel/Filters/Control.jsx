@@ -206,7 +206,7 @@ export function FilterControl({ filtersData, indicatorFields }) {
     const FilterInputElement = () => {
       const [currentValue, setCurrentValue] = useState(value)
       const updateValue = (value) => {
-        const cleanValue = !isNaN(value) ? Number(value) : value;
+        const cleanValue = !isNaN(value) ? (!Array.isArray(value) ? Number(value) : value) : value;
         setCurrentValue(cleanValue)
         where.value = cleanValue
         updateFilter()
@@ -356,14 +356,17 @@ export default function FilterSection() {
     if (Array.isArray(sqlDict)) {
       filtersData = {
         ...INIT_DATA.GROUP(),
-        queries: sqlDict,
-        operator: sqlDict.filter(query => {
-          return query.type === TYPE.EXPRESSION
-        })[0]?.whereOperator
+        queries: sqlDict
       }
     } else {
       filtersData = sqlDict
     }
+
+    // check default operator
+    const defaultOperator = filtersData.queries.filter(query => {
+      return query.type === TYPE.EXPRESSION
+    })[0]?.whereOperator;
+    filtersData.operator = defaultOperator ? defaultOperator : WHERE_OPERATOR.AND
   }
 
 
