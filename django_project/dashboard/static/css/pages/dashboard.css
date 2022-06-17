@@ -24,6 +24,10 @@
     cursor: pointer;
 }
 
+.dashboard i {
+    color: var(--primary-color);
+}
+
 .dashboard:hover {
     background: var(--hovered-color);
     text-decoration: none;

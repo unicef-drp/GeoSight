@@ -20,6 +20,12 @@ export default function Dashboard() {
     )
   }, []);
 
+  useEffect(() => {
+    dispatch(
+      Actions.IndicatorsData.update(data.indicators)
+    )
+  }, [data]);
+
   return (
     <App className='dashboard'>
       {Object.keys(data).length > 0 ?

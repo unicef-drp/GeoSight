@@ -3,9 +3,11 @@
    ========================================================================== */
 
 import React, { Fragment, useState } from 'react';
-import Modal from "../../Modal";
+import { useSelector } from "react-redux";
 import Tooltip from "@mui/material/Tooltip";
 import SettingsIcon from "@mui/icons-material/Settings";
+
+import Modal from "../../Modal";
 import BasemapsEditSection from './Basemaps/edit'
 import ReferenceLayerEditSection from './ReferenceLayer/edit'
 import IndicatorsEditSection from './Indicators/edit'
@@ -15,7 +17,8 @@ import ContextLayersEditSection from './ContextLayers/edit'
  * Edit section for the panel.
  */
 export default function Edit() {
-  const [open, setOpen] = useState(true);
+  const { id } = useSelector(state => state.dashboard.data);
+  const [open, setOpen] = useState(id === null);
   const [expanded, setExpanded] = useState('reference-layer');
   const handleChange = (panel, isExpanded) => {
     setExpanded(isExpanded ? panel : false);

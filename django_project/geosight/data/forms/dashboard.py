@@ -54,5 +54,5 @@ class DashboardForm(forms.ModelForm):
         data['context_layers'] = other_data['contextLayers']
         data['widgets'] = other_data['widgets']
 
-        data['filters'] = json.dumps(other_data['filters'])
+        data['filters'] = other_data['filters']
         return data

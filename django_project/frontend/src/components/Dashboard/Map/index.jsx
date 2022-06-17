@@ -61,16 +61,18 @@ export default function Map() {
         [extent[3], extent[2]]
       ])
 
-      // Init moveend
-      // Change extend default when the map moved
-      map.on("moveend", function () {
-        const bounds = map.getBounds();
-        const newExtent = [
-          bounds._southWest.lng, bounds._southWest.lat,
-          bounds._northEast.lng, bounds._northEast.lat
-        ]
-        dispatcher(Actions.Extent.changeDefault(newExtent))
-      });
+      if (editMode) {
+        // Init moveend
+        // Change extend default when the map moved
+        map.on("moveend", function () {
+          const bounds = map.getBounds();
+          const newExtent = [
+            bounds._southWest.lng, bounds._southWest.lat,
+            bounds._northEast.lng, bounds._northEast.lat
+          ]
+          dispatcher(Actions.Extent.changeDefault(newExtent))
+        });
+      }
     }
   }, [map]);
 

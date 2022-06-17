@@ -33,6 +33,45 @@
     }
   }
 
+  .dashboard__content-wrapper {
+    display: flex;
+    flex-direction: column;
+
+    .filter-wrapper {
+      overflow-y: auto;
+    }
+
+    &.DATASET .filter-wrapper {
+      display: none !important;
+    }
+
+    &.FILTER .dataset-wrapper {
+      display: none !important;
+    }
+  }
+
+  .dashboard__content-wrapper__navbar {
+    background: white;
+    display: flex;
+    padding: 12px 0 0 0;
+    border-bottom: 1px solid #ddd;
+
+    div {
+      cursor: pointer;
+      padding: 0 1rem 5px;
+
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+
+    .active {
+      color: $base-color;
+      border-bottom: 2px solid $base-color;
+      font-weight: 500;
+    }
+  }
+
   &.expanded {
     .dashboard__content-wrapper {
       height: 100% !important;
@@ -84,20 +123,16 @@
   }
 
   // For accordion
-  .dashboard__content-wrapper {
+  .dashboard__content-wrapper__inner {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    padding-top: 10px;
 
     .reference-dataset {
       &.Mui-expanded {
         flex-grow: unset !important;
-      }
-
-      .MuiCollapse-root {
-        flex-grow: unset !important;
-        overflow: auto;
-        height: fit-content !important;
       }
 
       b {
@@ -108,6 +143,26 @@
 
     > div.Mui-expanded {
       flex-grow: 1;
+      margin: 0 !important;
+    }
+
+    > .MuiPaper-root {
+      .MuiAccordionSummary-content {
+        margin: 0 !important;
+        font-weight: 500;
+      }
+    }
+
+    > .MuiPaper-root > .MuiCollapse-root {
+      flex-grow: 1 !important;
+      overflow: auto;
+      height: 0 !important;
+    }
+
+    > .MuiPaper-root.reference-dataset > .MuiCollapse-root {
+      flex-grow: unset !important;
+      overflow: auto;
+      height: fit-content !important;
     }
 
     .MuiPaper-root {
@@ -125,33 +180,14 @@
       height: 0 !important;
     }
 
-    .MuiCollapse-root {
-      flex-grow: 1 !important;
-      overflow: auto;
-      height: 0 !important;
-    }
-
-    .Mui-expanded {
-      margin: 0 !important;
-    }
-
     .MuiAccordionSummary-root {
       min-height: 0 !important;
       height: fit-content !important;
       padding: 0.5rem 1rem 0.5rem 1rem;
-
-      &.Mui-focusVisible {
-        background: none !important;
-      }
     }
 
     .MuiAccordionSummary-root.Mui-expanded {
       padding: 0.5rem 1rem 0.3rem 1rem;
-    }
-
-    .MuiAccordionSummary-content {
-      margin: 0 !important;
-      font-weight: 500;
     }
   }
 }

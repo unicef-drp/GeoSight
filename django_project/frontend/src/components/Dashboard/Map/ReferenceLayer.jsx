@@ -37,9 +37,13 @@ export default function ReferenceLayer({ indicatorData }) {
     geometryCodes = []
     indicators.forEach(indicatorData => {
       if (indicatorData.data) {
-        indicatorData.data.forEach(indicator => {
-          geometryCodes.push(indicator.geometry_code)
-        })
+        try {
+          indicatorData.data.forEach(indicator => {
+            geometryCodes.push(indicator.geometry_code)
+          })
+        } catch (err) {
+
+        }
       }
     })
   }

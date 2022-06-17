@@ -13,7 +13,6 @@ import ReferenceLayerSection from './ReferenceLayer'
 import FiltersAccordion from './Filters'
 
 import './style.scss';
-import Edit from "./edit";
 
 /**
  * Left panel.
@@ -21,10 +20,10 @@ import Edit from "./edit";
 export default function LeftPanel() {
   const {
     basemapsLayers,
-    contextLayers,
     defaultBasemapLayer
   } = useSelector(state => state.dashboard.data);
   const [state, setState] = useState(LEFT);
+  const [tab, setTab] = useState('FILTER');
 
   const onLeft = () => {
     setState(LEFT);
@@ -32,34 +31,45 @@ export default function LeftPanel() {
   const onRight = () => {
     setState(RIGHT);
   };
-  const [expanded, setExpanded] = useState('filters');
+  const [expanded, setExpanded] = useState('contextLayers');
 
   const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
+    setExpanded(panel);
   };
 
-  const className = `dashboard__panel dashboard__left_side ${state} ${expanded ? 'expanded' : ''}`
-
+  const className = `dashboard__panel dashboard__left_side ${state} ${expanded ? 'expanded' : ''} `
+  const classNameWrapper = `dashboard__content-wrapper ${tab}`
   return (
     <section className={className}>
       <LeftRightToggleButton
         initState={state}
         onLeft={onLeft}
         onRight={onRight}/>
-      <div className='dashboard__content-wrapper'>
-        <ReferenceLayerSection/>
-        <IndicatorsAccordion
-          expanded={expanded === 'indicators'}
-          handleChange={handleChange}
-        />
-        <ContextLayersAccordion
-          expanded={expanded === 'contextLayers'}
-          handleChange={handleChange}
-        />
-        <FiltersAccordion
-          expanded={expanded === 'filters'}
-          handleChange={handleChange}
-        />
+      <div className={classNameWrapper}>
+        <div className='dashboard__content-wrapper__navbar'>
+          <div onClick={() => setTab('DATASET')}
+               className={tab === 'DATASET' ? 'active' : ''}>
+            DATASET
+          </div>
+          <div onClick={() => setTab('FILTER')}
+               className={tab === 'FILTER' ? 'active' : ''}>
+            FILTER
+          </div>
+        </div>
+        <div className='dashboard__content-wrapper__inner dataset-wrapper'>
+          <ReferenceLayerSection/>
+          <IndicatorsAccordion
+            expanded={expanded === 'indicators'}
+            handleChange={handleChange}
+          />
+          <ContextLayersAccordion
+            expanded={expanded === 'contextLayers'}
+            handleChange={handleChange}
+          />
+        </div>
+        <div className='dashboard__content-wrapper__inner filter-wrapper'>
+          <FiltersAccordion/>
+        </div>
       </div>
       <div className='dashboard__left_side__basemaps'>
         <Basemaps
