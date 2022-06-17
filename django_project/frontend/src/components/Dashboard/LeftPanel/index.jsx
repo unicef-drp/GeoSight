@@ -23,7 +23,7 @@ export default function LeftPanel() {
     defaultBasemapLayer
   } = useSelector(state => state.dashboard.data);
   const [state, setState] = useState(LEFT);
-  const [tab, setTab] = useState('FILTER');
+  const [tab, setTab] = useState('DATASET');
 
   const onLeft = () => {
     setState(LEFT);
