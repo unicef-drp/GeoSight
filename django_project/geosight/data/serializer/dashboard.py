@@ -1,7 +1,5 @@
 """Serializer for dashboard."""
 
-import json
-
 from rest_framework import serializers
 
 from geosight.data.models.dashboard import Dashboard, Widget
