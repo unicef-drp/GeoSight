@@ -3,8 +3,6 @@
  */
 
 export const FILTERS_ACTION_NAME = 'FILTERS';
-export const FILTERS_ACTION_CHANGE_STATUS = 'FILTERS/CHANGE_STATUS';
-export const FILTERS_ACTION_ADD = 'FILTERS/ADD';
 export const FILTERS_ACTION_UPDATE = 'FILTERS/UPDATE';
 
 const initialState = []

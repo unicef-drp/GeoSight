@@ -5,9 +5,9 @@
 import React, { Fragment, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import parser from "js-sql-parser";
-import { isArray } from "leaflet/src/core/Util";
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import Tooltip from '@mui/material/Tooltip'
+import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
 import {
   Checkbox,
   Input,
@@ -54,10 +54,16 @@ export function FilterControl({ filtersData, indicatorFields }) {
   /**
    * Update Filter
    */
-  const updateFilter = () => {
+  const updateFilter = (force) => {
     dispatcher(
       Actions.IndicatorsData.filter(filters)
     );
+    dispatcher(
+      Actions.FiltersQuery.update(filters)
+    );
+    if (force) {
+      setFilters({ ...filters });
+    }
   }
 
   /** --------------------------------------------------
@@ -65,19 +71,29 @@ export function FilterControl({ filtersData, indicatorFields }) {
    ** -------------------------------------------------- **/
   const FilterGroup = ({ where, upperWhere }) => {
     const [operator, setOperator] = useState(where.operator)
+    const [open, setOpen] = useState(false)
+    const [data, setData] = useState(INIT_DATA.WHERE())
+    const [addType, setAddType] = useState(null)
 
-    const addFolder = () => {
-      where.queries.push(INIT_DATA.GROUP())
-      updateFilter()
-    }
-    const addWhere = () => {
-      where.queries.push(INIT_DATA.WHERE())
-      updateFilter()
-    }
     const switchWhere = (operator) => {
       setOperator(operator);
       where.operator = operator;
       updateFilter()
+    }
+    const add = (newData) => {
+      switch (addType) {
+        case TYPE.EXPRESSION: {
+          where.queries.push(newData);
+          break
+        }
+        case TYPE.GROUP:
+          where.queries.push({
+            ...INIT_DATA.GROUP(),
+            queries: [newData]
+          });
+          break
+      }
+      updateFilter(true)
     }
 
     return <div className='FilterGroup'>
@@ -92,12 +108,47 @@ export function FilterControl({ filtersData, indicatorFields }) {
         <Tooltip title="Add New Filter">
           <AddCircleIcon
             className='FilterGroupAddExpression MuiButtonLike'
-            onClick={addWhere}/>
+            onClick={
+              () => {
+                setOpen(true)
+                setAddType(TYPE.EXPRESSION)
+              }}/>
         </Tooltip>
         <Tooltip title="Add New Group">
           <CreateNewFolderIcon
-            className='FilterGroupAdd MuiButtonLike' onClick={addFolder}/>
+            className='FilterGroupAdd MuiButtonLike' onClick={
+            () => {
+              setOpen(true)
+              setAddType(TYPE.GROUP)
+            }
+          }/>
         </Tooltip>
+        <FilterEditorModal
+          open={open}
+          setOpen={(opened) => {
+            setOpen(opened)
+            setData(INIT_DATA.WHERE());
+          }}
+          data={data}
+          fields={indicatorFields}
+          update={add}/>
+        {
+          upperWhere ? (
+            <Tooltip title="Delete Group">
+              <DoDisturbOnIcon
+                className='FilterGroupDelete MuiButtonLike' onClick={
+                () => {
+                  let isExecuted = confirm("Are you want to delete this group?");
+                  if (isExecuted) {
+                    upperWhere.queries = [...upperWhere.queries.filter(query => {
+                      return query !== where
+                    })]
+                    updateFilter(true)
+                  }
+                }
+              }/>
+            </Tooltip>
+          ) : ''}
         <div className='FilterGroupEnd'>
         </div>
       </div>
@@ -117,7 +168,7 @@ export function FilterControl({ filtersData, indicatorFields }) {
   /** --------------------------------------------------
    ** Render input of filter.
    ** -------------------------------------------------- **/
-  const FilterInput = ({ where }) => {
+  const FilterInput = ({ where, upperWhere }) => {
     const [expanded, setExpanded] = useState(
       where.expanded ? where.expanded : false
     )
@@ -136,8 +187,10 @@ export function FilterControl({ filtersData, indicatorFields }) {
       updateFilter()
     }
     const update = (newWhere) => {
-      where.query = newWhere.query
-      updateFilter()
+      where.field = newWhere.field
+      where.operator = newWhere.operator
+      where.value = newWhere.value
+      updateFilter(true)
     }
     const field = where.field
     const operator = where.operator
@@ -158,7 +211,6 @@ export function FilterControl({ filtersData, indicatorFields }) {
         where.value = cleanValue
         updateFilter()
       }
-
       return <div>
         {fieldName ? fieldName : field} {OPERATOR[operator]}
         <div className='FilterInputWrapper'>
@@ -233,13 +285,32 @@ export function FilterControl({ filtersData, indicatorFields }) {
           }}
         />
         {fieldName ?
-          <span>{capitalize(fieldName.split('.')[1])}</span> : 'Loading'}
+          <div
+            className='FilterExpressionName'>{capitalize(fieldName.split('.')[1])}</div> :
+          <div className='FilterExpressionName'>Loading</div>}
         <ModeEditIcon
           className='FilterEdit'
           onClick={(event) => {
             event.stopPropagation()
             setOpen(true)
           }}/>
+        {
+          upperWhere ? (
+            <Tooltip title="Delete Filter">
+              <DoDisturbOnIcon
+                className='FilterDelete MuiButtonLike' onClick={
+                () => {
+                  let isExecuted = confirm("Are you want to delete this group?");
+                  if (isExecuted) {
+                    upperWhere.queries = [...upperWhere.queries.filter(query => {
+                      return query !== where
+                    })]
+                    updateFilter(true)
+                  }
+                }
+              }/>
+            </Tooltip>
+          ) : ''}
 
         <FilterEditorModal
           open={open} setOpen={setOpen} data={where}
@@ -276,24 +347,28 @@ export function FilterControl({ filtersData, indicatorFields }) {
  * Filter section.
  */
 export default function FilterSection() {
-  const { indicators } = useSelector(state => state.dashboard.data);
-  const query = 'SELECT * FROM indicator_49 INNER JOIN indicator_37 ON indicator_49.geometry_code=indicator_37.geometry_code WHERE indicator_49.needs__water>0 AND (indicator_49.geometry_code IN (\'\') AND indicator_49.needs__water>0)';
-  const sql = parser.parse(query);
+  const { filters, indicators } = useSelector(state => state.dashboard.data);
 
-  let filters = returnWhereToDict(sql.value.where)
-  if (isArray(filters)) {
-    filters = {
-      ...INIT_DATA.GROUP(),
-      queries: filters,
-      operator: filters.filter(query => {
-        return query.type === TYPE.EXPRESSION;
-      })[0]?.whereOperator
+  let filtersData = null;
+  if (filters) {
+    const sql = parser.parse(filters)
+    let sqlDict = returnWhereToDict(sql.value.where)
+    if (Array.isArray(sqlDict)) {
+      filtersData = {
+        ...INIT_DATA.GROUP(),
+        queries: sqlDict,
+        operator: sqlDict.filter(query => {
+          return query.type === TYPE.EXPRESSION
+        })[0]?.whereOperator
+      }
+    } else {
+      filtersData = sqlDict
     }
   }
 
+
   // get indicator fields
   let indicatorFields = []
-  let indicatorFieldsIds = []
   indicators.map((indicator, idx) => {
     if (indicator.rawData) {
       const indicatorData = queryIndicator(indicator.rawData)[0]
@@ -316,7 +391,7 @@ export default function FilterSection() {
 
   return <div className='FilterControl'>
     <FilterControl
-      filtersData={Object.keys(filters).length ? filters : INIT_DATA.GROUP()}
+      filtersData={filtersData ? filtersData : INIT_DATA.GROUP()}
       indicatorFields={indicatorFields}/>
   </div>
 }

@@ -1,12 +1,16 @@
-import React, { useState } from "react";
-import {
-  OPERATOR,
-  returnDataToExpression,
-  returnSqlToDict
-} from "../../../../utils/queryExtraction";
+import React, { useEffect, useState } from "react";
+import { OPERATOR } from "../../../../utils/queryExtraction";
 import Modal, { ModalContent, ModalHeader } from "../../../Modal";
-import { Button, FormControl, Input, InputLabel } from "@mui/material";
+import {
+  Button,
+  Checkbox,
+  Input,
+  ListItemText,
+  OutlinedInput,
+  Select
+} from "@mui/material";
 import { SelectPlaceholder } from "../../../Input";
+import MenuItem from "@mui/material/MenuItem";
 
 /***
  * Return modal to edit filter
@@ -18,25 +22,43 @@ import { SelectPlaceholder } from "../../../Input";
 export default function FilterEditorModal(
   { open, setOpen, data, fields, update }
 ) {
-  const [name, setName] = useState(data.name)
+  const [field, setField] = useState(data.field ? data.field : '')
+  const [operator, setOperator] = useState(data.operator ? data.operator : '')
+  const [value, setValue] = useState(data.value ? data.value : '')
+  let currentValue = value;
 
-  const sqlValue = returnSqlToDict(data.query)
-  const initField = sqlValue.field
-  const initOperator = sqlValue.operator
-  const initValue = sqlValue.value
-
-  const [field, setField] = useState(initField ? initField : '')
-  const [operator, setOperator] = useState(initOperator ? initOperator : '')
-  const [value, setValue] = useState(initValue ? initValue : '')
+  useEffect(() => {
+    setField(data.field ? data.field : '')
+    setOperator(data.operator ? data.operator : '')
+    setValue(data.value ? data.value : '')
+  }, [data]);
 
   const onSave = () => {
+    let currentValue = value;
+    // Setup data
+    if (operator === 'IN' && !Array.isArray(value)) {
+      currentValue = value ? [value] : []
+    } else if (operator !== 'IN' && Array.isArray(value)) {
+      currentValue = value[0] ? value[0] : ''
+    }
     if (field && operator) {
       update({
         ...data,
-        name: name,
-        query: returnDataToExpression(field, operator, value)
+        field: field,
+        operator: operator,
+        value: currentValue
       })
     }
+  }
+  const indicator = fields.filter((fieldData) => {
+    return fieldData.id === field
+  })[0]
+
+  // Setup data
+  if (operator === 'IN' && !Array.isArray(value)) {
+    currentValue = value ? [value] : []
+  } else if (operator !== 'IN' && Array.isArray(value)) {
+    currentValue = value[0] ? value[0] : ''
   }
 
   return <div
@@ -53,17 +75,9 @@ export default function FilterEditorModal(
       }
     >
       <ModalHeader>
-        {data.query ? "Update" : "Create"} filter
+        {data.field ? "Update" : "Create"} filter
       </ModalHeader>
       <ModalContent>
-        <FormControl>
-          <InputLabel>Name</InputLabel>
-          <Input
-            type="text" placeholder="Filter Name" value={name}
-            onChange={(value) => {
-              setName(value.target.value)
-            }}/>
-        </FormControl>
         <div className='FilterEditModalQueryWrapper'>
           <div>Select fields, operation and default value for the filter.</div>
           <div className='FilterEditModalQuery'>
@@ -85,14 +99,65 @@ export default function FilterEditorModal(
               onChangeFn={(value) => {
                 setOperator(value)
               }}/>
+            {
+              operator === 'IN' ?
+                <Select
+                  className='FilterInput'
+                  multiple
+                  value={currentValue}
+                  onChange={(event) => {
+                    setValue(event.target.value);
+                  }
+                  }
+                  input={<OutlinedInput label="Tag"/>}
+                  renderValue={(selected) => selected.length + ' selected'}
+                >
+                  {indicator ? indicator.data.map((name) => (
+                    <MenuItem key={name} value={name}>
+                      <Checkbox checked={value.indexOf(name) > -1}/>
+                      <ListItemText primary={name}/>
+                    </MenuItem>
+                  )) : ''}
+                </Select> :
+                (
+                  operator === '=' && indicator && isNaN(indicator.data[0]) ?
+                    <Select
+                      className='FilterInput'
+                      value={currentValue}
+                      onChange={
+                        (event) => {
+                          setValue(event.target.value);
+                        }
+                      }
+                    >
+                      {indicator ? indicator.data.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          <ListItemText primary={name}/>
+                        </MenuItem>
+                      )) : ''}
+                    </Select> :
+                    <Input
+                      key="input1"
+                      className='FilterInput'
+                      type="text"
+                      placeholder="Value"
+                      value={currentValue}
+                      onChange={(event) => {
+                        setValue(event.target.value);
+                      }}/>
+                )
+
+            }
           </div>
         </div>
         <Button
           variant="primary"
           className='save__button'
-          disabled={!field || !name || !operator}
+          disabled={!field || !operator}
           onClick={onSave}>
-          {data.query ? "Update" : "Create"}
+          {
+            data.field ? "Update" : "Create"
+          }
         </Button>
       </ModalContent>
     </Modal>

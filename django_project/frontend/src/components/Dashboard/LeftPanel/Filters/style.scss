@@ -40,8 +40,8 @@
 
   .FilterGroup {
     border: 1px solid $base-color;
-    margin-top: 20px;
-    padding: 15px 5px 10px 5px;
+    margin-top: 15px;
+    padding: 15px 5px 5px 5px;
     position: relative;
 
     .MuiPaper-root {
@@ -77,6 +77,10 @@
         }
       }
 
+      .FilterGroupDelete {
+        color: $error;
+      }
+
       .FilterOperatorToggler {
         color: white;
         padding: 2px 10px;
@@ -109,6 +113,10 @@
   .FilterExpression {
     background: none;
 
+    .FilterExpressionName {
+      flex-grow: 1;
+    }
+
     .MuiAccordionSummary-root {
       background: #eee;
       padding: 5px !important;
@@ -134,8 +142,14 @@
         margin-right: 3px;
       }
 
-      .FilterEdit {
+      .FilterEdit,
+      .FilterDelete {
         margin-top: 2px;
+      }
+
+      .FilterDelete {
+        color: $error;
+        margin-right: 5px;
       }
 
       .MuiSvgIcon-root {
@@ -204,10 +218,6 @@
     width: 100%;
   }
 
-  .FilterEditModalQueryWrapper {
-    margin-top: 30px;
-  }
-
   .FilterEditModalQuery {
     display: flex;
     background: $base-alpha-color;
@@ -215,6 +225,17 @@
 
     .MuiOutlinedInput-root {
       background-color: white;
+    }
+
+    .MuiInput-root {
+      background-color: white;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.23);
+      padding: 16.5px 14px;
+
+      &::before {
+        display: none;
+      }
     }
   }
 

@@ -1,5 +1,4 @@
 import alasql from "alasql";
-import parser from "js-sql-parser";
 
 export const IDENTIFIER = 'indicator_'
 export const JOIN_IDENTIFIER = 'geometry_code'
@@ -29,6 +28,7 @@ export const INIT_DATA = {
   GROUP: () => {
     return Object.assign({}, {
       type: TYPE.GROUP,
+      operator: WHERE_OPERATOR.AND,
       queries: []
     })
   },
@@ -50,12 +50,13 @@ export function queryIndicator(indicatorData) {
 /**
  * Return where
  * @param where
+ * @param ignoreActive
  */
-function returnWhere(where) {
+function returnWhere(where, ignoreActive) {
   switch (where.type) {
     case TYPE.GROUP:
       const queries = where.queries.map(query => {
-        return returnWhere(query)
+        return returnWhere(query, ignoreActive)
       }).filter(el => el.length)
       if (queries.length === 0) {
         return ''
@@ -65,37 +66,8 @@ function returnWhere(where) {
         })`
       }
     case TYPE.EXPRESSION:
-      return where.active ? returnDataToExpression(where.field, where.operator, where.value) : ''
+      return ignoreActive || where.active ? returnDataToExpression(where.field, where.operator, where.value) : ''
 
-  }
-}
-
-/**
- * Return SQL in human way
- */
-export function returnSqlToDict(query) {
-  const sql = parser.parse(
-    `SELECT *
-     FROM test ${query ? 'WHERE ' + query : ''}`)
-
-  const field = sql?.value?.where?.left?.value
-  let operator = sql?.value?.where?.operator
-  let value = sql?.value?.where?.right?.value
-  try {
-    value = value.replaceAll("'", '')
-  } catch (err) {
-
-  }
-  if (sql?.value?.where?.type === "InExpressionListPredicate") {
-    operator = 'IN'
-    value = value.map(el => el.value.replaceAll("'", '').replaceAll('"', '')).filter(el => {
-      return el
-    })
-  }
-  return {
-    field: field,
-    operator: operator,
-    value: value
   }
 }
 
@@ -174,9 +146,9 @@ export function returnDataToExpression(field, operator, value) {
 }
 
 /**
- * Return query in dictionary
+ * Return query from dictionary
  */
-export function queryingFromDictionary(indicators, dictionary) {
+export function queryFromDictionary(indicators, dictionary, ignoreActive) {
   let query = 'SELECT * FROM '
   let mainFrom = '';
   const dataList = [];
@@ -194,14 +166,30 @@ export function queryingFromDictionary(indicators, dictionary) {
     }
   })
 
-  const where = returnWhere(dictionary);
+  const where = returnWhere(dictionary, ignoreActive);
   if (where) {
     query += ' WHERE ' + where;
   }
   if (dataList.length === 0) {
-    return []
+    return {
+      query: '',
+      dataList: dataList
+    }
   }
+  return {
+    query: query,
+    dataList: dataList
+  }
+}
 
+/**
+ * Return query data from dictionary
+ */
+export function queryingFromDictionary(indicators, dictionary, ignoreActive) {
+  let {
+    query,
+    dataList
+  } = queryFromDictionary(indicators, dictionary, ignoreActive)
   try {
     return alasql(query, dataList)
   } catch (err) {

@@ -3,6 +3,7 @@ import ContextLayers from './contextLayers'
 import Dashboard from './dashboard'
 import Extent from './extent'
 import Filters from './filters'
+import FiltersQuery from './filtersQuery'
 import Indicators from './indicators'
 import IndicatorsData from './indicatorsData'
 import Map from './map'
@@ -15,6 +16,7 @@ const Actions = {
   Dashboard,
   Extent,
   Filters,
+  FiltersQuery,
   Indicators,
   IndicatorsData,
   Map,

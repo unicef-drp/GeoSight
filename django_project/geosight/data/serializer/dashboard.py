@@ -90,10 +90,7 @@ class DashboardSerializer(serializers.ModelSerializer):
 
     def get_filters(self, obj: Dashboard):
         """Return filters."""
-        if obj.filters:
-            return json.loads(obj.filters)
-        else:
-            return {}
+        return obj.filters
 
     class Meta:  # noqa: D106
         model = Dashboard
