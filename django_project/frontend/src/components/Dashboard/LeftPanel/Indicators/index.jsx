@@ -16,6 +16,8 @@ import ReferenceLayer from '../../Map/ReferenceLayer'
 /**
  * Indicators selector.
  */
+let selectedCount = 0;
+
 export function Indicators() {
   const dispatch = useDispatch();
   const {
@@ -82,6 +84,7 @@ export function Indicators() {
  */
 export default function IndicatorsAccordion({ expanded, handleChange }) {
   const { indicators } = useSelector(state => state.dashboard.data);
+  selectedCount = 0;
   return (
     <Accordion
       expanded={expanded}
@@ -92,7 +95,7 @@ export default function IndicatorsAccordion({ expanded, handleChange }) {
         Indicators
         {
           indicators ?
-            <span>&nbsp;({indicators.length}) </span> :
+            <span></span> :
             <i>&nbsp;(Loading)</i>
         }
       </AccordionSummary>

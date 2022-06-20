@@ -6,7 +6,7 @@ import React from 'react';
 import L from 'leaflet';
 import { featureLayer } from 'esri-leaflet';
 import parseArcRESTStyle from './leaflet-esri-style'
-
+import { fetchJSON } from '../../Requests'
 
 export default class EsriLeafletLayer {
   constructor(name, url, params, options, style, onEachFeature) {
@@ -55,8 +55,7 @@ export default class EsriLeafletLayer {
      */
     const url = this.url;
     const that = this;
-    return fetch(...this.preFetch(url + '?f=json'))
-      .then(response => response.json())
+    return fetchJSON(...this.preFetch(url + '?f=json'))
       .then(data => {
         if (data.error) {
           return {

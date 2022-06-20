@@ -25,7 +25,8 @@ class ContextLayerAdmin(admin.ModelAdmin):
 class ContextLayerGroupAdmin(admin.ModelAdmin):
     """ContextLayerGroup admin."""
 
-    list_display = ('name',)
+    list_display = ('name', 'group')
+    list_editable = ('group',)
 
 
 admin.site.register(ContextLayerGroup, ContextLayerGroupAdmin)

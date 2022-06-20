@@ -37,7 +37,7 @@ export default function EditSection(
 
   useEffect(() => {
     if (!allLayer) {
-      fetchingData(urlAPI, {}, (response) => {
+      fetchingData(urlAPI, {}, {}, (response) => {
         setAllLayer(response)
       })
     }

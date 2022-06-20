@@ -29,7 +29,7 @@ function receive(data, error, id) {
 
 export function fetch(dispatch, id, url) {
   fetchingData(
-    url, {}, function (response, error) {
+    url, {}, {}, function (response, error) {
       dispatch(
         receive(response, error, id)
       )

@@ -28,6 +28,17 @@ class ContextLayerGroup(AbstractTerm):
         else:
             return self.name
 
+    @property
+    def group_tree_in_list(self):
+        """Return the group tree i n list."""
+        return [self] + (self.group.group_tree_in_list if self.group else [])
+
+    def save(self, *args, **kwargs):
+        """Override save."""
+        if self in self.group.group_tree_in_list:
+            self.group = None
+        super(ContextLayerGroup, self).save(*args, **kwargs)
+
 
 class ContextLayer(AbstractTerm):
     """A model for the context layer."""

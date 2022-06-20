@@ -4,10 +4,7 @@
 
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import $ from "jquery";
 import L from 'leaflet';
-
-import { Checkbox } from '@mui/material'
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -15,7 +12,13 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 
 import Actions from '../../../../redux/actions'
 import { featurePopupContent } from '../../../../utils/main'
+import { contextLayerInGroup } from '../../../../utils/contextLayer'
 import EsriLeafletLayer from '../../../../utils/esri/leaflet-esri-layer'
+import Switch from '@mui/material/Switch';
+
+import './style.scss'
+import { fetchingData } from "../../../../Requests";
+
 
 function ContextLayerInput({ data }) {
   const dispatch = useDispatch();
@@ -68,37 +71,32 @@ function ContextLayerInput({ data }) {
         break;
       }
       case 'Geojson': {
-        $.ajax({
-          dataType: "json",
-          data: layerData.params,
-          url: layerData.url,
-          success: function (data) {
-            const layer = L.geoJson(data, {
-              style: function (feature) {
-                switch (feature.geometry.type) {
-                  default:
-                    return {
-                      "color": "#ff7800",
-                      "weight": 1,
-                      "opacity": 1
-                    }
-                }
-              },
-              onEachFeature: onEachFeature,
-              pointToLayer: function (feature, latlng) {
-                var icon = L.icon({
-                  iconSize: [25, 30],
-                  iconAnchor: [10, 30],
-                  popupAnchor: [2, -31],
-                  iconUrl: feature.properties.icon
-                });
-                return L.marker(
-                  latlng, { icon: icon }
-                );
+        fetchingData(layerData.url, layerData.params, {}, (data) => {
+          const layer = L.geoJson(data, {
+            style: function (feature) {
+              switch (feature.geometry.type) {
+                default:
+                  return {
+                    "color": "#ff7800",
+                    "weight": 1,
+                    "opacity": 1
+                  }
               }
-            });
-            setLayer(layer);
-          },
+            },
+            onEachFeature: onEachFeature,
+            pointToLayer: function (feature, latlng) {
+              var icon = L.icon({
+                iconSize: [25, 30],
+                iconAnchor: [10, 30],
+                popupAnchor: [2, -31],
+                iconUrl: feature.properties.icon
+              });
+              return L.marker(
+                latlng, { icon: icon }
+              );
+            }
+          });
+          setLayer(layer);
         })
         break;
       }
@@ -150,12 +148,14 @@ function ContextLayerInput({ data }) {
   return (
     <Fragment>
       <div className={className} title={error}>
-        <Checkbox
+        <Switch
           disabled={!layer}
+          size="small"
           checked={checked}
-          onChange={(event) => {
+          onChange={() => {
             change(event.target.checked)
-          }}/>
+          }}
+        />
         <div className='text title'>
           <div>{data.name}</div>
           {
@@ -185,6 +185,40 @@ function ContextLayerInput({ data }) {
   )
 }
 
+
+/**
+ * Context Layer Row.
+ * @param {str} groupName Group name.
+ * @param {dict} group Group data.
+ */
+function ContextLayerRow({ groupName, group }) {
+  if (!groupName) {
+    return <div></div>
+  }
+
+  return <div className='ContextLayerGroup'>
+    <div className='ContextLayerGroupName'><b
+      className='light'>{groupName}</b></div>
+    <div className='ContextLayerGroupList'>
+      {
+        group.layers.map(
+          layer => (
+            <ContextLayerInput key={layer.id} data={layer}/>
+          )
+        )
+      }
+      {
+        (Object.keys(group.groups)).map(
+          groupName => (
+            <ContextLayerRow key={groupName} groupName={groupName}
+                             group={group.groups[groupName]}/>
+          )
+        )
+      }
+    </div>
+  </div>
+}
+
 /**
  * Context Layer Accordion.
  * @param {bool} expanded Is the accordion expanded.
@@ -192,25 +226,34 @@ function ContextLayerInput({ data }) {
  */
 export default function ContextLayersAccordion({ expanded, handleChange }) {
   const { contextLayers } = useSelector(state => state.dashboard.data);
+  const groups = contextLayerInGroup(contextLayers)
+
+  /** Render group and layers
+   * @param {str} groupName Name of group.
+   * @param {dict} group Data of group.
+   */
+
   return (
     <Accordion
       expanded={expanded}
       onChange={handleChange('contextLayers')}
+      className='ContextLayersAccordion'
     >
       <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
         Context Layers
         {
           contextLayers !== undefined ?
-            <span>&nbsp;({contextLayers.length}) </span> :
+            <span></span> :
             <i>&nbsp;(Loading)</i>
         }
       </AccordionSummary>
       <AccordionDetails>
         {
           contextLayers !== undefined ?
-            contextLayers.map(
-              layer => (
-                <ContextLayerInput key={layer.id} data={layer}/>
+            (Object.keys(groups.groups)).map(
+              groupName => (
+                <ContextLayerRow key={groupName} groupName={groupName}
+                                 group={groups.groups[groupName]}/>
               )
             )
             : <div>Loading</div>

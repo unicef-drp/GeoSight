@@ -1,0 +1,31 @@
+/* ==========================================================================
+   Context layers style
+   ========================================================================== */
+
+@import '../../../../app/variables';
+
+.ContextLayersAccordion {
+  .ContextLayerGroup {
+    border: 1px solid #ddd;
+    font-size: 0.8rem;
+    margin: -1px;
+
+    .dashboard__left_side__row {
+      padding-right: 10px;
+
+      .title {
+        margin-left: 5px;
+        padding-top: 3px;
+      }
+    }
+  }
+
+  .ContextLayerGroupName {
+    background-color: $base-to-white-color;
+    padding: 5px 10px;
+  }
+
+  .ContextLayerGroupList {
+    padding: 0 0 0 10px;
+  }
+}
