@@ -5,8 +5,13 @@
 @import '../../../../app/variables';
 
 .FilterAccordion {
+  height: 100%;
+
   .MuiAccordionDetails-root {
-    padding: 0 8px 16px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
   }
 }
 
@@ -36,7 +41,10 @@
    FILTERS CONTROL COMPONENT
    ========================================================================== */
 .FilterControl {
+  padding: 0 8px 16px;
   font-size: 0.8rem;
+  flex-grow: 1;
+  overflow-y: auto;
 
   .FilterGroup {
     border: 1px solid $base-color;
@@ -68,8 +76,8 @@
       .MuiButtonLike {
         color: $base-color;
         background: white;
-        height: 100%;
-        width: 24px;
+        height: 0.8rem;
+        width: 18px;
 
         &:hover {
           opacity: 1;
@@ -117,8 +125,13 @@
       flex-grow: 1;
     }
 
+    .FilterExpressionDescription {
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+
     .MuiAccordionSummary-root {
-      background: #eee;
+      background: $base-to-white-color;
       padding: 5px !important;
       border: 1px solid #ddd;
       margin-top: -1px;
@@ -215,6 +228,7 @@
   }
 
   .MuiInput-root {
+    margin-bottom: 2rem;
     width: 100%;
   }
 
@@ -232,6 +246,7 @@
       border-radius: 4px;
       border: 1px solid rgba(0, 0, 0, 0.23);
       padding: 16.5px 14px;
+      margin-bottom: 0 !important;
 
       &::before {
         display: none;
@@ -246,155 +261,17 @@
 }
 
 /* ==========================================================================
-   Edit style
+   FILTERS CONTROL SUMMARY
    ========================================================================== */
-.modal__filter__setting {
-  .modal--box {
-    max-width: 1000px;
-  }
+.FilterControlSummary {
+  margin-top: 20px;
+  max-height: 5rem;
+  border-top: 1px solid #DDD;
+  overflow: auto;
+  font-size: 0.8rem;
+  padding: 10px;
 
-  .MuiInput-root {
-    width: 100%;
-  }
-
-  .MuiOutlinedInput-root {
-    height: fit-content;
-
-    fieldset {
-      padding: 0 !important;
-    }
-
-    .MuiSvgIcon-root {
-      right: 0;
-
-    }
-  }
-
-  .MuiFormControl-root {
-    margin-top: 0 !important;
-    margin-bottom: 1rem;
-  }
-
-  .MuiSelect-select {
-    background-color: white;
+  .FilterControlSummaryContent {
     border: 1px solid $base-color;
-    color: $base-color;
-    padding: 5px 25px 5px 10px !important;
-  }
-
-  .MuiInputBase-empty {
-    .MuiSelect-select {
-      background-color: white;
-      border: 1px solid $base-black-color;
-      color: $base-black-color;
-    }
-
-    .MuiSvgIcon-root {
-      color: $base-black-color;
-    }
-  }
-
-  .MuiSvgIcon-root {
-    color: $base-color;
-  }
-
-  .section {
-    margin-bottom: 1rem;
-
-    b {
-      color: $base-color;
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-
-    .section__wrapper {
-      display: flex;
-    }
-
-    .section__divider {
-      padding: 15px 10px 0 10px;
-    }
-
-    .content {
-      background: $base-alpha-color;
-      border-radius: 5px;
-      display: flex;
-      padding: 10px 10px;
-
-      &:last-child {
-        flex-grow: 1;
-      }
-
-      .section__divider {
-        padding: 5px 10px 0 10px;
-
-        b {
-          margin-bottom: 0 !important;
-        }
-      }
-    }
-  }
-
-  .section__add {
-    display: flex !important;
-    cursor: pointer;
-  }
-
-  .preview {
-    b {
-      color: $base-black-color;
-      text-align: center;
-    }
-
-    .error {
-      color: $error;
-    }
-
-    .table__preview {
-      height: 500px;
-    }
-  }
-
-  .save__button {
-    width: 100%;
-    margin-top: 1rem;
-  }
-
-
-  .where__button,
-  .filter__button {
-    color: $base-color;
-    border: 1px solid $base-color;
-  }
-
-  .filter__button {
-    margin-bottom: 1rem;
-  }
-
-  .section__delete {
-    cursor: pointer;
-    padding-left: 0 !important;
-
-    svg {
-      color: red;
-    }
-  }
-
-  .MuiInput-root {
-    background-color: white;
-    border: 1px solid $base-color;
-    border-radius: 5px;
-    color: $base-color;
-    padding: 5px 10px;
-
-    input {
-      border: none;
-      padding: 0;
-    }
-
-    &:before,
-    &:after {
-      display: none !important;
-    }
   }
 }

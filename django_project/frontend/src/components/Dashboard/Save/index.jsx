@@ -11,7 +11,6 @@ import Modal, { ModalContent, ModalHeader } from "../../Modal";
 import { postData } from "../../../Requests"
 
 import './style.scss';
-import { queryFromDictionary } from "../../../utils/queryExtraction";
 
 export default function SaveDashboard() {
   const csrftoken = csrfmiddlewaretoken; // eslint-disable-line no-undef
@@ -24,10 +23,9 @@ export default function SaveDashboard() {
     contextLayers,
     widgets,
     extent,
-    defaultBasemapLayer,
-    filters
+    defaultBasemapLayer
   } = useSelector(state => state.dashboard.data);
-  const filtersQuery = useSelector(state => state.filtersQuery);
+  const filtersData = useSelector(state => state.filtersData);
 
   const [error, setError] = useState('');
   const [open, setOpen] = useState(false);
@@ -66,7 +64,6 @@ export default function SaveDashboard() {
 
     // Submit dashboard
     if (error.length === 0) {
-      const { query } = queryFromDictionary(indicators, filtersQuery, true)
       const data = {
         'referenceLayer': referenceLayer.id,
         'indicators': indicators.map(function (indicator) {
@@ -81,7 +78,7 @@ export default function SaveDashboard() {
         'defaultBasemapLayer': defaultBasemapLayer,
         'extent': extent,
         'widgets': widgets,
-        'filters': query.replaceAll('?', '')
+        'filters': filtersData
       }
       setData(JSON.stringify(data));
       onOpen();

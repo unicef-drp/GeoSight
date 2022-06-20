@@ -37,10 +37,6 @@
     display: flex;
     flex-direction: column;
 
-    .filter-wrapper {
-      overflow-y: auto;
-    }
-
     &.DATASET .filter-wrapper {
       display: none !important;
     }

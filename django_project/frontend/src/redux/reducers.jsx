@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 import mapReducer from './reducers/map'
 import dashboardRequestReducer from './reducers/dashboard'
 import indicatorDataReducer from "./reducers/indicatorsData";
-import filtersQueryReducer from "./reducers/filtersQuery";
+import filtersDataReducer from "./reducers/filtersData";
 
 
 export default combineReducers({
@@ -11,5 +11,5 @@ export default combineReducers({
   dashboard: dashboardRequestReducer,
 
   indicatorData: indicatorDataReducer,
-  filtersQuery: filtersQueryReducer,
+  filtersData: filtersDataReducer,
 });

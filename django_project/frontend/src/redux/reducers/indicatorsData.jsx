@@ -22,15 +22,17 @@ export default function indicatorDataReducer(state = initialState, action) {
         if (query) {
           let newState = [...state];
           let data = queryingFromDictionary(state, query)
-          let geoms = data.map((data) => {
-            return data.geometry_code
-          })
-          newState.forEach((indicator) => {
-            indicator.data = indicator.rawData.filter(properties => {
-              return geoms.includes(properties.geometry_code);
+          if (data) {
+            let geoms = data.map((data) => {
+              return data.geometry_code
             })
-          });
-          return newState
+            newState.forEach((indicator) => {
+              indicator.data = indicator.rawData.filter(properties => {
+                return geoms.includes(properties.geometry_code);
+              })
+            });
+            return newState
+          }
         }
         return state
       }

@@ -16,7 +16,17 @@ class LayerType(object):
 class ContextLayerGroup(AbstractTerm):
     """A model for the group of context layer."""
 
-    pass
+    group = models.ForeignKey(
+        "self",
+        null=True, blank=True,
+        on_delete=models.SET_NULL
+    )
+
+    def __str__(self):
+        if self.group:
+            return self.name + '/' + self.group.__str__()
+        else:
+            return self.name
 
 
 class ContextLayer(AbstractTerm):

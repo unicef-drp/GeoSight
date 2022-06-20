@@ -1,5 +1,5 @@
 """Serializer for dashboard."""
-
+import json
 from rest_framework import serializers
 
 from geosight.data.models.dashboard import Dashboard, Widget
@@ -88,7 +88,10 @@ class DashboardSerializer(serializers.ModelSerializer):
 
     def get_filters(self, obj: Dashboard):
         """Return filters."""
-        return obj.filters
+        if obj.filters:
+            return json.loads(obj.filters)
+        else:
+            return []
 
     class Meta:  # noqa: D106
         model = Dashboard

@@ -19,6 +19,7 @@ class ContextLayerAdmin(admin.ModelAdmin):
     list_display = ('name', 'layer_type', 'group', 'url')
     inlines = (ContextLayerStyleInline,)
     list_filter = ('group',)
+    list_editable = ('group',)
 
 
 class ContextLayerGroupAdmin(admin.ModelAdmin):
