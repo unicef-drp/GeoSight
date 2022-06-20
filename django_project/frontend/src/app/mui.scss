@@ -41,3 +41,31 @@
     opacity: $base-hovered-opacity;
   }
 }
+
+/* ==========================================================================
+    Select with search
+   ========================================================================== */
+.MuiAutocomplete-root {
+  .MuiFormControl-root {
+    margin-top: 0 !important;
+
+    .MuiOutlinedInput-root {
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-right: 40px !important;
+      padding-left: 0 !important;
+
+      .MuiAutocomplete-input {
+        padding: 0;
+      }
+    }
+
+    .MuiAutocomplete-endAdornment {
+      right: 0 !important;
+    }
+  }
+
+  .MuiButtonBase-root {
+    border-radius: 5px;
+  }
+}

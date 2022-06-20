@@ -252,6 +252,15 @@
         display: none;
       }
     }
+
+    .MuiAutocomplete-root {
+      flex-grow: 1;
+
+      .MuiOutlinedInput-root {
+        padding-left: 5px !important;
+        min-height: 56px;
+      }
+    }
   }
 
   .MuiButton-root {
