@@ -35,7 +35,7 @@ class ContextLayerGroup(AbstractTerm):
 
     def save(self, *args, **kwargs):
         """Override save."""
-        if self in self.group.group_tree_in_list:
+        if self.group and self in self.group.group_tree_in_list:
             self.group = None
         super(ContextLayerGroup, self).save(*args, **kwargs)
 
