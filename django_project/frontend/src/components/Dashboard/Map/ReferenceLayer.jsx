@@ -54,6 +54,7 @@ export default function ReferenceLayer({ currentIndicator }) {
         })
       }
       const options = {
+        maxDetailZoom: 8,
         filter: function (feature) {
           return !geometryCodes || geometryCodes.includes(feature.properties.code)
         },
