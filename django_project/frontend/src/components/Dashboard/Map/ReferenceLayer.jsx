@@ -12,24 +12,21 @@ import Actions from '../../../redux/actions'
 
 /**
  * ReferenceLayer selector.
- * @param {list} indicatorData Indicator that will be used.
+ * @param {list} currentIndicator Indicator that will be used.
  */
-export default function ReferenceLayer({ indicatorData }) {
+export default function ReferenceLayer({ currentIndicator }) {
   const dispatch = useDispatch();
-  const {
-    referenceLayer,
-    extent,
-    indicators
-  } = useSelector(state => state.dashboard.data);
+  const { referenceLayer } = useSelector(state => state.dashboard.data);
+  const indicatorData = useSelector(state => state.indicatorData);
 
   // Filter geometry_code based on indicators layer
   let geometryCodes = null
-  if (indicators && indicators.length) {
+  if (indicatorData && indicatorData.length) {
     geometryCodes = []
-    indicators.forEach(indicatorData => {
-      if (indicatorData.data) {
+    indicatorData.forEach(indicator => {
+      if (indicator.data) {
         try {
-          indicatorData.data.forEach(indicator => {
+          indicator.data.forEach(indicator => {
             geometryCodes.push(indicator.geometry_code)
           })
         } catch (err) {
@@ -49,15 +46,17 @@ export default function ReferenceLayer({ indicatorData }) {
 
   useEffect(() => {
     if (referenceLayer?.data?.vector_tiles) {
-      //
       // Colouring by geometry name
       const indicatorsByGeom = {}
-      if (indicatorData) {
-        indicatorData.forEach(function (data) {
+      if (currentIndicator) {
+        currentIndicator.forEach(function (data) {
           indicatorsByGeom[data.geometry_code] = data;
         })
       }
       const options = {
+        filter: function (feature) {
+          return !geometryCodes || geometryCodes.includes(feature.properties.code)
+        },
         style: function (feature, layer, test) {
           let color = '#000000';
           let weight = 0.5;
@@ -87,7 +86,7 @@ export default function ReferenceLayer({ indicatorData }) {
         Actions.Map.change_reference_layer(layer)
       )
     }
-  }, [referenceLayer, indicatorData]);
+  }, [referenceLayer, indicatorData, currentIndicator]);
 
   return (<Fragment></Fragment>)
 }

@@ -68,7 +68,7 @@ export function Indicators() {
           )
           : <div>Loading</div>
       }
-      <ReferenceLayer indicatorData={selectedIndicatorData}/>
+      <ReferenceLayer currentIndicator={selectedIndicatorData}/>
     </Fragment>
   )
 }
