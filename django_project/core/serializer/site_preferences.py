@@ -9,6 +9,7 @@ class SitePreferencesSerializer(serializers.ModelSerializer):
 
     icon = serializers.SerializerMethodField()
     favicon = serializers.SerializerMethodField()
+    georepo_api_key = serializers.SerializerMethodField()
 
     def get_icon(self, obj: SitePreferences):
         """Return icon."""
@@ -17,6 +18,10 @@ class SitePreferencesSerializer(serializers.ModelSerializer):
     def get_favicon(self, obj: SitePreferences):
         """Return favicon."""
         return obj.favicon.url if obj.favicon else ''
+
+    def get_georepo_api_key(self, obj: SitePreferences):
+        """Return georepo_api_key."""
+        return obj.georepo_api_key if obj.georepo_api_key else ''
 
     class Meta:  # noqa: D106
         model = SitePreferences

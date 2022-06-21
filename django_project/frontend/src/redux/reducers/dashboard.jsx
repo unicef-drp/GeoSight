@@ -151,8 +151,6 @@ export default function dashboardReducer(
 
     // INDICATOR REDUCER
     case INDICATOR_ACTION_NAME: {
-      action.referenceLayer = state.data.referenceLayer;
-      action.filters = state.data.filters;
       const newIndicator = indicatorReducer(state.data.indicators, action);
       if (newIndicator !== state.data.indicators) {
         const newState = { ...state }

@@ -20,12 +20,27 @@ class SitePreferences(SingletonModel):
         max_length=512,
         default=''
     )
+    # -----------------------------------------------
+    # GEOREPO
+    # -----------------------------------------------
+    georepo_url = models.CharField(
+        max_length=512,
+        default='https://staging.georepo.kartoza.com/'
+    )
+    georepo_api_key = models.CharField(
+        max_length=512,
+        null=True,
+        blank=True
+    )
+
+    # -----------------------------------------------
+    # THEME
+    # -----------------------------------------------
     primary_color = models.CharField(
         max_length=16,
-        null=True, blank=True,
         default='#1CABE2',
         help_text=_(
-            'Put the hex color with # (e.g. #ffffff) '
+            'Theme color for the website. Put the hex color with # (e.g. #ffffff) '
             'or put the text of color. (e.g. blue)')
     )
     icon = models.FileField(

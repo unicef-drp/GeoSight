@@ -1,13 +1,12 @@
 """Serializer for dashboard."""
 import json
+
 from rest_framework import serializers
 
 from geosight.data.models.dashboard import Dashboard, Widget
-from geosight.data.models.reference_layer import ReferenceLayer
 from geosight.data.serializer.basemap_layer import BasemapLayerSerializer
 from geosight.data.serializer.context_layer import ContextLayerSerializer
 from geosight.data.serializer.indicator import BasicIndicatorSerializer
-from geosight.data.serializer.reference_layer import ReferenceLayerSerializer
 
 
 class WidgetSerializer(serializers.ModelSerializer):
@@ -38,10 +37,11 @@ class DashboardSerializer(serializers.ModelSerializer):
 
     def get_referenceLayer(self, obj: Dashboard):
         """Return reference_layer."""
-        try:
-            return ReferenceLayerSerializer(obj.reference_layer).data
-        except ReferenceLayer.DoesNotExist:
-            return {}
+        reference_layer = obj.reference_layer
+        return {
+            'identifier': reference_layer.identifier,
+            'detail_url': reference_layer.detail_url
+        }
 
     def get_indicators(self, obj: Dashboard):
         """Return indicators."""
@@ -83,8 +83,8 @@ class DashboardSerializer(serializers.ModelSerializer):
 
     def get_defaultBasemapLayer(self, obj: Dashboard):
         """Return defaultBasemapLayer."""
-        return obj.default_basemap_layer.id \
-            if obj.default_basemap_layer else None
+        default_basemap = obj.default_basemap_layer
+        return default_basemap.id if default_basemap else None
 
     def get_filters(self, obj: Dashboard):
         """Return filters."""

@@ -16,13 +16,9 @@ import ReferenceLayer from '../../Map/ReferenceLayer'
 /**
  * Indicators selector.
  */
-let selectedCount = 0;
-
 export function Indicators() {
   const dispatch = useDispatch();
-  const {
-    indicators, referenceLayer
-  } = useSelector(state => state.dashboard.data);
+  const { indicators } = useSelector(state => state.dashboard.data);
   const indicatorData = useSelector(state => state.indicatorData);
   const [currentIndicator, setCurrentIndicator] = useState(null);
 
@@ -43,7 +39,7 @@ export function Indicators() {
         }
       })
     }
-  }, [indicators, referenceLayer]);
+  }, [indicators]);
 
   // Get selected indicator data
   let selectedIndicatorData = null;
@@ -84,7 +80,6 @@ export function Indicators() {
  */
 export default function IndicatorsAccordion({ expanded, handleChange }) {
   const { indicators } = useSelector(state => state.dashboard.data);
-  selectedCount = 0;
   return (
     <Accordion
       expanded={expanded}
