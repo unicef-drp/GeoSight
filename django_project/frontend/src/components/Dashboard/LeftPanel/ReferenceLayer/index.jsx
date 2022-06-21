@@ -34,7 +34,11 @@ export default function ReferenceLayerSection() {
               {referenceLayer.data.source ?
                 <div><b>Source :</b> {referenceLayer.data.source}</div> : ''}
             </div>
-            : <div>Loading</div>
+            :
+            (
+              referenceLayer.identifier ? <div>Loading</div> :
+                <div>Please select a reference dataset.</div>
+            )
         }
       </AccordionDetails>
     </Accordion>

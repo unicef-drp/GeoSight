@@ -31,16 +31,26 @@ export default function ReferenceLayerEditSection({ expanded, handleChange }) {
   return <EditSection
     expanded={expanded}
     handleChange={handleChange}
-    title='Reference Layer'
-    description='Must select one Reference Layer for the dashboard.'
+    title='Reference Dataset'
+    description='Must select one Reference Dataset for the dashboard.'
     required={true}
     className='modal__reference_layer__setting'
     currentLayers={
       referenceLayer && Object.keys(referenceLayer).length > 0 ? [referenceLayer] : []
     }
-    urlAPI={urls.referenceLayersListAPI}
+    urlAPI={preferences.georepo_api.reference_layer_list}
+    idKey='identifier'
     actionAddLayer={Actions.ReferenceLayer.change}
-    actionRemoveLayer={Actions.ReferenceLayer.change}>
+    actionRemoveLayer={Actions.ReferenceLayer.change}
+    formatResponse={
+      function (response) {
+        return response.map(ref => {
+          ref.detail_url = preferences.georepo_url + '/api/reference-layer/' + ref.identifier
+          return ref
+        })
+      }
+    }
+  >
     <EditRow/>
   </EditSection>
 }

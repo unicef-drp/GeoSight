@@ -43,9 +43,7 @@ class DashboardForm(forms.ModelForm):
         data['extent'] = poly
 
         # save others data
-        data['reference_layer'] = ReferenceLayer.objects.get(
-            id=other_data['referenceLayer']
-        )
+        data['reference_layer_identifier'] = other_data['referenceLayer']
         data['indicators'] = other_data['indicators']
         data['basemap_layers'] = other_data['basemapsLayers']
         data['default_basemap_layer'] = BasemapLayer.objects.get(

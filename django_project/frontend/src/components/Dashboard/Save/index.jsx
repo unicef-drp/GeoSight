@@ -65,7 +65,7 @@ export default function SaveDashboard() {
     // Submit dashboard
     if (error.length === 0) {
       const data = {
-        'referenceLayer': referenceLayer.id,
+        'referenceLayer': referenceLayer.identifier,
         'indicators': indicators.map(function (indicator) {
           return indicator.id;
         }),
