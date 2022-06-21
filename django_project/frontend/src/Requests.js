@@ -3,11 +3,19 @@
  *
  * @param {string} url Url to query
  * @param {object} options Options of request
+ * @param {object} params Params
  * @param {Function} receiveAction Function on receiving data
  */
 export const fetchingData = async function (
-  url, options, receiveAction
+  url, params, options, receiveAction
 ) {
+  if (params) {
+    const paramsUrl = [];
+    for (const [key, value] of Object.entries(params)) {
+      paramsUrl.push(`${key}=${value}`)
+    }
+    url += '?' + paramsUrl.join('&')
+  }
   try {
     const response = await fetchJSON(url, options);
     receiveAction(response, null);

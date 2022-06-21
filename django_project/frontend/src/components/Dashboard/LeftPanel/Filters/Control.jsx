@@ -2,34 +2,24 @@
    Filters CONTROL
    ========================================================================== */
 
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
-import parser from "js-sql-parser";
-import AddCircleIcon from '@mui/icons-material/AddCircle'
 import Tooltip from '@mui/material/Tooltip'
+import AddCircleIcon from '@mui/icons-material/AddCircle'
 import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
-import {
-  Checkbox,
-  Input,
-  ListItemText,
-  OutlinedInput,
-  Select
-} from "@mui/material"
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
-import MenuItem from '@mui/material/MenuItem';
 import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import Switch from '@mui/material/Switch';
-
 import {
   IDENTIFIER,
   INIT_DATA,
   OPERATOR,
+  queryFromDictionary,
   queryIndicator,
-  returnWhereToDict,
   TYPE,
   WHERE_OPERATOR
 } from "../../../../utils/queryExtraction"
@@ -37,6 +27,7 @@ import {
 import Actions from '../../../../redux/actions'
 import { capitalize } from "../../../../utils/main";
 import FilterEditorModal from './Modal'
+import FilterValueInput from './ValueInput'
 
 import './style.scss'
 
@@ -59,7 +50,7 @@ export function FilterControl({ filtersData, indicatorFields }) {
       Actions.IndicatorsData.filter(filters)
     );
     dispatcher(
-      Actions.FiltersQuery.update(filters)
+      Actions.FiltersData.update(filters)
     );
     if (force) {
       setFilters({ ...filters });
@@ -190,6 +181,8 @@ export function FilterControl({ filtersData, indicatorFields }) {
       where.field = newWhere.field
       where.operator = newWhere.operator
       where.value = newWhere.value
+      where.name = newWhere.name
+      where.description = newWhere.description
       updateFilter(true)
     }
     const field = where.field
@@ -214,56 +207,14 @@ export function FilterControl({ filtersData, indicatorFields }) {
       return <div>
         {fieldName ? fieldName : field} {OPERATOR[operator]}
         <div className='FilterInputWrapper'>
-          {
-            operator === 'IN' ?
-              <Select
-                className='FilterInput'
-                multiple
-                value={currentValue}
-                onChange={(event) => {
-                  updateValue(event.target.value);
-                }
-                }
-                input={<OutlinedInput label="Tag"/>}
-                renderValue={(selected) => selected.length + ' selected'}
-              >
-                {indicator ? indicator.data.map((name) => (
-                  <MenuItem key={name} value={name}>
-                    <Checkbox checked={currentValue.indexOf(name) > -1}/>
-                    <ListItemText primary={name}/>
-                  </MenuItem>
-                )) : ''}
-              </Select> :
-              (
-                operator === '=' && indicator && isNaN(indicator.data[0]) ?
-                  <Select
-                    className='FilterInput'
-                    value={currentValue}
-                    onChange={
-                      (event) => {
-                        updateValue(event.target.value);
-                      }
-                    }
-                  >
-                    {indicator ? indicator.data.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        <ListItemText primary={name}/>
-                      </MenuItem>
-                    )) : ''}
-                  </Select> :
-                  <Input
-                    key="input1"
-                    className='FilterInput'
-                    type="text"
-                    placeholder="Value"
-                    value={currentValue}
-                    onChange={(event) => {
-                      updateValue(event.target.value);
-                    }}/>
-              )
-
-          }
+          <FilterValueInput
+            value={currentValue} operator={operator}
+            indicator={indicator} onChange={updateValue}/>
         </div>
+        {where.description ?
+          <div
+            className='FilterExpressionDescription'>{where.description}</div> : ''
+        }
       </div>
     }
 
@@ -284,10 +235,14 @@ export function FilterControl({ filtersData, indicatorFields }) {
             updateActive(event.target.checked)
           }}
         />
-        {fieldName ?
-          <div
-            className='FilterExpressionName'>{capitalize(fieldName.split('.')[1])}</div> :
-          <div className='FilterExpressionName'>Loading</div>}
+        {
+          where.name ?
+            <div className='FilterExpressionName'>{where.name}</div> :
+            fieldName ?
+              <div
+                className='FilterExpressionName'>{capitalize(fieldName.split('.')[1])}</div> :
+              <div className='FilterExpressionName'>Loading</div>
+        }
         <ModeEditIcon
           className='FilterEdit'
           onClick={(event) => {
@@ -310,7 +265,8 @@ export function FilterControl({ filtersData, indicatorFields }) {
                 }
               }/>
             </Tooltip>
-          ) : ''}
+          ) : ''
+        }
 
         <FilterEditorModal
           open={open} setOpen={setOpen} data={where}
@@ -343,32 +299,33 @@ export function FilterControl({ filtersData, indicatorFields }) {
   </Fragment>
 }
 
+export function FilterSectionSummary() {
+  const { indicators } = useSelector(state => state.dashboard.data);
+  const filtersData = useSelector(state => state.filtersData);
+  const query = queryFromDictionary(indicators, filtersData).query
+  return <Fragment>{
+    query ? <div className='FilterControlSummary'>
+      {query}
+    </div> : ''
+  }</Fragment>
+}
+
 /**
  * Filter section.
  */
 export default function FilterSection() {
   const { filters, indicators } = useSelector(state => state.dashboard.data);
+  const dispatcher = useDispatch();
 
-  let filtersData = null;
-  if (filters) {
-    const sql = parser.parse(filters)
-    let sqlDict = returnWhereToDict(sql.value.where)
-    if (Array.isArray(sqlDict)) {
-      filtersData = {
-        ...INIT_DATA.GROUP(),
-        queries: sqlDict
-      }
-    } else {
-      filtersData = sqlDict
-    }
-
-    // check default operator
-    const defaultOperator = filtersData.queries.filter(query => {
-      return query.type === TYPE.EXPRESSION
-    })[0]?.whereOperator;
-    filtersData.operator = defaultOperator ? defaultOperator : WHERE_OPERATOR.AND
-  }
-
+  // save the filters query
+  useEffect(() => {
+    dispatcher(
+      Actions.IndicatorsData.filter(filters)
+    );
+    dispatcher(
+      Actions.FiltersData.update(filters)
+    );
+  }, [filters]);
 
   // get indicator fields
   let indicatorFields = []
@@ -392,9 +349,12 @@ export default function FilterSection() {
     indicatorFields = [...new Set(indicatorFields)]
   })
 
-  return <div className='FilterControl'>
-    <FilterControl
-      filtersData={filtersData ? filtersData : INIT_DATA.GROUP()}
-      indicatorFields={indicatorFields}/>
-  </div>
+  return <Fragment>
+    <div className='FilterControl'>
+      <FilterControl
+        filtersData={filters && Object.keys(filters).length > 0 ? filters : INIT_DATA.GROUP()}
+        indicatorFields={indicatorFields}/>
+    </div>
+    {/*<FilterSectionSummary/>*/}
+  </Fragment>
 }

@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Button, FormControl, Input, InputLabel } from "@mui/material";
 import { OPERATOR } from "../../../../utils/queryExtraction";
 import Modal, { ModalContent, ModalHeader } from "../../../Modal";
-import {
-  Button,
-  Checkbox,
-  Input,
-  ListItemText,
-  OutlinedInput,
-  Select
-} from "@mui/material";
 import { SelectPlaceholder } from "../../../Input";
-import MenuItem from "@mui/material/MenuItem";
+import FilterValueInput from './ValueInput'
 
 /***
  * Return modal to edit filter
@@ -18,14 +11,28 @@ import MenuItem from "@mui/material/MenuItem";
  * @param {function} setOpen Function to open/close.
  * @param {dict} data Data of filter.
  * @param {list} fields Fields data
+ * @param {function} update Function to update the data.
  */
 export default function FilterEditorModal(
   { open, setOpen, data, fields, update }
 ) {
+  /** Update value based on operator **/
+  const updateValue = (value) => {
+    if (operator === 'IN' && !Array.isArray(value)) {
+      return value ? [value] : []
+    } else if (operator !== 'IN' && Array.isArray(value)) {
+      return value[0] ? value[0] : ''
+    }
+    return value
+  }
+
   const [field, setField] = useState(data.field ? data.field : '')
   const [operator, setOperator] = useState(data.operator ? data.operator : '')
   const [value, setValue] = useState(data.value ? data.value : '')
-  let currentValue = value;
+  const [name, setName] = useState(data.name ? data.name : '')
+  const [description, setDescription] = useState(data.description ? data.description : '')
+
+  let currentValue = updateValue(value);
 
   useEffect(() => {
     setField(data.field ? data.field : '')
@@ -33,33 +40,23 @@ export default function FilterEditorModal(
     setValue(data.value ? data.value : '')
   }, [data]);
 
+  /** When data saved */
   const onSave = () => {
-    let currentValue = value;
-    // Setup data
-    if (operator === 'IN' && !Array.isArray(value)) {
-      currentValue = value ? [value] : []
-    } else if (operator !== 'IN' && Array.isArray(value)) {
-      currentValue = value[0] ? value[0] : ''
-    }
+    let currentValue = updateValue(value);
     if (field && operator) {
       update({
         ...data,
         field: field,
         operator: operator,
-        value: currentValue
+        value: currentValue,
+        name: name,
+        description: description,
       })
     }
   }
   const indicator = fields.filter((fieldData) => {
     return fieldData.id === field
   })[0]
-
-  // Setup data
-  if (operator === 'IN' && !Array.isArray(value)) {
-    currentValue = value ? [value] : []
-  } else if (operator !== 'IN' && Array.isArray(value)) {
-    currentValue = value[0] ? value[0] : ''
-  }
 
   return <div
     onClick={(event) => {
@@ -78,6 +75,24 @@ export default function FilterEditorModal(
         {data.field ? "Update" : "Create"} filter
       </ModalHeader>
       <ModalContent>
+        <div>
+          <FormControl>
+            <InputLabel><b>Filter Name*</b></InputLabel>
+            <Input
+              type="text" placeholder="Filter name" value={name}
+              onChange={(event) => {
+                setName(event.target.value)
+              }}/>
+          </FormControl>
+          <FormControl>
+            <InputLabel>Description</InputLabel>
+            <Input
+              type="text" placeholder="Filter description" value={description}
+              onChange={(event) => {
+                setDescription(event.target.value)
+              }}/>
+          </FormControl>
+        </div>
         <div className='FilterEditModalQueryWrapper'>
           <div>Select fields, operation and default value for the filter.</div>
           <div className='FilterEditModalQuery'>
@@ -99,61 +114,15 @@ export default function FilterEditorModal(
               onChangeFn={(value) => {
                 setOperator(value)
               }}/>
-            {
-              operator === 'IN' ?
-                <Select
-                  className='FilterInput'
-                  multiple
-                  value={currentValue}
-                  onChange={(event) => {
-                    setValue(event.target.value);
-                  }
-                  }
-                  input={<OutlinedInput label="Tag"/>}
-                  renderValue={(selected) => selected.length + ' selected'}
-                >
-                  {indicator ? indicator.data.map((name) => (
-                    <MenuItem key={name} value={name}>
-                      <Checkbox checked={value.indexOf(name) > -1}/>
-                      <ListItemText primary={name}/>
-                    </MenuItem>
-                  )) : ''}
-                </Select> :
-                (
-                  operator === '=' && indicator && isNaN(indicator.data[0]) ?
-                    <Select
-                      className='FilterInput'
-                      value={currentValue}
-                      onChange={
-                        (event) => {
-                          setValue(event.target.value);
-                        }
-                      }
-                    >
-                      {indicator ? indicator.data.map((name) => (
-                        <MenuItem key={name} value={name}>
-                          <ListItemText primary={name}/>
-                        </MenuItem>
-                      )) : ''}
-                    </Select> :
-                    <Input
-                      key="input1"
-                      className='FilterInput'
-                      type="text"
-                      placeholder="Value"
-                      value={currentValue}
-                      onChange={(event) => {
-                        setValue(event.target.value);
-                      }}/>
-                )
-
-            }
+            <FilterValueInput
+              value={currentValue} operator={operator}
+              indicator={indicator} onChange={setValue}/>
           </div>
         </div>
         <Button
           variant="primary"
           className='save__button'
-          disabled={!field || !operator}
+          disabled={!field || !operator || !name}
           onClick={onSave}>
           {
             data.field ? "Update" : "Create"

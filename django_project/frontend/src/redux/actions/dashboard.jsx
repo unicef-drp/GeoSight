@@ -24,7 +24,7 @@ function receive(data, error = null) {
 
 export function fetch(dispatch) {
   fetchingData(
-    urls.dashboardData, {}, function (response, error) {
+    urls.dashboardData, {}, {}, function (response, error) {
       dispatch(
         receive(response, error)
       )
