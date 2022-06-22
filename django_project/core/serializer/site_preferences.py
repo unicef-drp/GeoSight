@@ -23,9 +23,7 @@ class SitePreferencesSerializer(serializers.ModelSerializer):
     def get_georepo_api(self, obj: SitePreferences):
         """Return georepo APIs."""
         georepo_url = GeorepoUrl()
-        return {
-            'reference_layer_list': georepo_url.reference_layer_list
-        }
+        return georepo_url.urls
 
     class Meta:  # noqa: D106
         model = SitePreferences

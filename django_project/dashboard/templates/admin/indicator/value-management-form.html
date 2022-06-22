@@ -2,12 +2,87 @@
 {% load static %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/admin/indicator/value-management-form.css' %}" type="text/css" media="screen, projection"/>
-    <link rel="stylesheet" href="{% static 'libs/select2/4.1.0-rc.0/select2.min.css' %}" type="text/css" media="screen, projection"/>
-    <script type="text/javascript" src="{% static 'libs/select2/4.1.0-rc.0/select2.min.js' %}"></script>
+    <link rel="stylesheet"
+          href="{% static 'css/admin/indicator/value-management-form.css' %}"
+          type="text/css" media="screen, projection"/>
+    <link rel="stylesheet"
+          href="{% static 'libs/select2/4.1.0-rc.0/select2.min.css' %}"
+          type="text/css" media="screen, projection"/>
+    <script type="text/javascript"
+            src="{% static 'libs/select2/4.1.0-rc.0/select2.min.js' %}"></script>
+    <script src="{% static "libs/underscore.js/1.9.1/underscore-min.js" %}"></script>
 {% endblock stylesheet %}
+{% block container %}
+    <div id="container" class="container">
+        <div id="content-view" class="container-page box-shadow-bottom">
+            <form id="form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="header">
+                    <div class="title">Indicator Value Manager Form</div>
+                    <div>
+                        Date: <input type="text" id="datepicker"
+                                     name="date">
+                        <button id="submit" class="white-button">Submit
+                        </button>
+                    </div>
+                </div>
+                <div class="container-page-content">
+                    <div class="custom-file-button">
+                        <button id="file-modal-button" type="button"
+                                class="main-button" data-toggle="modal">
+                            Use File to Refill Form
+                        </button>
+                    </div>
+                    <div id="reference-layer-selection-wrapper">
+                        <div class="label">Reference Layer :</div>
+                        <select id="reference-layer-selection">
+                            <option>Loading</option>
+                        </select>
+                    </div>
+                    <table id="table-form"></table>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script type='text/template' id='_geom-row'>
+        <tr data-id="<%= identifier %>"
+            data-code="<%= identifier %>"
+            data-extra-idx="0">
+            <td class="geometry-name" valign="top">
+                <%= name %>
+            </td>
+            <td valign="top">
+                <div>
+                    New Value :
+                    <input data-id="<%= identifier %>"
+                           class="value-input"
+                           data-code="<%= identifier %>"
+                           type="number"
+                           name="geometry:<%= identifier %>"
+                           value=""
+                           min="<%= min_value %>"
+                           max="<%= max_value %>"
+                           step="any">
+                </div>
+                <div class="extra-value-wrapper">
+                    <span class="extra-value-button">&nbsp;<i
+                            class="toggle-indicator fa fa-caret-down"
+                            aria-hidden="true"></i> Extra Value (<span
+                            class="extra-value-number">0</span>)
+                        <i class="add-new fa fa-plus"
+                           aria-hidden="true"></i>
+                    </span>
+                    <div class="extra-value">
 
-{% block content %}
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </script>
+    {# --------------------------------------------- #}
+    {# ------------------ MODAL -------------------- #}
+    {# --------------------------------------------- #}
+
     <div class="modal" id="file-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <form class="modal-content">
@@ -17,7 +92,8 @@
                             1. Create a spreadsheet with at least 2 columns.
                         </b>
                         <div>
-                            You can add optional extra columns for extra values.
+                            You can add optional extra columns for extra
+                            values.
                         </div>
                     </div>
                     <br>
@@ -43,13 +119,16 @@
                             <b>2. Select the spreadsheet.</b>
                         </div>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="file-data" accept=".xlsx,.xls" required>
-                            <label class="custom-file-label" for="validatedCustomFile">
+                            <input type="file" class="custom-file-input"
+                                   id="file-data" accept=".xlsx,.xls" required>
+                            <label class="custom-file-label"
+                                   for="validatedCustomFile">
                                 Choose spreadsheet to refill automatically...
                             </label>
                             <div class="custom-file-loading">
                                 <div class="custom-file-loading-text">
-                                    Choose spreadsheet to refill automatically...
+                                    Choose spreadsheet to refill
+                                    automatically...
                                 </div>
                             </div>
                         </div>
@@ -59,270 +138,319 @@
                         <div>
                             <b>3. Choose the sheet.</b>
                         </div>
-                        <select id="attribute_sheet_name" disabled required></select>
+                        <select id="attribute_sheet_name" disabled
+                                required></select>
                     </div>
                     <br>
                     <div>
                         <div>
                             <b>4. Choose area code column.</b>
                         </div>
-                        <select id="attribute_column_name_administration_code" disabled required></select>
+                        <select id="attribute_column_name_administration_code"
+                                disabled required></select>
                     </div>
                     <br>
                     <div>
                         <div>
                             <b>5. Choose value column.</b>
                         </div>
-                        <select id="attribute_column_name_value" disabled required></select>
+                        <select id="attribute_column_name_value" disabled
+                                required></select>
                     </div>
                     <br>
                     <div>
                         <div>
                             <b>6. Choose extra columns.</b>
                         </div>
-                        <select id="attribute_extra_columns" disabled multiple="multiple"></select>
+                        <select id="attribute_extra_columns" disabled
+                                multiple="multiple"></select>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn main-button">Import</button>
+                    <button type="submit" class="btn main-button">Import
+                    </button>
                 </div>
             </form>
         </div>
     </div>
-    <div id="content">
-        <form id="form" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="header box-shadow-bottom ">
-                {{ dashboard_title|safe }}
-                <div class="pull-right">
-                    Date: <input type="text" id="datepicker" name="date">
-                    <button id="submit" class="main-button">Submit</button>
-                </div>
-            </div>
-            <div id="content-view">
-                <div class="section box-shadow-bottom">
-                    <div class="custom-file-button">
-                        <button id="file-modal-button" type="button" class="main-button" data-toggle="modal">
-                            Use File to Refill Form
-                        </button>
-                    </div>
-                    <table>
-                        {% for geometry in geometry_reporting_units %}
-                            <tr data-id="{{ geometry.id }}" data-code="{{ geometry.identifier }}" data-extra-idx="0">
-                                <td class="geometry-name" valign="top">
-                                    {{ geometry.str }}
-                                </td>
-                                <td valign="top">
-                                    <div>
-                                        New Value :
-                                        <input id="input-{{ geometry.id }}" data-id="{{ geometry.id }}" class="value-input" data-code="{{ geometry.identifier }}" type="number" name="{{ geometry.id }}" value=""
-                                               min="{{ indicator.min_value }}" max="{{ indicator.max_value }}" step="any">
-                                        <i id="value-{{ geometry.id }}"></i>
-                                    </div>
-                                    <div class="extra-value-wrapper">
-                                        <span class="extra-value-button">&nbsp;<i class="toggle-indicator fa fa-caret-down" aria-hidden="true"></i> Extra Value (<span class="extra-value-number">0</span>)
-                                            <i class="add-new fa fa-plus" aria-hidden="true"></i>
-                                        </span>
-                                        <div class="extra-value">
-
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        {% endfor %}
-
-                    </table>
-                </div>
-            </div>
-        </form>
-    </div>
 {% endblock %}
 
 {% block scripts %}
-    <script type="text/javascript" src="{% static 'libs/xlsx/0.17.5/jszip.js' %}"></script>
-    <script type="text/javascript" src="{% static 'libs/xlsx/0.17.5/xlsx.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'libs/xlsx/0.17.5/jszip.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'libs/xlsx/0.17.5/xlsx.js' %}"></script>
     <script>
-        $("#datepicker").datepicker({
-            dateFormat: 'yy-mm-dd',
-            "setDate": new Date(),
-            "autoclose": true
-        });
-        const indicatorID = '{{ indicator.id }}';
-        var myDate = new Date();
-        var date = myDate.getFullYear() + '-' + ('0' + (myDate.getMonth() + 1)).slice(-2) + '-' + ('0' + myDate.getDate()).slice(-2);
-        $("#datepicker").val(date);
+      const valueDataList = [];
         {% for value in values %}
-            $(`#value-{{ value.geometry.id }}`).html('<div class="pull-right"> Last value : <b>{{ value.value }}</b> at <b>{{ value.date }}</b></div>')
+        valueDataList.push({
+            geometry : '{{ value.geom_identifier }}',
+            value : '{{ value.value }}',
+            date : '{{ value.date }}'
+        })
         {% endfor %}
 
+      {# CHECK THE REFERENCE LAYER #}
+      const $referenceLayerSelector = $('#reference-layer-selection');
+      const referenceLayers = {};
+      const reportingLevel = '{{ indicator.reporting_level }}';
+      const $tableForm = $('#table-form');
+
+      function renderGeoms(geoms) {
+        $tableForm.html('')
+        geoms.forEach(geom => {
+          const template = _.template($('#_geom-row').html())
+          $tableForm.append(template({
+            identifier: geom.identifier.admin,
+            name: geom.name,
+            min_value: "{{ indicator.min_value }}",
+            max_value: "{{ indicator.max_value }}"
+          }));
+        })
+
+        {# INIT LISTENER #}
         $('.extra-value-button').click(function () {
-            const $row = $(this).closest('tr')
-            const $extraValue = $row.find('.extra-value');
-            const $i = $(this).find('.toggle-indicator');
-            $i.toggleClass('fa-caret-down');
-            $i.toggleClass('fa-caret-up');
-            if (!$i.hasClass('fa-caret-down')) {
-                $extraValue.show();
-            } else {
-                $extraValue.hide();
-            }
+          const $row = $(this).closest('tr')
+          const $extraValue = $row.find('.extra-value');
+          const $i = $(this).find('.toggle-indicator');
+          $i.toggleClass('fa-caret-down');
+          $i.toggleClass('fa-caret-up');
+          if (!$i.hasClass('fa-caret-down')) {
+            $extraValue.show();
+          } else {
+            $extraValue.hide();
+          }
         })
         $('#content-view .add-new').click(function () {
-            const $row = $(this).closest('tr');
-            addNewExtraValue($row, '', {{ indicator.min }});
-            return false;
+          const $row = $(this).closest('tr');
+          addNewExtraValue($row, '', {{ indicator.min_value }});
+          return false;
         })
 
-        function addNewExtraValue($row, name, value) {
-            $row.data('extra-idx', parseInt($row.data('extra-idx')) + 1);
-            const idx = $row.data('extra-idx');
-            const id = $row.data('id');
+        {#  Check current data #}
+        valueDataList.forEach(
+            value=> {
+                $(`tr[data-code="${value.geometry}"]`).append(`<td valign="top" style="width: fit-content"> Last value : <b>${value.value}</b> at <b>${value.date}</b></td>`)
+            }
+        )
+      }
 
-            const $number = $row.find('.extra-value-number');
-            const $extraValue = $row.find('.extra-value');
-            $extraValue.append(
-                `<div class="extra-value-row">
-                    <input type="text" name="${id}-${idx}-extra-name" placeholder="Name" value="${name}"> =
-                    <input type="text" name="${id}-${idx}-extra-value" placeholder="Value" value="${value}" min="{{ indicator.min_value }}" max="{{ indicator.max_value }}"> <i class="fa fa-times" aria-hidden="true"></i>
+      $referenceLayerSelector.change(evt => {
+        $tableForm.html('<tr><td><i class="helptext">Loading Reference Data</i></td></tr>');
+        const identifier = evt.target.value;
+        const referenceLayer = referenceLayers[identifier];
+        if (!referenceLayer.levels) {
+          {# Fetch reference layer data #}
+          $.ajax({
+            url: '{{ preferences.georepo_api.reference_layer_detail|safe }}'.replace('<identifier>', identifier)
+          }).done(function (data) {
+            referenceLayer.levels = data;
+            const level = data.levels.filter(level => {
+              return level.level_name.toLocaleLowerCase() === reportingLevel.toLocaleLowerCase()
+            })[0]
+            if (!level) {
+              if (identifier === $referenceLayerSelector.val()) {
+                $tableForm.html(`<tr><td><i class="helptext">Reference Layer does not have data for ${reportingLevel}</i></td></tr>`);
+              }
+            } else {
+              if (!referenceLayer.data) {
+                $.ajax({
+                  url: '{{ preferences.georepo_api.domain }}' + level.url + '/list',
+                }).done(function (geoms) {
+                  referenceLayer.data = geoms;
+                  renderGeoms(referenceLayer.data);
+                });
+              } else {
+                renderGeoms(referenceLayer.data);
+              }
+            }
+          });
+        } else {
+          if (referenceLayer.data) {
+            renderGeoms(referenceLayer.data);
+          } else {
+            $tableForm.html(`<tr><td><i class="helptext">Reference Layer does not have data for ${reportingLevel}</i></td></tr>`);
+          }
+        }
+      })
+      $.ajax({
+        url: '{{ preferences.georepo_api.reference_layer_list }}'
+      }).done(function (data) {
+        $referenceLayerSelector.html('');
+        data.forEach((referenceLayer, idx) => {
+          const identifier = referenceLayer.identifier;
+          $referenceLayerSelector.append(`<option value='${identifier}'>${referenceLayer.name}</option>`);
+          referenceLayers[identifier] = referenceLayer;
+          if (idx === 0) {
+            $referenceLayerSelector.val(identifier)
+          }
+        })
+        $referenceLayerSelector.trigger('change')
+      });
+
+      {# ---------------------------- #}
+      $("#datepicker").datepicker({
+        dateFormat: 'yy-mm-dd',
+        "setDate": new Date(),
+        "autoclose": true
+      });
+      const indicatorID = '{{ indicator.id }}';
+      var myDate = new Date();
+      var date = myDate.getFullYear() + '-' + ('0' + (myDate.getMonth() + 1)).slice(-2) + '-' + ('0' + myDate.getDate()).slice(-2);
+      $("#datepicker").val(date);
+
+      {# ----------------------------------------- #}
+
+      function addNewExtraValue($row, name, value) {
+        $row.data('extra-idx', parseInt($row.data('extra-idx')) + 1);
+        const idx = $row.data('extra-idx');
+        const id = $row.data('id');
+
+        const $number = $row.find('.extra-value-number');
+        const $extraValue = $row.find('.extra-value');
+        $extraValue.append(
+          `<div class="extra-value-row">
+                    <input type="text" name="extra_name:${idx}:${id}" placeholder="Name" value="${name}"> =
+                    <input type="text" name="extra_value:${idx}:${id}" placeholder="Value" value="${value}" min="{{ indicator.min_value }}" max="{{ indicator.max_value }}"> <i class="fa fa-times" aria-hidden="true"></i>
                 </div>`);
-            $extraValue.show();
-            $number.html(parseInt($number.html()) + 1);
+        $extraValue.show();
+        $number.html(parseInt($number.html()) + 1);
 
-            {# if the row is deleted#}
-            $extraValue.find('.fa-times').last().click(function () {
-                $(this).closest('.extra-value-row').remove();
-                $number.html(parseInt($number.html()) - 1);
-            })
-        }
-
-        let lastValue = {};
-        const cookieName = 'value-management-form-' + indicatorID;
-        if (getCookie(cookieName)) {
-            try {
-                lastValue = JSON.parse(getCookie(cookieName));
-            } catch (e) {
-
-            }
-        }
-
-        function inputChanged(el) {
-            lastValue[$(el).attr('id')] = $(el).val();
-            setCookie(cookieName, JSON.stringify(lastValue))
-        }
-
-        function inputDefaultValue(el) {
-            if (lastValue[$(el).attr('id')]) {
-                $(el).val(lastValue[$(el).attr('id')]);
-            }
-        }
-
-        {# when file input changed #}
-        const loadingWidth = $('#file-modal .custom-file-loading').width() + 0;
-        const $loading = $('#file-modal .custom-file-loading');
-        let $selectInput = $('#attribute_column_name_administration_code, #attribute_column_name_value, #attribute_extra_columns');
-        let workbook = null;
-        $('#file-data').change(function () {
-            var file = this.files[0];
-            var fr = new FileReader();
-            $('.value-input').val('');
-            $('.fa-times').click();
-            fr.onload = function () {
-                workbook = XLSX.read(fr.result, {
-                    type: 'binary'
-                });
-
-                {# prepare if sheet name is selected #}
-                $('#attribute_sheet_name').prop('disabled', false);
-                $('#attribute_sheet_name').off('change');
-                $('#attribute_sheet_name').change(function () {
-                    inputChanged(this);
-                    var array = XLSX.utils.sheet_to_json(workbook.Sheets[$(this).val()], {
-                        header: 1,
-                        defval: '',
-                        blankrows: true
-                    });
-
-                    const $inputs = $selectInput.not("#attribute_sheet_name");
-                    $inputs.prop('disabled', false);
-                    $inputs.html('');
-                    $.each(array[0], function (idx, value) {
-                        $inputs.append(`<option value="${value}">${value}</option`);
-                    });
-                    $inputs.not('#attribute_extra_columns').val(array[0][0]);
-                    if (array[0].includes('Area Code')) {
-                        $('#attribute_column_name_administration_code').val('Area Code');
-                    }
-                    if (array[0].includes('Value')) {
-                        $('#attribute_column_name_value').val('Value');
-                    }
-                    $inputs.change(function () {
-                        inputChanged(this);
-                    });
-                    $inputs.each(function () {
-                        inputDefaultValue(this);
-                    });
-                    $('#attribute_extra_columns').select2();
-                });
-
-                {# prepate sheet name selection#}
-                $.each(workbook.Workbook.Sheets, function (index, sheet) {
-                    if (sheet.Hidden === 0) {
-                        $('#attribute_sheet_name').append(`<option value="${sheet.name}">${sheet.name}</option`);
-                    }
-                });
-                inputDefaultValue($('#attribute_sheet_name'));
-                $('#attribute_sheet_name').trigger('change');
-            };
-            fr.readAsBinaryString(file);
-        });
-
-        {# File modal #}
-        $('#file-modal-button').click(function () {
-            $('#file-modal').modal('show');
-            $('#file-modal').find('input, select').val('')
-            $('#file-modal select').prop('disabled', true);
-            $('#file-modal select').html('');
+        {# if the row is deleted#}
+        $extraValue.find('.fa-times').last().click(function () {
+          $(this).closest('.extra-value-row').remove();
+          $number.html(parseInt($number.html()) - 1);
         })
+      }
 
-        $('#file-modal form').submit(function () {
-            $loading.show();
-            $loading.width(0);
-            const data = XLSX.utils.sheet_to_json(workbook.Sheets[$('#attribute_sheet_name').val()]);
-            const areaCodeColumn = $('#attribute_column_name_administration_code').val()
-            const valueColumn = $('#attribute_column_name_value').val();
-            const extraColumns = $('#attribute_extra_columns').val();
+      let lastValue = {};
+      const cookieName = 'value-management-form-' + indicatorID;
+      if (getCookie(cookieName)) {
+        try {
+          lastValue = JSON.parse(getCookie(cookieName));
+        } catch (e) {
+
+        }
+      }
+
+      function inputChanged(el) {
+        lastValue[$(el).attr('id')] = $(el).val();
+        setCookie(cookieName, JSON.stringify(lastValue))
+      }
+
+      function inputDefaultValue(el) {
+        if (lastValue[$(el).attr('id')]) {
+          $(el).val(lastValue[$(el).attr('id')]);
+        }
+      }
+
+      {# when file input changed #}
+      const loadingWidth = $('#file-modal .custom-file-loading').width() + 0;
+      const $loading = $('#file-modal .custom-file-loading');
+      let $selectInput = $('#attribute_column_name_administration_code, #attribute_column_name_value, #attribute_extra_columns');
+      let workbook = null;
+      $('#file-data').change(function () {
+        var file = this.files[0];
+        var fr = new FileReader();
+        $('.value-input').val('');
+        $('.fa-times').click();
+        fr.onload = function () {
+          workbook = XLSX.read(fr.result, {
+            type: 'binary'
+          });
+
+          {# prepare if sheet name is selected #}
+          $('#attribute_sheet_name').prop('disabled', false);
+          $('#attribute_sheet_name').off('change');
+          $('#attribute_sheet_name').change(function () {
+            inputChanged(this);
+            var array = XLSX.utils.sheet_to_json(workbook.Sheets[$(this).val()], {
+              header: 1,
+              defval: '',
+              blankrows: true
+            });
+
+            const $inputs = $selectInput.not("#attribute_sheet_name");
+            $inputs.prop('disabled', false);
+            $inputs.html('');
+            $.each(array[0], function (idx, value) {
+              $inputs.append(`<option value="${value}">${value}</option`);
+            });
+            $inputs.not('#attribute_extra_columns').val(array[0][0]);
+            if (array[0].includes('Area Code')) {
+              $('#attribute_column_name_administration_code').val('Area Code');
+            }
+            if (array[0].includes('Value')) {
+              $('#attribute_column_name_value').val('Value');
+            }
+            $inputs.change(function () {
+              inputChanged(this);
+            });
+            $inputs.each(function () {
+              inputDefaultValue(this);
+            });
+            $('#attribute_extra_columns').select2();
+          });
+
+          {# prepate sheet name selection#}
+          $.each(workbook.Workbook.Sheets, function (index, sheet) {
+            if (sheet.Hidden === 0) {
+              $('#attribute_sheet_name').append(`<option value="${sheet.name}">${sheet.name}</option`);
+            }
+          });
+          inputDefaultValue($('#attribute_sheet_name'));
+          $('#attribute_sheet_name').trigger('change');
+        };
+        fr.readAsBinaryString(file);
+      });
+
+      {# File modal #}
+      $('#file-modal-button').click(function () {
+        $('#file-modal').modal('show');
+        $('#file-modal').find('input, select').val('')
+        $('#file-modal select').prop('disabled', true);
+        $('#file-modal select').html('');
+      })
+
+      $('#file-modal form').submit(function () {
+        $loading.show();
+        $loading.width(0);
+        const data = XLSX.utils.sheet_to_json(workbook.Sheets[$('#attribute_sheet_name').val()]);
+        const areaCodeColumn = $('#attribute_column_name_administration_code').val()
+        const valueColumn = $('#attribute_column_name_value').val();
+        const extraColumns = $('#attribute_extra_columns').val();
+        setTimeout(function () {
+          $.each(data, function (index, values) {
             setTimeout(function () {
-                $.each(data, function (index, values) {
-                    setTimeout(function () {
-                        $('#content-view tr').each(function () {
-                            if ($(this).data('code') === values[areaCodeColumn]) {
-                                const $row = $(this);
-                                const value = values[valueColumn];
-                                if (value) {
-                                    $row.find('.value-input').val(value);
-                                    // check others properties
-                                    $.each(values, function (key, value) {
-                                        if (extraColumns.includes(key) && key !== areaCodeColumn && key !== valueColumn) {
-                                            if (value) {
-                                                addNewExtraValue($row, key, value)
-                                            }
-                                        }
-                                    });
-                                }
-
-                            }
-                        });
-                        $loading.show();
-                        $loading.width((index / data.length) * loadingWidth);
-                        if (index === data.length - 1) {
-                            $loading.hide();
-                            $('#file-modal').modal('hide');
+              $('#content-view tr').each(function () {
+                if ($(this).data('code') === values[areaCodeColumn]) {
+                  const $row = $(this);
+                  const value = values[valueColumn];
+                  if (value) {
+                    $row.find('.value-input').val(value);
+                    // check others properties
+                    $.each(values, function (key, value) {
+                      if (extraColumns.includes(key) && key !== areaCodeColumn && key !== valueColumn) {
+                        if (value) {
+                          addNewExtraValue($row, key, value)
                         }
-                    }, 10)
-                });
-                return false;
-            }, 10);
-            return false;
-        })
+                      }
+                    });
+                  }
+
+                }
+              });
+              $loading.show();
+              $loading.width((index / data.length) * loadingWidth);
+              if (index === data.length - 1) {
+                $loading.hide();
+                $('#file-modal').modal('hide');
+              }
+            }, 10)
+          });
+          return false;
+        }, 10);
+        return false;
+      })
     </script>
 {% endblock %}

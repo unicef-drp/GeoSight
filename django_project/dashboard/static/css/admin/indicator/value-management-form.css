@@ -6,6 +6,10 @@
     padding: 0;
 }
 
+.container-page-content {
+    padding: 20px !important;
+}
+
 
 #content-view .geometry-name {
     padding-top: 13px;
@@ -25,7 +29,7 @@
 #datepicker {
     margin-left: 10px;
     margin-right: 10px;
-    margin-top: -8px;
+    margin-top: -2px;
     padding: 5px 6px;
 }
 
@@ -40,8 +44,17 @@
     border: none;
 }
 
-#content .header .main-button {
-    margin-top: -5px;
+#content-view .header {
+    display: flex;
+}
+
+#content-view .header .title {
+    flex-grow: 1;
+    padding-top: 3px;
+}
+
+#content-view .header button {
+    margin-top: -2px;
 }
 
 #content-view table {
@@ -97,10 +110,6 @@
 
 .custom-file-button {
     cursor: pointer;
-    width: auto;
-    position: absolute;
-    top: -33px;
-    right: 0;
 }
 
 .custom-file-button .main-button {
@@ -197,6 +206,10 @@
     outline: none;
 }
 
+.select2-container {
+    z-index: 99999;
+}
+
 .select2-container--open .select2-selection {
     border: 1px solid var(--primary-color) !important;
 }
@@ -228,6 +241,22 @@
     margin-top: 0 !important;
 }
 
-.container-page-content {
-    padding: 0;
+#reference-layer-selection-wrapper {
+    border: 1px solid var(--primary-color);
+    padding: 1rem;
+    display: flex;
+}
+
+#reference-layer-selection-wrapper select {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-top: 0;
+    padding: 10px;
+    vertical-align: middle;
+    width: 100%;
+}
+
+#file-modal-button {
+    width: fit-content;
 }

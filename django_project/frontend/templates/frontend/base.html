@@ -29,14 +29,6 @@
   const csrfmiddlewaretoken = '{{ csrf_token }}';
   const preferences = {{ preferences|safe }};
 
-  /**
-   TODO:
-   Change it to clean way
-   **/
-  let georepoUrl = preferences.georepo_url;
-  if (georepoUrl[georepoUrl.length - 1] === '/') {
-    georepoUrl = georepoUrl.slice(0, -1);
-  }
   const links = {{ links|safe }};
   let urls = {
     'login': "{% url 'login' %}",

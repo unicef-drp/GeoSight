@@ -81,7 +81,7 @@ export default function ReferenceLayer({ currentIndicator }) {
         },
       };
 
-      const layer = vectorTileLayer(georepoUrl + referenceLayer.data.vector_tiles, options);
+      const layer = vectorTileLayer(preferences.georepo_api.domain + referenceLayer.data.vector_tiles, options);
       layer.bindPopup(function (feature) {
         const properties = indicatorsByGeom[feature.properties.code]
           ? indicatorsByGeom[feature.properties.code] : feature.properties

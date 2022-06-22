@@ -45,7 +45,7 @@ export default function ReferenceLayerEditSection({ expanded, handleChange }) {
     formatResponse={
       function (response) {
         return response.map(ref => {
-          ref.detail_url = preferences.georepo_url + '/api/reference-layer/' + ref.identifier
+          ref.detail_url = preferences.georepo_api.reference_layer_detail.replace('<identifier>', ref.identifier)
           return ref
         })
       }

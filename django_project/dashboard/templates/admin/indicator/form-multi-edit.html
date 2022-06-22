@@ -18,25 +18,25 @@
 {% endblock %}
 {% block extrascripts %}
     <script>
-        $('#content-view p label, .name-rule').prepend('<input type="checkbox">')
-        $('p[data-field-name="name"] input').remove();
-        $('p[data-field-name="name"] br').remove();
-        $('p[data-field-name="name"]').append('<div id="name-list"></div>');
-        {% for indicator in indicators %}
-            $('#name-list').append('<span class="name-row">{{ indicator.full_name }}</a>')
-        {% endfor %}
-        $('p[data-field-name="description"]').remove();
-        $('#content-view select, #content-view input').prop('disabled', true);
-        $('.name-rule input').prop('disabled', false);
-        $('#content-view p label input').prop('disabled', false);
-        $('#content-view p label input').click(function () {
-            $(this).closest('p').find('select, input').prop('disabled', !$(this).is(':checked'));
-            $(this).prop('disabled', false);
-        })
-        $('.name-rule input').click(function () {
-            $(this).closest('tr').find('select, input').prop('disabled', !$(this).is(':checked'));
-            $(this).prop('disabled', false);
-        })
-        $('input[name="csrfmiddlewaretoken"]').prop('disabled', false);
+      $('#content-view p label, .name-rule').prepend('<input type="checkbox">')
+      $('p[data-field-name="name"] input').remove();
+      $('p[data-field-name="name"] br').remove();
+      $('p[data-field-name="name"]').append('<div id="name-list"></div>');
+      {% for indicator in indicators %}
+        $('#name-list').append('<span class="name-row">{{ indicator.name }}</a>')
+      {% endfor %}
+      $('p[data-field-name="description"]').remove();
+      $('#content-view select, #content-view input').prop('disabled', true);
+      $('.name-rule input').prop('disabled', false);
+      $('#content-view p label input').prop('disabled', false);
+      $('#content-view p label input').click(function () {
+        $(this).closest('p').find('select, input').prop('disabled', !$(this).is(':checked'));
+        $(this).prop('disabled', false);
+      })
+      $('.name-rule input').click(function () {
+        $(this).closest('tr').find('select, input').prop('disabled', !$(this).is(':checked'));
+        $(this).prop('disabled', false);
+      })
+      $('input[name="csrfmiddlewaretoken"]').prop('disabled', false);
     </script>
 {% endblock %}
