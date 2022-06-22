@@ -40,7 +40,8 @@ class SitePreferences(SingletonModel):
         max_length=16,
         default='#1CABE2',
         help_text=_(
-            'Theme color for the website. Put the hex color with # (e.g. #ffffff) '
+            'Theme color for the website. '
+            'Put the hex color with # (e.g. #ffffff) '
             'or put the text of color. (e.g. blue)')
     )
     icon = models.FileField(

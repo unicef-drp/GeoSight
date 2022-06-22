@@ -59,7 +59,8 @@ class IndicatorCreateView(AdminView):
                     name = request.POST.get(f'rule_name_{idx}', None)
                     rule = request.POST.get(f'rule_rule_{idx}', None)
                     color = request.POST.get(f'rule_color_{idx}', None)
-                    outline_color = request.POST.get(f'rule_outline_color_{idx}', None)
+                    outline_color = request.POST.get(
+                        f'rule_outline_color_{idx}', None)
                     if rule and name:
                         indicator_rule, created = \
                             IndicatorRule.objects.get_or_create(

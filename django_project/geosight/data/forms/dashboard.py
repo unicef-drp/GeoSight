@@ -9,7 +9,6 @@ from geosight.data.models.basemap_layer import BasemapLayer
 from geosight.data.models.context_layer import ContextLayer
 from geosight.data.models.dashboard import Dashboard
 from geosight.data.models.indicator import Indicator
-from geosight.data.models.reference_layer import ReferenceLayer
 
 
 class DashboardForm(forms.ModelForm):
