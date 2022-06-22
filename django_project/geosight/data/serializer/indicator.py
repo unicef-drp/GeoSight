@@ -84,7 +84,7 @@ class IndicatorRuleSerializer(serializers.ModelSerializer):
 class IndicatorValueSerializer(serializers.ModelSerializer):
     """Serializer for IndicatorValue."""
 
-    class Meta:
+    class Meta:  # noqa: D106
         model = IndicatorValue
         fields = '__all__'
 
@@ -92,6 +92,6 @@ class IndicatorValueSerializer(serializers.ModelSerializer):
 class IndicatorValueBasicSerializer(serializers.ModelSerializer):
     """Serializer for IndicatorValue."""
 
-    class Meta:
+    class Meta:  # noqa: D106
         model = IndicatorValue
         exclude = ('id', 'indicator', 'geom_identifier')

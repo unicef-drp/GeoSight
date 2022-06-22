@@ -53,7 +53,9 @@ class IndicatorValueManagementMapView(AdminView):
                     set(
                         self.indicator.query_value(
                             datetime.date.today()
-                        ).exclude(geom_identifier='undefined').values_list('geom_identifier', flat=True)
+                        ).exclude(
+                            geom_identifier='undefined'
+                        ).values_list('geom_identifier', flat=True)
                     )
                 ),
                 'geometry_has_value': list(

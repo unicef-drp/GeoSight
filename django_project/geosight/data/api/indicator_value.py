@@ -14,15 +14,12 @@ from geosight.data.serializer.indicator import IndicatorValueBasicSerializer
 
 
 class IndicatorValuesByGeometry(APIView):
-    """
-    Return Scenario value for the specific geometry
-    for all date
-    """
+    """Return Scenario value for the specific geometry for all date."""
+
     permission_classes = (IsAuthenticated, AdminAuthenticationPermission)
 
     def get(self, request, pk, geometry_code):
-        """
-        Return values of the indicator.
+        """Return values of the indicator.
 
         :param pk: pk of the indicator
         :param geometry_code: the geometry code
@@ -34,8 +31,7 @@ class IndicatorValuesByGeometry(APIView):
         return Response(IndicatorValueBasicSerializer(values, many=True).data)
 
     def post(self, request, pk, geometry_code):
-        """
-        Return values of the indicator
+        """Return values of the indicator.
 
         :param pk: pk of the indicator
         :param geometry_code: the geometry code
