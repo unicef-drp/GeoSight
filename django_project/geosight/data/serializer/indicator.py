@@ -2,7 +2,9 @@
 from django.shortcuts import reverse
 from rest_framework import serializers
 
-from geosight.data.models.indicator import Indicator, IndicatorRule
+from geosight.data.models.indicator import (
+    Indicator, IndicatorRule, IndicatorValue
+)
 
 
 class IndicatorSerializer(serializers.ModelSerializer):
@@ -77,3 +79,19 @@ class IndicatorRuleSerializer(serializers.ModelSerializer):
     class Meta:  # noqa: D106
         model = IndicatorRule
         fields = '__all__'
+
+
+class IndicatorValueSerializer(serializers.ModelSerializer):
+    """Serializer for IndicatorValue."""
+
+    class Meta:
+        model = IndicatorValue
+        fields = '__all__'
+
+
+class IndicatorValueBasicSerializer(serializers.ModelSerializer):
+    """Serializer for IndicatorValue."""
+
+    class Meta:
+        model = IndicatorValue
+        exclude = ('id', 'indicator', 'geom_identifier')

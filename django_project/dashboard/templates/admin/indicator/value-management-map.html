@@ -2,8 +2,11 @@
 {% load static %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'libs/leaflet/1.5.1/leaflet.css' %}"/>
-    <link rel="stylesheet" href="{% static 'css/map.css' %}" type="text/css" media="screen, projection"/>
+    <link rel="stylesheet"
+          href="{% static 'libs/leaflet/1.5.1/leaflet.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/admin/map.css' %}"
+          type="text/css"
+          media="screen, projection"/>
     <style>
         .feature-value-popup table {
             width: 100%;
@@ -61,6 +64,39 @@
         .leaflet-popup-content form > div {
             padding: 10px;
         }
+
+        #content-view {
+            height: 85vh;
+        }
+
+        .container-page-content {
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #reference-layer-selection-wrapper {
+            background: white;
+            padding: 10px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: 99999;
+        }
+
+        #reference-layer-selection-wrapper-inner {
+            display: flex;
+        }
+
+        #reference-layer-selection-wrapper .label {
+            margin-right: 5px;
+            padding-top: 3px;
+        }
+
+        #reference-layer-selection-wrapper-info i {
+            display: block;
+            margin-top: 5px;
+        }
     </style>
 {% endblock stylesheet %}
 {% block content %}
@@ -69,46 +105,72 @@
         <div id="map">
 
         </div>
-        <div id="level-selection" class="box-shadow-bottom">
-            {% for key, level in instance_levels.items %}
-                <div data-level="{{ level.level }}" data-url="{{ level.url }}">{{ level.level }}</div>
-            {% endfor %}
+        <div id="reference-layer-selection-wrapper" class="box-shadow-bottom">
+            <div id="reference-layer-selection-wrapper-inner">
+                <div class="label">Reference Layer :</div>
+                <select id="reference-layer-selection">
+                    <option>Loading</option>
+                </select>
+            </div>
+            <div id="reference-layer-selection-wrapper-info"></div>
         </div>
-        <table id="legend" class="box-shadow-bottom">
-            {% for key, legend in legends.items %}
-                <tr>
-                    <td><span class="color" style="background: {{ legend.color }}"></span></td>
-                    <td><span class="text">{{ legend.name }}</span></td>
-                </tr>
-            {% endfor %}
-        </table>
+        {# TODO: #}
+        {#  Uncommented. When submit a data, the color of the geometry should be updated. #}
+        {#  The problem, when submited, we need to refresh geometryHasValue & geometryHasUpdatedValue. #}
+        {#        <table id="legend" class="box-shadow-bottom">#}
+        {#            {% for key, legend in legends.items %}#}
+        {#                <tr>#}
+        {#                    <td><span class="color"#}
+        {#                              style="background: {{ legend.color }}"></span>#}
+        {#                    </td>#}
+        {#                    <td><span class="text">{{ legend.name }}</span></td>#}
+        {#                </tr>#}
+        {#            {% endfor %}#}
+        {#        </table>#}
     </div>
 {% endblock %}
 {% block scripts %}
     <script>
-        const geometry = {{ geometry|safe }};
-        const legends = {{ legends|safe }};
-        const geometryHasValue = {{ geometry_has_value|safe }};
-        const geometryHasUpdatedValue = {{ geometry_has_updated_value|safe }};
-        const urlValueByGeometry = "{{ url_value_by_geometry }}";
+      const reportingLevel = '{{ indicator.reporting_level }}';
+      const preferences = {{ preferences|safe }};
+      const legends = {{ legends|safe }};
+      const geometryHasValue = {{ geometry_has_value|safe }};
+      const geometryHasUpdatedValue = {{ geometry_has_updated_value|safe }};
+      const urlValueByGeometry = "{{ url_value_by_geometry }}";
+      const indicator = {
+        min_value:{{ indicator.min_value }},
+        max_value:{{ indicator.max_value }}
+      }
     </script>
-    <script type="text/javascript" src="{% static 'libs/underscore.js/1.9.1/underscore-min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'libs/leaflet/1.5.1/leaflet.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/dashboard/admin/indicator-value-manager-map.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'libs/underscore.js/1.9.1/underscore-min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'libs/leaflet/1.5.1/leaflet.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'js/admin/indicator-value-manager-map.js' %}"></script>
 
     <script type='text/template' id='_on_each_feature'>
-        <div id="feature-value-<%= id %>" data-id="<%= id %>" class="feature-value-popup">
-            <div class="popup-header"><b><%= name %> (<%= identifier %>)</b></div>
+        <div id="feature-value-<%= id %>" data-id="<%= id %>"
+             class="feature-value-popup">
+            <div class="popup-header"><b><%= name %> (<%= identifier %>)</b>
+            </div>
             <div class="row">
                 <div class="col" style="margin-right: 10px">
                     <form method="post" action="<%= url %>">
                         {% csrf_token %}
                         <div>
                             <div><b>Add new value</b></div>
-                            <input id="feature-value-date" type="text" name="date" placeholder="Date" autocomplete="off">
-                            <input id="feature-value-value" type="number" name="value" placeholder="Value" autocomplete="off" value="{{ indicator.min_value }}"
-                                   min="{{ indicator.min_value }}" max="{{ indicator.max_value }}">
-                            <input class="main-button" type="submit" value="Submit">
+                            <input id="feature-value-date" type="text"
+                                   name="date" placeholder="Date"
+                                   autocomplete="off">
+                            <input id="feature-value-value" type="number"
+                                   name="value" placeholder="Value"
+                                   autocomplete="off"
+                                   value="{{ indicator.min_value }}"
+                                   min="{{ indicator.min_value }}"
+                                   max="{{ indicator.max_value }}">
+                            <input class="main-button" type="submit"
+                                   value="Submit">
                         </div>
                     </form>
                 </div>

@@ -53,13 +53,13 @@ class IndicatorValueManagementMapView(AdminView):
                     set(
                         self.indicator.query_value(
                             datetime.date.today()
-                        ).values_list('geometry', flat=True)
+                        ).exclude(geom_identifier='undefined').values_list('geom_identifier', flat=True)
                     )
                 ),
                 'geometry_has_value': list(
                     set(
                         self.indicator.indicatorvalue_set.values_list(
-                            'geometry', flat=True
+                            'geom_identifier', flat=True
                         )
                     )
                 ),
@@ -67,7 +67,8 @@ class IndicatorValueManagementMapView(AdminView):
                 'url_value_by_geometry': reverse(
                     'indicator-values-by-geometry', args=[
                         self.indicator.id, 0
-                    ])
+                    ]
+                )
             }
         )
         return context

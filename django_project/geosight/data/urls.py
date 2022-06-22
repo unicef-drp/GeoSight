@@ -15,6 +15,7 @@ from geosight.data.api.indicator import (
     IndicatorListAPI,
     IndicatorDetailAPI, IndicatorValuesAPI
 )
+from geosight.data.api.indicator_value import IndicatorValuesByGeometry
 from geosight.data.api.reference_layer import (
     ReferenceLayerGeojson, ReferenceLayerListAPI
 )
@@ -27,6 +28,11 @@ indicator_api = [
     url(
         r'^(?P<pk>\d+)/values/latest',
         IndicatorValuesAPI.as_view(), name='indicator-values-api'
+    ),
+    url(
+        r'^(?P<pk>\d+)/values/by-geometry/(?P<geometry_code>.+)/',
+        IndicatorValuesByGeometry.as_view(),
+        name='indicator-values-by-geometry'
     ),
     url(
         r'^(?P<pk>\d+)',
