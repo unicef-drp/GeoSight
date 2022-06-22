@@ -46,25 +46,28 @@ export default function ReferenceLayer({ currentIndicator }) {
 
   useEffect(() => {
     if (referenceLayer?.data?.vector_tiles) {
-      // Colouring by geometry name
+
+      // Save indicator data per geom
+      // This is needed for popup and rendering
       const indicatorsByGeom = {}
       if (currentIndicator) {
         currentIndicator.forEach(function (data) {
           indicatorsByGeom[data.geometry_code] = data;
         })
       }
+
       const options = {
         maxDetailZoom: 8,
         filter: function (feature) {
           return !geometryCodes || geometryCodes.includes(feature.properties.code)
         },
         style: function (feature, layer, test) {
-          console.log(feature)
-          let color = '#000000';
+          const indicatorData = indicatorsByGeom[feature.properties.code];
+
+          let fillColor = indicatorData ? indicatorData.color : null;
+          let color = indicatorData ? indicatorData.outline_color : '#000000';
           let weight = 0.5;
           let fillOpacity = 0;
-          const indicatorData = indicatorsByGeom[feature.properties.code];
-          let fillColor = indicatorData ? indicatorData.color : null;
           if (fillColor) {
             fillOpacity = 0.7;
           }

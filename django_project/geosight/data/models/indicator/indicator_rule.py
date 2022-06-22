@@ -30,6 +30,13 @@ class IndicatorRule(models.Model):
             'Color of the rule'
         )
     )
+    outline_color = models.CharField(
+        max_length=16,
+        default='#000000',
+        help_text=_(
+            'Color for the outline of geometry on map.'
+        )
+    )
 
     class Meta:  # noqa: D106
         unique_together = ('indicator', 'name')

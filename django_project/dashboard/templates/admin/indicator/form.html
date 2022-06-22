@@ -7,10 +7,12 @@
           type="text/css" media="screen, projection"/>
     <script src="{% static "libs/underscore.js/1.9.1/underscore-min.js" %}"></script>
     <style>
+        .container-page-content {
+            padding: 0;
+        }
         table {
             width: 100%;
         }
-
         .rule-header {
             border-bottom: none !important;
         }
@@ -40,6 +42,12 @@
         p[data-field-name="show_in_context_analysis"] span {
             display: inline-block;
             width: fit-content;
+        }
+        .color-review-section-col {
+            width: 160px;
+        }
+        #container {
+            max-width: 90%
         }
     </style>
     {% block extrastyle %}
@@ -73,6 +81,8 @@
             </th>
             <th valign="top">Color<br>
             </th>
+            <th valign="top">Outline Color<br>
+            </th>
         </tr>
         <tr style="border-top: none!important;">
             <th valign="top"></th>
@@ -102,7 +112,16 @@
                 </div>
             </th>
             <th valign="top">
-                <span class="helptext">Put the hex color with # (e.g. #ffffff) or put the text of color. (e.g. blue).</span>
+                <span class="helptext">
+                    Used for coloring the traffic light or filling the geometry.
+                    Put the hex color with # (e.g. #ffffff) or put the text of color. (e.g. blue).
+                </span>
+            </th>
+            <th valign="top">
+                <span class="helptext">
+                    Used for coloring the outline of the geometry.
+                    Put the hex color with # (e.g. #ffffff) or put the text of color. (e.g. blue).
+                </span>
             </th>
         </tr>
     </table>
@@ -135,7 +154,7 @@
             <td class="row rule-row">
                 <input type="text" class="rule-input"
                        name="rule_rule_<%= idx %>"
-                       value="<%= value %>" spellcheck="false"
+                       value="<%= rule %>" spellcheck="false"
                        style="display: none">
                 <div class="row rule-section">
                     <div class="symbol">value</div>
@@ -164,11 +183,33 @@
                     </div>
                 </div>
             </td>
-            <td>
+            <td class="color-review-section-col">
                 <div class="row color-review-section">
                     <input type="text"
                            name="rule_color_<%= idx %>"
                            value="<%= color %>"
+                           class="rule-color col"
+                           spellcheck="false">
+                    <div class="color-review-wrapper">
+                        <input type="text" class="color-review"
+                               spellcheck="false"
+                               autocomplete="false">
+                        <div class="color-picker-indicator-wrapper">
+                            <div class="color-picker-indicator">
+                                <div class="arrow"
+                                     content="box-shadow-bottom"></div>
+                                <img src="{% static "img/color-picker.svg" %}"
+                                     class="box-shadow-bottom">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td class="color-review-section-col">
+                <div class="row color-review-section">
+                    <input type="text"
+                           name="rule_outline_color_<%= idx %>"
+                           value="<%= outline_color %>"
                            class="rule-color col"
                            spellcheck="false">
                     <div class="color-review-wrapper">
@@ -339,12 +380,13 @@
       $('#add-rule').click(function () {
         addRule({
           name: '',
+          rule: '',
           color: '#FF0000',
-          value: ''
+          outline_color: '#FF0000',
         })
       })
       {% for rule in rules %}
-      addRule({{ rule|safe }})
+    addRule({{ rule|safe }})
       {% endfor %}
 
 
