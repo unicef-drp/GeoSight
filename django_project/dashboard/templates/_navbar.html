@@ -32,44 +32,25 @@
                         class="fa fa-caret-down" aria-hidden="true"></i>
                 </a>
                 <ul class="dropdown-menu box-shadow-bottom">
-                    <li>
-                        <a href="{% url 'logout' %}?next=/">{% trans "Logout" %}</a>
-                    </li>
                     {% if user.is_staff %}
-                        <li class="header-section">
-                            Staff section
-                        </li>
                         <li>
-                            <a href="{% url 'admin:index' %}">{% trans "Django Admin" %}</a>
+                            <a href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
                         </li>
                         <li>
                             <a href="{% url "backups-view" %}">{% trans "Backups" %}</a>
-                        </li>
-                    {% endif %}
-                    {% if user.is_superuser %}
-                        <li class="header-section">
-                            Management
                         </li>
                         <li>
                             <a id="nav-indicator-management"
                                href="{% url "indicator-management-view" %}"
                                class="nav row" title="Indicator Management">
-                                <table>
-                                    <tr>
-                                        <td class="icon"><i
-                                                class="fa fa-th-list"
-                                                aria-hidden="true"></i></td>
-                                        <td>Indicator</td>
-                                        <td class="right-icon"><a
-                                                href="{% url "indicator-management-new" %}"><i
-                                                class="fa fa-plus-circle"
-                                                aria-hidden="true"></i></a>
-                                        </td>
-                                    </tr>
-                                </table>
+                                Indicators
                             </a>
                         </li>
                     {% endif %}
+                    <li>
+                        <a href="{% url 'logout' %}?next=/">{% trans "Logout" %}</a>
+                    </li>
+
                 </ul>
             </div>
         {% else %}

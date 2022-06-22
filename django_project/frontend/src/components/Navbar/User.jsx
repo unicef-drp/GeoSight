@@ -30,6 +30,8 @@ export default function User() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const logoutUrl = urls.logout; // eslint-disable-line no-undef
   const adminUrl = urls.admin; // eslint-disable-line no-undef
+  const backupsUrl = urls.backups; // eslint-disable-line no-undef
+  const indicatorsUrl = urls.indicators; // eslint-disable-line no-undef
   const openSignIn = () => {
     setModalIsOpen(true);
   };
@@ -52,10 +54,25 @@ export default function User() {
           }}
         >
           {
-            is_staff ?
+            is_staff ? (
               <MenuItem>
                 <a href={adminUrl}>Admin</a>
-              </MenuItem> : ''
+              </MenuItem>
+            ) : ''
+          }
+          {
+            is_staff ? (
+              <MenuItem>
+                <a href={backupsUrl}>Backups</a>
+              </MenuItem>
+            ) : ''
+          }
+          {
+            is_staff ? (
+              <MenuItem>
+                <a href={indicatorsUrl}>Indicators</a>
+              </MenuItem>
+            ) : ''
           }
           <MenuItem>
             <a href={logoutUrl}>Logout</a>

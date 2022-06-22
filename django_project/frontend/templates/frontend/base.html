@@ -31,7 +31,7 @@
 
   /**
    TODO:
-    Change it to clean way
+   Change it to clean way
    **/
   let georepoUrl = preferences.georepo_url;
   if (georepoUrl[georepoUrl.length - 1] === '/') {
@@ -42,6 +42,8 @@
     'login': "{% url 'login' %}",
     'logout': "{% url 'logout' %}?next=/",
     'admin': "{% url 'admin:index' %}",
+    'backups': "{% url "backups-view" %}",
+    'indicators': "{% url "indicator-management-view" %}",
     'dashboardData': '{% url 'dashboard-data-api' slug=dashboard.id %}'
   }
 </script>

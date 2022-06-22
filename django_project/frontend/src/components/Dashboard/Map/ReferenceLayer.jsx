@@ -59,6 +59,7 @@ export default function ReferenceLayer({ currentIndicator }) {
           return !geometryCodes || geometryCodes.includes(feature.properties.code)
         },
         style: function (feature, layer, test) {
+          console.log(feature)
           let color = '#000000';
           let weight = 0.5;
           let fillOpacity = 0;
