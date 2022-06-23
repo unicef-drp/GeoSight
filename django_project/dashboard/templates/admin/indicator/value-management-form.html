@@ -182,12 +182,16 @@
             src="{% static 'libs/xlsx/0.17.5/xlsx.js' %}"></script>
     <script>
       const valueDataList = [];
+      const valueChecked = {};
         {% for value in values %}
-        valueDataList.push({
-            geometry : '{{ value.geom_identifier }}',
-            value : '{{ value.value }}',
-            date : '{{ value.date }}'
-        })
+        if(!valueChecked['{{ value.geom_identifier }}']) {
+          valueDataList.push({
+            geometry: '{{ value.geom_identifier }}',
+            value: '{{ value.value }}',
+            date: '{{ value.date }}'
+          })
+          valueChecked['{{ value.geom_identifier }}'] = true;
+        }
         {% endfor %}
 
       {# CHECK THE REFERENCE LAYER #}

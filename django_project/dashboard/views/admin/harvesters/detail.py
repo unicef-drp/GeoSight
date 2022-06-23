@@ -13,12 +13,15 @@ from geosight.harvester.tasks import run_harvester
 class HarvesterIndicatorDetail(AdminView):
     """Harvester Indicator View."""
 
-    template_name = 'dashboard/admin/harvesters/detail/harvester_detail.html'
+    template_name = 'admin/harvesters/detail/harvester_detail.html'
     indicator = None
 
     @property
     def content_title(self):
         """Return content title."""
+        self.indicator = get_object_or_404(
+            Indicator, id=self.kwargs.get('pk', '')
+        )
         return f'Harvester for {self.indicator.__str__()}'
 
     def get_context(self, harvester, edit_url):
@@ -41,9 +44,6 @@ class HarvesterIndicatorDetail(AdminView):
     @property
     def harvester(self):
         """Return harvester data."""
-        self.indicator = get_object_or_404(
-            Indicator, id=self.kwargs.get('pk', '')
-        )
         try:
             return self.indicator.harvester
         except Harvester.DoesNotExist:
@@ -134,7 +134,7 @@ class HarvesterDetail(HarvesterIndicatorDetail):
         ]:
             return HttpResponseBadRequest('Harvester can not be harvested')
         try:
-            run_harvester(harvester.pk)
+            run_harvester.delay(harvester.pk)
             return redirect(
                 reverse(
                     'harvester-detail',

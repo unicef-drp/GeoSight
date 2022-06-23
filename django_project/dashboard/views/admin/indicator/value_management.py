@@ -107,7 +107,7 @@ class IndicatorValueManagementTableView(AdminView):
         context.update(
             {
                 'indicator': self.indicator,
-                'values': self.indicator.indicatorvalue_set.order_by('date')
+                'values': self.indicator.indicatorvalue_set.order_by('-date')
             }
         )
         return context

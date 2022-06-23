@@ -44,9 +44,8 @@ class HarvesterFormView(AdminView, ABC):
 
     def get_context_data(self, **kwargs) -> dict:
         """Return context data."""
-        context = super().get_context_data(**kwargs)
-
         self.get_indicator()
+        context = super().get_context_data(**kwargs)
         attributes = []
         mapping = []
         harvester = None

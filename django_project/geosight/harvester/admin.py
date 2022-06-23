@@ -56,7 +56,7 @@ class HarvesterAdmin(admin.ModelAdmin):
     actions = (harvest_data, assign_uuid)
     inlines = [HarvesterAttributeInline, HarvesterMappingValueInline]
     list_display = (
-        'id', 'unique_id', '_indicator', 'harvester_class', 'active',
+        'id', 'uuid', '_indicator', 'harvester_class', 'active',
         'is_finished', 'logs')
     list_filter = ('harvester_class',)
     list_editable = ('active',)
@@ -66,7 +66,7 @@ class HarvesterAdmin(admin.ModelAdmin):
         """Return harvester's indicator."""
         if object.indicator:
             url = reverse(
-                "admin:geosight.data_indicator_change",
+                "admin:geosight_data_indicator_change",
                 args=[object.indicator.pk]
             )
             return mark_safe(
@@ -84,13 +84,25 @@ class HarvesterAdmin(admin.ModelAdmin):
             return mark_safe(
                 '<img src="/static/admin/img/icon-no.svg" alt="True">')
 
+    def uuid(self, object: Harvester):
+        """Return unique ID."""
+        if object.indicator:
+            return object.unique_id
+        else:
+            url = reverse(
+                "harvester-detail", args=[object.unique_id]
+            )
+            return mark_safe(
+                f'<a href="{url}">{object.unique_id}</a>'
+            )
+
     def logs(self, object: Harvester):
         """Return logs."""
+        url = reverse(
+            "admin:geosight_harvester_harvesterlog_changelist"
+        )
         return mark_safe(
-            (
-                f'<a href="/admin/geosight.harvester/harvesterlog/'
-                f'?harvester__id__exact={object.pk}">Logs</a>'
-            )
+            f'<a href="{url}?harvester__id__exact={object.pk}">Logs</a>'
         )
 
 
