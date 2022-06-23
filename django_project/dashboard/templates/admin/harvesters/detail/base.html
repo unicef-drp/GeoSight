@@ -1,11 +1,14 @@
-{% extends 'dashboard/_base.html' %}
+{% extends '_base.html' %}
 {% load static %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/form.css' %}" type="text/css" media="screen, projection"/>
+    <link href="{% static 'css/admin/base.css' %}" rel="stylesheet"
+          type="text/css" media="screen, projection"/>
+    <link rel="stylesheet" href="{% static 'css/form.css' %}" type="text/css"
+          media="screen, projection"/>
     <style>
         #content-view .section {
-            padding: 20px;
+            padding: 0 20px 20px 20px;
         }
 
         .log-error {
@@ -48,8 +51,9 @@
         }
     </style>
 {% endblock stylesheet %}
-{% block contentview %}
-    <div class="modal fade" id="log-detail-modal" tabindex="-1" role="dialog" aria-hidden="true">
+{% block content %}
+    <div class="modal fade" id="log-detail-modal" tabindex="-1" role="dialog"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
@@ -58,112 +62,109 @@
         </div>
     </div>
     <div id="content">
-        <div class="header box-shadow-bottom ">
-            {{ dashboard_title|safe }}
-            {% block button_header %}
-            {% endblock %}
-        </div>
-        <div id="content-view">
-            <div class="section box-shadow-bottom">
-                <div class="line">
-                    <b>Harvester Class</b> {{ harvester.harvester_name }}
-                </div>
-                {% if current_log %}
-                    <h3>Last Run : {{ current_log.start_time }}</h3>
-                    <table class="content-table" id="current-log" data-id="{{ current_log.id }}">
+        <div class="section box-shadow-bottom">
+            <div class="line">
+                <b>Harvester Class</b> {{ harvester.harvester_name }}
+            </div>
+            {% if current_log %}
+                <h3>Last Run : {{ current_log.start_time }}</h3>
+                <table class="content-table" id="current-log"
+                       data-id="{{ current_log.id }}">
+                    <tr>
+                        <td class="{% if current_log.status == "Error" %}log-error{% elif current_log.status == "Done" %}log-done{% endif %}">
+                            {{ current_log.status }} {% if current_log.note %}-
+                            {{ current_log.note|safe }}{% endif %}
+                        </td>
+                    </tr>
+                </table>
+                <br>
+            {% endif %}
+            {% if harvester.harvesterattribute_set.count %}
+                <h3>Attributes</h3>
+                <table class="content-table">
+                    <tr>
+                        <th>Name</th>
+                        <th>Value</th>
+                    </tr>
+                    {% if harvester.user %}
                         <tr>
-                            <td class="{% if current_log.status == "Error" %}log-error{% elif current_log.status == "Done" %}log-done{% endif %}">
-                                {{ current_log.status }} {% if current_log.note %}- {{ current_log.note|safe }}{% endif %}
+                            <td>User who run</td>
+                            <td>
+                                {% if harvester.user.get_full_name %}
+                                    {{ harvester.user.get_full_name }}{% else %}
+                                    {{ harvester.user.get_username }}{% endif %}
                             </td>
                         </tr>
-                    </table>
-                    <br>
-                {% endif %}
-                {% if harvester.harvesterattribute_set.count %}
-                    <h3>Attributes</h3>
-                    <table class="content-table">
-                        <tr>
-                            <th>Name</th>
-                            <th>Value</th>
-                        </tr>
-                        {% if harvester.user %}
+                    {% endif %}
+                    {% if harvester_attributes %}
+                        {% for attribute in harvester_attributes %}
                             <tr>
-                                <td>User who run</td>
-                                <td>
-                                    {% if harvester.user.get_full_name %}{{ harvester.user.get_full_name }}{% else %}{{ harvester.user.get_username }}{% endif %}
+                                <td valign="top">{{ attribute.title }}</td>
+                                <td name="{{ attribute.name }}">
+                                    {% if attribute.value %}
+                                        {{ attribute.value|safe }}
+                                    {% elif attribute.file %}
+                                        <a href="{{ attribute.file.url }}">
+                                            {{ attribute.file.name }}
+                                        </a>
+                                    {% endif %}
                                 </td>
                             </tr>
-                        {% endif %}
-                        {% if harvester_attributes %}
-                            {% for attribute in harvester_attributes %}
-                                <tr>
-                                    <td valign="top">{{ attribute.title }}</td>
-                                    <td name="{{ attribute.name }}">
-                                        {% if attribute.value %}
-                                            {{ attribute.value|safe }}
-                                        {% elif attribute.file %}
-                                            <a href="{{ attribute.file.url }}">
-                                                {{ attribute.file.name }}
-                                            </a>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        {% else %}
-                            {% for attribute in harvester.harvesterattribute_set.all %}
-                                <tr>
-                                    <td valign="top">{{ attribute.human_name }}</td>
-                                    <td name="{{ attribute.name }}">
-                                        {% if attribute.value %}
-                                            {{ attribute.value|safe }}
-                                        {% elif attribute.file %}
-                                            <a href="{{ attribute.file.url }}">
-                                                {{ attribute.file.name }}
-                                            </a>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
-                    </table>
-                    <br>
-                {% endif %}
-                {% if harvester.harvestermappingvalue_set.count %}
-                    <h3>Mapping Data</h3>
-                    <table id="mapping-table" class="content-table">
-                        <tr>
-                            <th>From</th>
-                            <th>To</th>
-                        </tr>
-                        {% for mapping_value in harvester.harvestermappingvalue_set.all %}
+                        {% endfor %}
+                    {% else %}
+                        {% for attribute in harvester.harvesterattribute_set.all %}
                             <tr>
-                                <td style="width: 50%">{{ mapping_value.remote_value }}</td>
-                                <td style="width: 50%">{{ mapping_value.platform_value }}</td>
+                                <td valign="top">{{ attribute.human_name }}</td>
+                                <td name="{{ attribute.name }}">
+                                    {% if attribute.value %}
+                                        {{ attribute.value|safe }}
+                                    {% elif attribute.file %}
+                                        <a href="{{ attribute.file.url }}">
+                                            {{ attribute.file.name }}
+                                        </a>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
-                    </table>
-                    <br>
-                {% endif %}
-                {% if harvester.harvesterlog_set.count %}
-                    <h3>Log</h3>
-                    <table class="content-table">
+                    {% endif %}
+                </table>
+                <br>
+            {% endif %}
+            {% if harvester.harvestermappingvalue_set.count %}
+                <h3>Mapping Data</h3>
+                <table id="mapping-table" class="content-table">
+                    <tr>
+                        <th>From</th>
+                        <th>To</th>
+                    </tr>
+                    {% for mapping_value in harvester.harvestermappingvalue_set.all %}
                         <tr>
-                            <th>Start Time</th>
-                            <th>End Time</th>
-                            <th>Status</th>
-                            <th>Note</th>
+                            <td style="width: 50%">{{ mapping_value.remote_value }}</td>
+                            <td style="width: 50%">{{ mapping_value.platform_value }}</td>
                         </tr>
-                        {% for log in harvester.short_log_list %}
-                            <tr>
-                                <td>{{ log.start_time }}</td>
-                                <td>{{ log.end_time }}</td>
-                                <td>{{ log.status }}</td>
-                                <td>{{ log.note|safe }}</td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                {% endif %}
-            </div>
+                    {% endfor %}
+                </table>
+                <br>
+            {% endif %}
+            {% if harvester.harvesterlog_set.count %}
+                <h3>Log</h3>
+                <table class="content-table">
+                    <tr>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Status</th>
+                        <th>Note</th>
+                    </tr>
+                    {% for log in harvester.short_log_list %}
+                        <tr>
+                            <td>{{ log.start_time }}</td>
+                            <td>{{ log.end_time }}</td>
+                            <td>{{ log.status }}</td>
+                            <td>{{ log.note|safe }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
@@ -171,111 +172,111 @@
 {% block scripts %}
 
     <script>
-        {#  API URL #}
-        let url = '';
-        $('*[name="API URL"]').find('a').each(function () {
-            url = window.location.protocol + '//' + window.location.host + $(this).attr('href');
-            $('*[name="API URL"]').html(url);
-        });
+      {#  API URL #}
+      let url = '';
+      $('*[name="API URL"]').find('a').each(function () {
+        url = window.location.protocol + '//' + window.location.host + $(this).attr('href');
+        $('*[name="API URL"]').html(url);
+      });
 
-        {# make the text to copy to clipboard#}
-        changeToCopyToClipboard($('*[name="API URL"]'));
-        changeToCopyToClipboard($('*[name="token"]'));
+      {# make the text to copy to clipboard#}
+      changeToCopyToClipboard($('*[name="API URL"]'));
+      changeToCopyToClipboard($('*[name="token"]'));
 
-        $('*[name="API URL"]').append(
-            '<br>' +
-            '<br>' +
-            '<div class="helptext api-url-hepltext">Example data :' +
-            '<br><pre>' + JSON.stringify({
-                "geometry_code": "SO",
-                "extra_data": {
-                    "Data 1": "1",
-                    "Data 2": "2",
-                },
-                "date": "2022-01-01",
-                "value": 1
-            }, undefined, 2) + '<pre></div>' +
-            '<br>' +
-            '<b> For batch </b><br>' +
-            '<div id="batch-url">' + url + '/batch</div>' +
-            '<br>' +
-            '<br>' +
-            '<div class="helptext api-url-hepltext">Example data :' +
-            '<br><pre>' + JSON.stringify([
-                {
-                    "geometry_code": "SO",
-                    "extra_data": {
-                        "Data 1": "1",
-                        "Data 2": "2",
-                    },
-                    "date": "2022-01-01",
-                    "value": 1
-                },
-                {
-                    "geometry_code": "SO",
-                    "extra_data": {
-                        "Data 1": "1",
-                        "Data 2": "2",
-                    },
-                    "date": "2022-02-01",
-                    "value": 1
-                }
-            ], undefined, 2) + '<pre></div>'
-        )
-        changeToCopyToClipboard($('#batch-url'));
+      $('*[name="API URL"]').append(
+        '<br>' +
+        '<br>' +
+        '<div class="helptext api-url-hepltext">Example data :' +
+        '<br><pre>' + JSON.stringify({
+          "geometry_code": "SO",
+          "extra_data": {
+            "Data 1": "1",
+            "Data 2": "2",
+          },
+          "date": "2022-01-01",
+          "value": 1
+        }, undefined, 2) + '<pre></div>' +
+        '<br>' +
+        '<b> For batch </b><br>' +
+        '<div id="batch-url">' + url + '/batch</div>' +
+        '<br>' +
+        '<br>' +
+        '<div class="helptext api-url-hepltext">Example data :' +
+        '<br><pre>' + JSON.stringify([
+          {
+            "geometry_code": "SO",
+            "extra_data": {
+              "Data 1": "1",
+              "Data 2": "2",
+            },
+            "date": "2022-01-01",
+            "value": 1
+          },
+          {
+            "geometry_code": "SO",
+            "extra_data": {
+              "Data 1": "1",
+              "Data 2": "2",
+            },
+            "date": "2022-02-01",
+            "value": 1
+          }
+        ], undefined, 2) + '<pre></div>'
+      )
+      changeToCopyToClipboard($('#batch-url'));
 
-        {# update the log #}
-        {% if current_log.status == 'Running' %}
-            const $currentLog = $('#current-log td');
-            const period = 1000;
-            function getLog() {
-                $.ajax({
-                    url: '{% url 'harvester-log-api' instance.slug current_log.id %}',
-                    dataType: 'json',
-                    success: function (json, textStatus, request) {
-                        let wait = true;
-                        $currentLog.html(json.status);
-                        if (json.note) {
-                            $currentLog.append(' - ');
-                            $currentLog.append($.parseHTML(json.note));
-                        }
-                        if (json.status === 'Error') {
-                            $currentLog.removeClass('log-error').removeClass('log-done').addClass('log-error');
-                            wait = false;
-                            initLogDetail(json.html_detail)
-                        } else if (json.status === 'Done') {
-                            $currentLog.removeClass('log-error').removeClass('log-done').addClass('log-done');
-                            wait = false;
-                        }
-                        if (wait) {
-                            setTimeout(function () {
-                                getLog();
-                            }, period);
-                        } else {
-                            $('#edit-button').prop('disabled', false);
-                        }
-                    },
-                    error: function () {
-                        setTimeout(function () {
-                            getLog();
-                        }, period);
-                    }
-                });
-            }
-            setTimeout(function () {
+      {# update the log #}
+      {% if current_log.status == 'Running' %}
+        const $currentLog = $('#current-log td');
+        const period = 1000;
+        function getLog() {
+          $.ajax({
+            url: '{% url 'harvester-log-api' current_log.id %}',
+            dataType: 'json',
+            success: function (json, textStatus, request) {
+              let wait = true;
+              $currentLog.html(json.status);
+              if (json.note) {
+                $currentLog.append(' - ');
+                $currentLog.append($.parseHTML(json.note));
+              }
+              if (json.status === 'Error') {
+                $currentLog.removeClass('log-error').removeClass('log-done').addClass('log-error');
+                wait = false;
+                initLogDetail(json.html_detail)
+              } else if (json.status === 'Done') {
+                $currentLog.removeClass('log-error').removeClass('log-done').addClass('log-done');
+                wait = false;
+              }
+              if (wait) {
+                setTimeout(function () {
+                  getLog();
+                }, period);
+              } else {
+                $('#edit-button').prop('disabled', false);
+              }
+            },
+            error: function () {
+              setTimeout(function () {
                 getLog();
-            }, period);
-        {% endif %}
-
-
-        function initLogDetail(detailHTML) {
-            if (detailHTML) {
-                $('#log-detail-modal .modal-body').html(detailHTML);
-                $('#current-log .log-error').append('<i id="detail-modal-button" class="fa fa-info-circle" aria-hidden="true" data-toggle="modal" data-target="#log-detail-modal"></i>');
+              }, period);
             }
+          });
         }
-        {% if current_log.html_detail %}
-            initLogDetail(`{{ current_log.html_detail }}`);
-        {% endif %}
+        setTimeout(function () {
+          getLog();
+        }, period);
+      {% endif %}
+
+
+      function initLogDetail(detailHTML) {
+        if (detailHTML) {
+          $('#log-detail-modal .modal-body').html(detailHTML);
+          $('#current-log .log-error').append('<i id="detail-modal-button" class="fa fa-info-circle" aria-hidden="true" data-toggle="modal" data-target="#log-detail-modal"></i>');
+        }
+      }
+      {% if current_log.html_detail %}
+        initLogDetail(`{{ current_log.html_detail }}`);
+      {% endif %}
     </script>
 {% endblock %}

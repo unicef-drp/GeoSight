@@ -1,4 +1,4 @@
-{% extends 'dashboard/admin/harvesters/forms/_base_attribute.html' %}
+{% extends 'admin/harvesters/forms/_base_attribute.html' %}
 {% load static %}
 {% block extrastyle %}
     <style>
@@ -10,130 +10,187 @@
             margin-top: 0 !important;
             margin-left: 0 !important;
         }
+
+        tr.unselected {
+            opacity: 0.5;
+        }
+
+        form .header span {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
     </style>
 {% endblock %}
+{% block header_button %}
+    <button id="reset" class="white-button">
+        Reset All Indicators : <span id="indicator-selected">0</span> selected
+    </button>
+{% endblock %}
 {% block extrascripts %}
-    <script type="text/javascript" src="{% static 'libs/xlsx/0.17.5/jszip.js' %}"></script>
-    <script type="text/javascript" src="{% static 'libs/xlsx/0.17.5/xlsx.js' %}"></script>
-    <script type="text/javascript" src="{% static 'libs/fuzzysort.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'libs/select2/4.1.0-rc.0/select2.min.css' %}" type="text/css" media="screen, projection"/>
-    <script type="text/javascript" src="{% static 'libs/select2/4.1.0-rc.0/select2.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'libs/xlsx/0.17.5/jszip.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'libs/xlsx/0.17.5/xlsx.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'libs/fuzzysort.js' %}"></script>
+    <link rel="stylesheet"
+          href="{% static 'libs/select2/4.1.0-rc.0/select2.min.css' %}"
+          type="text/css" media="screen, projection"/>
+    <script type="text/javascript"
+            src="{% static 'libs/select2/4.1.0-rc.0/select2.min.js' %}"></script>
     <script>
-        $('#attribute_file').prop('disabled', true);
-        $(document).ready(function () {
-            $('.date').datepicker({ dateFormat: 'yy-mm-dd' });
-            $('.date').datepicker('setDate', new Date());
+      $('#attribute_file').prop('disabled', true);
+      const $indicatorSelected = $('#indicator-selected');
 
-            {# change the input to select input #}
-            let $selectInput = $(' #attribute_sheet_name, #attribute_column_name_administration_code,.indicator-name');
-            $selectInput.each(function () {
-                const attr = []
-                $.each(this.attributes, function () {
-                    attr.push(`${this.name}='${this.value}'`);
-                });
-                $(this).replaceWith(`<select ${attr.join(' ')}></select>`);
-            });
+      $(document).ready(function () {
+        $('.date').datepicker({ dateFormat: 'yy-mm-dd' });
+        $('.date').datepicker('setDate', new Date());
 
-            {# disabled inputs at first time#}
-            const $inputRowHeader = $('#attribute_row_number_for_header');
-            $inputRowHeader.attr('type', 'number');
-            $inputRowHeader.val(1);
-
-            $selectInput = $(' #attribute_sheet_name, #attribute_column_name_administration_code, .indicator-name');
-            $selectInput.prop('disabled', true);
-            $selectInput.change(function () {
-                $(this).data('value', $(this).val())
-            });
-
-            function setupDefaultValue($inputs) {
-                $inputs.each(function () {
-                    $(this).val($(this).data('value'))
-                });
-            }
-
-
-            {# when input row header changed #}
-            $inputRowHeader.change(function () {
-                $('#attribute_sheet_name').trigger('change')
-            });
-
-            {# this event is for when file is selected #}
-            let workbook = null;
-            $('#attribute_file').prop('disabled', false);
-            $('#attribute_file').change(function () {
-                var file = this.files[0];
-                var fr = new FileReader();
-                $selectInput.prop('disabled', true);
-                $selectInput.html('');
-                fr.onload = function () {
-                    workbook = XLSX.read(fr.result, {
-                        type: 'binary'
-                    });
-
-                    {# prepare if sheet name is selected #}
-                    $('#attribute_sheet_name').prop('disabled', false);
-                    $('#attribute_sheet_name').off('change');
-                    $('#attribute_sheet_name').change(function () {
-                        var array = XLSX.utils.sheet_to_json(workbook.Sheets[$(this).val()], {
-                            header: 1,
-                            defval: '',
-                            blankrows: true
-                        });
-
-                        const $inputs = $selectInput.not("#attribute_sheet_name");
-                        $inputs.prop('disabled', false);
-                        $inputs.html('');
-                        $inputs.append(`<option value=""></option`);
-                        $.each(array[$inputRowHeader.val() - 1], function (idx, value) {
-                            $inputs.append(`<option value="${value}">${value}</option`);
-                        });
-                        setupDefaultValue($inputs);
-
-                        {# check value with fuzzy matching #}
-                        const $indicators = $('.indicator-name');
-                        const matched = {};
-                        const threshold = -50000;
-
-                        function checkResult(id, value, target) {
-                            const result = fuzzysort.single(value.replaceAll('_', ' '), target.replaceAll('_', ' '));
-                            if (result && result.score > threshold) {
-                                if (!matched[id] || (matched[id] && result.score >= matched[id]['score'])) {
-                                    matched[id] = {
-                                        value: value,
-                                        score: result.score
-                                    }
-                                }
-                            }
-                        }
-
-                        $indicators.each(function () {
-                            const $indicator = $(this);
-                            const id = $indicator.attr('id');
-                            const name = $indicator.data('name');
-                            const description = $indicator.data('description');
-                            const shortcode = $indicator.data('shortcode');
-                            $.each(array[0], function (idx, value) {
-                                checkResult(id, value, name);
-                                checkResult(id, value, description);
-                                checkResult(id, value, shortcode);
-                            });
-                        });
-                        $.each(matched, function (id, result) {
-                            $(`select[name="${id}"]`).val(result.value);
-                        })
-                    });
-
-                    {# prepate sheet name selection#}
-                    $.each(workbook.Workbook.Sheets, function (index, sheet) {
-                        if (sheet.Hidden === 0) {
-                            $('#attribute_sheet_name').append(`<option value="${sheet.name}">${sheet.name}</option`);
-                        }
-                    });
-                    $('#attribute_sheet_name').trigger('change')
-
-                };
-                fr.readAsBinaryString(file);
-            })
+        {# change the input to select input #}
+        let $selectInput = $(' #attribute_sheet_name, #attribute_column_name_administration_code,.indicator-name');
+        $selectInput.each(function () {
+          const attr = []
+          $.each(this.attributes, function () {
+            attr.push(`${this.name}='${this.value}'`);
+          });
+          $(this).replaceWith(`<select ${attr.join(' ')}></select>`);
         });
+
+        {# disabled inputs at first time#}
+        const $inputRowHeader = $('#attribute_row_number_for_header');
+        $inputRowHeader.attr('type', 'number');
+        $inputRowHeader.val(1);
+
+        $selectInput = $(' #attribute_sheet_name, #attribute_column_name_administration_code, .indicator-name');
+        $selectInput.prop('disabled', true);
+        $selectInput.change(function () {
+          $(this).data('value', $(this).val())
+          const $row = $(this).closest('tr')
+          if ($(this).val()) {
+            $row.removeClass('unselected');
+            $(this).removeClass('unselected');
+          } else {
+            $row.addClass('unselected');
+            $(this).addClass('unselected');
+          }
+          $indicatorSelected.html($('.indicator-name:not(.unselected)').length)
+        });
+
+        function setupDefaultValue($inputs) {
+          $inputs.each(function () {
+            $(this).val($(this).data('value'))
+          });
+        }
+
+        $('.indicator-name').each(function () {
+          $(this).closest('tr').addClass('unselected');
+          $(this).addClass('unselected');
+        });
+
+        {# RESET ALL INDICATORS #}
+        $('#reset').click(() => {
+          $('.indicator-name').val('')
+          $('.indicator-name').each(function () {
+            $(this).closest('tr').addClass('unselected');
+            $(this).addClass('unselected');
+          });
+          $indicatorSelected.html($('.indicator-name:not(.unselected)').length)
+          return false;
+        })
+        $indicatorSelected.html($('.indicator-name:not(.unselected)').length)
+
+        {# when input row header changed #}
+        $inputRowHeader.change(function () {
+          $('#attribute_sheet_name').trigger('change')
+        });
+
+        {# this event is for when file is selected #}
+        let workbook = null;
+        $('#attribute_file').prop('disabled', false);
+        $('#attribute_file').change(function () {
+          var file = this.files[0];
+          var fr = new FileReader();
+          $selectInput.prop('disabled', true);
+          $selectInput.html('');
+          fr.onload = function () {
+            workbook = XLSX.read(fr.result, {
+              type: 'binary'
+            });
+
+            {# prepare if sheet name is selected #}
+            $('#attribute_sheet_name').prop('disabled', false);
+            $('#attribute_sheet_name').off('change');
+            $('#attribute_sheet_name').change(function () {
+              var array = XLSX.utils.sheet_to_json(workbook.Sheets[$(this).val()], {
+                header: 1,
+                defval: '',
+                blankrows: true
+              });
+
+              const $inputs = $selectInput.not("#attribute_sheet_name");
+              $inputs.prop('disabled', false);
+              $inputs.html('');
+              $inputs.append(`<option value=""></option`);
+              $.each(array[$inputRowHeader.val() - 1], function (idx, value) {
+                $inputs.append(`<option value="${value}">${value}</option`);
+              });
+              setupDefaultValue($inputs);
+
+              {# check value with fuzzy matching #}
+              const $indicators = $('.indicator-name');
+              const matched = {};
+              const threshold = -50000;
+
+              function checkResult(id, value, target) {
+                const result = fuzzysort.single(value.replaceAll('_', ' '), target.replaceAll('_', ' '));
+                if (result && result.score > threshold) {
+                  if (!matched[id] || (matched[id] && result.score >= matched[id]['score'])) {
+                    matched[id] = {
+                      value: value,
+                      score: result.score
+                    }
+                  }
+                }
+              }
+
+              $indicators.each(function () {
+                const $indicator = $(this);
+                const id = $indicator.attr('id');
+                const name = $indicator.data('name');
+                const description = $indicator.data('description');
+                const shortcode = $indicator.data('shortcode');
+                $.each(array[0], function (idx, value) {
+                  checkResult(id, value, name);
+                  checkResult(id, value, description);
+                  checkResult(id, value, shortcode);
+                });
+
+                const $row = $(this).closest('tr')
+                $row.addClass('unselected');
+                $(this).addClass('unselected');
+              });
+              $.each(matched, function (id, result) {
+                const $input = $('select[name="' + id + '"]');
+                $input.val(result.value);
+                const $row = $input.closest('tr')
+                $row.removeClass('unselected');
+                $input.removeClass('unselected');
+              })
+              $indicatorSelected.html($('.indicator-name:not(.unselected)').length)
+
+            });
+
+            {# prepate sheet name selection#}
+            $.each(workbook.Workbook.Sheets, function (index, sheet) {
+              if (sheet.Hidden === 0) {
+                $('#attribute_sheet_name').append(`<option value="${sheet.name}">${sheet.name}</option`);
+              }
+            });
+            $('#attribute_sheet_name').trigger('change')
+
+          };
+          fr.readAsBinaryString(file);
+        })
+      });
     </script>
 {% endblock extrascripts %}

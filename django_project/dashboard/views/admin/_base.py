@@ -5,7 +5,7 @@ from braces.views import SuperuserRequiredMixin
 from dashboard.views._base import BaseView
 
 
-class AdminView(BaseView, ABC, SuperuserRequiredMixin):
+class AdminView(SuperuserRequiredMixin, BaseView, ABC):
     """Base dashboard View."""
 
     def get_context_data(self, **kwargs) -> dict:

@@ -21,7 +21,7 @@ class HarvesterFormView(AdminView, ABC):
     @property
     def content_title(self):
         """Return content title."""
-        return f'Harvester for {self.indicator.full_name}'
+        return f'Harvester for {self.indicator.__str__()}'
 
     def get_indicator(self):
         """Return indicator and save it as attribute."""
