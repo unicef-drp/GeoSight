@@ -2,7 +2,7 @@
 from django.test.testcases import TestCase
 
 from geosight.data.tests.model_factories import (
-    IndicatorValueF, IndicatorF, GeometryF
+    IndicatorValueF, IndicatorF
 )
 
 
@@ -17,10 +17,9 @@ class IndicatorValueTest(TestCase):
     def test_create(self):
         """Test create."""
         indicator = IndicatorF(name=self.indicator_name)
-        geometry = GeometryF()
         value = IndicatorValueF(
             indicator=indicator,
-            geom_identifier=geometry.identifier
+            geom_identifier='Prov1'
         )
         self.assertEquals(value.indicator, indicator)
-        self.assertEquals(value.geom_identifier, geometry.identifier)
+        self.assertEquals(value.geom_identifier, 'Prov1')

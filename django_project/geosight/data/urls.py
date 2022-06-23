@@ -16,9 +16,6 @@ from geosight.data.api.indicator import (
     IndicatorDetailAPI, IndicatorValuesAPI
 )
 from geosight.data.api.indicator_value import IndicatorValuesByGeometry
-from geosight.data.api.reference_layer import (
-    ReferenceLayerGeojson, ReferenceLayerListAPI
-)
 
 indicator_api = [
     url(
@@ -50,16 +47,6 @@ api = [
         r'^context-layer/list$',
         ContextLayerListAPI.as_view(),
         name='context-layer-list-api'
-    ),
-    url(
-        r'^reference-layer/list$',
-        ReferenceLayerListAPI.as_view(),
-        name='reference-layer-list-api'
-    ),
-    url(
-        r'^reference-layer/(?P<uuid>[0-9a-f-]+)/(?P<level>.+)$',
-        ReferenceLayerGeojson.as_view(),
-        name='reference-layer-api'
     ),
     url(
         r'^dashboard/(?P<slug>[^/]+)$',

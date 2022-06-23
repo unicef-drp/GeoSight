@@ -59,13 +59,9 @@ export default function ReferenceLayer({ currentIndicator }) {
       const options = {
         maxDetailZoom: 8,
         filter: function (feature) {
-          console.log(feature.properties.code)
           return !geometryCodes || geometryCodes.includes(feature.properties.code)
         },
         style: function (feature, layer, test) {
-          console.log(feature)
-          console.log(layer)
-          console.log(test)
           const indicatorData = indicatorsByGeom[feature.properties.code];
 
           let fillColor = indicatorData ? indicatorData.color : null;

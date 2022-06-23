@@ -112,19 +112,16 @@ class APIWithGeographyAndDate(BaseHarvester):
                 geography_name = self.eval_json(
                     row, keys_for_geography_identifier)
                 geography_identifier = self.mapping[geography_name]
-                geometry = self.reporting_units.filter(
-                    identifier=geography_identifier
-                ).first()
 
-                if geometry:
+                if geography_identifier:
                     self._update(
                         (
-                            f'Save data for {geometry.identifier} '
+                            f'Save data for {geography_identifier} '
                             f'with date {date_data} and value {value}'
                         )
                     )
                     self.save_indicator_data(
-                        value, date_data, geometry
+                        value, date_data, geography_identifier
                     )
                 else:
                     self._update(

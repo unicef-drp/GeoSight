@@ -7,7 +7,7 @@ from django.utils.timezone import now
 from pyexcel_xls import get_data as xls_get
 from pyexcel_xlsx import get_data as xlsx_get
 
-from geosight.data.models import Geometry, Indicator, IndicatorValue
+from geosight.data.models import Indicator, IndicatorValue
 from geosight.harvester.harveters._base import BaseHarvester, HarvestingError
 
 
@@ -166,16 +166,6 @@ class ExcelHarvester(BaseHarvester):
                 administrative_code = record[
                     key_column_name_administration_code]
 
-                geometry = None
-                try:
-                    geometry = Geometry.objects.get(
-                        identifier=administrative_code
-                    )
-                except Geometry.DoesNotExist:
-                    detail[key_column_name_administration_code] += (
-                        f'{error_separator}Geometry does not exist'
-                    )
-
                 # we check the values per indicator
                 for idx, indicator in indicators_column.items():
                     value = record[idx]
@@ -213,12 +203,12 @@ class ExcelHarvester(BaseHarvester):
                                 )
 
                             value = float(value)
-                            if geometry:
+                            if administrative_code:
                                 indicator_value, created = \
                                     IndicatorValue.objects.get_or_create(
                                         indicator=indicator,
                                         date=date,
-                                        geom_identifier=geometry.identifier,
+                                        geom_identifier=administrative_code,
                                         defaults={
                                             'value': value
                                         }
