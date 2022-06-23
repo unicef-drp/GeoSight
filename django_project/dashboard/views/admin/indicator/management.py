@@ -18,8 +18,8 @@ class IndicatorManagementView(AdminView):
         """Return context data."""
         context = super().get_context_data(**kwargs)
         indicators_in_groups = {
-            group.name: group.indicator_set.all()
-            for group in IndicatorGroup.objects.all()
+            group.name: group.indicator_set.order_by('name')
+            for group in IndicatorGroup.objects.order_by('name')
         }
         context.update(
             {

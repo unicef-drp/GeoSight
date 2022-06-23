@@ -148,9 +148,11 @@ class Indicator(AbstractTerm, AbstractSource):
     def rules_dict(self):
         """Return rules in list of dict."""
         from geosight.data.serializer.indicator import IndicatorRuleSerializer
-        return IndicatorRuleSerializer(
-            self.indicatorrule_set.all(), many=True
-        ).data
+        return [
+            dict(rule) for rule in IndicatorRuleSerializer(
+                self.indicatorrule_set.all(), many=True
+            ).data
+        ]
 
     def save_value(
             self,
@@ -214,6 +216,7 @@ class Indicator(AbstractTerm, AbstractSource):
         """Return data."""
         rule = self.rule_by_value(value)
         background_color = rule.color if rule else ''
+        outline_color = rule.outline_color if rule else '#000000'
 
         values = {
             'indicator_id': self.id,
@@ -221,6 +224,7 @@ class Indicator(AbstractTerm, AbstractSource):
             'value': value,
             'text': rule.name,
             'color': background_color,
+            'outline_color': outline_color
         }
         values.update(attributes if attributes else {})
         return values

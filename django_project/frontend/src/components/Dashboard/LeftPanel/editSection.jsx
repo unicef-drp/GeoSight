@@ -21,15 +21,17 @@ import Accordion from "@mui/material/Accordion";
  * @param {str} className className of modal.
  * @param {list} currentLayers Current Layer in state.
  * @param {string} urlAPI Url returning ALl layers.
+ * @param {string} idKey ID Key.
  * @param {function} actionAddLayer Action to add Layer.
  * @param {function} actionRemoveLayer Action to remove Layer.
+ * @param {function} formatResponse Format Response.
  * @param {React.Component} children React component to be rendered
  */
 export default function EditSection(
   {
     expanded, handleChange, title, description, required,
-    className, currentLayers, urlAPI,
-    actionAddLayer, actionRemoveLayer, children
+    className, currentLayers, urlAPI, idKey,
+    actionAddLayer, actionRemoveLayer, formatResponse, children
   }
 ) {
   const dispatch = useDispatch()
@@ -38,7 +40,7 @@ export default function EditSection(
   useEffect(() => {
     if (!allLayer) {
       fetchingData(urlAPI, {}, {}, (response) => {
-        setAllLayer(response)
+        setAllLayer(formatResponse ? formatResponse(response) : response)
       })
     }
   }, [allLayer]);
@@ -58,7 +60,7 @@ export default function EditSection(
 
   // Get current ids from all layer
   let ids = currentLayers ? currentLayers.map(function (row) {
-    return row.id
+    return idKey ? row[idKey] : row.id
   }) : [];
   const isError = (required && currentLayers.length === 0)
   const accordionError = `${className} ${isError ? 'error' : ''}`
@@ -80,7 +82,7 @@ export default function EditSection(
               (layer, idx) => (
                 <div className='dashboard__left_side__row' key={idx}>
                   <Checkbox
-                    checked={ids.includes(layer.id)}
+                    checked={ids.includes(idKey ? layer[idKey] : layer.id)}
                     onChange={(event) => {
                       change(event.target.checked, idx)
                     }}/>

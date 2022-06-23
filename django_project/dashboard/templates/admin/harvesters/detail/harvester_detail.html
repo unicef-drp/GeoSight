@@ -1,17 +1,29 @@
-{% extends 'dashboard/admin/harvesters/detail/base.html' %}
+{% extends 'admin/harvesters/detail/base.html' %}
 {% load static %}
-{% block button_header %}
-    {% if harvester.is_run %}
-        <button class="empty-button pull-right">Is Harvesting</button>
-    {% elif can_harvest_now %}
-        <form method="post" enctype="multipart/form-data" class="pull-right">
-            {% csrf_token %}
-            <button class="main-button" type="submit" style="margin-left: 1px">Harvest Now</button>
-        </form>
-    {% endif %}
-    {% if edit_url %}
-        <a href="{{ edit_url }}" class="pull-right">
-            <button id="edit-button" class="main-button" {% if harvester.is_run %}disabled{% endif %}>Edit</button>
-        </a>
-    {% endif %}
-{% endblock %}
+{% if content_title %}
+    <div class="header">
+        {% block content_title %}
+            {{ content_title|safe }}
+            {% if harvester.is_run %}
+                <button class="empty-button pull-right">Is Harvesting</button>
+            {% elif can_harvest_now %}
+                <form method="post" enctype="multipart/form-data"
+                      class="pull-right">
+                    {% csrf_token %}
+                    <button class="white-button" type="submit"
+                            style="margin-left: 1px">
+                        Harvest Now
+                    </button>
+                </form>
+            {% endif %}
+            {% if edit_url %}
+                <a href="{{ edit_url }}" class="pull-right">
+                    <button id="edit-button" class="white-button"
+                            {% if harvester.is_run %}disabled{% endif %}>
+                        Edit
+                    </button>
+                </a>
+            {% endif %}
+        {% endblock %}
+    </div>
+{% endif %}

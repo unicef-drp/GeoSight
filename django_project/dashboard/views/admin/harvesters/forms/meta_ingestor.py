@@ -14,10 +14,10 @@ class MetaIngestorView(HarvesterFormView):
     """Meta Ingestor View."""
 
     harvester_class = ExcelHarvester
-    template_name = 'dashboard/admin/harvesters/forms/meta_ingestor.html'
+    template_name = 'admin/harvesters/forms/meta_ingestor.html'
 
     @property
-    def dashboard_title(self):
+    def content_title(self):
         """Return title."""
         return 'Meta Ingestor'
 
@@ -50,8 +50,6 @@ class MetaIngestorView(HarvesterFormView):
                     'Upload file that will be used to save the data'
                 )
                 attr['file_accept'] = '.xlsx,.xls'
-            if attr['name'] == 'instance_slug':
-                attr['value'] = self.instance.slug
         return context
 
     def after_post(self, harvester: Harvester):

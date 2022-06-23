@@ -1,7 +1,8 @@
-{% extends 'dashboard/admin/harvesters/forms/_base_attribute.html' %}
+{% extends 'admin/harvesters/forms/_base_attribute.html' %}
 {% load static %}
 
 {% block extrastyle %}
+    <script src="{% static "libs/underscore.js/1.9.1/underscore-min.js" %}"></script>
     <style>
         #json-display.highlighted {
             color: #ddd
@@ -66,42 +67,84 @@
         .modal-dialog {
             max-width: 1000px;
         }
+
+        #reference-layer-selection-wrapper {
+            display: flex;
+        }
+
+        #mapping-header {
+            display: flex;
+        }
+
+        #mapping-header .label {
+            padding-top: 10px;
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+
+        #mapping-header .helptext {
+            color: white;
+        }
     </style>
 {% endblock %}
 {% block additional_field %}
     <br>
-    <h3>Geometry Mapping</h3>
+    <h3 id="mapping-header">
+        <div style="flex-grow: 1">
+            <div class="label">Geometry Mapping
+            </div>
+        </div>
+        <div>
+            <div id="reference-layer-selection-wrapper">
+                <div class="label">Reference Layer :</div>
+                <select id="reference-layer-selection">
+                    <option>Loading</option>
+                </select>
+            </div>
+            <div id="reference-layer-selection-wrapper-info"></div>
+        </div>
+    </h3>
     <table id="mapping-table" class="content-table">
         <tr>
             <th>From (Remote Name)</th>
             <th>To (Server Name)</th>
         </tr>
-        {% for reporting_unit in reporting_units %}
-            <tr>
-                <td style="width: 50%">
-                    {{ attribute.value }}
-                    <input type="text" data-identifier="{{ reporting_unit.identifier }}" name="mapping_remote_{{ reporting_unit.pk }}" value="{{ attribute.value }}" class="mapping-remote">
-                </td>
-                <td style="width: 50%">
-                    {{ reporting_unit.str }}
-                    <input type="text" name="mapping_platform_{{ reporting_unit.pk }}" value="{{ reporting_unit.identifier }}" style="display: none">
-                </td>
-            </tr>
-        {% endfor %}
+        <tbody id="mapping-table-body"></tbody>
     </table>
 
+    <script type='text/template' id='_geom-row'>
+        <tr>
+            <td style="width: 50%">
+                <input type="text"
+                       data-identifier="<%= identifier %>"
+                       name="mapping_remote_<%= identifier %>"
+                       value="<%= value %>"
+                       class="mapping-remote">
+            </td>
+            <td style="width: 50%">
+                <%= name %> (<%= identifier %>)
+                <input type="text"
+                       name="mapping_platform_<%= identifier %>"
+                       value="<%= identifier %>"
+                       style="display: none">
+            </td>
+        </tr>
+    </script>
 
     {# modal to select attributes from data#}
-    <div id="attribute-selection-modal" class="modal" tabindex="-1" role="dialog">
+    <div id="attribute-selection-modal" class="modal" tabindex="-1"
+         role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
                     <span id="attribute-selection-message">Click a box below then click list or key on the highlighted in json. After everything has been setup, apply it by click button on the most bottom.</span>
                     <br>
                     <br>
-                    <div id="attribute-selection" class="row" style="padding-bottom:10px; margin-bottom: 10px; border-bottom: 1px solid #ddd">
+                    <div id="attribute-selection" class="row"
+                         style="padding-bottom:10px; margin-bottom: 10px; border-bottom: 1px solid #ddd">
                         {% for attribute in attributes %}
-                            <div class="attribute-selection" id="attribute_{{ attribute.name }}">{{ attribute.title }}</div>
+                            <div class="attribute-selection"
+                                 id="attribute_{{ attribute.name }}">{{ attribute.title }}</div>
                         {% endfor %}
                     </div>
                     <div id="json-display">
@@ -117,234 +160,311 @@
 
 {% endblock %}
 {% block extrascripts %}
-    <script type="text/javascript" src="{% static 'js/json-display.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'js/json-display.js' %}"></script>
     <script>
-        const isNew = '{{ indicator.harvester }}' === '';
-        let reportingUnits = {};
-        {% for reporting_unit in reporting_units%}
-            reportingUnits["{{ reporting_unit.str }}"] = "{{ reporting_unit.identifier }}"
+      const isNew = '{{ indicator.harvester }}' === '';
+      let reportingUnits = {};
+      {% for reporting_unit in reporting_units %}
+        reportingUnits["{{ reporting_unit.str }}"] = "{{ reporting_unit.identifier }}"
+      {% endfor %}
+
+      const mappingValues = {}
+      $(document).ready(function () {
+        {% for map in mapping %}
+          mappingValues['{{ map.platform_value }}'] = "{{ map.remote_value }}";
         {% endfor %}
+      })
 
-        $(document).ready(function () {
-            {% for map in mapping %}
-                $('*[data-identifier="{{ map.platform_value }}"]').val("{{ map.remote_value }}");
-            {% endfor %}
-        })
+      {# disabled other input #}
+      if (isNew) {
+        $('#content-view .mapping-remote, #attributes-table input').prop('disabled', true);
+      }
 
-        {# disabled other input #}
-        if (isNew) {
-            $('#content-view .mapping-remote, #attributes-table input').prop('disabled', true);
-        }
+      {# let's we handle to call API first #}
+      const $urlInput = $('input[name="attribute_api_url"]');
+      const $listInput = $('input[name="attribute_keys_for_list"]');
+      const $geographyInput = $('input[name="attribute_keys_for_geography_identifier"]');
+      const $valueInput = $('input[name="attribute_keys_for_value"]');
+      const $dateInput = $('input[name="attribute_keys_for_date"]');
+      const $urlInputLoading = $urlInput.closest('tr').find('.loading');
+      const $urlInputError = $urlInput.closest('tr').find('.error');
+      $urlInput.prop('disabled', false);
 
-        {# let's we handle to call API first #}
-        const $urlInput = $('input[name="attribute_api_url"]');
-        const $listInput = $('input[name="attribute_keys_for_list"]');
-        const $geographyInput = $('input[name="attribute_keys_for_geography_identifier"]');
-        const $valueInput = $('input[name="attribute_keys_for_value"]');
-        const $dateInput = $('input[name="attribute_keys_for_date"]');
-        const $urlInputLoading = $urlInput.closest('tr').find('.loading');
-        const $urlInputError = $urlInput.closest('tr').find('.error');
-        $urlInput.prop('disabled', false);
+      const $modal = $('#attribute-selection-modal');
+      const $applyModal = $('#apply-modal');
+      const $attributeSelection = $('#attribute-selection');
+      const $jsonDisplay = $('#json-display');
+      $modal.find('#attribute_api_url').remove();
+      $modal.find('#attribute_date_format').remove();
 
-        const $modal = $('#attribute-selection-modal');
-        const $applyModal = $('#apply-modal');
-        const $attributeSelection = $('#attribute-selection');
-        const $jsonDisplay = $('#json-display');
-        $modal.find('#attribute_api_url').remove();
-        $modal.find('#attribute_date_format').remove();
+      const $ListSelection = $attributeSelection.find('#attribute_keys_for_list');
+      const $geographySelection = $attributeSelection.find('#attribute_keys_for_geography_identifier');
+      const $valueSelection = $attributeSelection.find('#attribute_keys_for_value');
+      const $dateSelection = $attributeSelection.find('#attribute_keys_for_date');
 
-        const $ListSelection = $attributeSelection.find('#attribute_keys_for_list');
-        const $geographySelection = $attributeSelection.find('#attribute_keys_for_geography_identifier');
-        const $valueSelection = $attributeSelection.find('#attribute_keys_for_value');
-        const $dateSelection = $attributeSelection.find('#attribute_keys_for_date');
+      let $arraySelected = null;
+      let currentJson = {};
+      $('#submit').prop('disabled', true);
+      $('input').change(function () {
+        $('#submit').prop('disabled', false);
+      })
 
-        let $arraySelected = null;
-        let currentJson = {};
+      function displayJson(json) {
+        $modal.modal('show');
         $('#submit').prop('disabled', true);
-        $('input').change(function () {
-            $('#submit').prop('disabled', false);
-        })
+        currentJson = json;
+        $arraySelected = null;
+        $jsonDisplay.html(jsonSampleToDisplay(json, "x"));
 
-        function displayJson(json) {
-            $modal.modal('show');
-            $('#submit').prop('disabled', true);
-            currentJson = json;
-            $arraySelected = null;
-            $jsonDisplay.html(jsonSampleToDisplay(json, "x"));
+        {# disabled some button #}
+        $ListSelection.removeClass('disabled');
+        $geographySelection.addClass('disabled');
+        $valueSelection.addClass('disabled');
+        $dateSelection.addClass('disabled');
+        $applyModal.prop('disabled', true);
 
-            {# disabled some button #}
-            $ListSelection.removeClass('disabled');
-            $geographySelection.addClass('disabled');
-            $valueSelection.addClass('disabled');
-            $dateSelection.addClass('disabled');
-            $applyModal.prop('disabled', true);
+        {# when list button clicked #}
+        $ListSelection.click(function () {
+          $arraySelected = null;
+          $jsonDisplay.find(`.indicator`).remove();
+          $jsonDisplay.addClass('highlighted');
 
-            {# when list button clicked #}
-            $ListSelection.click(function () {
-                $arraySelected = null;
-                $jsonDisplay.find(`.indicator`).remove();
-                $jsonDisplay.addClass('highlighted');
+          {# enabled some button #}
+          $ListSelection.addClass('selected');
+          $geographySelection.addClass('disabled');
+          $valueSelection.addClass('disabled');
+          $dateSelection.addClass('disabled');
+          $applyModal.prop('disabled', true);
 
-                {# enabled some button #}
-                $ListSelection.addClass('selected');
-                $geographySelection.addClass('disabled');
-                $valueSelection.addClass('disabled');
-                $dateSelection.addClass('disabled');
-                $applyModal.prop('disabled', true);
+          const $array = $jsonDisplay.find('.array');
+          $array.addClass('highlighted');
+          $array.off("click");
+          $array.click(function () {
+            if ($(this).hasClass('highlighted')) {
+              $arraySelected = $(this).closest('div');
 
-                const $array = $jsonDisplay.find('.array');
-                $array.addClass('highlighted');
-                $array.off("click");
-                $array.click(function () {
-                    if ($(this).hasClass('highlighted')) {
-                        $arraySelected = $(this).closest('div');
+              $array.removeClass('highlighted');
+              $jsonDisplay.removeClass('highlighted');
+              $ListSelection.removeClass('selected');
+              $geographySelection.removeClass('disabled');
+              $valueSelection.removeClass('disabled');
+              $dateSelection.removeClass('disabled');
 
-                        $array.removeClass('highlighted');
-                        $jsonDisplay.removeClass('highlighted');
-                        $ListSelection.removeClass('selected');
-                        $geographySelection.removeClass('disabled');
-                        $valueSelection.removeClass('disabled');
-                        $dateSelection.removeClass('disabled');
-
-                        const right = '-' + ($ListSelection.width() + 25) + 'px';
-                        $(this).append(`<div class="attribute-selection indicator ${$ListSelection.attr('id')}" data-name="${$ListSelection.attr('id')}" style="right:${right}">${$ListSelection.html()}</div>`);
-                    }
-                })
-            });
+              const right = '-' + ($ListSelection.width() + 25) + 'px';
+              $(this).append(`<div class="attribute-selection indicator ${$ListSelection.attr('id')}" data-name="${$ListSelection.attr('id')}" style="right:${right}">${$ListSelection.html()}</div>`);
+            }
+          })
+        });
 
 
-            function clicked() {
-                const $that = $(this)
-                if ($(this).hasClass('disable') || !$arraySelected) {
-                    return false
-                }
-                $that.addClass('selected');
-                $applyModal.prop('disabled', true);
-                $jsonDisplay.addClass('highlighted');
-                $jsonDisplay.find(`.${$that.attr('id')}`).remove();
+        function clicked() {
+          const $that = $(this)
+          if ($(this).hasClass('disable') || !$arraySelected) {
+            return false
+          }
+          $that.addClass('selected');
+          $applyModal.prop('disabled', true);
+          $jsonDisplay.addClass('highlighted');
+          $jsonDisplay.find(`.${$that.attr('id')}`).remove();
 
-                const $keys = $arraySelected.find('.content').find('.key');
-                $keys.off("click");
-                $keys.addClass('highlighted');
-                $keys.click(function () {
-                    if ($(this).hasClass('highlighted')) {
-                        $jsonDisplay.removeClass('highlighted');
-                        $that.removeClass('selected');
-                        $keys.removeClass('highlighted');
+          const $keys = $arraySelected.find('.content').find('.key');
+          $keys.off("click");
+          $keys.addClass('highlighted');
+          $keys.click(function () {
+            if ($(this).hasClass('highlighted')) {
+              $jsonDisplay.removeClass('highlighted');
+              $that.removeClass('selected');
+              $keys.removeClass('highlighted');
 
-                        const right = '-' + ($that.width() + 25) + 'px';
-                        $(this).append(`<div class="attribute-selection indicator ${$that.attr('id')}" data-name="${$that.attr('id')}" style="right:${right}">${$that.html()}</div>`)
-                    }
-
-                    {# check if apply can be clicked #}
-                    $('#attribute-selection .attribute-selection').each(function () {
-                        $applyModal.prop('disabled', false);
-
-                        if ($jsonDisplay.find(`.${$(this).attr('id')}`).length === 0) {
-                            $applyModal.prop('disabled', true);
-                        }
-
-                    })
-                })
+              const right = '-' + ($that.width() + 25) + 'px';
+              $(this).append(`<div class="attribute-selection indicator ${$that.attr('id')}" data-name="${$that.attr('id')}" style="right:${right}">${$that.html()}</div>`)
             }
 
-            $geographySelection.click(clicked);
-            $valueSelection.click(clicked);
-            $dateSelection.click(clicked);
+            {# check if apply can be clicked #}
+            $('#attribute-selection .attribute-selection').each(function () {
+              $applyModal.prop('disabled', false);
+
+              if ($jsonDisplay.find(`.${$(this).attr('id')}`).length === 0) {
+                $applyModal.prop('disabled', true);
+              }
+
+            })
+          })
         }
 
-        $urlInput.change(function () {
-            $('#submit').prop('disabled', true);
-            $urlInputLoading.show();
-            $urlInputError.hide();
-            $urlInput.prop('disabled', true);
+        $geographySelection.click(clicked);
+        $valueSelection.click(clicked);
+        $dateSelection.click(clicked);
+      }
 
-            $ListSelection.removeClass('disabled');
-            $geographySelection.addClass('disabled');
-            $valueSelection.addClass('disabled');
-            $dateSelection.addClass('disabled');
+      $urlInput.change(function () {
+        $('#submit').prop('disabled', true);
+        $urlInputLoading.show();
+        $urlInputError.hide();
+        $urlInput.prop('disabled', true);
 
-            $listInput.val('');
-            $geographyInput.val('');
-            $valueInput.val('');
-            $dateInput.val('');
-            $listInput.prop('disabled', true);
-            $geographyInput.prop('disabled', true);
-            $valueInput.prop('disabled', true);
-            $dateInput.prop('disabled', true);
+        $ListSelection.removeClass('disabled');
+        $geographySelection.addClass('disabled');
+        $valueSelection.addClass('disabled');
+        $dateSelection.addClass('disabled');
 
-            $applyModal.prop('disabled', true);
-            $('.mapping-remote').prop('disabled', true);
+        $listInput.val('');
+        $geographyInput.val('');
+        $valueInput.val('');
+        $dateInput.val('');
+        $listInput.prop('disabled', true);
+        $geographyInput.prop('disabled', true);
+        $valueInput.prop('disabled', true);
+        $dateInput.prop('disabled', true);
 
-            $.ajax({
-                url: $(this).val()
-            })
-                .done(function (output) {
-                    if (output.constructor !== Object && output.constructor !== Array) {
-                        $urlInputError.html("The data is not in json");
-                        $urlInputError.show();
-                        return ""
-                    }
-                    displayJson(output);
-                })
-                .fail(function (xhr, status, errorThrown) {
-                    $urlInputError.html(xhr.statusText);
-                    $urlInputError.show();
-                })
-                .always(function () {
-                    $urlInput.prop('disabled', false);
-                    $urlInputLoading.hide();
+        $applyModal.prop('disabled', true);
+        $('.mapping-remote').prop('disabled', true);
+
+        $.ajax({
+          url: $(this).val()
+        })
+          .done(function (output) {
+            if (output.constructor !== Object && output.constructor !== Array) {
+              $urlInputError.html("The data is not in json");
+              $urlInputError.show();
+              return ""
+            }
+            displayJson(output);
+          })
+          .fail(function (xhr, status, errorThrown) {
+            $urlInputError.html(xhr.statusText);
+            $urlInputError.show();
+          })
+          .always(function () {
+            $urlInput.prop('disabled', false);
+            $urlInputLoading.hide();
+          });
+      })
+      $('#apply-modal').click(function () {
+        $('#submit').prop('disabled', false);
+        $('#attributes-table input').prop('disabled', false);
+        $('.mapping-remote').prop('disabled', false);
+        $('.mapping-remote').val('');
+
+        let listKey = ""
+        $jsonDisplay.find('.indicator').each(function () {
+          let key = $($(this).closest('span')).data('keys');
+          if ($(this).data('name') === "attribute_keys_for_list") {
+            listKey = key;
+          } else {
+            key = key.replace((listKey + "[0]"), "x");
+          }
+          const name = $(this).data('name');
+          $('input[name="' + name + '"]').val(key);
+        })
+        $modal.modal('hide');
+
+        {# autofill the mapping #}
+        const mappingList = eval($listInput.val().replaceAll('x', 'currentJson'));
+        const adminNames = []
+        $.each(mappingList, function (idx, value) {
+          const geometryIdentifier = eval($geographyInput.val().replaceAll('x', 'value'));
+          if (!adminNames.includes(geometryIdentifier)) {
+            adminNames.push(geometryIdentifier);
+          }
+        });
+        adminNames.sort();
+
+        const options = ["<option></option>"];
+        $.each(adminNames, function (idx, geometryIdentifier) {
+          options.push(`<option val="${geometryIdentifier}">${geometryIdentifier}</option>`);
+        })
+        $('.mapping-remote').each(function () {
+          $(this).replaceWith(`<select data-identifier="${$(this).data('identifier')}" name="${$(this).attr('name')}" class="mapping-remote">`)
+        })
+        $('.mapping-remote').html(options.join(''));
+
+        $.each(mappingList, function (idx, value) {
+          const geometryIdentifier = eval($geographyInput.val().replaceAll('x', 'value'));
+          $('.mapping-remote').each(function () {
+            if ($(this).data('identifier').toLowerCase() === geometryIdentifier.toLowerCase()) {
+              $(this).val(geometryIdentifier)
+              return false;
+            }
+          })
+        })
+        return false;
+      })
+
+      // ---------------------------------------------------------------------
+      // REFERENCE LAYER
+      // ---------------------------------------------------------------------
+      const reportingLevel = '{{ indicator.reporting_level }}';
+      const $referenceLayerSelector = $('#reference-layer-selection');
+      const referenceLayers = {};
+      const $info = $('#reference-layer-selection-wrapper-info');
+      const $mappingTable = $('#mapping-table-body');
+
+      function renderGeoms(geoms) {
+        $info.html(``);
+        $mappingTable.html(``);
+        geoms.forEach(geom => {
+          const template = _.template($('#_geom-row').html())
+          $mappingTable.append(template({
+            identifier: geom.identifier.admin,
+            name: geom.name,
+            value: mappingValues[geom.identifier.admin] ? mappingValues[geom.identifier.admin] : ''
+          }));
+        })
+      }
+
+      $referenceLayerSelector.change(evt => {
+        $info.html('<i class="helptext">Loading Reference Data</i>');
+        const identifier = evt.target.value;
+        const referenceLayer = referenceLayers[identifier];
+        if (!referenceLayer.levels) {
+          // Fetch reference layer data
+          $.ajax({
+            url: preferences.georepo_api.reference_layer_detail.replace('<identifier>', identifier)
+          }).done(function (data) {
+            referenceLayer.levels = data;
+            const level = data.levels.filter(level => {
+              return level.level_name.toLocaleLowerCase() === reportingLevel.toLocaleLowerCase()
+            })[0]
+            if (!level) {
+              if (identifier === $referenceLayerSelector.val()) {
+                $info.html(`<i class="helptext">Reference Layer does not have data for ${reportingLevel}</i>`);
+              }
+            } else {
+              if (!referenceLayer.data) {
+                $.ajax({
+                  url: preferences.georepo_api.domain + level.url + '/list',
+                }).done(function (geoms) {
+                  referenceLayer.data = geoms;
+                  renderGeoms(referenceLayer.data);
                 });
+              } else {
+                renderGeoms(referenceLayer.data);
+              }
+            }
+          });
+        } else {
+          if (referenceLayer.data) {
+            renderGeoms(referenceLayer.data);
+          } else {
+            $info.html(`<i class="helptext">Reference Layer does not have data for ${reportingLevel}</i>`);
+          }
+        }
+      })
+      $.ajax({
+        url: preferences.georepo_api.reference_layer_list
+      }).done(function (data) {
+        $referenceLayerSelector.html('');
+        data.forEach((referenceLayer, idx) => {
+          const identifier = referenceLayer.identifier;
+          $referenceLayerSelector.append(`<option value='${identifier}'>${referenceLayer.name}</option>`);
+          referenceLayers[identifier] = referenceLayer;
+          if (idx === 0) {
+            $referenceLayerSelector.val(identifier)
+          }
         })
-        $('#apply-modal').click(function () {
-            $('#submit').prop('disabled', false);
-            $('#attributes-table input').prop('disabled', false);
-            $('.mapping-remote').prop('disabled', false);
-            $('.mapping-remote').val('');
-
-            let listKey = ""
-            $jsonDisplay.find('.indicator').each(function () {
-                let key = $($(this).closest('span')).data('keys');
-                if ($(this).data('name') === "attribute_keys_for_list") {
-                    listKey = key;
-                } else {
-                    key = key.replace((listKey + "[0]"), "x");
-                }
-                $(`input[name="${$(this).data('name')}"]`).val(key);
-            })
-            $modal.modal('hide');
-
-            {# autofill the mapping #}
-            const mappingList = eval($listInput.val().replaceAll('x', 'currentJson'));
-            const adminNames = []
-            $.each(mappingList, function (idx, value) {
-                const geometryIdentifier = eval($geographyInput.val().replaceAll('x', 'value'));
-                if (!adminNames.includes(geometryIdentifier)) {
-                    adminNames.push(geometryIdentifier);
-                }
-            });
-            adminNames.sort();
-
-            const options = ["<option></option>"];
-            $.each(adminNames, function (idx, geometryIdentifier) {
-                options.push(`<option val="${geometryIdentifier}">${geometryIdentifier}</option>`);
-            })
-            $('.mapping-remote').each(function () {
-                $(this).replaceWith(`<select data-identifier="${$(this).data('identifier')}" name="${$(this).attr('name')}" class="mapping-remote">`)
-            })
-            $('.mapping-remote').html(options.join(''));
-            $.each(mappingList, function (idx, value) {
-                const geometryIdentifier = eval($geographyInput.val().replaceAll('x', 'value'));
-                $.each(reportingUnits, function (key, name) {
-                    key = key.toLowerCase()
-                    if (key.includes(geometryIdentifier.toLowerCase())) {
-                        $(`select[data-identifier="${name}"]`).val(geometryIdentifier);
-                        return false;
-                    }
-
-                })
-            })
-            return false;
-        })
+        $referenceLayerSelector.trigger('change')
+      });
     </script>
 {% endblock %}

@@ -8,12 +8,14 @@ from geosight.data.models.indicator.indicator import (
 )
 from geosight.data.tests.model_factories import (
     IndicatorF, IndicatorGroupF, IndicatorFrequencyF,
-    GeometryLevelNameF, GeometryF, IndicatorValueF, IndicatorRuleF
+    IndicatorValueF, IndicatorRuleF
 )
 
 
 class IndicatorTest(TestCase):
     """.Test for Indicator model."""
+
+    geometry_reporting_level = 'District'
 
     def setUp(self):
         """To setup test."""
@@ -23,19 +25,18 @@ class IndicatorTest(TestCase):
         """Test create."""
         group = IndicatorGroupF()
         frequency = IndicatorFrequencyF()
-        geometry_reporting_level = GeometryLevelNameF()
 
         indicator = IndicatorF(
             name=self.name,
             group=group,
             frequency=frequency,
-            reporting_level=geometry_reporting_level.name
+            reporting_level=self.geometry_reporting_level
         )
         self.assertEquals(indicator.name, self.name)
         self.assertEquals(indicator.group, group)
         self.assertEquals(indicator.frequency, frequency)
         self.assertEquals(
-            indicator.reporting_level, geometry_reporting_level.name)
+            indicator.reporting_level, self.geometry_reporting_level)
 
     def test_allow_to_harvest_new_data(self):
         """Test allow harvest new data."""
@@ -46,7 +47,7 @@ class IndicatorTest(TestCase):
             name=self.name,
             group=IndicatorGroupF(),
             frequency=frequency,
-            reporting_level=GeometryLevelNameF().name
+            reporting_level=self.geometry_reporting_level
         )
 
         # if no data yet
@@ -69,26 +70,25 @@ class IndicatorTest(TestCase):
     def test_list(self):
         """Test list method."""
         group = IndicatorGroupF()
-        geometry_reporting_level = GeometryLevelNameF()
+        geometry_reporting_level = self.geometry_reporting_level
         IndicatorF(
             name='Name 1',
             group=group,
-            reporting_level=geometry_reporting_level.name
+            reporting_level=geometry_reporting_level
         )
         IndicatorF(
             name='Name 1',
             group=group,
-            reporting_level=geometry_reporting_level.name
+            reporting_level=geometry_reporting_level
         )
         self.assertEquals(Indicator.objects.count(), 2)
 
     def test_rules(self):
         """Check rules."""
-        geometry_reporting_level = GeometryLevelNameF()
         indicator = IndicatorF(
             name='Name 1',
             group=IndicatorGroupF(),
-            reporting_level=geometry_reporting_level.name
+            reporting_level=self.geometry_reporting_level
         )
         rules = [
             IndicatorRuleF(indicator=indicator, rule='x==1'),
@@ -112,72 +112,29 @@ class IndicatorTest(TestCase):
 
     def test_value(self):
         """Test value."""
-        country = GeometryLevelNameF(name='country')
-        province = GeometryLevelNameF(name='province')
-        geom_country = GeometryF(name='Country', geometry_level=country)
-        geom_province_1 = GeometryF(
-            name='Province 1',
-            geometry_level=province, child_of=geom_country)
-        geom_province_2 = GeometryF(
-            name='Province 2',
-            geometry_level=province, child_of=geom_country)
-        geom_province_3 = GeometryF(
-            name='Province 3',
-            geometry_level=province, child_of=geom_country)
+        province = 'province'
         # indicator 1
         indicator = IndicatorF(
             name='Name 1',
             group=IndicatorGroupF(),
-            reporting_level=province.name,
+            reporting_level=province,
             aggregation_method=AggregationMethod.MAJORITY
         )
-        # rules = [
-        #     IndicatorRuleF(
-        #         indicator=indicator, rule='x==1'
-        #     ),
-        #     IndicatorRuleF(
-        #         indicator=indicator, rule='x==2 or x==3'
-        #     ),
-        #     IndicatorRuleF(
-        #         indicator=indicator, rule='x>=4 and x<=5'
-        #     ),
-        #     IndicatorRuleF(
-        #         indicator=indicator, rule='x>5'
-        #     )
-        # ]
         # set value
         IndicatorValueF(
             indicator=indicator, date=datetime.today() - timedelta(days=10),
             value=1,
-            geom_identifier=geom_province_1.identifier
+            geom_identifier='Prov1'
         )
         IndicatorValueF(
             indicator=indicator, value=3,
-            geom_identifier=geom_province_1.identifier
+            geom_identifier='Prov1'
         )
         IndicatorValueF(
             indicator=indicator, value=2,
-            geom_identifier=geom_province_2.identifier
+            geom_identifier='Prov2'
         )
         IndicatorValueF(
             indicator=indicator, value=2,
-            geom_identifier=geom_province_3.identifier
+            geom_identifier='Prov3'
         )
-        # TODO:
-        #  Fix this
-        # values = indicator.values(geom_country, country, datetime.today())
-        # predicted_value = {
-        #     'indicator_id': indicator.id,
-        #     'geometry_id': geom_country.id,
-        #     'geometry_code': geom_country.identifier,
-        #     'geometry_name': geom_country.name,
-        #     'value': 2.0,
-        #     'rule_value': 2,
-        #     'rule_text': rules[1].name,
-        #     'text_color': None,
-        #     'background_color': rules[1].color
-        # }
-        # for key, value in values[0].items():
-        #     self.assertEquals(
-        #         value, predicted_value[key]
-        #     )

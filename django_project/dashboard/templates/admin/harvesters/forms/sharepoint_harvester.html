@@ -1,4 +1,4 @@
-{% extends 'dashboard/admin/harvesters/forms/_base_attribute.html' %}
+{% extends 'admin/harvesters/forms/_base_attribute.html' %}
 {% load static %}
 {% block extrastyle %}
     <style>
@@ -25,7 +25,8 @@
 {% endblock %}
 {% block additional_field %}
     <!-- Modal -->
-    <div class="modal fade" id="explorer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="explorer" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div id="explorer-body" class="modal-body">
@@ -35,218 +36,226 @@
     </div>
 {% endblock %}
 {% block extrascripts %}
-    <link rel="stylesheet" href="{% static 'libs/select2/4.1.0-rc.0/select2.min.css' %}" type="text/css" media="screen, projection"/>
-    <script type="text/javascript" src="{% static 'libs/select2/4.1.0-rc.0/select2.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'libs/xlsx/0.17.5/jszip.js' %}"></script>
-    <script type="text/javascript" src="{% static 'libs/xlsx/0.17.5/xlsx.js' %}"></script>
+    <link rel="stylesheet"
+          href="{% static 'libs/select2/4.1.0-rc.0/select2.min.css' %}"
+          type="text/css" media="screen, projection"/>
+    <script type="text/javascript"
+            src="{% static 'libs/select2/4.1.0-rc.0/select2.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'libs/xlsx/0.17.5/jszip.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'libs/xlsx/0.17.5/xlsx.js' %}"></script>
 
     {# jstree #}
-    <link rel="stylesheet" href="{% static 'libs/jstree/3.3.12/themes/default/style.min.css' %}" type="text/css" media="screen, projection"/>
-    <script type="text/javascript" src="{% static 'libs/jstree/3.3.12/jstree.js' %}"></script>
+    <link rel="stylesheet"
+          href="{% static 'libs/jstree/3.3.12/themes/default/style.min.css' %}"
+          type="text/css" media="screen, projection"/>
+    <script type="text/javascript"
+            src="{% static 'libs/jstree/3.3.12/jstree.js' %}"></script>
 
     <script>
-        const isNew = "{{ indicator.harvester }}" ? false : true;
-        let lastValue = {};
-        let cookieName = 'sharepoint-harvester';
+      const isNew = "{{ indicator.harvester }}" ? false : true;
+      let lastValue = {};
+      let cookieName = 'sharepoint-harvester';
+      if (getCookie(cookieName)) {
+        try {
+          lastValue = JSON.parse(getCookie(cookieName));
+        } catch (e) {
+
+        }
+      }
+      const dir = {{ dir|safe }};
+
+      /**
+       * Get last value from cookie based on file name
+       **/
+      function getLastValueByFile(filename) {
+        {# we get the latest cookie #}
+        const cookieName = 'sharepoint-harvester-' + filename;
         if (getCookie(cookieName)) {
-            try {
-                lastValue = JSON.parse(getCookie(cookieName));
-            } catch (e) {
+          try {
+            $.each(JSON.parse(getCookie(cookieName)), function (key, value) {
+              lastValue[key] = value
+            });
+          } catch (e) {
 
-            }
+          }
         }
-        const dir = {{ dir|safe }};
+      }
 
-        /**
-         * Get last value from cookie based on file name
-         **/
-        function getLastValueByFile(filename) {
-            {# we get the latest cookie #}
-            const cookieName = 'sharepoint-harvester-' + filename;
-            if (getCookie(cookieName)) {
-                try {
-                    $.each(JSON.parse(getCookie(cookieName)), function (key, value) {
-                        lastValue[key] = value
-                    });
-                } catch (e) {
+      /**
+       * When input changes, save it to cookie
+       **/
+      function inputChanged(el) {
+        lastValue[$(el).attr('id')] = $(el).val();
+        setCookie(cookieName, JSON.stringify(lastValue))
+        setCookie(cookieName + '-' + $('#attribute_file').val(), JSON.stringify(lastValue))
+      }
 
-                }
-            }
+      /**
+       * Assign the value of element from cookie or last value
+       **/
+      function inputDefaultValue($el) {
+        if (lastValue[$el.attr('id')]) {
+          $el.val(lastValue[$el.attr('id')]);
         }
+      }
 
-        /**
-         * When input changes, save it to cookie
-         **/
-        function inputChanged(el) {
-            lastValue[$(el).attr('id')] = $(el).val();
-            setCookie(cookieName, JSON.stringify(lastValue))
-            setCookie(cookieName + '-' + $('#attribute_file').val(), JSON.stringify(lastValue))
+      /**
+       * Override last value or cookie if it is not new and it is based on value from database
+       **/
+      function overrideSettings() {
+        if (!isNew) {
+          const $inputFile = $('#attribute_file');
+          $inputFile.val($inputFile.attr('value'));
+          const cookieNameFile = cookieName + '-' + $inputFile.val();
+          const theValue = {};
+          $('#attributes-table select, #attributes-table input').each(function () {
+            lastValue[$(this).attr('id')] = $(this).attr('value');
+          });
+          lastValue['attribute_extra_columns'] = $('#attribute_extra_columns').attr('value').split(',');
+          setCookie(cookieNameFile, JSON.stringify(theValue));
         }
+      }
 
-        /**
-         * Assign the value of element from cookie or last value
-         **/
-        function inputDefaultValue($el) {
-            if (lastValue[$el.attr('id')]) {
-                $el.val(lastValue[$el.attr('id')]);
-            }
-        }
-
-        /**
-         * Override last value or cookie if it is not new and it is based on value from database
-         **/
-        function overrideSettings() {
-            if (!isNew) {
-                const $inputFile = $('#attribute_file');
-                $inputFile.val($inputFile.attr('value'));
-                const cookieNameFile = cookieName + '-' + $inputFile.val();
-                const theValue = {};
-                $('#attributes-table select, #attributes-table input').each(function () {
-                    lastValue[$(this).attr('id')] = $(this).attr('value');
-                });
-                lastValue['attribute_extra_columns'] = $('#attribute_extra_columns').attr('value').split(',');
-                setCookie(cookieNameFile, JSON.stringify(theValue));
-            }
-        }
-
-        $(document).ready(function () {
-            {# change the input to select input #}
-            let $selectInput = $('#attributes-table input').not('#attribute_row_number_for_header').not('#attribute_file');
-            $selectInput.each(function () {
-                const attr = [];
-                $.each(this.attributes, function () {
-                    attr.push(`${this.name}='${this.value}'`);
-                });
-                $(this).replaceWith(`<select ${attr.join(' ')}></select>`);
-            });
-
-            {# disabled inputs at first time#}
-            const $inputRowHeader = $('#attribute_row_number_for_header');
-            $inputRowHeader.prop('disabled', true);
-            $inputRowHeader.attr('type', 'number');
-            $inputRowHeader.val(1);
-
-            $selectInput = $('#attributes-table select').not('#attribute_row_number_for_header');
-            $selectInput.prop('disabled', true);
-            $selectInput.change(function () {
-                $(this).data('value', $(this).val());
-            });
-
-            const $inputFile = $('#attribute_file');
-            $inputFile.click(function () {
-                $('#explorer').modal('show')
-            });
-
-            {# CREATE EXPLORER #}
-            const $explorer = $('#explorer-body');
-            $explorer.jstree({
-                'core': {
-                    'data': dir.children
-                }
-            }).on('loaded.jstree', function () {
-                $explorer.jstree('open_all');
-            });
-            $explorer.on("select_node.jstree", function (e, data) {
-                return data.instance.toggle_node(data.node);
-            });
-            $explorer.on("changed.jstree", function (e, data) {
-                if (data.node && data.node.original.type === 'file') {
-                    $('#explorer').modal('hide');
-                    if ($inputFile.val() !== data.node.original.path) {
-                        $inputFile.val(data.node.original.path);
-                        $inputFile.trigger('change');
-                    }
-                }
-            });
-
-            overrideSettings();
-            /**
-             * ---------------------------------------------------------
-             * WHEN INPUT FILE CHANGED
-             * ---------------------------------------------------------
-             */
-            const $inputSheetName = $('#attribute_sheet_name');
-            const $inputExtraColumns = $('#attribute_extra_columns');
-            $inputExtraColumns.attr('multiple', 'multiple');
-            $inputFile.change(function () {
-                getLastValueByFile($(this).val())
-                $selectInput.not("#attribute_file").prop('disabled', true).html('').val('');
-                $inputRowHeader.prop('disabled', true);
-
-                {# fetch file and update others #}
-                if ($(this).val()) {
-                    $inputFile.closest('tr').find('.loading').show();
-                    $inputFile.closest('tr').find('.hide').show();
-                    var oReq = new XMLHttpRequest();
-                    oReq.open('get', "{% url 'download-sharepoint' instance %}?file=" + $(this).val(), true);
-                    oReq.responseType = 'blob';
-                    oReq.onload = function () {
-                        var blob = oReq.response;
-                        var fr = new FileReader();
-                        fr.onload = function () {
-                            {#We check the output for construct the inputs #}
-                            const workbook = XLSX.read(fr.result, {
-                                type: 'binary'
-                            });
-                            $inputSheetName.prop('disabled', false);
-
-                            $.each(workbook.Workbook.Sheets, function (index, sheet) {
-                                if (sheet.Hidden === 0) {
-                                    $inputSheetName.append(`<option value="${sheet.name}">${sheet.name}</option`);
-                                }
-                            });
-
-                            {# when input row header changed #}
-                            $inputRowHeader.change(function () {
-                                inputChanged(this);
-                                /** ---------------------------------------------------------
-                                 *  Here we change the other options
-                                 *  Based on sheet name and the header row number
-                                 *  --------------------------------------------------------- */
-                                var array = XLSX.utils.sheet_to_json(workbook.Sheets[$inputSheetName.val()], {
-                                    header: 1,
-                                    defval: '',
-                                    blankrows: true
-                                });
-                                const $inputs = $selectInput.not("#attribute_file, #attribute_sheet_name");
-                                $inputs.prop('disabled', false);
-                                $inputs.html('');
-                                $.each(array[$inputRowHeader.val() - 1], function (idx, value) {
-                                    if (value) {
-                                        $inputs.append(`<option value="${value}">${value}</option`);
-                                    }
-                                });
-                                $inputs.each(function () {
-                                    inputDefaultValue($(this));
-                                });
-                                $inputs.change(function () {
-                                    inputChanged(this);
-                                });
-                                $('#attribute_extra_columns').select2();
-                            });
-
-                            {# when input sheet name changed #}
-                            $inputSheetName.change(function () {
-                                inputChanged(this);
-                                $inputRowHeader.prop('disabled', false);
-                                inputDefaultValue($inputRowHeader);
-                                $inputRowHeader.trigger('change');
-                            });
-                            inputDefaultValue($inputSheetName);
-                            $inputSheetName.trigger('change');
-                        };
-                        fr.readAsBinaryString(blob);
-                        $inputFile.closest('tr').find('.error').hide();
-                        $inputFile.closest('tr').find('.loading').hide();
-                    };
-                    oReq.addEventListener('error', function (xhr) {
-                        $inputFile.closest('tr').find('.error').html(xhr.statusText);
-                        $inputFile.closest('tr').find('.error').show();
-                    });
-                    oReq.send(null);
-                }
-            });
-            $inputFile.trigger('change')
+      $(document).ready(function () {
+        {# change the input to select input #}
+        let $selectInput = $('#attributes-table input').not('#attribute_row_number_for_header').not('#attribute_file');
+        $selectInput.each(function () {
+          const attr = [];
+          $.each(this.attributes, function () {
+            attr.push(`${this.name}='${this.value}'`);
+          });
+          $(this).replaceWith(`<select ${attr.join(' ')}></select>`);
         });
+
+        {# disabled inputs at first time#}
+        const $inputRowHeader = $('#attribute_row_number_for_header');
+        $inputRowHeader.prop('disabled', true);
+        $inputRowHeader.attr('type', 'number');
+        $inputRowHeader.val(1);
+
+        $selectInput = $('#attributes-table select').not('#attribute_row_number_for_header');
+        $selectInput.prop('disabled', true);
+        $selectInput.change(function () {
+          $(this).data('value', $(this).val());
+        });
+
+        const $inputFile = $('#attribute_file');
+        $inputFile.click(function () {
+          $('#explorer').modal('show')
+        });
+
+        {# CREATE EXPLORER #}
+        const $explorer = $('#explorer-body');
+        $explorer.jstree({
+          'core': {
+            'data': dir.children
+          }
+        }).on('loaded.jstree', function () {
+          $explorer.jstree('open_all');
+        });
+        $explorer.on("select_node.jstree", function (e, data) {
+          return data.instance.toggle_node(data.node);
+        });
+        $explorer.on("changed.jstree", function (e, data) {
+          if (data.node && data.node.original.type === 'file') {
+            $('#explorer').modal('hide');
+            if ($inputFile.val() !== data.node.original.path) {
+              $inputFile.val(data.node.original.path);
+              $inputFile.trigger('change');
+            }
+          }
+        });
+
+        overrideSettings();
+        /**
+         * ---------------------------------------------------------
+         * WHEN INPUT FILE CHANGED
+         * ---------------------------------------------------------
+         */
+        const $inputSheetName = $('#attribute_sheet_name');
+        const $inputExtraColumns = $('#attribute_extra_columns');
+        $inputExtraColumns.attr('multiple', 'multiple');
+        $inputFile.change(function () {
+          getLastValueByFile($(this).val())
+          $selectInput.not("#attribute_file").prop('disabled', true).html('').val('');
+          $inputRowHeader.prop('disabled', true);
+
+          {# fetch file and update others #}
+          if ($(this).val()) {
+            $inputFile.closest('tr').find('.loading').show();
+            $inputFile.closest('tr').find('.hide').show();
+            var oReq = new XMLHttpRequest();
+            oReq.open('get', "{% url 'download-sharepoint' %}?file=" + $(this).val(), true);
+            oReq.responseType = 'blob';
+            oReq.onload = function () {
+              var blob = oReq.response;
+              var fr = new FileReader();
+              fr.onload = function () {
+                {#We check the output for construct the inputs #}
+                const workbook = XLSX.read(fr.result, {
+                  type: 'binary'
+                });
+                $inputSheetName.prop('disabled', false);
+
+                $.each(workbook.Workbook.Sheets, function (index, sheet) {
+                  if (sheet.Hidden === 0) {
+                    $inputSheetName.append(`<option value="${sheet.name}">${sheet.name}</option`);
+                  }
+                });
+
+                {# when input row header changed #}
+                $inputRowHeader.change(function () {
+                  inputChanged(this);
+                  /** ---------------------------------------------------------
+                   *  Here we change the other options
+                   *  Based on sheet name and the header row number
+                   *  --------------------------------------------------------- */
+                  var array = XLSX.utils.sheet_to_json(workbook.Sheets[$inputSheetName.val()], {
+                    header: 1,
+                    defval: '',
+                    blankrows: true
+                  });
+                  const $inputs = $selectInput.not("#attribute_file, #attribute_sheet_name");
+                  $inputs.prop('disabled', false);
+                  $inputs.html('');
+                  $.each(array[$inputRowHeader.val() - 1], function (idx, value) {
+                    if (value) {
+                      $inputs.append(`<option value="${value}">${value}</option`);
+                    }
+                  });
+                  $inputs.each(function () {
+                    inputDefaultValue($(this));
+                  });
+                  $inputs.change(function () {
+                    inputChanged(this);
+                  });
+                  $('#attribute_extra_columns').select2();
+                });
+
+                {# when input sheet name changed #}
+                $inputSheetName.change(function () {
+                  inputChanged(this);
+                  $inputRowHeader.prop('disabled', false);
+                  inputDefaultValue($inputRowHeader);
+                  $inputRowHeader.trigger('change');
+                });
+                inputDefaultValue($inputSheetName);
+                $inputSheetName.trigger('change');
+              };
+              fr.readAsBinaryString(blob);
+              $inputFile.closest('tr').find('.error').hide();
+              $inputFile.closest('tr').find('.loading').hide();
+            };
+            oReq.addEventListener('error', function (xhr) {
+              $inputFile.closest('tr').find('.error').html(xhr.statusText);
+              $inputFile.closest('tr').find('.error').show();
+            });
+            oReq.send(null);
+          }
+        });
+        $inputFile.trigger('change')
+      });
     </script>
 {% endblock extrascripts %}

@@ -7,7 +7,7 @@ from core.models.general import SlugTerm, IconTerm
 from geosight.data.models.basemap_layer import BasemapLayer
 from geosight.data.models.context_layer import ContextLayer
 from geosight.data.models.indicator import Indicator
-from geosight.data.models.reference_layer import ReferenceLayer
+from geosight.georepo.reference_layer import ReferenceLayer
 
 User = get_user_model()
 
@@ -22,9 +22,8 @@ class Dashboard(SlugTerm, IconTerm):
     Basemap layers and context layers is based on the indicator's instance.
     """
 
-    reference_layer = models.ForeignKey(
-        ReferenceLayer,
-        on_delete=models.CASCADE
+    reference_layer_identifier = models.CharField(
+        max_length=512, null=True, blank=True
     )
     basemap_layers = models.ManyToManyField(
         BasemapLayer
@@ -59,6 +58,11 @@ class Dashboard(SlugTerm, IconTerm):
         blank=True, null=True
     )
 
+    @property
+    def reference_layer(self):
+        """Return reference layer object."""
+        return ReferenceLayer(self.reference_layer_identifier)
+
     def can_edit(self, user: User):
         """Is dashboard can be edited by user."""
         return user.is_staff or self.creator == user
@@ -83,7 +87,6 @@ class Dashboard(SlugTerm, IconTerm):
                     widget = Widget.objects.get(
                         id=data['id']
                     )
-                    print('widget found')
                 except (KeyError, Widget.DoesNotExist):
                     widget = Widget(dashboard=self)
 

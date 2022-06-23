@@ -1,18 +1,18 @@
-{% extends 'dashboard/_base.html' %}
+{% extends '_base.html' %}
 {% load static %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/form.css' %}" type="text/css" media="screen, projection"/>
-    <link rel="stylesheet" href="{% static 'css/dashboard/admin/form.css' %}" type="text/css" media="screen, projection"/>
+    <link href="{% static 'css/admin/base.css' %}" rel="stylesheet"
+          type="text/css" media="screen, projection"/>
+    <link rel="stylesheet" href="{% static 'css/form.css' %}" type="text/css"
+          media="screen, projection"/>
+    <link rel="stylesheet" href="{% static 'css/admin/form.css' %}"
+          type="text/css" media="screen, projection"/>
     <style>
         form table td,
         form table th {
             border: none !important;
             padding: 10px;
-        }
-
-        #content-view .section {
-            padding: 20px;
         }
 
         #content form {
@@ -39,53 +39,63 @@
         .readonly {
             display: none;
         }
+
+        .container-page-content {
+            padding: 20px
+        }
     </style>
     {% block extrastyle %}
     {% endblock %}
 {% endblock stylesheet %}
-{% block contentview %}
-    <div id="content">
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="header box-shadow-bottom ">
-                {{ dashboard_title|safe }}
-                <div class="pull-right">
-                    <button id="submit" class="main-button">Submit</button>
+{% block container %}
+    <div id="container" class="container">
+        <div id="content-view" class="container-page box-shadow-bottom">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="header">
+                    {{ content_title|safe }}
+                    <div class="pull-right">
+                        {% block header_button %}
+                        {% endblock %}
+                        <button id="submit" class="white-button">
+                            Submit
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div id="content-view">
-                <div class="section box-shadow-bottom">
-                    {% csrf_token %}
+                <div id="content" class="container-page-content">
                     <p>
-                        <label class="label required" for="name">Harvester</label>
+                        <label class="label required"
+                               for="name">Harvester</label>
                         <select name="harvester" id="harvester-selection">
                             {% for harvester in harvesters %}
-                                <option value="{{ harvester.value }}" data-url="{{ harvester.url }}">{{ harvester.name }}</option>
+                                <option value="{{ harvester.value }}"
+                                        data-url="{{ harvester.url }}">{{ harvester.name }}</option>
                             {% endfor %}
                         </select>
-                        <span id="harvester-description" class="helptext"></span>
+                        <span id="harvester-description"
+                              class="helptext"></span>
                     </p>
                     {% block attributes %}
                     {% endblock %}
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 {% endblock %}
 {% block scripts %}
     <script>
-        const harvestersDescription = {};
-        {% for harvester in harvesters %}
-            harvestersDescription['{{ harvester.value }}'] = `{{ harvester.description|safe }}`;
-        {% endfor %}
+      const harvestersDescription = {};
+      {% for harvester in harvesters %}
+        harvestersDescription['{{ harvester.value }}'] = `{{ harvester.description|safe }}`;
+      {% endfor %}
 
-        const $harvesterSelection = $('#harvester-selection');
-        $harvesterSelection.change(function () {
-            document.location = $(`#harvester-selection option[value="${$(this).val()}"]`).data('url');
-        });
-        $harvesterSelection.val('{{ harvester_class }}');
-        const defaultDesc = harvestersDescription['{{ harvester_class }}'];
-        $('#harvester-description').html(defaultDesc);
+      const $harvesterSelection = $('#harvester-selection');
+      $harvesterSelection.change(function () {
+        document.location = $('#harvester-selection option[value="' + $(this).val() + '"]').data('url');
+      });
+      $harvesterSelection.val('{{ harvester_class }}');
+      const defaultDesc = harvestersDescription['{{ harvester_class }}'];
+      $('#harvester-description').html(defaultDesc);
     </script>
     {% block extrascripts %}
     {% endblock %}

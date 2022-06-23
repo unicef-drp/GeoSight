@@ -7,7 +7,7 @@ import requests
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 
-from geosight.data.models import Geometry, IndicatorValue
+from geosight.data.models import IndicatorValue
 from geosight.data.models.indicator.indicator import (
     IndicatorValueRejectedError
 )
@@ -42,9 +42,6 @@ class BaseHarvester(ABC):
                 attribute.value if attribute.value else attribute.file
         for attribute in harvester.harvestermappingvalue_set.all():
             self.mapping[attribute.remote_value] = attribute.platform_value
-
-        if harvester.indicator:
-            self.reporting_units = Geometry.objects.all()
 
     @staticmethod
     def additional_attributes(**kwargs) -> dict:
@@ -149,13 +146,13 @@ class BaseHarvester(ABC):
         self.log.save()
 
     def save_indicator_data(
-            self, value: str, date: datetime.date, geometry: Geometry
+            self, value: str, date: datetime.date, geometry: str
     ) -> IndicatorValue:
         """Save new indicator data of the indicator."""
         try:
             if value:
                 return self.harvester.indicator.save_value(
-                    date, geometry.identifier, float(value)
+                    date, geometry, float(value)
                 )
             else:
                 return None

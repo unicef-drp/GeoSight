@@ -8,7 +8,7 @@ from django.db import transaction
 from pyexcel_xls import get_data as xls_get
 from pyexcel_xlsx import get_data as xlsx_get
 
-from geosight.data.models import Geometry, IndicatorValue, IndicatorExtraValue
+from geosight.data.models import IndicatorValue, IndicatorExtraValue
 from geosight.harvester.harveters._base import BaseHarvester, HarvestingError
 
 
@@ -162,15 +162,8 @@ class SharepointHarvester(BaseHarvester):
                     # -------------------------------------------------------
                     # Validation
                     # ------------------------------------------------------
-                    geometry, date_time, year, month = None, None, None, None
-                    try:
-                        geometry = Geometry.objects.get(
-                            identifier=record[idx_administration_code]
-                        )
-                    except Geometry.DoesNotExist:
-                        detail[idx_administration_code] += (
-                                error_separator + 'Does not exist'
-                        )
+                    date_time, year, month = None, None, None
+                    administration_code = record[idx_administration_code]
 
                     # check the value
                     value = record[idx_value]
@@ -248,12 +241,13 @@ class SharepointHarvester(BaseHarvester):
                             if 'month' not in e:
                                 detail[idx_year] += error_separator + str(e)
 
-                    if geometry and date_time:
+                    if administration_code and date_time and type(
+                            value) == float:
                         indicator_value, created = \
                             IndicatorValue.objects.get_or_create(
                                 indicator=indicator,
                                 date=date_time,
-                                geom_identifier=geometry.identifier,
+                                geom_identifier=administration_code,
                                 defaults={
                                     'value': value
                                 }

@@ -12,9 +12,7 @@ class SharepointHarvesterView(HarvesterFormView):
     """SharepointHarvester Harvester view."""
 
     harvester_class = SharepointHarvester
-    template_name = (
-        'dashboard/admin/harvesters/forms/sharepoint_harvester.html'
-    )
+    template_name = 'admin/harvesters/forms/sharepoint_harvester.html'
 
     def get_context_data(self, **kwargs) -> dict:
         """Return context data."""

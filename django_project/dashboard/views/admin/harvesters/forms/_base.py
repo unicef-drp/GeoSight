@@ -21,7 +21,7 @@ class HarvesterFormView(AdminView, ABC):
     @property
     def content_title(self):
         """Return content title."""
-        return f'Harvester for {self.indicator.full_name}'
+        return f'Harvester for {self.indicator.__str__()}'
 
     def get_indicator(self):
         """Return indicator and save it as attribute."""
@@ -44,9 +44,8 @@ class HarvesterFormView(AdminView, ABC):
 
     def get_context_data(self, **kwargs) -> dict:
         """Return context data."""
-        context = super().get_context_data(**kwargs)
-
         self.get_indicator()
+        context = super().get_context_data(**kwargs)
         attributes = []
         mapping = []
         harvester = None

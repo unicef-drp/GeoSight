@@ -3,7 +3,6 @@ from django.test.testcases import TestCase
 
 from geosight.data.tests.model_factories import (
     IndicatorF, IndicatorGroupF,
-    GeometryLevelNameF, GeometryF,
     IndicatorRuleF
 )
 
@@ -11,29 +10,15 @@ from geosight.data.tests.model_factories import (
 class BaseHarvesterTest(TestCase):
     """Base for test API."""
 
+    reporting_level = 'District'
+
     def setUp(self):
         """To setup tests."""
-        level = GeometryLevelNameF()
         self.indicator = IndicatorF(
             group=IndicatorGroupF(),
-            reporting_level=level.name
+            reporting_level='District'
         )
         IndicatorRuleF(indicator=self.indicator, rule='x==1'),
         IndicatorRuleF(indicator=self.indicator, rule='x==2'),
         IndicatorRuleF(indicator=self.indicator, rule='x==3'),
         IndicatorRuleF(indicator=self.indicator, rule='x==4'),
-
-        GeometryF(
-            identifier='A',
-            geometry_level=level
-        )
-
-        GeometryF(
-            identifier='B',
-            geometry_level=level
-        )
-
-        GeometryF(
-            identifier='C',
-            geometry_level=level
-        )

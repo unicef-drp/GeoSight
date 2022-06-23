@@ -13,13 +13,16 @@ from geosight.harvester.tasks import run_harvester
 class HarvesterIndicatorDetail(AdminView):
     """Harvester Indicator View."""
 
-    template_name = 'dashboard/admin/harvesters/detail/harvester_detail.html'
+    template_name = 'admin/harvesters/detail/harvester_detail.html'
     indicator = None
 
     @property
     def content_title(self):
         """Return content title."""
-        return f'Harvester for {self.indicator.full_name}'
+        self.indicator = get_object_or_404(
+            Indicator, id=self.kwargs.get('pk', '')
+        )
+        return f'Harvester for {self.indicator.__str__()}'
 
     def get_context(self, harvester, edit_url):
         """Parse context."""
@@ -38,17 +41,18 @@ class HarvesterIndicatorDetail(AdminView):
             context['can_harvest_now'] = False
         return context
 
+    @property
+    def harvester(self):
+        """Return harvester data."""
+        try:
+            return self.indicator.harvester
+        except Harvester.DoesNotExist:
+            raise Http404('Harvester does not exist')
+
     def get_context_data(self, **kwargs) -> dict:
         """Return context data."""
         context = super().get_context_data(**kwargs)
-        self.indicator = get_object_or_404(
-            Indicator, id=self.kwargs.get('pk', '')
-        )
-
-        try:
-            harvester = self.indicator.harvester
-        except Harvester.DoesNotExist:
-            raise Http404('Harvester does not exist')
+        harvester = self.harvester
 
         context.update(
             self.get_context(
@@ -82,7 +86,7 @@ class HarvesterIndicatorDetail(AdminView):
 class HarvesterDetail(HarvesterIndicatorDetail):
     """Harvester Detail View."""
 
-    template_name = 'dashboard/admin/harvesters/detail/harvester_detail.html'
+    template_name = 'admin/harvesters/detail/harvester_detail.html'
     indicator = None
 
     @property
@@ -90,15 +94,20 @@ class HarvesterDetail(HarvesterIndicatorDetail):
         """Return content title."""
         return 'Harvester detail'
 
-    def get_context_data(self, **kwargs) -> dict:
-        """Return context data."""
-        context = super().get_context_data(**kwargs)
+    @property
+    def harvester(self):
+        """Return harvester data."""
         try:
-            harvester = Harvester.objects.get(
+            return Harvester.objects.get(
                 unique_id=self.kwargs.get('uuid', '')
             )
         except Indicator.DoesNotExist:
             raise Http404('Harvester does not exist')
+
+    def get_context_data(self, **kwargs) -> dict:
+        """Return context data."""
+        context = super(AdminView, self).get_context_data(**kwargs)
+        harvester = self.harvester
         context.update(
             self.get_context(
                 harvester, reverse(
@@ -125,7 +134,7 @@ class HarvesterDetail(HarvesterIndicatorDetail):
         ]:
             return HttpResponseBadRequest('Harvester can not be harvested')
         try:
-            run_harvester(harvester.pk)
+            run_harvester.delay(harvester.pk)
             return redirect(
                 reverse(
                     'harvester-detail',

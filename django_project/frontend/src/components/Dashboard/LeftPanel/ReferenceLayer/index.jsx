@@ -24,13 +24,21 @@ export default function ReferenceLayerSection() {
       </AccordionSummary>
       <AccordionDetails>
         {
-          referenceLayer !== undefined ?
+          referenceLayer.data && Object.keys(referenceLayer.data).length > 0 ?
             <div>
-              <div><b>Name :</b> {referenceLayer.name}</div>
-              <div><b>Description :</b> {referenceLayer.description}</div>
-              <div><b>Source :</b> {referenceLayer.source}</div>
+              {referenceLayer.data.name ?
+                <div><b>Name :</b> {referenceLayer.data.name}</div> : ''}
+              {referenceLayer.data.description ?
+                <div><b>Description :</b> {referenceLayer.data.description}
+                </div> : ''}
+              {referenceLayer.data.source ?
+                <div><b>Source :</b> {referenceLayer.data.source}</div> : ''}
             </div>
-            : <div>Loading</div>
+            :
+            (
+              referenceLayer.identifier ? <div>Loading</div> :
+                <div>Please select a reference dataset.</div>
+            )
         }
       </AccordionDetails>
     </Accordion>

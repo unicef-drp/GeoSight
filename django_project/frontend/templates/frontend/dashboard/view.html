@@ -15,7 +15,6 @@
       let editMode = {% if edit_mode %} true {% else %} false {% endif %};
       if (editMode) {
         urls = Object.assign({}, urls, {
-          'referenceLayersListAPI': '{% url 'reference-layer-list-api' %}',
           'basemapListAPI': '{% url 'basemap-list-api' %}',
           'indicatorListAPI': '{% url 'indicator-list-api' %}',
           'contextLayerListAPI': '{% url 'context-layer-list-api' %}',
