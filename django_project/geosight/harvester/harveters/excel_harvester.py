@@ -55,7 +55,8 @@ class ExcelHarvester(BaseHarvester):
             }
         }
         try:
-            for indicator in Indicator.objects.all().order_by('group__name', 'name'):
+            for indicator in Indicator.objects.all().order_by(
+                    'group__name', 'name'):
                 shortcode = indicator.shortcode
                 attr[f'{indicator.id}'] = {
                     'title': "Column Name: " + indicator.__str__(),
