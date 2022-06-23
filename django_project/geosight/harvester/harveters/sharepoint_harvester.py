@@ -241,7 +241,8 @@ class SharepointHarvester(BaseHarvester):
                             if 'month' not in e:
                                 detail[idx_year] += error_separator + str(e)
 
-                    if administration_code and date_time and type(value) == float:
+                    if administration_code and date_time and type(
+                            value) == float:
                         indicator_value, created = \
                             IndicatorValue.objects.get_or_create(
                                 indicator=indicator,

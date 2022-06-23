@@ -14,6 +14,7 @@ from geosight.data.tests.model_factories import (
 
 class IndicatorTest(TestCase):
     """.Test for Indicator model."""
+
     geometry_reporting_level = 'District'
 
     def setUp(self):
@@ -84,7 +85,6 @@ class IndicatorTest(TestCase):
 
     def test_rules(self):
         """Check rules."""
-        geometry_reporting_level = self.geometry_reporting_level
         indicator = IndicatorF(
             name='Name 1',
             group=IndicatorGroupF(),
@@ -112,7 +112,6 @@ class IndicatorTest(TestCase):
 
     def test_value(self):
         """Test value."""
-        country = 'country'
         province = 'province'
         # indicator 1
         indicator = IndicatorF(

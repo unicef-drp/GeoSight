@@ -9,6 +9,7 @@ from geosight.data.tests.model_factories import (
 
 class BaseHarvesterTest(TestCase):
     """Base for test API."""
+
     reporting_level = 'District'
 
     def setUp(self):
