@@ -74,4 +74,4 @@ class IndicatorValueDetail(APIView):
                 'details': details
             })
         except IndicatorValue.DoesNotExist:
-            return HttpResponseNotFound(f'Not found')
+            return HttpResponseNotFound('Not found')

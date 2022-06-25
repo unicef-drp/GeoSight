@@ -63,6 +63,7 @@ class IndicatorValueExtraDetailRow(models.Model):
         IndicatorValue, on_delete=models.CASCADE
     )
 
+
 class IndicatorValueExtraDetailColumn(models.Model):
     """Additional data for Indicator value data."""
 
@@ -82,5 +83,5 @@ class IndicatorValueExtraDetailColumn(models.Model):
         )
     )
 
-    class Meta:
+    class Meta:  # noqa: D106
         unique_together = ('row', 'name')
