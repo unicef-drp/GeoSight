@@ -13,9 +13,12 @@ from geosight.data.api.download_file import (
 )
 from geosight.data.api.indicator import (
     IndicatorListAPI,
-    IndicatorDetailAPI, IndicatorValuesAPI
+    IndicatorDetailAPI, IndicatorValuesAPI,
 )
-from geosight.data.api.indicator_value import IndicatorValuesByGeometry
+from geosight.data.api.indicator_value import (
+    IndicatorValuesByGeometry,
+    IndicatorValueDetail
+)
 
 indicator_api = [
     url(
@@ -30,6 +33,11 @@ indicator_api = [
         r'^(?P<pk>\d+)/values/by-geometry/(?P<geometry_code>.+)/',
         IndicatorValuesByGeometry.as_view(),
         name='indicator-values-by-geometry'
+    ),
+    url(
+        r'^(?P<pk>\d+)/values/(?P<value_id>\d+)/details/',
+        IndicatorValueDetail.as_view(),
+        name='indicator-value-detail'
     ),
     url(
         r'^(?P<pk>\d+)',

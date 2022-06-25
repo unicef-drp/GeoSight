@@ -224,7 +224,8 @@ class Indicator(AbstractTerm, AbstractSource):
             'value': value,
             'text': rule.name,
             'color': background_color,
-            'outline_color': outline_color
+            'outline_color': outline_color,
+            'name': self.__str__()
         }
         values.update(attributes if attributes else {})
         return values
@@ -249,6 +250,11 @@ class Indicator(AbstractTerm, AbstractSource):
                 extra.key: extra.value for extra in
                 indicator_value.indicatorextravalue_set.all()
             })
+            if indicator_value.indicatorvalueextradetailrow_set.count():
+                attributes[
+                    'detail_url'] = reverse(
+                    'indicator-value-detail',
+                    args=[indicator_value.indicator.pk, indicator_value.pk])
             value = self.serialize(
                 indicator_value.geom_identifier,
                 indicator_value.value,

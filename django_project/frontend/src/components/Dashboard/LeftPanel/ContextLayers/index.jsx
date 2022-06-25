@@ -16,8 +16,9 @@ import { contextLayerInGroup } from '../../../../utils/contextLayer'
 import EsriLeafletLayer from '../../../../utils/esri/leaflet-esri-layer'
 import Switch from '@mui/material/Switch';
 
-import './style.scss'
 import { fetchingData } from "../../../../Requests";
+
+import './style.scss'
 
 
 function ContextLayerInput({ data }) {
@@ -46,6 +47,8 @@ function ContextLayerInput({ data }) {
         if (layerData.legend) {
           setLegend(`<img src="${layerData.legend}"/>`)
         }
+        layerData.parameters['maxNativeZoom'] = 19;
+        layerData.parameters['maxZoom'] = maxZoom;
         return L.tileLayer.wms(
           layerData.url, layerData.parameters
         );

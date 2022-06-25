@@ -36,7 +36,8 @@ export default function ReferenceLayerSection() {
             </div>
             :
             (
-              referenceLayer.identifier ? <div>Loading</div> :
+              referenceLayer.identifier ? (referenceLayer.error ?
+                  <div className='error'>{referenceLayer.error.toString()}</div> : <div>Loading</div>) :
                 <div>Please select a reference dataset.</div>
             )
         }

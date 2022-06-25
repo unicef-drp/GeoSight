@@ -61,7 +61,7 @@ export function Indicators() {
                     change(event.target.checked, idx)
                   }}/>
                 <div className='text title'>
-                  <div>{layer.name}</div>
+                  <div>{layer.group} / {layer.name}</div>
                 </div>
               </div>
             )

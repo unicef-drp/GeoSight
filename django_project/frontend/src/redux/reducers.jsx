@@ -4,6 +4,7 @@ import mapReducer from './reducers/map'
 import dashboardRequestReducer from './reducers/dashboard'
 import indicatorDataReducer from "./reducers/indicatorsData";
 import filtersDataReducer from "./reducers/filtersData";
+import geometryCodeReducer from "./reducers/geometries";
 
 
 export default combineReducers({
@@ -12,4 +13,5 @@ export default combineReducers({
 
   indicatorData: indicatorDataReducer,
   filtersData: filtersDataReducer,
+  geometryCode: geometryCodeReducer,
 });

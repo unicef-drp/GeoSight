@@ -3,6 +3,7 @@
    ========================================================================== */
 
 import React, { Fragment } from 'react';
+import { useSelector } from "react-redux";
 import { DEFINITION } from "../index"
 import { numberWithCommas } from '../../../utils/main'
 
@@ -19,6 +20,9 @@ export default function Index(
     name, operation, property_2
   } = widgetData
 
+
+  const geometryCodes = useSelector(state => state.geometryCode);
+
   /**
    * Return value of widget
    * @returns {JSX.Element}
@@ -31,7 +35,10 @@ export default function Index(
           let byGroup = {}
           data.forEach(function (rowData) {
             const rowValue = parseFloat(rowData.value);
-            const groupName = rowData[property_2];
+            let groupName = rowData[property_2];
+            if (property_2 === 'geometry_code') {
+              groupName = geometryCodes[groupName] ? geometryCodes[groupName] : groupName;
+            }
             if (!isNaN(rowValue)) {
               if (!byGroup[groupName]) {
                 byGroup[groupName] = {

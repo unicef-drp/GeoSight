@@ -31,7 +31,7 @@ export default function LeftPanel() {
   const onRight = () => {
     setState(RIGHT);
   };
-  const [expanded, setExpanded] = useState('contextLayers');
+  const [expanded, setExpanded] = useState('indicators');
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(panel);

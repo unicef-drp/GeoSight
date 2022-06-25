@@ -44,7 +44,8 @@ export default function Map() {
         center: [0, 0],
         zoom: 6,
         layers: [basemapLayerGroup, contextLayerGroup, referenceLayerGroup],
-        zoomControl: false
+        zoomControl: false,
+        maxZoom: maxZoom
       });
       newMap.createPane(basemapPane);
       newMap.createPane(referenceLayerPane);

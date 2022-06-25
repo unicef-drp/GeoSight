@@ -119,10 +119,13 @@ export function featurePopupContent(title, properties) {
     if (key.toLowerCase() === 'color') {
       color = prop
     }
-    if (!['color'].includes(key.toLowerCase())) {
+    if (!['color', 'outline_color', 'detail_url'].includes(key.toLowerCase())) {
       let value = typeof prop === 'object' ? JSON.stringify(prop) : numberWithCommas(prop);
       defaultHtml += `<tr><td valign="top"><b>${capitalize(key)}</b></td><td valign="top">${value}</td></tr>`
     }
+  }
+  if (properties.detail_url) {
+    defaultHtml += '<tr><td colspan="2" style="padding: 5px"><button data-url="' + properties.detail_url + '" data-name="' + properties.name + '"class="popup-details MuiButtonLike" style="width: 100%;" disabled>Details</button></tr>'
   }
   return `<div class="table__header" style="background: ${color}"><b>` + title + '</b></div><div class="table__content"><table><tbody>' + defaultHtml + '</tbody></table></div>'
 }

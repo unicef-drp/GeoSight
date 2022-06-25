@@ -12,6 +12,7 @@
 {% block scripts %}
     <script>
       const definition = {{ definition|safe }};
+      const maxZoom = 24;
       let editMode = {% if edit_mode %} true {% else %} false {% endif %};
       if (editMode) {
         urls = Object.assign({}, urls, {

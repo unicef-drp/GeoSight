@@ -1,8 +1,9 @@
 /* ==========================================================================
    Value input for filters
    ========================================================================== */
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Input, } from "@mui/material";
+import Slider from '@mui/material/Slider';
 import {
   MultipleSelectWithSearch,
   SelectWithSearch
@@ -11,6 +12,24 @@ import {
 export default function FilterValueInput(
   { operator, value, indicator, onChange }
 ) {
+  const [initValue, setInitValue] = useState(value);
+  useEffect(() => {
+    setInitValue(value)
+  }, [value]);
+
+  let min = null
+  let max = null
+  if (indicator?.data) {
+    min = Math.min(...indicator.data)
+    max = Math.max(...indicator.data)
+    if (isNaN(min)) {
+      min = null
+    }
+    if (isNaN(max)) {
+      max = null
+    }
+  }
+
   return <Fragment>{
     operator === 'IN' ?
       (
@@ -23,14 +42,45 @@ export default function FilterValueInput(
           <SelectWithSearch
             value={value} onChangeFn={onChange}
             options={indicator.data} className='FilterInput'/> :
-          <Input
-            className='FilterInput'
-            type="text"
-            placeholder="Value"
-            value={value}
-            onChange={(event) => {
-              onChange(event.target.value);
-            }}/>
+          (
+            ['<', '<=', '>', '>='].includes(operator) && (min === null || max === null) ?
+              <Input
+                className='FilterInput'
+                type="text"
+                placeholder="Value"
+                value={value}
+                onChange={(event) => {
+                  onChange(event.target.value);
+                }}/> : (
+                <div className='MuiInputSliderWithInput'>
+                  <div className='MuiInputSlider'>
+                    <Slider
+                      value={initValue}
+                      step={1}
+                      min={min}
+                      max={max}
+                      onChange={(event) => {
+                        setInitValue(event.target.value);
+                      }}
+                      track={['>', '>='].includes(operator) ? "inverted" : ""}
+                      onChangeCommitted={(e) => onChange(initValue)}
+                    />
+                  </div>
+                  <Input
+                    value={initValue}
+                    size="small"
+                    onChange={(event) => {
+                      onChange(event.target.value);
+                    }}
+                    inputProps={{
+                      min: min,
+                      max: max,
+                      type: 'number',
+                    }}
+                  />
+                </div>
+              )
+          )
       )
   }
   </Fragment>

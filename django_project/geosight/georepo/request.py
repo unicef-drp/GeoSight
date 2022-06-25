@@ -8,7 +8,8 @@ class GeorepoUrl:
 
     def __init__(self):
         """Init Class."""
-        self.georepo_url = SitePreferences.preferences().georepo_url.strip('/')
+        self.georepo_url = '/proxy?url=' + SitePreferences.preferences(
+        ).georepo_url.strip('/')
 
     @property
     def reference_layer_list(self) -> str:

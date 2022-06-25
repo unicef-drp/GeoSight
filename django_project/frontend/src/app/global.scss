@@ -121,3 +121,11 @@ textarea {
     border: 1px solid $error;
   }
 }
+
+.leaflet-overlay-pane {
+  z-index: 400 !important;
+}
+
+.error {
+  color: red;
+}

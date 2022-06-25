@@ -45,10 +45,13 @@ export default function Basemaps({ data, defaultBasemapLayer }) {
       // create the basemap layer
       let layer = null;
       if (selectedBasemapData) {
+        selectedBasemapData.parameters['maxNativeZoom'] = 19;
+        selectedBasemapData.parameters['maxZoom'] = maxZoom;
         if (selectedBasemapData.type === 'WMS') {
           selectedBasemapData.parameters['transparent'] = true;
           selectedBasemapData.parameters['zIndex'] = 1;
-          layer = L.tileLayer.wms(selectedBasemapData.url, selectedBasemapData.parameters);
+          layer = L.tileLayer.wms(
+            selectedBasemapData.url, selectedBasemapData.parameters);
         } else {
           layer = L.tileLayer(selectedBasemapData.url, selectedBasemapData.parameters);
         }
