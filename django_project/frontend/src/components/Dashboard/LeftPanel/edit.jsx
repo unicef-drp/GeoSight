@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import Tooltip from "@mui/material/Tooltip";
 import SettingsIcon from "@mui/icons-material/Settings";
 
-import Modal from "../../Modal";
+import Modal, { ModalHeader } from "../../Modal";
 import BasemapsEditSection from './Basemaps/edit'
 import ReferenceLayerEditSection from './ReferenceLayer/edit'
 import IndicatorsEditSection from './Indicators/edit'
@@ -45,6 +45,11 @@ export default function Edit() {
             }
           }
         >
+          <ModalHeader onClosed={
+            () => {
+              setOpen(false)
+            }
+          }>Setup Dashboard</ModalHeader>
           <div className='dashboard__content-wrapper'>
             <ReferenceLayerEditSection
               expanded={expanded === 'reference-layer'}

@@ -8,6 +8,7 @@ import { Modal as BaseModal } from '@mui/material'
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
+import CloseIcon from '@mui/icons-material/Close';
 
 import './style.scss';
 
@@ -54,10 +55,16 @@ export default function Modal(
   )
 }
 
-export function ModalHeader({ children }) {
+export function ModalHeader({ children, onClosed }) {
   return (
     <div className='modal--header'>
-      {children}
+      <div className='modal--header--title'>{children}</div>
+      <div className='MuiButtonLike modal--header--close' onClick={() => {
+        if (onClosed) {
+          onClosed()
+        }
+      }}>
+        <CloseIcon/></div>
     </div>
   )
 }

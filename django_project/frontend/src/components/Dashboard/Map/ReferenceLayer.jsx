@@ -75,7 +75,11 @@ export function IndicatorDetailsModal({ group, feature, onClose }) {
     }
     }
   >
-    <ModalHeader>
+    <ModalHeader onClosed={() => {
+      setOpen(false)
+      onClose()
+    }
+    }>
       List Data of {feature?.name} in {feature?.geometry_name}
     </ModalHeader>
     <ModalContent>
@@ -149,7 +153,7 @@ export default function ReferenceLayer({ currentIndicator }) {
         },
         style: function (feature, layer, test) {
           dispatch(Actions.GeometriesCode.add(feature.properties.code, feature.properties.label));
-          
+
           const indicatorData = indicatorsByGeom[feature.properties.code];
           let fillColor = indicatorData ? indicatorData.color : null;
           let color = indicatorData ? indicatorData.outline_color : '#000000';

@@ -113,7 +113,7 @@ export default function EditSection({ idx, data, children }) {
           onClosed={onClosed}
           className='modal__widget__editor'
         >
-          <ModalHeader>
+          <ModalHeader onClosed={onClosed}>
             {name ? "Change " + name : "New Widget"}
           </ModalHeader>
           <ModalContent>

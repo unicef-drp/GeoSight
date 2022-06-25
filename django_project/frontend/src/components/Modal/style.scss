@@ -38,12 +38,19 @@
   font-weight: 500;
   padding: 10px 20px;
   border-bottom: 1px solid #ddd;
+  display: flex;
+
+  .modal--header--title {
+    flex-grow: 1;
+    padding-top: 3px;
+  }
 }
 
 .modal--content {
   padding: 20px;
   overflow-x: auto;
 }
+
 .modal--footer {
   border-top: 1px solid #ddd;
   padding: 20px;

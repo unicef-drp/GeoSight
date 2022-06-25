@@ -13,15 +13,17 @@ export default function FilterValueInput(
   { operator, value, indicator, onChange }
 ) {
   const [initValue, setInitValue] = useState(value);
-  useEffect(() => {
-    setInitValue(value)
-  }, [value]);
 
   let min = null
   let max = null
   if (indicator?.data) {
-    min = Math.min(...indicator.data)
-    max = Math.max(...indicator.data)
+    const data = indicator.data.filter(row => {
+      return row !== undefined
+    }).map(row => {
+      return parseFloat(row)
+    })
+    min = Math.min(...data)
+    max = Math.max(...data)
     if (isNaN(min)) {
       min = null
     }
@@ -29,6 +31,12 @@ export default function FilterValueInput(
       max = null
     }
   }
+  useEffect(() => {
+    setInitValue(value)
+    if (min && max && (initValue === undefined || initValue === '')) {
+      setInitValue(0)
+    }
+  }, [value]);
 
   return <Fragment>{
     operator === 'IN' ?

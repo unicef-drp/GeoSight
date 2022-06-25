@@ -48,7 +48,7 @@ export default function WidgetSelectionSection() {
           onClosed={onClosed}
           className="modal__widget__selection"
         >
-          <ModalHeader>
+          <ModalHeader onClosed={onClosed}>
             Add new widget
           </ModalHeader>
           <ModalContent>

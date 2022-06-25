@@ -128,7 +128,7 @@ export default function SaveDashboard() {
         onClosed={onClosed}
         className='dashboard__submit__modal'
       >
-        <ModalHeader>
+        <ModalHeader onClosedFn={onClosed}>
           Dashboard Detail
         </ModalHeader>
         <ModalContent>

@@ -24,7 +24,7 @@ export default function LoginModal({ open, onClosed }) {
       onClosed={onClosed}
       className='modal__login'
     >
-      <ModalHeader>
+      <ModalHeader onClosed={onClosed}>
         Sign In
       </ModalHeader>
       <ModalContent>

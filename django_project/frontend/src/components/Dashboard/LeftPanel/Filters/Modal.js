@@ -71,7 +71,11 @@ export default function FilterEditorModal(
         }
       }
     >
-      <ModalHeader>
+      <ModalHeader onClosed={
+        () => {
+          setOpen(false)
+        }
+      }>
         {data.field ? "Update" : "Create"} filter
       </ModalHeader>
       <ModalContent>
