@@ -300,10 +300,34 @@
 
     .MuiInputSliderWithInput {
       flex-grow: 1;
-    }
+      display: flex;
+      border-radius: 4px;
+      background-color: white;
+      border: 1px solid rgba(0, 0, 0, 0.23);
+      overflow: hidden;
 
-    .MuiInputSlider {
-      display: none;
+      .MuiInputSlider {
+        flex-grow: 1;
+        padding: 12px 20px 0 20px;
+      }
+
+      .MuiInput-root {
+        padding: 5px;
+        width: 50px;
+        border-radius: 0;
+        border: none;
+        border-left: 1px solid rgba(0, 0, 0, 0.23);
+
+        input {
+          -moz-appearance: textfield;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+      }
     }
   }
 

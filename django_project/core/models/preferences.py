@@ -65,3 +65,26 @@ class SitePreferences(SingletonModel):
 
     def __str__(self):
         return 'Site Preference'
+
+
+class SitePreferencesImage(models.Model):
+    """Preference images settings specifically for website."""
+
+    preference = models.ForeignKey(
+        SitePreferences,
+        on_delete=models.CASCADE
+    )
+    image = models.FileField(
+        upload_to='settings/images'
+    )
+    title = models.CharField(
+        max_length=256,
+        null=True,
+        blank=True,
+        help_text=_('Title of image.')
+    )
+    description = models.TextField(
+        null=True,
+        blank=True,
+        help_text=_('Description of image.')
+    )

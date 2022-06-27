@@ -34,7 +34,7 @@ export default function LeftPanel() {
   const [expanded, setExpanded] = useState('indicators');
 
   const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(panel);
+    setExpanded(expanded === 'indicators' ? 'contextLayers' : 'indicators');
   };
 
   const className = `dashboard__panel dashboard__left_side ${state} ${expanded ? 'expanded' : ''} `
