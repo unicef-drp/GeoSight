@@ -118,9 +118,11 @@ export default function FilterEditorModal(
               onChangeFn={(value) => {
                 setOperator(value)
               }}/>
-            <FilterValueInput
-              value={currentValue} operator={operator}
-              indicator={indicator} onChange={setValue}/>
+            {
+              field && operator ? <FilterValueInput
+                value={currentValue} operator={operator}
+                indicator={indicator} onChange={setValue}/> : ""
+            }
           </div>
         </div>
         <Button
