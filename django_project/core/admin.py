@@ -1,7 +1,14 @@
 """Core admin."""
 from django.contrib import admin
 
-from core.models import SitePreferences
+from core.models import SitePreferences, SitePreferencesImage
+
+
+class SitePreferencesImageInline(admin.TabularInline):
+    """SitePreferencesImageTheme inline."""
+
+    model = SitePreferencesImage
+    extra = 0
 
 
 class SitePreferencesAdmin(admin.ModelAdmin):
@@ -18,6 +25,7 @@ class SitePreferencesAdmin(admin.ModelAdmin):
             'fields': ('primary_color', 'icon', 'favicon'),
         }),
     )
+    inlines = (SitePreferencesImageInline,)
 
 
 admin.site.register(SitePreferences, SitePreferencesAdmin)

@@ -7,7 +7,38 @@
 {% endblock %}
 
 {% block stylesheet %}
-    <link href="{% static 'css/form.css' %}" rel="stylesheet" type="text/css" media="screen, projection"/>
+    <link href="{% static 'css/form.css' %}" rel="stylesheet" type="text/css"
+          media="screen, projection"/>
+    <style>
+        #inner-container {
+            padding: 0 !important;
+        }
+
+        #container {
+            width: 30%;
+            height: 100%;
+            margin-right: unset;
+        }
+
+        #content-view {
+            height: 100%;
+        }
+
+        h3 {
+            color: var(--primary-color);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        form {
+            padding: 0.5rem;
+        }
+
+        .eye-lash {
+            width: 30px;
+            padding-left: 10px;
+        }
+    </style>
 {% endblock %}
 
 {% block header %}
@@ -15,13 +46,14 @@
 {% endblock %}
 
 {% block content %}
+    <h3>LOGIN</h3>
     {% include "registration/login-form.html" %}
 {% endblock %}
 
 {% block scripts %}
     <script>
-        if (window.location.hash) {
-            window.location = window.location.href.substr(0, window.location.href.indexOf('#'))
-        }
+      if (window.location.hash) {
+        window.location = window.location.href.substr(0, window.location.href.indexOf('#'))
+      }
     </script>
 {% endblock %}

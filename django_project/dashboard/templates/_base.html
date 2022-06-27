@@ -42,6 +42,14 @@
 
     {% block stylesheet %}
     {% endblock %}
+    <style>
+        {% if preferences.background_image %}
+            #page {
+                background: url("{{ preferences.background_image }}") no-repeat;
+                background-size: 100%;
+            }
+        {% endif %}
+    </style>
 </head>
 <script>
   const preferences = {{ preferences|safe }};
