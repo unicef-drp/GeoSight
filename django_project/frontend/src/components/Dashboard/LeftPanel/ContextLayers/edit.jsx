@@ -16,6 +16,7 @@ export function EditRow({ layer }) {
   return <Fragment>
     <div className='text title'>
       <div><b className='light'>{layer.name}</b></div>
+      {layer.group ? <div>Group : {layer.group}</div> : ''}
       <div>{layer.url}</div>
     </div>
   </Fragment>

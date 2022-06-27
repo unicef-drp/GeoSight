@@ -141,6 +141,10 @@ export default class EsriLeafletLayer {
           }
 
           if (leafletStyle) {
+            if (!leafletStyle.style.color) {
+              leafletStyle.style.color = '#000000'
+              leafletStyle.style.weight = 1
+            }
             return leafletStyle.style;
           }
         }
@@ -157,7 +161,7 @@ export default class EsriLeafletLayer {
 
           switch (style.classificationValueMethod) {
             case "classMaxValue":
-              style.classifications.forEach(function (index, classification) {
+              style.classifications.forEach(function (classification, index) {
                 if (value <= classification.classMaxValue) {
                   leafletStyle = classification.style;
                   return false;
@@ -168,7 +172,7 @@ export default class EsriLeafletLayer {
               }
               break
             case "classExactValue":
-              style.classifications.forEach(function (index, classification) {
+              style.classifications.forEach(function (classification, index) {
                 if ('' + value === '' + classification.value) {
                   leafletStyle = classification.style;
                   return false;

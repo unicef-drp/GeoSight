@@ -52,7 +52,7 @@ export function queryIndicator(indicatorData) {
  * @param where
  * @param ignoreActive
  */
-function returnWhere(where, ignoreActive) {
+export function returnWhere(where, ignoreActive) {
   switch (where.type) {
     case TYPE.GROUP:
       const queries = where.queries.map(query => {

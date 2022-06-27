@@ -12,6 +12,7 @@ import Actions from '../../../redux/actions'
 import { featurePopupContent } from '../../../utils/main'
 import Modal, { ModalContent, ModalHeader } from "../../Modal";
 import { fetchingData } from "../../../Requests";
+import { returnWhere } from "../../../utils/queryExtraction";
 
 /**
  * Show details of indicator in Modal
@@ -107,13 +108,18 @@ export default function ReferenceLayer({ currentIndicator }) {
   const dispatch = useDispatch();
   const { referenceLayer } = useSelector(state => state.dashboard.data);
   const indicatorData = useSelector(state => state.indicatorData);
+  const filtersData = useSelector(state => state.filtersData);
   const [clickedFeature, setClickedFeature] = useState(null);
 
+  const where = returnWhere(filtersData)
+
   // Filter geometry_code based on indicators layer
-  let geometryCodes = null
+  let geometryCodes = null;
+  let levels = [];
   if (indicatorData && indicatorData.length) {
     geometryCodes = []
     indicatorData.forEach(indicator => {
+      levels.push(indicator.reporting_level.toLowerCase())
       if (indicator.data) {
         try {
           indicator.data.forEach(indicator => {
@@ -149,7 +155,8 @@ export default function ReferenceLayer({ currentIndicator }) {
       const options = {
         maxDetailZoom: 8,
         filter: function (feature) {
-          return !geometryCodes || geometryCodes.includes(feature.properties.code)
+          return levels.includes(feature.properties.type.toLowerCase())
+            && (!where || !geometryCodes || geometryCodes.includes(feature.properties.code))
         },
         style: function (feature, layer, test) {
           dispatch(Actions.GeometriesCode.add(feature.properties.code, feature.properties.label));

@@ -20,7 +20,7 @@ export function Indicators() {
   const dispatch = useDispatch();
   const { indicators } = useSelector(state => state.dashboard.data);
   const indicatorData = useSelector(state => state.indicatorData);
-  const [currentIndicator, setCurrentIndicator] = useState(null);
+  const [currentIndicator, setCurrentIndicator] = useState(0);
 
   const change = (checked, id) => {
     if (checked) {
