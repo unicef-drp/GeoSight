@@ -191,15 +191,17 @@ function ContextLayerInput({ data }) {
 
 /**
  * Context Layer Row.
+ * @param {str} groupNumber Group number.
  * @param {str} groupName Group name.
  * @param {dict} group Group data.
  */
-function ContextLayerRow({ groupName, group }) {
+function ContextLayerRow({ groupNumber, groupName, group }) {
   if (!groupName) {
     return <div></div>
   }
+  const className = groupNumber > 1 ? 'ContextLayerGroup' : 'ContextLayerGroup Empty'
 
-  return <div className='ContextLayerGroup'>
+  return <div className={className}>
     <div className='ContextLayerGroupName'><b
       className='light'>{groupName}</b></div>
     <div className='ContextLayerGroupList'>
@@ -213,7 +215,8 @@ function ContextLayerRow({ groupName, group }) {
       {
         (Object.keys(group.groups)).map(
           groupName => (
-            <ContextLayerRow key={groupName} groupName={groupName}
+            <ContextLayerRow groupNumber={Object.keys(group.groups).length}
+                             key={groupName} groupName={groupName}
                              group={group.groups[groupName]}/>
           )
         )
@@ -255,8 +258,10 @@ export default function ContextLayersAccordion({ expanded, handleChange }) {
           contextLayers !== undefined ?
             (Object.keys(groups.groups)).map(
               groupName => (
-                <ContextLayerRow key={groupName} groupName={groupName}
-                                 group={groups.groups[groupName]}/>
+                <ContextLayerRow
+                  groupNumber={Object.keys(groups.groups).length}
+                  key={groupName} groupName={groupName}
+                  group={groups.groups[groupName]}/>
               )
             )
             : <div>Loading</div>

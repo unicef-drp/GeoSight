@@ -18,6 +18,18 @@
         padding-top: 3px;
       }
     }
+
+    &.Empty {
+      border: none;
+
+      & > .ContextLayerGroupName {
+        display: none;
+      }
+
+      & > .ContextLayerGroupList {
+        padding: 0;
+      }
+    }
   }
 
   .ContextLayerGroupName {
