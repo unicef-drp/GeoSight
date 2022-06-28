@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="{{ preferences.favicon }}"
           type="image/x-icon">
-    <title>{{ preferences.site_title }} : {{ page_title }}</title>
+    <title>{{ preferences.site_title }} {% if page_title %}:
+        {{ page_title }}{% endif %}</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,6 +30,7 @@
         :root {
             --primary-color: {{ preferences.primary_color }};
             --secondary-color: {{ preferences.secondary_color }};
+            --anti-primary-color: #fff;
         }
     </style>
 
@@ -54,7 +56,7 @@
 <script>
   const preferences = {{ preferences|safe }};
 </script>
-<body class="body">
+<body id="django" class="body">
 {% include "_navbar.html" %}
 
 <div id="page">

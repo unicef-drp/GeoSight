@@ -119,7 +119,9 @@ export default function ReferenceLayer({ currentIndicator }) {
   if (indicatorData && indicatorData.length) {
     geometryCodes = []
     indicatorData.forEach(indicator => {
-      levels.push(indicator.reporting_level.toLowerCase())
+      if (indicator.reporting_level) {
+        levels.push(indicator.reporting_level.toLowerCase())
+      }
       if (indicator.data) {
         try {
           indicator.data.forEach(indicator => {
@@ -159,7 +161,9 @@ export default function ReferenceLayer({ currentIndicator }) {
             && (!where || !geometryCodes || geometryCodes.includes(feature.properties.code))
         },
         style: function (feature, layer, test) {
-          dispatch(Actions.GeometriesCode.add(feature.properties.code, feature.properties.label));
+          dispatch(Actions.Geometries.add(
+            feature.properties.code, feature.properties
+          ));
 
           const indicatorData = indicatorsByGeom[feature.properties.code];
           let fillColor = indicatorData ? indicatorData.color : null;

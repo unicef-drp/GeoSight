@@ -16,7 +16,7 @@ class DashboardListView(BaseView):
     @property
     def page_title(self):
         """Return page title."""
-        return 'Dashboards'
+        return ''
 
     @property
     def content_title(self):

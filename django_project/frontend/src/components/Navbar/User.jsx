@@ -3,10 +3,10 @@
    ========================================================================== */
 
 import React, { Fragment, useState } from 'react';
-import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import Fade from '@mui/material/Fade';
 
 import LoginModal from '../Login'
 
@@ -26,7 +26,7 @@ export default function User() {
   /**
    * Signin Modal Functions.
    **/
-  const { username, is_staff } = user;
+  const { username, full_name, is_staff } = user;
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const logoutUrl = urls.logout; // eslint-disable-line no-undef
   const adminUrl = urls.admin; // eslint-disable-line no-undef
@@ -42,9 +42,9 @@ export default function User() {
   if (username) {
     return (
       <div>
-        <Button onClick={handleClick}>
-          <div>{username} <ArrowDropDownIcon/></div>
-        </Button>
+        <button onClick={handleClick}>
+          <div>{full_name} <ArrowDropDownIcon/></div>
+        </button>
         <Menu
           anchorEl={anchorEl}
           open={open}
@@ -52,6 +52,7 @@ export default function User() {
           MenuListProps={{
             'aria-labelledby': 'basic-button',
           }}
+          TransitionComponent={Fade}
         >
           {
             is_staff ? (
@@ -83,9 +84,9 @@ export default function User() {
   } else {
     return (
       <Fragment>
-        <Button onClick={openSignIn}>
+        <button onClick={openSignIn}>
           SIGNIN
-        </Button>
+        </button>
         <LoginModal
           open={modalIsOpen}
           onClosed={closeSignIn}

@@ -4,9 +4,9 @@
 
 import React, { useState } from 'react';
 import MenuItem from '@mui/material/MenuItem';
-import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import Fade from '@mui/material/Fade';
 
 /**
  * Link dropdown.
@@ -25,9 +25,9 @@ export default function Links() {
     return ''
   }
   return <div>
-    <Button onClick={handleClick}>
+    <button onClick={handleClick}>
       <div>LINKS <ArrowDropDownIcon/></div>
-    </Button>
+    </button>
     <Menu
       anchorEl={anchorEl}
       open={open}
@@ -35,6 +35,7 @@ export default function Links() {
       MenuListProps={{
         'aria-labelledby': 'basic-button',
       }}
+      TransitionComponent={Fade}
     >
       {
         navbarLinks.map(

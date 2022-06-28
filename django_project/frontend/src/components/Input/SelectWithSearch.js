@@ -14,11 +14,14 @@ const checkedIcon = <CheckBoxIcon fontSize="small"/>;
 
 /**
  * Select with placeholder
- * @param {str} placeholder Placeholder.
+ * @param value Value of select.
+ * @param {dict} options Options for selection.
+ * @param {string} className Classname for Select.
+ * @param {bool} disabled Is filter disabled or not.
  * @param {function} onChangeFn When the value changed.
  */
 export function SelectWithSearch(
-  { value, onChangeFn, options, className }
+  { value, options, className, disabled = false, onChangeFn }
 ) {
   value = value === 0 ? '' : value
   return <Autocomplete
@@ -33,16 +36,20 @@ export function SelectWithSearch(
     onChange={(event, values) => {
       onChangeFn(values ? values : '');
     }}
+    disabled={disabled}
   />
 }
 
 /**
  * Multiple Select with placeholder
- * @param {str} placeholder Placeholder.
+ * @param value Value of select.
+ * @param {dict} options Options for selection.
+ * @param {str} className Classname for Select.
+ * @param {bool} disabled Is filter disabled or not.
  * @param {function} onChangeFn When the value changed.
  */
 export function MultipleSelectWithSearch(
-  { value, onChangeFn, options, className }
+  { value, options, className, disabled = false, onChangeFn }
 ) {
   return <Autocomplete
     className={className}
@@ -67,6 +74,7 @@ export function MultipleSelectWithSearch(
     onChange={(event, values) => {
       onChangeFn(values);
     }}
+    disabled={disabled}
     multiple
   />
 }

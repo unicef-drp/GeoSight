@@ -1,6 +1,6 @@
 import {
-  GEOMETRIES_CODE_ACTION_NAME,
-  GEOMETRIES_CODE_ACTION_TYPE_ADD
+  GEOMETRIES_ACTION_NAME,
+  GEOMETRIES_ACTION_TYPE_ADD
 } from '../reducers/geometries';
 
 /**
@@ -10,8 +10,8 @@ import {
  */
 export function add(key, value) {
   return {
-    name: GEOMETRIES_CODE_ACTION_NAME,
-    type: GEOMETRIES_CODE_ACTION_TYPE_ADD,
+    name: GEOMETRIES_ACTION_NAME,
+    type: GEOMETRIES_ACTION_TYPE_ADD,
     key: key,
     value: value
   };

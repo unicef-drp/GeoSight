@@ -21,7 +21,7 @@ export default function Index(
   } = widgetData
 
 
-  const geometryCodes = useSelector(state => state.geometryCode);
+  const geometries = useSelector(state => state.geometries);
 
   /**
    * Return value of widget
@@ -37,7 +37,7 @@ export default function Index(
             const rowValue = parseFloat(rowData.value);
             let groupName = rowData[property_2];
             if (property_2 === 'geometry_code') {
-              groupName = geometryCodes[groupName] ? geometryCodes[groupName] : groupName;
+              groupName = geometries[groupName] ? geometries[groupName].label : groupName;
             }
             if (!isNaN(rowValue)) {
               if (!byGroup[groupName]) {

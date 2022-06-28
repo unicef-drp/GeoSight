@@ -209,7 +209,8 @@ export function FilterControl({ filtersData, indicatorFields }) {
         <div className='FilterInputWrapper'>
           <FilterValueInput
             value={currentValue} operator={operator}
-            indicator={indicator} onChange={updateValue}/>
+            indicator={indicator} onChange={updateValue}
+            disabled={!where.active}/>
         </div>
         {where.description ?
           <div

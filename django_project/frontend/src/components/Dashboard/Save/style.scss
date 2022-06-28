@@ -47,4 +47,35 @@
   .MuiInput-root {
     width: 100%;
   }
+
+  .IconInput {
+    .MuiInputLabel-root {
+      position: unset;
+    }
+
+    .IconInputPreview {
+      display: flex;
+      margin-bottom: 1rem;
+
+      .MuiInput-root {
+        height: fit-content;
+        margin-top: auto;
+        margin-right: 10px;
+        position: relative;
+
+        input {
+          opacity: 0;
+          cursor: pointer;
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+        }
+      }
+
+      img {
+        height: 100px;
+      }
+    }
+  }
 }

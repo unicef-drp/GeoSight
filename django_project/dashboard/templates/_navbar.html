@@ -1,64 +1,95 @@
 {% load i18n %}
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-light bg-light box-shadow-bottom">
-    <a class="navbar-brand mr-auto" href="/">
-        <img src="{% if preferences.icon %}{{ preferences.icon }}{% endif %}">
-        <div class="title">{{ preferences.site_title }} {% if page_title %} -
-            {{ page_title }}{% endif %}</div>
-    </a>
-    <div class="navigation-list row">
-        {% if links %}
-            <div class="navbar-options">
-                <a data-toggle="dropdown" role="button" aria-haspopup="true"
-                   aria-expanded="false">
-                    Links <i class="fa fa-caret-down" aria-hidden="true"></i>
+<header>
+    <div class='nav-header'>
+        <ul class='nav-header menu'>
+            <li class='nav-header-logo'>
+                <a
+                        href='/'
+                        title='Homepage'
+                        class='nav-header-link'
+                >
+                    <img src="
+                        {% if preferences.icon %}
+                            {{ preferences.icon }}
+                        {% endif %}"
+                         alt="Logo"/>
                 </a>
-                <ul class="dropdown-menu box-shadow-bottom">
-                    {% for link in links %}
-                        <li>
-                            <a href="{{ link.url }}">{{ link.name }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-        {% if user.is_authenticated %}
-            <div class="navbar-options">
-                <a data-toggle="dropdown" role="button" aria-haspopup="true"
-                   aria-expanded="false">
-                    {% if user.get_full_name %}
-                        {{ user.get_full_name }}{% else %}
-                        {{ user.get_username }}{% endif %} <i
-                        class="fa fa-caret-down" aria-hidden="true"></i>
-                </a>
-                <ul class="dropdown-menu box-shadow-bottom">
-                    {% if user.is_staff %}
-                        <li>
-                            <a href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
-                        </li>
-                        <li>
-                            <a href="{% url "backups-view" %}">{% trans "Backups" %}</a>
-                        </li>
-                        <li>
-                            <a id="nav-indicator-management"
-                               href="{% url "indicator-management-view" %}"
-                               class="nav row" title="Indicator Management">
-                                Indicators
-                            </a>
-                        </li>
-                    {% endif %}
-                    <li>
-                        <a href="{% url 'logout' %}?next=/">{% trans "Logout" %}</a>
-                    </li>
+            </li>
+            <li class='nav-header-title'>
+                <Button>
+                    <a href='/'
+                       title='Homepage'
+                       class='nav-header-link'
+                    >
+                        {{ preferences.site_title }}
+                        {% if page_title %} - {{ page_title }}{% endif %}
+                    </a>
+                </Button>
+            </li>
+            <li class="nav-header-links">
+                {% if links %}
+                    <Button class="nav-header-options">
+                        <a data-toggle="dropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false">
+                            <span>LINKS</span>
+                            <i class="fa fa-caret-down"
+                               aria-hidden="true"></i>
+                        </a>
+                        <ul class="dropdown-menu box-shadow-bottom animate slideIn">
+                            {% for link in links %}
+                                <li>
+                                    <a href="{{ link.url }}">{{ link.name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </Button>
+                {% endif %}
+            </li>
+            <li>
+                {% if user.is_authenticated %}
+                    <Button class="nav-header-options">
+                        <a data-toggle="dropdown" role="button"
+                           aria-haspopup="true"
+                           aria-expanded="false">
+                            {% if user.get_full_name %}
+                                {{ user.get_full_name }}{% else %}
+                                {{ user.get_username }}{% endif %}
+                            <i class="fa fa-caret-down"
+                               aria-hidden="true"></i>
+                        </a>
+                        <ul class="dropdown-menu box-shadow-bottom animate slideIn">
+                            {% if user.is_staff %}
+                                <li>
+                                    <a href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
+                                </li>
+                                <li>
+                                    <a href="{% url "backups-view" %}">{% trans "Backups" %}</a>
+                                </li>
+                                <li>
+                                    <a id="nav-indicator-management"
+                                       href="{% url "indicator-management-view" %}"
+                                       class="nav row"
+                                       title="Indicator Management">
+                                        Indicators
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a href="{% url 'logout' %}?next=/">{% trans "Logout" %}</a>
+                            </li>
 
-                </ul>
-            </div>
-        {% else %}
-            <div class="navbar-options">
-                <a href="{% url "login" %}">
-                    Sign In
-                </a>
-            </div>
-        {% endif %}
+                        </ul>
+                    </Button>
+                {% else %}
+                    <Button class="nav-header-options">
+                        <a href="{% url "login" %}">
+                            SIGNIN
+                        </a>
+                    </Button>
+                {% endif %}
+            </li>
+        </ul>
     </div>
-</nav>
+</header>

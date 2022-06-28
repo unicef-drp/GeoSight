@@ -17,7 +17,7 @@
         <a href="{% url "dashboard-create-view" %}">
             <button class="white-button pull-right">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                Create New Dashboard
+                New Dashboard
             </button>
         </a>
     {% endif %}
@@ -31,17 +31,20 @@
     {% else %}
         <div id="dashboard" class="row">
             {% for dashboard in dashboards %}
-                <div class="col-2 dashboard">
+                <div class="dashboard box-shadow-bottom">
                     <a href="{{ dashboard.url }}">
-                        <img src="
-
-                                {% if dashboard.icon %}{{ dashboard.icon }}{% else %}{% static "img/no-image-found.jpg" %}{% endif %}">
-                        <span>{{ dashboard.name }}</span>
+                        <img src="{% if dashboard.icon %}
+                            {{ dashboard.icon }}{% else %}{% static "img/no-image.jpeg" %}
+                        {% endif %}">
+                        <span class="dashboard-title">{{ dashboard.name }}</span>
+                        <span class="dashboard-description">{{ dashboard.description }}</span>
                     </a>
                     {% if dashboard.can_edit %}
-                        <a href="{% url 'dashboard-edit-view' dashboard.slug %}"><i
-                                class="fa fa-cog"
-                                aria-hidden="true"></i></a>
+                        <a href="{% url 'dashboard-edit-view' dashboard.slug %}" class="edit-button">
+                            <i class="fa fa-cog"
+                               aria-hidden="true">
+                            </i>
+                        </a>
                     {% endif %}
                 </div>
             {% endfor %}

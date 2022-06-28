@@ -165,7 +165,7 @@ export default function EditSection({ idx, data, children }) {
               </Select>
             </FormControl>
             <FormControl>
-              <InputLabel>Layer That Used</InputLabel>
+              <InputLabel>Source Layer</InputLabel>
               <Select
                 onChange={(event) => {
                   setLayerID(event.target.value)
@@ -200,7 +200,7 @@ export default function EditSection({ idx, data, children }) {
               </Select>
             </FormControl>
             <FormControl>
-              <InputLabel>Property That Will be Calculated</InputLabel>
+              <InputLabel>Source Value</InputLabel>
               <Select
                 onChange={(event) => {
                   setProperty(event.target.value)

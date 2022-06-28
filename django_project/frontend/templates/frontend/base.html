@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -16,8 +17,11 @@
     <style>
         :root {
             --primary-color: {{ preferences.primary_color }};
+            --anti-primary-color: #fff;
         }
     </style>
+    <link href="{% static 'css/navbar.css' %}" rel="stylesheet" type="text/css"
+          media="screen, projection"/>
     {% block extrastyle %}
     {% endblock %}
 </head>

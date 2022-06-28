@@ -12,7 +12,7 @@ import WidgetSelectionMember from "../WidgetSelectionMember"
 export default function SummaryGroupMember({ onClick }) {
   return <WidgetSelectionMember
     title="Summary Group Widget"
-    description="Summarize all data with specific property by grouping to another specific property."
+    description="Summarize all values grouping the results by unique values in another column."
     onClick={onClick}
     defaultData={{
       "type": "SummaryGroupWidget",
