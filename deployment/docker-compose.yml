@@ -72,6 +72,7 @@ services:
       - POSTGRES_PORT=5432
       - POSTGRES_HOST=db
       - POSTGRES_DBNAME=${DATABASE_NAME:-django}
+      - DBLIST=django
     volumes:
       - backups-data:/backups
     restart: on-failure:5
