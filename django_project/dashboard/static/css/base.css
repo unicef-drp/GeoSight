@@ -23,6 +23,7 @@
     --hovered-color: rgba(180, 180, 180, 0.1);
     --hovered-color-darker: rgba(0, 0, 0, 0.1);
     --almost-white-color: #f9f9f9;
+    --black-color: rgba(0, 0, 0, 0.87)
 }
 
 @keyframes blinker {
@@ -182,6 +183,7 @@ table .helptext {
 
 .header button {
     margin-top: -5px;
+    border-radius: 5px;
 }
 
 .header-button {
@@ -333,7 +335,6 @@ table .helptext {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    padding-top: var(--navbar-height);
     position: relative;
     width: 100%;
 }
@@ -344,8 +345,8 @@ table .helptext {
 
 #page #inner-container {
     height: 100%;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 30px;
+    padding-bottom: 80px;
     overflow-y: auto;
     width: 100%;
 }
