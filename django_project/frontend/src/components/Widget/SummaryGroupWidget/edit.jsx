@@ -29,7 +29,7 @@ export default function SummaryGroupWidgetEditSection(
   return (
     <Fragment>
       <FormControl>
-        <InputLabel>Property That Will be Used for grouping</InputLabel>
+        <InputLabel>Grouping value</InputLabel>
         <Select
           onChange={(event) => {
             setProperty2(event.target.value)

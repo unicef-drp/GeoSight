@@ -6,7 +6,7 @@ import Filters from './filters'
 import FiltersData from './filtersData'
 import Indicators from './indicators'
 import IndicatorsData from './indicatorsData'
-import GeometriesCode from './geometries'
+import Geometries from './geometries'
 import Map from './map'
 import ReferenceLayer from './referenceLayer'
 import Widget from './widget'
@@ -18,7 +18,7 @@ const Actions = {
   Extent,
   Filters,
   FiltersData,
-  GeometriesCode,
+  Geometries,
   Indicators,
   IndicatorsData,
   Map,
