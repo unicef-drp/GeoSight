@@ -9,8 +9,16 @@ import {
   SelectWithSearch
 } from "../../../Input/SelectWithSearch";
 
+/***
+ * Filter Value Input
+ * @param {str} operator Operator of filter.
+ * @param value Value og filter.
+ * @param {dict} indicator Indicator that will be used for filter.
+ * @param {bool} disabled Is filter disabled or not.
+ * @param {function} onChange When the filter change.
+ */
 export default function FilterValueInput(
-  { operator, value, indicator, onChange }
+  { operator, value, indicator, disabled = false, onChange }
 ) {
   const [initValue, setInitValue] = useState(value);
 
@@ -43,13 +51,17 @@ export default function FilterValueInput(
       (
         indicator ? <MultipleSelectWithSearch
           value={value} onChangeFn={onChange}
-          options={indicator.data} className='FilterInput'/> : ''
+          options={indicator.data}
+          className='FilterInput'
+          disabled={disabled}/> : ''
       ) :
       (
         operator === '=' && indicator && isNaN(indicator.data[0]) ?
           <SelectWithSearch
             value={value} onChangeFn={onChange}
-            options={indicator.data} className='FilterInput'/> :
+            options={indicator.data} className='FilterInput'
+            disabled={disabled}
+          /> :
           (
             ['<', '<=', '>', '>='].includes(operator) && (min === null || max === null) ?
               <Input
@@ -59,7 +71,9 @@ export default function FilterValueInput(
                 value={value}
                 onChange={(event) => {
                   onChange(event.target.value);
-                }}/> : (
+                }}
+                disabled={disabled}
+              /> : (
                 <div className='MuiInputSliderWithInput'>
                   <div className='MuiInputSlider'>
                     <Slider
@@ -72,6 +86,7 @@ export default function FilterValueInput(
                       }}
                       track={['>', '>='].includes(operator) ? "inverted" : ""}
                       onChangeCommitted={(e) => onChange(initValue)}
+                      disabled={disabled}
                     />
                   </div>
                   <Input
@@ -85,6 +100,7 @@ export default function FilterValueInput(
                       max: max,
                       type: 'number',
                     }}
+                    disabled={disabled}
                   />
                 </div>
               )
