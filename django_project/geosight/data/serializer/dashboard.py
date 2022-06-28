@@ -96,7 +96,7 @@ class DashboardSerializer(serializers.ModelSerializer):
     class Meta:  # noqa: D106
         model = Dashboard
         fields = (
-            'id', 'name', 'description',
+            'id', 'icon', 'name', 'description',
             'referenceLayer', 'indicators',
             'basemapsLayers', 'contextLayers',
             'widgets', 'extent', 'defaultBasemapLayer',

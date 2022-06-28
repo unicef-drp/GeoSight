@@ -119,7 +119,9 @@ export default function ReferenceLayer({ currentIndicator }) {
   if (indicatorData && indicatorData.length) {
     geometryCodes = []
     indicatorData.forEach(indicator => {
-      levels.push(indicator.reporting_level.toLowerCase())
+      if (indicator.reporting_level) {
+        levels.push(indicator.reporting_level.toLowerCase())
+      }
       if (indicator.data) {
         try {
           indicator.data.forEach(indicator => {

@@ -15,6 +15,7 @@ import './style.scss';
 export default function SaveDashboard() {
   const csrftoken = csrfmiddlewaretoken; // eslint-disable-line no-undef
   const {
+    icon,
     name,
     description,
     referenceLayer,
@@ -25,6 +26,11 @@ export default function SaveDashboard() {
     extent,
     defaultBasemapLayer
   } = useSelector(state => state.dashboard.data);
+
+  const imageName = (icon) => {
+    return icon ? icon.split('/')[icon.split('/').length - 1] : 'No Image'
+  }
+
   const filtersData = useSelector(state => state.filtersData);
 
   const [error, setError] = useState('');
@@ -34,6 +40,8 @@ export default function SaveDashboard() {
 
   const [nameData, setNameData] = useState(name);
   const [descriptionData, setDescriptionData] = useState(description);
+  const [iconSrc, setIconSrc] = useState(icon);
+  const [iconName, setName] = useState(imageName(icon));
 
   // Open modal
   const onOpen = () => {
@@ -84,6 +92,7 @@ export default function SaveDashboard() {
       onOpen();
     }
   }
+
   const submitForm = (event) => {
     event.preventDefault();
     var data = new FormData()
@@ -104,6 +113,18 @@ export default function SaveDashboard() {
         }
       }
     )
+  }
+  const imageChanged = (evt) => {
+    const [file] = event.target.files
+    let src = '';
+    if (file) {
+      setIconSrc(URL.createObjectURL(file));
+      setName(file.name);
+      src = URL.createObjectURL(file)
+    } else {
+      setIconSrc(icon);
+      setName(imageName(icon));
+    }
   }
   return (
     <div id='dashboard_save'>
@@ -140,6 +161,7 @@ export default function SaveDashboard() {
                      onChange={(event) => {
                        setNameData(event.target.value)
                      }}
+                     autoFocus
                      required={true}/>
             </FormControl>
             <FormControl>
@@ -151,9 +173,20 @@ export default function SaveDashboard() {
                      }}
                      placeholder="Dashboard description"/>
             </FormControl>
-            <FormControl>
-              <input type="file" name="icon"
-                     accept="image/png, image/jpeg"/>
+            <FormControl className='IconInput'>
+              <label
+                className="MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-root MuiFormLabel-colorPrimary MuiFormLabel-filled css-1sumxir-MuiFormLabel-root-MuiInputLabel-root"
+                data-shrink="true">Icon</label>
+              <div className='IconInputPreview'>
+                <div
+                  className="MuiInput-root MuiInput-underline MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl css-1ptx2yq-MuiInputBase-root-MuiInput-root">
+                  {iconName}
+                  <input type="file" name="icon"
+                         accept="image/png, image/jpeg"
+                         onChange={imageChanged}/>
+                </div>
+                {iconSrc ? <img src={iconSrc}/> : ''}
+              </div>
             </FormControl>
             <br/>
             <Button variant="primary" type="submit"
