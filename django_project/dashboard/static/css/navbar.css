@@ -91,6 +91,10 @@ header {
     height: 70% !important;
 }
 
+.nav-header-logo .nav-header-link {
+    width: 85px;
+}
+
 .nav-header-logo img {
     height: 100%;
     vertical-align: unset !important;
