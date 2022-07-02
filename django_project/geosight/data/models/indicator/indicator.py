@@ -224,8 +224,7 @@ class Indicator(AbstractTerm, AbstractSource):
             'value': value,
             'text': rule.name,
             'color': background_color,
-            'outline_color': outline_color,
-            'name': self.__str__()
+            'outline_color': outline_color
         }
         values.update(attributes if attributes else {})
         return values

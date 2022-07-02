@@ -195,7 +195,15 @@ export default function ReferenceLayer({ currentIndicator }) {
       );
       layer.bindPopup(function (feature) {
         const properties = indicatorsByGeom[feature.properties.code]
-          ? indicatorsByGeom[feature.properties.code] : feature.properties
+          ? Object.assign({}, indicatorsByGeom[feature.properties.code]) : Object.assign({}, feature.properties);
+        delete properties.geometry_code
+        delete properties.indicator_id
+        properties[feature.properties.type] = feature.properties.label
+        properties['geometry_code'] = feature.properties.code
+        delete properties.level
+        delete properties.label
+        delete properties.type
+        delete properties.code
         return featurePopupContent(properties.name ? properties.name : 'Reference Layer', properties)
       });
       dispatch(

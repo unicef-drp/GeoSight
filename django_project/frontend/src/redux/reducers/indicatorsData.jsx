@@ -27,9 +27,11 @@ export default function indicatorDataReducer(state = initialState, action) {
               return data.geometry_code
             })
             newState.forEach((indicator) => {
-              indicator.data = indicator.rawData.filter(properties => {
-                return geoms.includes(properties.geometry_code);
-              })
+              if (indicator.rawData) {
+                indicator.data = indicator.rawData.filter(properties => {
+                  return geoms.includes(properties.geometry_code);
+                })
+              }
             });
             return newState
           }

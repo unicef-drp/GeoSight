@@ -186,13 +186,42 @@ export function queryFromDictionary(indicators, dictionary, ignoreActive) {
  * Return query data from dictionary
  */
 export function queryingFromDictionary(indicators, dictionary, ignoreActive) {
-  let {
-    query,
-    dataList
-  } = queryFromDictionary(indicators, dictionary, ignoreActive)
-  try {
-    return alasql(query, dataList)
-  } catch (err) {
-    return dataList[0]
+  // TODO
+  //  This will be removed after the aggregation
+  // -----------------------------------------------------------------------
+  const indicatorsPerLevel = {}
+  indicators.forEach((indicator, idx) => {
+    const group = indicator.reporting_level;
+    if (!indicatorsPerLevel[group]) {
+      indicatorsPerLevel[group] = []
+    }
+    indicatorsPerLevel[group].push(indicator)
+  })
+
+  let data = []
+  for (const [key, indicators] of Object.entries(indicatorsPerLevel)) {
+    let {
+      query,
+      dataList
+    } = queryFromDictionary(indicators, dictionary, ignoreActive)
+    try {
+      data = data.concat(alasql(query, dataList))
+    } catch (err) {
+      data = data.concat(dataList[0])
+    }
   }
+  return data
+  // -----------------------------------------------------------------------
+
+  // TODO
+  //  This will be restored after the aggregation
+  // let {
+  //   query,
+  //   dataList
+  // } = queryFromDictionary(indicators, dictionary, ignoreActive)
+  // try {
+  //   return alasql(query, dataList)
+  // } catch (err) {
+  //   return dataList[0]
+  // }
 }
