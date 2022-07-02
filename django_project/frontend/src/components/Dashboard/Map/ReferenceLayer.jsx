@@ -102,7 +102,7 @@ export function IndicatorDetailsModal({ group, feature, onClose }) {
 
 /**
  * ReferenceLayer selector.
- * @param {list} currentIndicator Indicator that will be used.
+ * @param {dict} currentIndicator Indicator that will be used.
  */
 export default function ReferenceLayer({ currentIndicator }) {
   const dispatch = useDispatch();
@@ -114,6 +114,7 @@ export default function ReferenceLayer({ currentIndicator }) {
   const where = returnWhere(filtersData)
 
   // Filter geometry_code based on indicators layer
+  // Also filter by levels that found on indicators
   let geometryCodes = null;
   let levels = [];
   if (indicatorData && indicatorData.length) {
@@ -133,6 +134,12 @@ export default function ReferenceLayer({ currentIndicator }) {
     })
   }
 
+  // If there is currentIndicator that selected
+  // Use level from that
+  if (currentIndicator) {
+    levels = [currentIndicator.reporting_level.toLowerCase()]
+  }
+
   // When level changed
   useEffect(() => {
     if (!referenceLayer.data) {
@@ -148,8 +155,8 @@ export default function ReferenceLayer({ currentIndicator }) {
       // Save indicator data per geom
       // This is needed for popup and rendering
       const indicatorsByGeom = {}
-      if (currentIndicator) {
-        currentIndicator.forEach(function (data) {
+      if (currentIndicator && currentIndicator.data) {
+        currentIndicator.data.forEach(function (data) {
           indicatorsByGeom[data.geometry_code] = data;
         })
       }

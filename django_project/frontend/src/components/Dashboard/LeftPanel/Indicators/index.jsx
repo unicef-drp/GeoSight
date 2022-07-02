@@ -42,9 +42,9 @@ export function Indicators() {
   }, [indicators]);
 
   // Get selected indicator data
-  let selectedIndicatorData = null;
+  let selectedIndicator = null;
   if (indicators && indicatorData[currentIndicator]) {
-    selectedIndicatorData = indicatorData[currentIndicator].data;
+    selectedIndicator = indicatorData[currentIndicator];
   }
 
   return (
@@ -68,7 +68,7 @@ export function Indicators() {
           )
           : <div>Loading</div>
       }
-      <ReferenceLayer currentIndicator={selectedIndicatorData}/>
+      <ReferenceLayer currentIndicator={selectedIndicator}/>
     </Fragment>
   )
 }
