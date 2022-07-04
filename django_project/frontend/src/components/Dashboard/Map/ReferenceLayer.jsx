@@ -160,7 +160,6 @@ export default function ReferenceLayer({ currentIndicator }) {
           indicatorsByGeom[data.geometry_code] = data;
         })
       }
-
       const options = {
         maxDetailZoom: 8,
         filter: function (feature) {

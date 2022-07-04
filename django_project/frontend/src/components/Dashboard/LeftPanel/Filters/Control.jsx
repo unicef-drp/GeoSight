@@ -315,18 +315,34 @@ export function FilterSectionSummary() {
  * Filter section.
  */
 export default function FilterSection() {
-  const { filters, indicators } = useSelector(state => state.dashboard.data);
+  const {
+    filters,
+    indicators,
+    referenceLayer
+  } = useSelector(state => state.dashboard.data);
   const dispatcher = useDispatch();
 
   // save the filters query
   useEffect(() => {
-    dispatcher(
-      Actions.IndicatorsData.filter(filters)
-    );
-    dispatcher(
-      Actions.FiltersData.update(filters)
-    );
-  }, [filters]);
+    if (indicators && referenceLayer?.data?.levels) {
+      indicators.forEach(indicator => {
+        const level = referenceLayer.data.levels.filter(level => {
+          return level.level_name.toLowerCase() === indicator.reporting_level.toLowerCase() || '' + level.level === indicator.reporting_level
+        })[0];
+        if (level && ('' + level.level) !== indicator.reporting_level) {
+          dispatcher(
+            Actions.Indicators.updateLevel(indicator.id, '' + level.level)
+          );
+        }
+      })
+      dispatcher(
+        Actions.IndicatorsData.filter(filters)
+      );
+      dispatcher(
+        Actions.FiltersData.update(filters)
+      );
+    }
+  }, [filters, referenceLayer]);
 
   // get indicator fields
   let indicatorFields = []

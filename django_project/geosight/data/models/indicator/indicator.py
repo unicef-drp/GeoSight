@@ -59,7 +59,8 @@ class Indicator(AbstractTerm, AbstractSource):
     reporting_level = models.CharField(
         max_length=64,
         help_text=(
-            "Indicate what level of the data for this indicator. It can use level name or level number."
+            "Indicate what level of the data for this indicator. "
+            "It can use level name or level number."
         )
     )
     unit = models.CharField(

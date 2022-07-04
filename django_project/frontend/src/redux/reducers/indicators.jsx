@@ -7,6 +7,7 @@ import { APIReducer } from "../reducers_api";
 export const INDICATOR_ACTION_NAME = 'INDICATOR';
 export const INDICATOR_ACTION_TYPE_ADD = 'INDICATOR/ADD';
 export const INDICATOR_ACTION_TYPE_REMOVE = 'INDICATOR/REMOVE';
+export const INDICATOR_ACTION_TYPE_UPDATE_LEVEL = 'INDICATOR/UPDATE_LEVEL';
 
 const initialState = []
 export default function indicatorReducer(state = initialState, action) {
@@ -24,6 +25,17 @@ export default function indicatorReducer(state = initialState, action) {
         if (indicator.id !== action.payload.id) {
           newState.push(indicator)
         }
+      })
+      return newState
+    }
+    case INDICATOR_ACTION_TYPE_UPDATE_LEVEL: {
+      const { id, reporting_level } = action;
+      const newState = []
+      state.forEach(function (indicator) {
+        if (indicator.id === id && indicator.reporting_level !== reporting_level) {
+          indicator.reporting_level = reporting_level
+        }
+        newState.push(indicator)
       })
       return newState
     }

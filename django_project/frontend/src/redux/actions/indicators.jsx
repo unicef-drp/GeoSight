@@ -1,7 +1,8 @@
 import {
   INDICATOR_ACTION_NAME,
   INDICATOR_ACTION_TYPE_ADD,
-  INDICATOR_ACTION_TYPE_REMOVE
+  INDICATOR_ACTION_TYPE_REMOVE,
+  INDICATOR_ACTION_TYPE_UPDATE_LEVEL
 } from '../reducers/indicators'
 import { fetchingData } from "../../Requests";
 
@@ -38,6 +39,15 @@ export function fetch(dispatch, id, url) {
   return request(id);
 }
 
+export function updateLevel(id, reporting_level) {
+  return {
+    name: INDICATOR_ACTION_NAME,
+    type: INDICATOR_ACTION_TYPE_UPDATE_LEVEL,
+    id: id,
+    reporting_level: reporting_level
+  };
+}
+
 
 /**
  * Add new indicator data.
@@ -65,5 +75,5 @@ export function remove(payload) {
 }
 
 export default {
-  fetch, add, remove
+  fetch, add, remove, updateLevel
 }
