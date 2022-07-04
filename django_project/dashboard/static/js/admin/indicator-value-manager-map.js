@@ -10,7 +10,7 @@ $(document).ready(function () {
 
   // geometry
   const featureColor = function (feature) {
-    const identifier = feature.properties.identifier.admin ? feature.properties.identifier.admin: feature.properties.identifier;
+    const identifier = feature.properties.identifier.admin ? feature.properties.identifier.admin : feature.properties.identifier;
     let color = legends['NODATA']['color'];
     // if (geometryHasUpdatedValue.includes(identifier)) {
     //   color = legends['LATESTDATAFOUND']['color'];
@@ -166,7 +166,7 @@ $(document).ready(function () {
       }).done(function (data) {
         referenceLayer.levels = data;
         const level = data.levels.filter(level => {
-          return level.level_name.toLocaleLowerCase() === reportingLevel.toLocaleLowerCase()
+          return (level.level_name.toLocaleLowerCase() === reportingLevel.toLocaleLowerCase() || '' + level.level === reportingLevel)
         })[0]
         if (!level) {
           if (identifier === $referenceLayerSelector.val()) {

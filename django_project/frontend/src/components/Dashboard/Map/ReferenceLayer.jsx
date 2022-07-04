@@ -164,7 +164,7 @@ export default function ReferenceLayer({ currentIndicator }) {
       const options = {
         maxDetailZoom: 8,
         filter: function (feature) {
-          return levels.includes(feature.properties.type.toLowerCase())
+          return (levels.includes(feature.properties.type.toLowerCase()) || levels.includes('' + feature.properties.level))
             && (!where || !geometryCodes || geometryCodes.includes(feature.properties.code))
         },
         style: function (feature, layer, test) {

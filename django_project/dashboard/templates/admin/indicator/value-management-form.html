@@ -250,11 +250,11 @@
           }).done(function (data) {
             referenceLayer.levels = data;
             const level = data.levels.filter(level => {
-              return level.level_name.toLocaleLowerCase() === reportingLevel.toLocaleLowerCase()
+              return (level.level_name.toLocaleLowerCase() === reportingLevel.toLocaleLowerCase() || '' + level.level === reportingLevel)
             })[0]
             if (!level) {
               if (identifier === $referenceLayerSelector.val()) {
-                $tableForm.html(`<tr><td><i class="helptext">Reference Layer does not have data for ${reportingLevel}</i></td></tr>`);
+                $tableForm.html(`<tr><td><i class="helptext">Reference Layer does not have data for level ${reportingLevel}</i></td></tr>`);
               }
             } else {
               if (!referenceLayer.data) {
@@ -273,7 +273,7 @@
           if (referenceLayer.data) {
             renderGeoms(referenceLayer.data);
           } else {
-            $tableForm.html(`<tr><td><i class="helptext">Reference Layer does not have data for ${reportingLevel}</i></td></tr>`);
+            $tableForm.html(`<tr><td><i class="helptext">Reference Layer does not have data for level ${reportingLevel}</i></td></tr>`);
           }
         }
       })

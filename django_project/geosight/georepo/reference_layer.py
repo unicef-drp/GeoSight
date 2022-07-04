@@ -15,4 +15,4 @@ class ReferenceLayer:
     @property
     def detail_url(self):
         """Return API link for reference detail."""
-        return f'{self.georepo_url}/api/reference-layer/{self.identifier}'
+        return f'{self.georepo_url}/api/reference-layer/{self.identifier}/'
