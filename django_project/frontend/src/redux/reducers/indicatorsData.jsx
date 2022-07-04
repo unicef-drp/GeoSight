@@ -16,6 +16,7 @@ export default function indicatorDataReducer(state = initialState, action) {
         if (action.payload) {
           return [...action.payload]
         }
+        break;
       // For filter
       case INDICATOR_DATA_ACTION_TYPE_FILTER: {
         const { query } = action;
@@ -23,7 +24,9 @@ export default function indicatorDataReducer(state = initialState, action) {
           let newState = [...state];
           let data = queryingFromDictionary(state, query)
           if (data) {
-            let geoms = data.map((data) => {
+            let geoms = data.filter(data => {
+              return data
+            }).map((data) => {
               return data.geometry_code
             })
             newState.forEach((indicator) => {

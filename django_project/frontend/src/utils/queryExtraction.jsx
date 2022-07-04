@@ -207,7 +207,9 @@ export function queryingFromDictionary(indicators, dictionary, ignoreActive) {
     try {
       data = data.concat(alasql(query, dataList))
     } catch (err) {
-      data = data.concat(dataList[0])
+      if (dataList[0]) {
+        data = data.concat(dataList[0])
+      }
     }
   }
   return data

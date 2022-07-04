@@ -1,11 +1,12 @@
 """Dashboard Detail View."""
+from braces.views import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 
 from frontend.views.dashboard._base import BaseDashboardView
 from geosight.data.models.dashboard import Dashboard
 
 
-class DashboardDetailView(BaseDashboardView):
+class DashboardDetailView(LoginRequiredMixin, BaseDashboardView):
     """Dashboard Detail View."""
 
     template_name = 'frontend/dashboard/view.html'
