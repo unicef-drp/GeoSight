@@ -199,6 +199,7 @@ export default function ReferenceLayer({ currentIndicator }) {
         delete properties.indicator_id
         properties[feature.properties.type] = feature.properties.label
         properties['geometry_code'] = feature.properties.code
+        properties['name'] = currentIndicator.group + '/' + currentIndicator.name
         delete properties.level
         delete properties.label
         delete properties.type
