@@ -1,12 +1,17 @@
-{% extends 'frontend/base.html' %}
+{% extends 'frontend/admin/base.html' %}
 {% load render_bundle from webpack_loader %}
 
 {% block extrastyle %}
 {% endblock %}
 
 {% block render_bundle %}
-    {% render_bundle 'Dashboard' %}
+    {% render_bundle 'AdminIndicatorList' %}
 {% endblock %}
 
 {% block scripts %}
+    <script>
+      urls.api = {
+        'list': '{% url 'indicator-basic-list-api' %}'
+      }
+    </script>
 {% endblock %}

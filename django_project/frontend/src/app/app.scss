@@ -4,28 +4,33 @@
 
 @import './variables.scss';
 
-.page {
-  display: grid;
-  grid-template-rows: max-content auto;
-  grid-template-columns: 100%;
+html, body {
   height: 100vh;
   overflow: hidden;
-  width: 100%;
+  position: relative;
+  width: 100vw;
+}
 
-  @include media(xsmall-only) {
-    min-height: 100vh;
-    display: block;
-    overflow-y: auto;
-  }
+#app {
+  height: 100%;
+  width: 100%;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
 }
 
 
 .left-right-toggle-button {
-  background: $base-color;
+  background: $primary-color;
   cursor: pointer;
   height: 30px;
   padding: 0.2rem 0.3rem;
-  color: $base-color-reverse;
+  color: $anti-primary-color;
 
   div {
     height: 1rem;

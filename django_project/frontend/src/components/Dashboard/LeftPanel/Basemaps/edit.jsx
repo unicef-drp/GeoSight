@@ -39,7 +39,7 @@ export default function BasemapsEditSection({ expanded, handleChange }) {
     required={true}
     className='modal__basemap__setting'
     currentLayers={basemapsLayers}
-    urlAPI={urls.basemapListAPI}
+    urlAPI={urls.api.basemapListAPI}
     actionAddLayer={Actions.Basemaps.add}
     actionRemoveLayer={Actions.Basemaps.remove}>
     <EditRow/>

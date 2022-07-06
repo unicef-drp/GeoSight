@@ -36,7 +36,7 @@ export default function IndicatorsEditSection({ expanded, handleChange }) {
     required={true}
     className='modal__indicators__setting'
     currentLayers={indicators}
-    urlAPI={urls.indicatorListAPI}
+    urlAPI={urls.api.indicatorListAPI}
     actionAddLayer={Actions.Indicators.add}
     actionRemoveLayer={Actions.Indicators.remove}>
     <EditRow/>

@@ -5,23 +5,31 @@
 /* Settings */
 $base-hovered-opacity: 0.5;
 
+/* Customized Theme */
+$primary-color: var(--primary-color);
+$anti-primary-color: var(--anti-primary-color);
+$secondary-color: var(--secondary-color);
+$anti-secondary-color: var(--anti-secondary-color);
+$tertiary-color: var(--tertiary-color);
+$anti-tertiary-color: var(--anti-tertiary-color);
+
 /* Colors */
 $base-black-color: rgba(0, 0, 0, 0.87);
-$base-to-white-color: #eee;
-$base-color: var(--primary-color);
-$base-color-reverse: #FFFFFF;
+$base-to-white-color: #F4F4F4;
+$base-almost-white-color: #FAFAFA;
 $base-alpha-color: #1CABE220;
 $base-shadow-box: 0 0 16px 4px rgba(#000000, 0.1);
 
-$navbar-background-color: $base-color;
-$navbar-font-color: $base-color-reverse;
+
+$navbar-background-color: $primary-color;
+$navbar-font-color: $anti-primary-color;
 $black: #000 !default;
 $error: #F00 !default;
 
 /* Fonts */
 $root-font-size: 16px;
 
-$base-font-color: $base-color;
+$base-font-color: $primary-color;
 $base-font-family: 'Rubik', sans-serif;
 $base-font-style: normal;
 $base-font-light: 300;

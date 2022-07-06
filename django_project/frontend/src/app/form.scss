@@ -5,7 +5,6 @@
 @import './variables.scss';
 
 .MuiFormControl-root {
-  margin-top: 1.5rem !important;
   display: block !important;
 }
 
@@ -27,7 +26,7 @@
 // MENUS -------------------
 .MuiMenuItem-root {
   a, a:link, a:visited, a:hover, a:active {
-    color: $base-color;
+    color: $primary-color;
     font-weight: 300;
   }
 }
@@ -38,4 +37,10 @@
 
 .MuiMenuItem-subname {
   font-size: 0.8rem;
+}
+
+.MuiFormControl-Form {
+  .MuiFormControl-root {
+    margin-top: 1.5rem !important;
+  }
 }

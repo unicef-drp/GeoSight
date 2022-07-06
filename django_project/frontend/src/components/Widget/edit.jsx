@@ -111,7 +111,7 @@ export default function EditSection({ idx, data, children }) {
         <Modal
           open={open}
           onClosed={onClosed}
-          className='modal__widget__editor'
+          className='modal__widget__editor MuiFormControl-Form'
         >
           <ModalHeader onClosed={onClosed}>
             {name ? "Change " + name : "New Widget"}

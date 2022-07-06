@@ -8,7 +8,9 @@ from rest_framework.views import APIView
 
 from core.permissions import AdminAuthenticationPermission
 from geosight.data.models.indicator import Indicator
-from geosight.data.serializer.indicator import IndicatorSerializer
+from geosight.data.serializer.indicator import (
+    BasicIndicatorSerializer, IndicatorSerializer
+)
 
 
 class IndicatorListAPI(APIView):
@@ -21,6 +23,18 @@ class IndicatorListAPI(APIView):
                 Indicator.objects.filter(group__isnull=False).order_by(
                     'group__name', 'name'),
                 many=True
+            ).data
+        )
+
+
+class IndicatorBasicListAPI(APIView):
+    """Return list of indicator in basic data."""
+
+    def get(self, request):
+        """Return Indicatorslist."""
+        return Response(
+            BasicIndicatorSerializer(
+                Indicator.objects.all(), many=True
             ).data
         )
 

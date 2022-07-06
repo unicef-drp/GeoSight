@@ -1,0 +1,38 @@
+/* ==========================================================================
+   Dashboard specific style
+   ========================================================================== */
+
+@import '../../../app/variables';
+
+
+.SideNavigation {
+  background: white;
+  width: 200px;
+  box-shadow: $box-shadow-sm;
+  padding: 0.2rem;
+}
+
+.SideNavigation-Row {
+  border-radius: 0.2rem;
+  color: $base-black-color;
+  cursor: pointer;
+  display: flex;
+  padding: 0.5rem 0.5rem;
+
+  &:hover {
+    opacity: 0.5;
+  }
+
+  &.active {
+    background-color: $primary-color;
+    color: $anti-primary-color;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .SideNavigation-Row-Icon {
+    margin-right: 0.5rem;
+  }
+}

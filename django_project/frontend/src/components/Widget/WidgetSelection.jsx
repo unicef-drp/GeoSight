@@ -33,8 +33,7 @@ export default function WidgetSelectionSection() {
         event.stopPropagation();
       }}>
         <Tooltip title="Add new widget">
-          <Button variant="secondary"
-                  className="widget__add__button"
+          <Button className="widget__add__button"
                   onClick={() => {
                     onOpen()
                   }}

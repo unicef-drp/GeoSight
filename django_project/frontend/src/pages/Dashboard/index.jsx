@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import App, { render } from '../../app';
+import { store } from '../../store/Dashboard';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Actions from '../../redux/actions/dashboard'
@@ -41,4 +42,4 @@ export default function Dashboard() {
   );
 }
 
-render(Dashboard)
+render(Dashboard, store)

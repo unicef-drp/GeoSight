@@ -5,6 +5,7 @@ from django.urls import include
 from frontend.views.dashboard.create import DashboardCreateView
 from frontend.views.dashboard.detail import DashboardDetailView
 from frontend.views.dashboard.edit import DashboardEditView
+from frontend.views.admin.indicator.list import IndicatorListView
 
 dashboard_url = [
     url(
@@ -23,6 +24,14 @@ dashboard_url = [
         name='dashboard-detail-view'
     ),
 ]
+admin_url = [
+    url(
+        r'^indicators',
+        IndicatorListView.as_view(),
+        name='admin-indicator-list-view'
+    ),
+]
 urlpatterns = [
     url(r'^dashboard/', include(dashboard_url)),
+    url(r'^admin/', include(admin_url)),
 ]

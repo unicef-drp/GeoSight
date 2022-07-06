@@ -48,7 +48,7 @@ export function IndicatorDetailsModal({ group, feature, onClose }) {
   if (data?.details && feature?.name && feature?.name.includes('Program Coverage')) {
     columns = [
       { field: 'id', headerName: 'id', hide: true },
-      { field: 'title', headerName: 'Title', width: 200 },
+      { field: 'title', headerName: 'Title', flex: 1 },
       { field: 'status', headerName: 'Status', width: 70 },
       { field: 'sections', headerName: 'Sections', width: 130 },
       {

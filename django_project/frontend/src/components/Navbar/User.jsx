@@ -29,9 +29,12 @@ export default function User() {
   const { username, full_name, is_staff } = user;
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const logoutUrl = urls.logout; // eslint-disable-line no-undef
-  const adminUrl = urls.admin; // eslint-disable-line no-undef
   const backupsUrl = urls.backups; // eslint-disable-line no-undef
-  const indicatorsUrl = urls.indicators; // eslint-disable-line no-undef
+
+  // Admin URLS
+  const adminUrl = urls.admin.djangoAdmin; // eslint-disable-line no-undef
+  const indicatorsUrl = urls.admin.indicatorList; // eslint-disable-line no-undef
+
   const openSignIn = () => {
     setModalIsOpen(true);
   };

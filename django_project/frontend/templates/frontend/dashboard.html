@@ -11,15 +11,18 @@
 {% endblock %}
 {% block scripts %}
     <script>
+      {# specified url for dashboard #}
+      urls.dashboardData = '{% url 'dashboard-data-api' slug=dashboard.id %}'
+
       const definition = {{ definition|safe }};
       const maxZoom = 24;
       let editMode = {% if edit_mode %} true {% else %} false {% endif %};
       if (editMode) {
-        urls = Object.assign({}, urls, {
+        urls.api = {
           'basemapListAPI': '{% url 'basemap-list-api' %}',
           'indicatorListAPI': '{% url 'indicator-list-api' %}',
           'contextLayerListAPI': '{% url 'context-layer-list-api' %}',
-        })
+        }
       }
     </script>
 {% endblock %}

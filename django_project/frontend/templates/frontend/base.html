@@ -27,19 +27,19 @@
             --anti-tertiary-color: {{ preferences.anti_tertiary_color }};
         }
 
-        .primary-color-box {
-            background-color: var(--primary-color);
-            color: var(--anti-primary-color);
+        .primaryColorBox {
+            background-color: var(--primary-color) !important;
+            color: var(--anti-primary-color) !important;
         }
 
-        .secondary-color-box {
-            background-color: var(--secondary-color);
-            color: var(--anti-secondary-color);
+        .secondaryColorBox {
+            background-color: var(--secondary-color) !important;
+            color: var(--anti-secondary-color) !important;
         }
 
-        .tertiary-color-box {
-            background-color: var(--tertiary-color);
-            color: var(--anti-tertiary-color);
+        .tertiaryColorBox {
+            background-color: var(--tertiary-color) !important;
+            color: var(--anti-tertiary-color) !important;
         }
     </style>
     <link href="{% static 'css/navbar.css' %}" rel="stylesheet" type="text/css"
@@ -56,13 +56,15 @@
   const preferences = {{ preferences|safe }};
 
   const links = {{ links|safe }};
+  const contentTitle = '{{ content_title|safe }}';
   let urls = {
     'login': "{% url 'login' %}",
     'logout': "{% url 'logout' %}?next=/",
-    'admin': "{% url 'admin:index' %}",
     'backups': "{% url "backups-view" %}",
-    'indicators': "{% url "indicator-management-view" %}",
-    'dashboardData': '{% url 'dashboard-data-api' slug=dashboard.id %}'
+    'admin': {
+      'djangoAdmin': "{% url 'admin:index' %}",
+      'indicatorList': "{% url "admin-indicator-list-view" %}",
+    }
   }
 </script>
 {% block scripts %}

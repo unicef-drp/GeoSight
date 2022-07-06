@@ -10,22 +10,37 @@
 
 .MuiButton-root {
   text-transform: unset !important;
+  padding: 0.5rem 1rem !important;
 
   &:disabled {
     pointer-events: auto !important;
     cursor: not-allowed !important;
     opacity: 0.5;
+
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+
+  &:hover {
+    opacity: 0.8;
   }
 }
 
 .MuiButton-primary {
-  background-color: $base-color !important;
-  border-color: $base-color !important;
-  color: $base-color-reverse !important;
+  background-color: $primary-color !important;
+  border-color: $primary-color !important;
+  color: $anti-primary-color !important;
+}
+
+.MuiButton-secondary {
+  background-color: $secondary-color !important;
+  border-color: $secondary-color !important;
+  color: $anti-secondary-color !important;
 }
 
 .MuiListSubheader-root {
-  color: $base-color !important;
+  color: $primary-color !important;
   font-size: 1rem !important;
   font-weight: 600 !important;
 }
@@ -73,5 +88,46 @@
 
   .MuiButtonBase-root {
     border-radius: 5px;
+  }
+}
+
+/* ==========================================================================
+    MUI Data Grid
+   ========================================================================== */
+
+.MuiDataGrid-root {
+  border: none !important;
+
+  div {
+    &:focus,
+    &:focus-visible,
+    &:focus-within {
+      outline: none !important;
+    }
+  }
+
+  .MuiDataGrid-columnHeader {
+    color: $primary-color;
+
+    .MuiButtonBase-root {
+      color: $primary-color;
+    }
+
+    .MuiDataGrid-columnHeaderTitle {
+      font-weight: 600 !important;
+    }
+  }
+
+  .MuiDataGrid-columnSeparator {
+    display: none !important;
+  }
+
+  .MuiDataGrid-row:hover {
+    background-color: $base-almost-white-color !important;
+  }
+
+  .MuiDataGrid-columnHeader,
+  .MuiDataGrid-cell {
+    padding: 0 1rem !important;
   }
 }

@@ -1,7 +1,7 @@
 import { compose, legacy_createStore as createStore } from 'redux';
 
 // Reducers and Actions
-import rootReducer from './redux/reducers';
+import rootReducer from '../redux/reducers/dashboard';
 
 const initialState = {};
 const enhancers = [];

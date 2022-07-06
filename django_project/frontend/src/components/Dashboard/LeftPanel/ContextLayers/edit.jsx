@@ -35,7 +35,7 @@ export default function ContextLayersEditSection({ expanded, handleChange }) {
     required={false}
     className='modal__context_layers__setting'
     currentLayers={contextLayers}
-    urlAPI={urls.contextLayerListAPI}
+    urlAPI={urls.api.contextLayerListAPI}
     actionAddLayer={Actions.ContextLayers.add}
     actionRemoveLayer={Actions.ContextLayers.remove}>
     <EditRow/>

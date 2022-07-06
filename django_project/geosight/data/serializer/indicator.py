@@ -51,7 +51,7 @@ class IndicatorSerializer(serializers.ModelSerializer):
     class Meta:  # noqa: D106
         model = Indicator
         fields = (
-            'id', 'group', 'name', 'rules',
+            'id', 'group', 'name', 'rules', 'reporting_level',
             'dashboard_link', 'source', 'description', 'url')
 
 

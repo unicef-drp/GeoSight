@@ -1,0 +1,80 @@
+/* ==========================================================================
+   Admin specific style
+   ========================================================================== */
+
+@import '../../app/variables';
+
+
+main {
+  flex-grow: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+
+  & > div {
+    height: 100%;
+    overflow: auto;
+  }
+}
+
+.AdminContent {
+  flex-grow: 1;
+  min-width: 0;
+
+  & > div {
+    border-radius: 5px;
+    margin: 0 1rem 1rem 1rem;
+  }
+
+  .AdminContentHeader {
+    background: white;
+    border-radius: 0;
+    box-shadow: $box-shadow-sm;
+    color: $primary-color;
+    display: flex;
+    margin: 0 0 1rem 0;
+    padding: 1rem 1rem;
+
+    .AdminContentHeader-Left {
+      flex-grow: 1;
+      padding: 0.5rem 0;
+    }
+  }
+
+  .AdminBaseInput {
+    background-color: white;
+    padding: 0.5rem;
+
+    .MuiFormControl-root {
+      background-color: $base-almost-white-color;
+      margin-top: 0 !important;
+      width: 100%;
+
+      .MuiOutlinedInput-root {
+        width: 100%;
+
+        input {
+          padding: 0.5rem 1rem 0.5rem 0;
+        }
+
+        .MuiOutlinedInput-notchedOutline {
+          border: unset;
+        }
+
+        &:hover {
+          .MuiOutlinedInput-notchedOutline {
+            border: unset;
+          }
+        }
+      }
+    }
+  }
+
+  .AdminTableDelete {
+    color: $error;
+  }
+
+  .MuiDataGrid-actionsCell {
+    grid-gap: 0 !important;
+  }
+}

@@ -12,7 +12,7 @@ from geosight.data.api.download_file import (
     DownloadBackupsFile
 )
 from geosight.data.api.indicator import (
-    IndicatorListAPI,
+    IndicatorListAPI, IndicatorBasicListAPI,
     IndicatorDetailAPI, IndicatorValuesAPI,
 )
 from geosight.data.api.indicator_value import (
@@ -20,7 +20,13 @@ from geosight.data.api.indicator_value import (
     IndicatorValueDetail
 )
 
+# ------------------------------------------------------
+# INDICATOR API
 indicator_api = [
+    url(
+        r'^list/basic',
+        IndicatorBasicListAPI.as_view(), name='indicator-basic-list-api'
+    ),
     url(
         r'^list',
         IndicatorListAPI.as_view(), name='indicator-list-api'
@@ -44,7 +50,7 @@ indicator_api = [
         IndicatorDetailAPI.as_view(), name='indicator-detail-api'
     ),
 ]
-
+# ------------------------------------------------------
 api = [
     url(
         r'^basemap/list$',
