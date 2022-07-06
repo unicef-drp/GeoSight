@@ -10,7 +10,7 @@ $(document).ready(function () {
 
   // geometry
   const featureColor = function (feature) {
-    const identifier = feature.properties.identifier.admin ? feature.properties.identifier.admin : feature.properties.identifier;
+    const identifier = feature?.properties?.identifier?.admin ? feature.properties.identifier.admin : feature.properties.identifier;
     let color = legends['NODATA']['color'];
     // if (geometryHasUpdatedValue.includes(identifier)) {
     //   color = legends['LATESTDATAFOUND']['color'];
@@ -31,7 +31,7 @@ $(document).ready(function () {
         };
       },
       onEachFeature: function (feature, layer) {
-        const identifier = feature.properties.identifier.admin;
+        const identifier = feature?.properties?.identifier?.admin;
         const id = identifier;
         feature.properties['id'] = id;
         feature.properties['identifier'] = identifier;
@@ -147,11 +147,26 @@ $(document).ready(function () {
   const referenceLayers = {};
   const $info = $('#reference-layer-selection-wrapper-info');
 
-  function renderGeoms(geoms) {
-    $info.html(``);
+  function renderGeoms(geoms, finished) {
+    if (finished) {
+      $info.html(``);
+    }
     layer.clearLayers();
     layer.addData(geoms);
     map.fitBounds(layer.getBounds());
+  }
+
+  function fetchData(level, referenceLayer, page) {
+    $.ajax({
+      url: preferences.georepo_api.domain + level.url + '?page=' + page,
+    }).done(function (data) {
+      referenceLayer.data.features = referenceLayer.data.features.concat(data.results.features)
+      renderGeoms(referenceLayer.data, page === data.total_page);
+      page += 1
+      if (page <= data.total_page) {
+        fetchData(level, referenceLayer, page)
+      }
+    });
   }
 
   $referenceLayerSelector.change(evt => {
@@ -174,12 +189,11 @@ $(document).ready(function () {
           }
         } else {
           if (!referenceLayer.data) {
-            $.ajax({
-              url: preferences.georepo_api.domain + level.url,
-            }).done(function (geoms) {
-              referenceLayer.data = geoms;
-              renderGeoms(referenceLayer.data);
-            });
+            referenceLayer.data = {
+              type: "FeatureCollection",
+              features: []
+            }
+            fetchData(level, referenceLayer, 1)
           } else {
             renderGeoms(referenceLayer.data);
           }

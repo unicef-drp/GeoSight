@@ -200,8 +200,10 @@
       const reportingLevel = '{{ indicator.reporting_level }}';
       const $tableForm = $('#table-form');
 
-      function renderGeoms(geoms) {
-        $tableForm.html('')
+      function renderGeoms(geoms, append) {
+        if(!append) {
+          $tableForm.html('')
+        }
         geoms.forEach(geom => {
           const template = _.template($('#_geom-row').html())
           $tableForm.append(template({
@@ -239,6 +241,18 @@
         )
       }
 
+      function fetchData(level, referenceLayer, page) {
+        $.ajax({
+          url: '{{ preferences.georepo_api.domain }}' + level.url + '/list?page=' + page,
+        }).done(function (data) {
+          referenceLayer.data = referenceLayer.data.concat(data.results);
+          renderGeoms(data.results, page!== 1);
+          page += 1
+          if (page <= data.total_page) {
+            fetchData(level, referenceLayer, page)
+          }
+        });
+      }
       $referenceLayerSelector.change(evt => {
         $tableForm.html('<tr><td><i class="helptext">Loading Reference Data</i></td></tr>');
         const identifier = evt.target.value;
@@ -257,13 +271,9 @@
                 $tableForm.html(`<tr><td><i class="helptext">Reference Layer does not have data for level ${reportingLevel}</i></td></tr>`);
               }
             } else {
-              if (!referenceLayer.data) {
-                $.ajax({
-                  url: '{{ preferences.georepo_api.domain }}' + level.url + '/list',
-                }).done(function (geoms) {
-                  referenceLayer.data = geoms;
-                  renderGeoms(referenceLayer.data);
-                });
+              if (referenceLayer.data === undefined) {
+                referenceLayer.data = [];
+                fetchData(level, referenceLayer, 1);
               } else {
                 renderGeoms(referenceLayer.data);
               }
