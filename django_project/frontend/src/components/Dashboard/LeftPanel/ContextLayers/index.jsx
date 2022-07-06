@@ -10,7 +10,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from "@mui/material/AccordionDetails";
 
-import Actions from '../../../../redux/actions'
+import Actions from '../../../../redux/actions/dashboard'
 import { featurePopupContent } from '../../../../utils/main'
 import { contextLayerInGroup } from '../../../../utils/contextLayer'
 import EsriLeafletLayer from '../../../../utils/esri/leaflet-esri-layer'

@@ -1,7 +1,7 @@
 import {
   FILTERS_ACTION_NAME,
   FILTERS_ACTION_UPDATE
-} from '../reducers/filters';
+} from '../../reducers/dashboard/filters';
 
 /**
  * Change data of filter.

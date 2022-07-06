@@ -1,4 +1,4 @@
-import { queryingFromDictionary } from "../../utils/queryExtraction";
+import { queryingFromDictionary } from "../../../utils/queryExtraction";
 
 /**
  * INDICATOR reducer

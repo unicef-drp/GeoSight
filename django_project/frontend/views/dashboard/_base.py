@@ -9,6 +9,7 @@ class BaseDashboardView(ABC, BaseView):
     """Base dashboard View."""
 
     instance = None
+    template_name = 'frontend/dashboard.html'
 
     def get_context_data(self, **kwargs) -> dict:
         """Return context data."""
@@ -23,11 +24,11 @@ class BaseDashboardView(ABC, BaseView):
         return context
 
     @property
-    def content_title(self):
-        """Return content title."""
-        raise NotImplementedError
+    def page_title(self):
+        """Return page title that used on tab bar."""
+        return 'Dashboard'
 
     @property
-    def page_title(self):
-        """Return page title."""
-        return 'Dashboard'
+    def content_title(self):
+        """Return content title that used on page title indicator."""
+        raise NotImplementedError

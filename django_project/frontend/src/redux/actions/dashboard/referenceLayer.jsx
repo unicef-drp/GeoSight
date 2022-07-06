@@ -1,8 +1,8 @@
 import {
   REFERENCE_LAYER_ACTION_NAME,
   REFERENCE_LAYER_ACTION_TYPE_CHANGE
-} from '../reducers/dashboard'
-import { fetchingData } from "../../Requests";
+} from '../../reducers/dashboard/dashboard'
+import { fetchingData } from "../../../Requests";
 
 const REQUEST_REFERENCE_LAYER = 'REQUEST/' + REFERENCE_LAYER_ACTION_NAME;
 const RECEIVE_REFERENCE_LAYER = 'RECEIVE/' + REFERENCE_LAYER_ACTION_NAME;

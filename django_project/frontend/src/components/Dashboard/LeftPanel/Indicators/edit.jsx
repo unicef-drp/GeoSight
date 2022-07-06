@@ -5,7 +5,7 @@
 import React, { Fragment } from 'react';
 import { useSelector } from "react-redux";
 
-import Actions from '../../../../redux/actions'
+import Actions from '../../../../redux/actions/dashboard'
 import EditSection from "../editSection";
 
 /**

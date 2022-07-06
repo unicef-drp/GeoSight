@@ -40,9 +40,45 @@ class SitePreferences(SingletonModel):
         max_length=16,
         default='#1CABE2',
         help_text=_(
-            'Theme color for the website. '
+            'Main color for the website. '
             'Put the hex color with # (e.g. #ffffff) '
-            'or put the text of color. (e.g. blue)')
+            'or put the text of color. (e.g. blue)'
+        )
+    )
+    anti_primary_color = models.CharField(
+        max_length=16,
+        default='#FFFFFF',
+        help_text=_(
+            'Anti of primary color that used for text in primary color.'
+        )
+    )
+    secondary_color = models.CharField(
+        max_length=16,
+        default='#297CC2',
+        help_text=_(
+            'Secondary color that used for example for button. '
+        )
+    )
+    anti_secondary_color = models.CharField(
+        max_length=16,
+        default='#FFFFFF',
+        help_text=_(
+            'Anti of secondary color that used for text in primary color.'
+        )
+    )
+    tertiary_color = models.CharField(
+        max_length=16,
+        default='#374EA2',
+        help_text=_(
+            'Tertiary color that used for example for some special place. '
+        )
+    )
+    anti_tertiary_color = models.CharField(
+        max_length=16,
+        default='#FFFFFF',
+        help_text=_(
+            'Anti of tertiary color that used for text in primary color.'
+        )
     )
     icon = models.FileField(
         upload_to='settings/icons',

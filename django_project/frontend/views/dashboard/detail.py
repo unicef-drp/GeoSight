@@ -9,11 +9,9 @@ from geosight.data.models.dashboard import Dashboard
 class DashboardDetailView(LoginRequiredMixin, BaseDashboardView):
     """Dashboard Detail View."""
 
-    template_name = 'frontend/dashboard/view.html'
-
     @property
     def content_title(self):
-        """Return content title."""
+        """Return content title that used on page title indicator."""
         return 'Dashboard detail'
 
     def get_context_data(self, slug, **kwargs) -> dict:

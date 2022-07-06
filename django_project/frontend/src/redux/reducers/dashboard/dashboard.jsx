@@ -1,4 +1,4 @@
-import { APIReducer } from '../reducers_api';
+import { APIReducer } from '../../reducers_api';
 import indicatorReducer, { INDICATOR_ACTION_NAME } from './indicators'
 import filtersReducer, { FILTERS_ACTION_NAME } from './filters'
 import widgetsReducer, { WIDGET_ACTION_NAME } from './widgets'

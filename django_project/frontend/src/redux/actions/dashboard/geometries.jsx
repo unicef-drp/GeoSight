@@ -1,7 +1,7 @@
 import {
   GEOMETRIES_ACTION_NAME,
   GEOMETRIES_ACTION_TYPE_ADD
-} from '../reducers/geometries';
+} from '../../reducers/dashboard/geometries';
 
 /**
  * Change data of filter.

@@ -8,7 +8,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import $ from 'jquery';
 import vectorTileLayer from 'leaflet-vector-tile-layer';
 
-import Actions from '../../../redux/actions'
+import Actions from '../../../redux/actions/dashboard'
 import { featurePopupContent } from '../../../utils/main'
 import Modal, { ModalContent, ModalHeader } from "../../Modal";
 import { fetchingData } from "../../../Requests";

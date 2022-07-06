@@ -2,7 +2,7 @@ import {
   CONTEXT_LAYER_ACTION_NAME,
   CONTEXT_LAYER_ACTION_TYPE_ADD,
   CONTEXT_LAYER_ACTION_TYPE_REMOVE
-} from '../reducers/dashboard'
+} from '../../reducers/dashboard/dashboard'
 
 
 /**

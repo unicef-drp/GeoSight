@@ -1,4 +1,4 @@
-import { APIReducer } from "../reducers_api";
+import { APIReducer } from "../../reducers_api";
 
 /**
  * INDICATOR reducer

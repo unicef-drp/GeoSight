@@ -4,7 +4,7 @@ import {
   MAP_REFERENCE_LAYER_CHANGED,
   MAP_REMOVE_CONTEXTLAYERS,
   MAP_REMOVE_CONTEXTLAYERS_ALL
-} from '../reducers/map'
+} from '../../reducers/dashboard/map'
 
 
 function change_basemap(payload) {

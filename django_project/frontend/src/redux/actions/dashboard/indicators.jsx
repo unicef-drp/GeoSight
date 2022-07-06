@@ -3,8 +3,8 @@ import {
   INDICATOR_ACTION_TYPE_ADD,
   INDICATOR_ACTION_TYPE_REMOVE,
   INDICATOR_ACTION_TYPE_UPDATE_LEVEL
-} from '../reducers/indicators'
-import { fetchingData } from "../../Requests";
+} from '../../reducers/dashboard/indicators'
+import { fetchingData } from "../../../Requests";
 
 export const REQUEST_INDICATOR = 'REQUEST/' + INDICATOR_ACTION_NAME;
 export const RECEIVE_INDICATOR = 'RECEIVE/' + INDICATOR_ACTION_NAME;

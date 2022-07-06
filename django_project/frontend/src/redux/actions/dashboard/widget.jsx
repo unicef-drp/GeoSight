@@ -3,7 +3,7 @@ import {
   WIDGET_ACTION_TYPE_ADD,
   WIDGET_ACTION_TYPE_REMOVE,
   WIDGET_ACTION_TYPE_UPDATE
-} from '../reducers/widgets'
+} from '../../reducers/dashboard/widgets'
 
 /**
  * Add new Widget.

@@ -22,7 +22,12 @@ class SitePreferencesAdmin(admin.ModelAdmin):
             'fields': ('georepo_url', 'georepo_api_key'),
         }),
         ('Theme', {
-            'fields': ('primary_color', 'icon', 'favicon'),
+            'fields': (
+                'primary_color', 'anti_primary_color',
+                'secondary_color', 'anti_secondary_color',
+                'tertiary_color', 'anti_tertiary_color',
+                'icon', 'favicon'
+            ),
         }),
     )
     inlines = (SitePreferencesImageInline,)

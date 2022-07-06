@@ -33,11 +33,11 @@ class BaseView(View):
         raise NotImplementedError
 
     @property
-    def content_title(self):
-        """Return content title."""
+    def page_title(self):
+        """Return page title that used on tab bar."""
         raise NotImplementedError
 
     @property
-    def page_title(self):
-        """Return page title."""
+    def content_title(self):
+        """Return content title that used on page title indicator."""
         raise NotImplementedError

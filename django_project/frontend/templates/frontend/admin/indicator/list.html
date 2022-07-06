@@ -1,0 +1,12 @@
+{% extends 'frontend/base.html' %}
+{% load render_bundle from webpack_loader %}
+
+{% block extrastyle %}
+{% endblock %}
+
+{% block render_bundle %}
+    {% render_bundle 'Dashboard' %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

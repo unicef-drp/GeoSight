@@ -13,12 +13,10 @@ from geosight.data.models.dashboard import Dashboard
 class DashboardCreateView(LoginRequiredMixin, BaseDashboardView):
     """Dashboard Detail View."""
 
-    template_name = 'frontend/dashboard/view.html'
-
     @property
     def content_title(self):
-        """Return content title."""
-        return 'Dashboard crate'
+        """Return content title that used on page title indicator."""
+        return 'Dashboard create'
 
     def get_context_data(self, **kwargs) -> dict:
         """Return context data."""

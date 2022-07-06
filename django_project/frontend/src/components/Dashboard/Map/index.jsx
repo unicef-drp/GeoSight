@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import L from 'leaflet';
 
 import './style.scss';
-import Actions from '../../../redux/actions'
+import Actions from '../../../redux/actions/dashboard'
 
 /**
  * Map component.

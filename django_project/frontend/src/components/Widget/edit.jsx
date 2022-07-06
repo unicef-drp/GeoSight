@@ -12,7 +12,7 @@ import Select from '@mui/material/Select';
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 
 import { DEFINITION } from "../Widget/index"
-import Actions from "../../redux/actions"
+import Actions from "../../redux/actions/dashboard"
 import Modal, { ModalContent, ModalHeader } from "../Modal";
 import { cleanLayerData } from "../../utils/indicatorData"
 

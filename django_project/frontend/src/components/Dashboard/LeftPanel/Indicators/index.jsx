@@ -10,7 +10,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Accordion from "@mui/material/Accordion";
 
-import Actions from '../../../../redux/actions'
+import Actions from '../../../../redux/actions/dashboard'
 import ReferenceLayer from '../../Map/ReferenceLayer'
 
 /**

@@ -15,9 +15,31 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Rubik:300,300i,500,500i"/>
     <style>
+        {# FOR THE THEME #}
         :root {
             --primary-color: {{ preferences.primary_color }};
-            --anti-primary-color: #fff;
+            --anti-primary-color: {{ preferences.anti_primary_color }};
+
+            --secondary-color: {{ preferences.secondary_color }};
+            --anti-secondary-color: {{ preferences.anti_secondary_color }};
+
+            --tertiary-color: {{ preferences.tertiary_color }};
+            --anti-tertiary-color: {{ preferences.anti_tertiary_color }};
+        }
+
+        .primary-color-box {
+            background-color: var(--primary-color);
+            color: var(--anti-primary-color);
+        }
+
+        .secondary-color-box {
+            background-color: var(--secondary-color);
+            color: var(--anti-secondary-color);
+        }
+
+        .tertiary-color-box {
+            background-color: var(--tertiary-color);
+            color: var(--anti-tertiary-color);
         }
     </style>
     <link href="{% static 'css/navbar.css' %}" rel="stylesheet" type="text/css"

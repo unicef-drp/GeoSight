@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import L from 'leaflet';
 import { Tooltip } from '@mui/material';
 
-import Actions from '../../../../redux/actions'
+import Actions from '../../../../redux/actions/dashboard'
 
 /**
  * Basemaps selector.

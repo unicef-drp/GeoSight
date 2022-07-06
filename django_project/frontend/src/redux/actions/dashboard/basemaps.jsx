@@ -4,7 +4,7 @@ import {
   BASEMAP_ACTION_TYPE_REMOVE,
   BASEMAP_DEFAULT_ACTION_NAME,
   BASEMAP_DEFAULT_ACTION_TYPE_CHANGE
-} from '../reducers/dashboard'
+} from '../../reducers/dashboard/dashboard'
 
 
 /**

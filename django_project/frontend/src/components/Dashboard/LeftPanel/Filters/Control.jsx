@@ -24,7 +24,7 @@ import {
   WHERE_OPERATOR
 } from "../../../../utils/queryExtraction"
 
-import Actions from '../../../../redux/actions'
+import Actions from '../../../../redux/actions/dashboard'
 import { capitalize } from "../../../../utils/main";
 import FilterEditorModal from './Modal'
 import FilterValueInput from './ValueInput'

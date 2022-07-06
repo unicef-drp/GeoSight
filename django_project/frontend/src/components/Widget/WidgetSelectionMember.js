@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { useDispatch } from "react-redux";
-import Actions from "../../redux/actions"
+import Actions from "../../redux/actions/dashboard"
 
 /**
  * Widget Selection Member.

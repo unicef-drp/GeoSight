@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import App, { render } from '../../app';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Actions from '../../redux/actions'
+import Actions from '../../redux/actions/dashboard'
 import LeftPanel from '../../components/Dashboard/LeftPanel'
 import Map from '../../components/Dashboard/Map'
 import RightPanel from '../../components/Dashboard/RightPanel'

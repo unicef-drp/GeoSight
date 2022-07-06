@@ -2,7 +2,7 @@ import {
   INDICATOR_DATA_ACTION_DATA_UPDATE,
   INDICATOR_DATA_ACTION_NAME,
   INDICATOR_DATA_ACTION_TYPE_FILTER
-} from '../reducers/indicatorsData'
+} from '../../reducers/dashboard/indicatorsData'
 
 /**
  * Update indicator data.
