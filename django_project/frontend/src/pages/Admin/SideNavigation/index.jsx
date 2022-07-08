@@ -19,7 +19,7 @@ export default function SideNavigation({ pageName }) {
         <span className='SideNavigation-Row-Name'>Home</span>
       </a>
       <a href={indicatorsUrl}
-         className={'SideNavigation-Row ' + (pageName === pageNames.IndicatorsList ? 'active' : '')}>
+         className={'SideNavigation-Row ' + (pageName === pageNames.Indicators ? 'active' : '')}>
         <ListAltIcon className='SideNavigation-Row-Icon'/>
         <span className='SideNavigation-Row-Name'>Indicators</span>
       </a>

@@ -130,4 +130,18 @@
   .MuiDataGrid-cell {
     padding: 0 1rem !important;
   }
+
+  .MuiDataGrid-cell {
+    a {
+      color: inherit;
+      display: block;
+      height: 20px !important;
+      width: 20px !important;
+
+      svg {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
 }

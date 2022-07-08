@@ -13,6 +13,7 @@ let conf = {
   entry: {
     Dashboard: ['./src/pages/Dashboard'],
     AdminIndicatorList: ['./src/pages/Admin/Indicator/List'],
+    AdminIndicatorForm: ['./src/pages/Admin/Indicator/Form'],
   },
   output: {
     path: path.resolve(__dirname, "./bundles/frontend"),

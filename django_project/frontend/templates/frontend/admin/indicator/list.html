@@ -11,7 +11,10 @@
 {% block scripts %}
     <script>
       urls.api = {
-        'list': '{% url 'indicator-basic-list-api' %}'
+        'create': '{% url 'admin-indicator-create-view' %}',
+        'list': '{% url 'indicator-basic-list-api' %}',
+        'edit': '{% url 'admin-indicator-edit-view' 0 %}',
+        'detail': '{% url 'indicator-detail-api' 0 %}',
       }
     </script>
 {% endblock %}

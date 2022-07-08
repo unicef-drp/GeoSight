@@ -50,6 +50,8 @@
 <body>
 
 <div id="app"></div>
+{% block extra_html %}
+{% endblock %}
 <script>
   const user = {{ user|safe }};
   const csrfmiddlewaretoken = '{{ csrf_token }}';
@@ -65,6 +67,13 @@
       'djangoAdmin': "{% url 'admin:index' %}",
       'indicatorList': "{% url "admin-indicator-list-view" %}",
     }
+  }
+
+  /**
+   * Function before ajax
+   */
+  function beforeAjaxSend(xhr) {
+    xhr.setRequestHeader('X-CSRFToken', csrfmiddlewaretoken);
   }
 </script>
 {% block scripts %}

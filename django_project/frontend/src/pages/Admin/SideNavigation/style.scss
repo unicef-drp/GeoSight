@@ -8,12 +8,14 @@
 .SideNavigation {
   background: white;
   width: 200px;
+  min-width: 200px;
   box-shadow: $box-shadow-sm;
   padding: 0.2rem;
+  overflow-y: auto;
 }
 
 .SideNavigation-Row {
-  border-radius: 0.2rem;
+  border-radius: $border-radius;
   color: $base-black-color;
   cursor: pointer;
   display: flex;

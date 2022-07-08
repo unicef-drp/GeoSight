@@ -17,6 +17,7 @@ $anti-tertiary-color: var(--anti-tertiary-color);
 $base-black-color: rgba(0, 0, 0, 0.87);
 $base-to-white-color: #F4F4F4;
 $base-almost-white-color: #FAFAFA;
+$base-almost-gray-color: #DDDDDD;
 $base-alpha-color: #1CABE220;
 $base-shadow-box: 0 0 16px 4px rgba(#000000, 0.1);
 
@@ -42,6 +43,7 @@ $base-line-height: 1.5;
 
 /* Spacing */
 $global-spacing: 1rem;
+$border-radius: 0.2rem;
 
 /* Media queries */
 $xsmall-range: (0, 543px);

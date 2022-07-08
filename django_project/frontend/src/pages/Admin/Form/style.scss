@@ -1,5 +1,12 @@
 /* ==========================================================================
-   Table style
+   Dashboard specific style
    ========================================================================== */
 
-@import '../../../../app/variables';
+@import '../../../app/variables';
+
+.AdminForm {
+  background-color: white;
+  flex-grow: 1;
+  min-height: 0;
+  overflow: auto;
+}

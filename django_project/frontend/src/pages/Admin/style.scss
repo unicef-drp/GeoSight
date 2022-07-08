@@ -13,16 +13,22 @@ main {
 
   & > div {
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
+
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box; /* Opera/IE 8+ */
   }
 }
 
 .AdminContent {
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
   min-width: 0;
 
   & > div {
-    border-radius: 5px;
+    border-radius: $border-radius;
     margin: 0 1rem 1rem 1rem;
   }
 
@@ -38,6 +44,11 @@ main {
     .AdminContentHeader-Left {
       flex-grow: 1;
       padding: 0.5rem 0;
+
+      span {
+        display: inline-block;
+        margin-right: 0.5rem;
+      }
     }
   }
 
@@ -68,10 +79,6 @@ main {
         }
       }
     }
-  }
-
-  .AdminTableDelete {
-    color: $error;
   }
 
   .MuiDataGrid-actionsCell {

@@ -5,7 +5,7 @@ import SideNavigation from './SideNavigation'
 import './style.scss';
 
 export const pageNames = {
-  IndicatorsList: 'IndicatorsList'
+  Indicators: 'indicator'
 }
 /**
  * Base Admin App
@@ -20,7 +20,8 @@ export default function Admin({ pageName, rightHeader, children }) {
       <div className='AdminContent'>
         <div className='AdminContentHeader'>
           <div className='AdminContentHeader-Left'>
-            <b className='light'>{contentTitle}</b>
+            <b className='light'
+               dangerouslySetInnerHTML={{ __html: contentTitle }}></b>
           </div>
           <div className='AdminContentHeader-Right'>
             {rightHeader ? rightHeader : ''}

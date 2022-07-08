@@ -44,3 +44,69 @@
     margin-top: 1.5rem !important;
   }
 }
+
+/* ==========================================================================
+   Basic Form
+   ========================================================================== */
+
+#BasicForm {
+  padding: 0 2rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+
+    &.required {
+      font-weight: $base-font-bold;
+
+      &:after {
+        content: '*';
+      }
+    }
+  }
+
+  input,
+  select {
+    background: white;
+    border-radius: $border-radius;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    width: 100%;
+  }
+
+  textarea,
+  input,
+  select {
+    border: 1px solid #ccc;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 300;
+
+    &:focus,
+    &:focus-within,
+    &:focus-visible {
+      border: 1px solid $primary-color;
+      outline: none;
+    }
+  }
+
+  textarea {
+    font-family: inherit;
+    font-weight: inherit;
+  }
+
+  .form-helptext {
+    color: gray;
+    font-size: 0.8rem;
+  }
+
+  .BasicFormSection {
+    margin-block-start: 0;
+    margin-block-end: 2rem;
+  }
+
+  .form-error {
+    color: $error;
+    font-size: 0.8rem;
+  }
+}
