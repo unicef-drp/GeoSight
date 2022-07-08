@@ -25,7 +25,10 @@ class IndicatorEditView(SuperuserRequiredMixin, BaseView):
         indicator = get_object_or_404(
             Indicator, id=self.kwargs.get('pk', '')
         )
-        return f'<span>Indicators</span> <span>></span> <span>{indicator.__str__()}</span>'
+        return (
+            f'<span>Indicators</span> <span>></span> '
+            f'<span>{indicator.__str__()}</span>'
+        )
 
     def get_context_data(self, **kwargs) -> dict:
         """Return context data."""
