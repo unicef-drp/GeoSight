@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
 import { render } from '../../../../app';
-import { store } from '../../../../store/admin/Indicator';
+import { store } from '../../../../store/admin';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { AddButton, SaveButton } from "../../../../components/Elements/Button";
 import Admin, { pageNames } from '../../index';
-import AdminForm from '../../Form'
+import AdminForm from '../../Components/Form'
 
 import './style.scss';
 

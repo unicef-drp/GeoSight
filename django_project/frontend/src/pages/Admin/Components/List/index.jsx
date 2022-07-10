@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 
-import Admin from '../index';
-import { AdminTable } from '../Table';
-import { AddButton } from '../../../components/Elements/Button'
-import { IconTextField } from '../../../components/Elements/Input'
-import { fetchingData } from "../../../Requests";
+import Admin from '../../index';
+import { AdminTable } from '../../Table';
+import { AddButton } from '../../../../components/Elements/Button'
+import { IconTextField } from '../../../../components/Elements/Input'
+import { fetchingData } from "../../../../Requests";
 
 import './style.scss';
 

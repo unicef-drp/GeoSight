@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { render } from '../../../../app';
-import { store } from '../../../../store/admin/Indicator';
+import { store } from '../../../../store/admin';
 import { pageNames } from '../../index';
-import AdminList from "../../List";
+import AdminList from "../../Components/List";
 
 import './style.scss';
 

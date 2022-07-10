@@ -1,12 +1,13 @@
 import React from 'react';
 import App from '../../app';
 
-import SideNavigation from './SideNavigation'
+import SideNavigation from './Components/SideNavigation'
 import './style.scss';
 
 export const pageNames = {
   Indicators: 'Indicator',
   Basemaps: 'Basemap',
+  ContextLayer: 'Context Layer',
 }
 /**
  * Base Admin App

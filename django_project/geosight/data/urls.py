@@ -7,7 +7,9 @@ from dashboard.views.dashboard import DashboardListView
 from geosight.data.api.basemap import (
     BasemapListAPI, BasemapDetailAPI
 )
-from geosight.data.api.context_layers import ContextLayerListAPI
+from geosight.data.api.context_layers import (
+    ContextLayerListAPI, ContextLayerDetailAPI
+)
 from geosight.data.api.dashboard import DashboardData
 from geosight.data.api.download_file import (
     DownloadSharepointFile,
@@ -65,6 +67,18 @@ basemap_api = [
     ),
 ]
 # ------------------------------------------------------
+# CONTEXT LAYER API
+context_layer_api = [
+    url(
+        r'^list',
+        ContextLayerListAPI.as_view(), name='context-layer-list-api'
+    ),
+    url(
+        r'^(?P<pk>\d+)',
+        ContextLayerDetailAPI.as_view(), name='context-layer-detail-api'
+    ),
+]
+# ------------------------------------------------------
 api = [
     url(
         r'^context-layer/list$',
@@ -79,6 +93,7 @@ api = [
 
     url(r'^basemap/', include(basemap_api)),
     url(r'^indicator/', include(indicator_api)),
+    url(r'^context-layer/', include(context_layer_api)),
 ]
 
 download = [

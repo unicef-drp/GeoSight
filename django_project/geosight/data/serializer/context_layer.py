@@ -43,12 +43,7 @@ class ContextLayerSerializer(serializers.ModelSerializer):
 
     def get_group(self, obj: ContextLayer):
         """Group name."""
-        if obj.group:
-            groups = obj.group.group_tree_in_list
-            groups.reverse()
-            return '/'.join([group.name for group in groups])
-        else:
-            return ''
+        return obj.group.name if obj.group else ''
 
     class Meta:  # noqa: D106
         model = ContextLayer

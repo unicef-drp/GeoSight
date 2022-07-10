@@ -60,7 +60,14 @@ export default function User() {
           {
             is_staff ? (
               <MenuItem>
-                <a href={adminUrl}>Admin</a>
+                <a href={indicatorsUrl}>Admin</a>
+              </MenuItem>
+            ) : ''
+          }
+          {
+            is_staff ? (
+              <MenuItem>
+                <a href={adminUrl}>Django Admin</a>
               </MenuItem>
             ) : ''
           }
@@ -68,13 +75,6 @@ export default function User() {
             is_staff ? (
               <MenuItem>
                 <a href={backupsUrl}>Backups</a>
-              </MenuItem>
-            ) : ''
-          }
-          {
-            is_staff ? (
-              <MenuItem>
-                <a href={indicatorsUrl}>Indicators</a>
               </MenuItem>
             ) : ''
           }

@@ -1,32 +1,32 @@
-"""Admin Basemap Edit View."""
+"""Admin ContextLayer Edit View."""
 
 from braces.views import SuperuserRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect, reverse, render
 
 from frontend.views._base import BaseView
-from geosight.data.forms.basemap import BasemapForm
-from geosight.data.models.basemap_layer import BasemapLayer
+from geosight.data.forms.context_layer import ContextLayerForm
+from geosight.data.models.context_layer import ContextLayer
 
 
-class BasemapEditView(SuperuserRequiredMixin, BaseView):
-    """Basemap Edit View."""
+class ContextLayerEditView(SuperuserRequiredMixin, BaseView):
+    """ContextLayer Edit View."""
 
-    template_name = 'frontend/admin/basemap/form.html'
+    template_name = 'frontend/admin/context_layer/form.html'
 
     @property
     def page_title(self):
         """Return page title that used on tab bar."""
-        return 'Edit Basemap'
+        return 'Edit Context Layer'
 
     @property
     def content_title(self):
         """Return content title that used on page title basemap."""
         basemap = get_object_or_404(
-            BasemapLayer, id=self.kwargs.get('pk', '')
+            ContextLayer, id=self.kwargs.get('pk', '')
         )
         return (
-            f'<span>Basemap</span> <span>></span> '
+            f'<span>Context Layer</span> <span>></span> '
             f'<span>{basemap.__str__()}</span>'
         )
 
@@ -34,13 +34,13 @@ class BasemapEditView(SuperuserRequiredMixin, BaseView):
         """Return context data."""
         context = super().get_context_data(**kwargs)
         basemap = get_object_or_404(
-            BasemapLayer, id=self.kwargs.get('pk', '')
+            ContextLayer, id=self.kwargs.get('pk', '')
         )
 
         context.update(
             {
-                'form': BasemapForm(
-                    initial=BasemapForm.model_to_initial(basemap)
+                'form': ContextLayerForm(
+                    initial=ContextLayerForm.model_to_initial(basemap)
                 )
             }
         )
@@ -49,9 +49,9 @@ class BasemapEditView(SuperuserRequiredMixin, BaseView):
     def post(self, request, **kwargs):
         """Edit basemap."""
         basemap = get_object_or_404(
-            BasemapLayer, id=self.kwargs.get('pk', '')
+            ContextLayer, id=self.kwargs.get('pk', '')
         )
-        form = BasemapForm(
+        form = ContextLayerForm(
             request.POST,
             instance=basemap
         )

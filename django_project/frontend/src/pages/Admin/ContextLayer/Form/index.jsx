@@ -12,17 +12,16 @@ import './style.scss';
 /**
  * Indicator Form App
  */
-export default function BasemapForm() {
+export default function ContextLayerForm() {
   const [submitted, setSubmitted] = useState(false);
 
   /** Render **/
   const submit = () => {
     setSubmitted(true)
   }
-
   return (
     <Admin
-      pageName={pageNames.Basemaps}
+      pageName={pageNames.ContextLayer}
       rightHeader={
         <SaveButton
           variant="secondary"
@@ -37,4 +36,4 @@ export default function BasemapForm() {
   );
 }
 
-render(BasemapForm, store)
+render(ContextLayerForm, store)
