@@ -1,14 +1,84 @@
 import React, { useEffect, useState } from 'react';
+import $ from "jquery";
+import Tooltip from '@mui/material/Tooltip';
 import SearchIcon from '@mui/icons-material/Search';
 
+import { GridActionsCellItem } from "@mui/x-data-grid";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 import Admin from '../../index';
-import { AdminTable } from '../../Table';
+import { AdminTable } from '../Table';
 import { AddButton } from '../../../../components/Elements/Button'
 import { IconTextField } from '../../../../components/Elements/Input'
 import { fetchingData } from "../../../../Requests";
 
 import './style.scss';
 
+/**
+ *
+ * DEFAULT COLUMNS
+ * @param {String} redirectUrl Url for redirecting after action done.
+ * @param {String} editUrl Url for edit row.
+ * @param {String} detailUrl Url for detail of row.
+ * @returns {list}
+ * @constructor
+ */
+export function COLUMNS(redirectUrl, editUrl = null, detailUrl = null) {
+  editUrl = editUrl ? editUrl : urls.api.edit;
+  detailUrl = detailUrl ? detailUrl : urls.api.detail;
+  return [
+    { field: 'id', headerName: 'id', hide: true, width: 30 },
+    { field: 'name', headerName: 'Indicator Name', flex: 1 },
+    { field: 'description', headerName: 'Description', flex: 1 },
+    { field: 'group', headerName: 'Category', flex: 1 },
+    {
+      field: 'actions',
+      type: 'actions',
+      width: 80,
+      getActions: (params) => {
+        return [
+          <GridActionsCellItem
+            icon={
+              <Tooltip title={`Edit ${params.row.name}`}>
+                <a
+                  href={editUrl.replace('/0', `/${params.id}`)}>
+                  <EditIcon/>
+                </a>
+              </Tooltip>
+            }
+            label="Edit"
+          />,
+          <GridActionsCellItem
+            className='AdminTableDelete'
+            icon={
+              <Tooltip title={`Delete ${params.row.name}`}>
+                <DeleteIcon/>
+              </Tooltip>
+            }
+            label="Delete"
+            onClick={
+              () => {
+                const api = detailUrl.replace('/0', `/${params.id}`);
+                if (confirm(`Are you sure you want to delete : ${params.row.name}?`)) {
+                  $.ajax({
+                    url: api,
+                    method: 'DELETE',
+                    success: function () {
+                      window.location = redirectUrl;
+                    },
+                    beforeSend: beforeAjaxSend
+                  });
+                  return false;
+                }
+              }
+            }
+          />,
+        ]
+      },
+    }
+  ]
+}
 
 /**
  * Admin List App
