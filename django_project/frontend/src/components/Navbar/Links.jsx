@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from "@mui/material/Menu";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Fade from '@mui/material/Fade';
 
 /**
@@ -26,7 +26,11 @@ export default function Links() {
   }
   return <div>
     <button onClick={handleClick}>
-      <div>LINKS <ArrowDropDownIcon/></div>
+      <div className='NavHeader-Options'>
+        <div>LINKS</div>
+        <div className='NavHeader-Options-Icon'><KeyboardArrowDownIcon/>
+        </div>
+      </div>
     </button>
     <Menu
       anchorEl={anchorEl}

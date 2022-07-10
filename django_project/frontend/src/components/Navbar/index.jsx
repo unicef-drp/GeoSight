@@ -9,6 +9,8 @@ import i18n from "i18next";
 import User from './User'
 import Links from './Links'
 
+import './style.scss';
+
 /**
  * Navbar.
  * **/
@@ -21,9 +23,9 @@ export default function NavBar() {
 
   return (
     <header>
-      <div className='nav-header'>
-        <ul className='nav-header menu'>
-          <li className='nav-header-logo'>
+      <div className='NavHeader'>
+        <ul className='NavHeader Menu'>
+          <li className='NavHeaderLogo'>
             <a
               href='/'
               title={i18n.t('Homepage')}
@@ -32,21 +34,21 @@ export default function NavBar() {
               <img src={icon} alt="Logo"/>
             </a>
           </li>
-          <li className='nav-header-title'>
+          <li className='NavHeaderTitle'>
             <button>
               <a
                 href='/'
                 title={i18n.t('Homepage')}
-                className='nav-header-link'
+                className='NavHeaderLink'
               >
                 {site_title}
               </a>
             </button>
           </li>
-          <li>
+          <li className='NavHeaderRight First'>
             <Links/>
           </li>
-          <li>
+          <li className='NavHeaderRight'>
             <User/>
           </li>
         </ul>

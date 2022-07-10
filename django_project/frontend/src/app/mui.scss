@@ -18,12 +18,12 @@
     opacity: 0.5;
 
     &:hover {
-      opacity: 0.5;
+      opacity: 0.5
     }
   }
 
   &:hover {
-    opacity: 0.8;
+    opacity: $base-hovered-opacity;
   }
 }
 
@@ -60,6 +60,15 @@
 .MuiBox-Large {
   .modal--box {
     max-width: 90%;
+  }
+}
+
+.MuiMenuItem-root {
+  padding: 0 !important;
+  a {
+    display: block;
+    padding: 6px 16px;
+    width: 100%;
   }
 }
 

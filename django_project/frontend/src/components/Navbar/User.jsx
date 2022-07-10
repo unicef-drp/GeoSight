@@ -5,7 +5,7 @@
 import React, { Fragment, useState } from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Fade from '@mui/material/Fade';
 
 import LoginModal from '../Login'
@@ -46,7 +46,7 @@ export default function User() {
     return (
       <div>
         <button onClick={handleClick}>
-          <div>{full_name} <ArrowDropDownIcon/></div>
+          <AccountCircleIcon/>
         </button>
         <Menu
           anchorEl={anchorEl}
