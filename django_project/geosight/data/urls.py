@@ -3,7 +3,6 @@ from django.conf.urls import url
 from django.urls import include
 
 from dashboard.views.backups import BackupsView
-from dashboard.views.dashboard import DashboardListView
 from geosight.data.api.basemap import (
     BasemapListAPI, BasemapDetailAPI
 )
@@ -113,5 +112,4 @@ urlpatterns = [
     url(r'^download/', include(download)),
     url(r'^api/', include(api)),
     url(r'^', include('dashboard.urls')),
-    url(r'^', DashboardListView.as_view(), name='dashboard-view'),
 ]

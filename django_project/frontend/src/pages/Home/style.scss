@@ -1,0 +1,84 @@
+/* ==========================================================================
+   Basic Page Content
+   ========================================================================== */
+@import '../../app/variables';
+
+.PageContent {
+  margin-top: 2rem !important;
+  padding: 1rem 1rem 2rem 2rem !important;
+
+  .PageContent-Title {
+    padding-right: 1rem;
+  }
+
+  .PageContent-Content {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .DashboardCard {
+    margin-top: 1rem;
+    margin-right: 1rem;
+    width: 196px;
+    height: 250px;
+
+    .DashboardCard-Wrapper {
+      cursor: pointer;
+      transition: margin 0.2s;
+      background-color: white;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+
+      &:hover {
+        margin-top: -5px;
+      }
+
+      .DashboardCard-Edit {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 2px;
+        font-size: 0.5rem;
+        background: white;
+        display: block;
+        color: $secondary-color;
+        height: 15px;
+        width: 15px;
+        border-bottom-left-radius: 5px;
+
+        svg {
+          height: 100%;
+          width: 100%;
+        }
+      }
+    }
+
+    img {
+      height: 100px;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .DashboardCard-Name,
+    .DashboardCard-Description {
+      padding: 0 1rem;
+    }
+
+    .DashboardCard-Name {
+      padding-top: 1rem;
+      color: $secondary-color;
+      font-weight: $base-font-medium;
+      padding-bottom: 0.3rem;
+    }
+
+    .DashboardCard-Description {
+      padding-bottom: 1rem;
+      font-size: 0.8rem;
+      overflow-y: auto;
+      color: $base-black-color;
+    }
+  }
+}

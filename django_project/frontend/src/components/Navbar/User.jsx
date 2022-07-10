@@ -8,8 +8,6 @@ import MenuItem from '@mui/material/MenuItem';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Fade from '@mui/material/Fade';
 
-import LoginModal from '../Login'
-
 /**
  * User dropdown.
  **/
@@ -27,20 +25,13 @@ export default function User() {
    * Signin Modal Functions.
    **/
   const { username, full_name, is_staff } = user;
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const logoutUrl = urls.logout; // eslint-disable-line no-undef
+  const loginUrl = urls.login; // eslint-disable-line no-undef
   const backupsUrl = urls.backups; // eslint-disable-line no-undef
 
   // Admin URLS
   const adminUrl = urls.admin.djangoAdmin; // eslint-disable-line no-undef
   const indicatorsUrl = urls.admin.indicatorList; // eslint-disable-line no-undef
-
-  const openSignIn = () => {
-    setModalIsOpen(true);
-  };
-  const closeSignIn = () => {
-    setModalIsOpen(false);
-  };
 
   if (username) {
     return (
@@ -87,13 +78,11 @@ export default function User() {
   } else {
     return (
       <Fragment>
-        <button onClick={openSignIn}>
-          SIGNIN
-        </button>
-        <LoginModal
-          open={modalIsOpen}
-          onClosed={closeSignIn}
-        />
+        <a href={loginUrl}>
+          <button>
+            SIGNIN
+          </button>
+        </a>
       </Fragment>
     );
   }

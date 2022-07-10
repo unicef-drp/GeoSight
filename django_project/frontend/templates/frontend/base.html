@@ -42,7 +42,15 @@
             color: var(--anti-tertiary-color) !important;
         }
     </style>
-    {% block extrastyle %}
+    <style>
+        {% if preferences.background_image %}
+            .page {
+                background: url("{{ preferences.background_image }}") no-repeat;
+                background-size: 100%;
+            }
+        {% endif %}
+    </style>
+    {% block style %}
     {% endblock %}
 </head>
 <body>

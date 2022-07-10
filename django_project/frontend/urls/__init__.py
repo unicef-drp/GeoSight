@@ -2,6 +2,8 @@
 from django.conf.urls import url
 from django.urls import include
 
+from frontend.views.home import HomePageView
+
 admin_url = [
     url(r'^indicators/', include('frontend.urls.indicator')),
     url(r'^basemap/', include('frontend.urls.basemap')),
@@ -10,4 +12,5 @@ admin_url = [
 urlpatterns = [
     url(r'^dashboard/', include('frontend.urls.dashboard')),
     url(r'^admin/', include(admin_url)),
+    url(r'^', HomePageView.as_view(), name='home-view'),
 ]

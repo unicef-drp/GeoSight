@@ -25,6 +25,6 @@ if settings.DEBUG:
 
 urlpatterns += [
     url(r'^proxy', ProxyView.as_view(), name='proxy-view'),
-    url(r'^', include('frontend.urls')),
     url(r'^', include('geosight.urls')),
+    url(r'^', include('frontend.urls')),
 ]

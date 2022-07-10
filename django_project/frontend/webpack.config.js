@@ -11,6 +11,7 @@ const minimized = !isDev;
 
 let conf = {
   entry: {
+    Home: ['./src/pages/Home'],
     Dashboard: ['./src/pages/Dashboard'],
     AdminIndicatorList: ['./src/pages/Admin/Indicator/List'],
     AdminIndicatorForm: ['./src/pages/Admin/Indicator/Form'],
