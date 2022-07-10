@@ -9,7 +9,7 @@ import SaveIcon from '@mui/icons-material/Save';
  */
 export function ThemeButton({ children, ...props }) {
   return (
-    <Button {...props}>
+    <Button {...props} className='ThemeButton'>
       {children}
     </Button>
   )
@@ -22,10 +22,11 @@ export function ThemeButton({ children, ...props }) {
 export function AddButton({ text, ...props }) {
   return (
     <ThemeButton {...props}>
-      <AddCircleIcon/> &nbsp;&nbsp;{text}
+      <AddCircleIcon/>{text}
     </ThemeButton>
   )
 }
+
 /** Save button
  * @param {string} text Text of button.
  * @param {string} buttonProps Variant of Button.
@@ -33,7 +34,7 @@ export function AddButton({ text, ...props }) {
 export function SaveButton({ text, ...props }) {
   return (
     <ThemeButton {...props}>
-      <SaveIcon/> &nbsp;&nbsp;{text}
+      <SaveIcon/>{text}
     </ThemeButton>
   )
 }

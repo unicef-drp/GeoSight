@@ -63,3 +63,9 @@ html, body {
 .RemoveButton {
   color: $error;
 }
+
+.ThemeButton {
+  svg {
+    margin-right: 0.5rem;
+  }
+}

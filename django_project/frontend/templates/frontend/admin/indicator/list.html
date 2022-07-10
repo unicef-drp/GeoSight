@@ -15,6 +15,11 @@
         'list': '{% url 'indicator-basic-list-api' %}',
         'edit': '{% url 'admin-indicator-edit-view' 0 %}',
         'detail': '{% url 'indicator-detail-api' 0 %}',
+
+        {# indicator specified url#}
+        'form': '{% url 'indicator-value-form-manager' 0 %}',
+        'map': '{% url 'indicator-value-mapview-manager' 0 %}',
+        'ingestor': '{% url 'meta-ingestor-view' %}',
       }
     </script>
 {% endblock %}

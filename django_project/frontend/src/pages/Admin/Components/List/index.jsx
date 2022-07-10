@@ -15,6 +15,59 @@ import { fetchingData } from "../../../../Requests";
 
 import './style.scss';
 
+
+/**
+ *
+ * DEFAULT COLUMNS ACTIONS
+ * @param {dict} params Params for action.
+ * @param {String} redirectUrl Url for redirecting after action done.
+ * @param {String} editUrl Url for edit row.
+ * @param {String} detailUrl Url for detail of row.
+ * @returns {list}
+ */
+export function COLUMNS_ACTION(params, redirectUrl, editUrl = null, detailUrl = null) {
+  editUrl = editUrl ? editUrl : urls.api.edit;
+  detailUrl = detailUrl ? detailUrl : urls.api.detail;
+  return [
+    <GridActionsCellItem
+      icon={
+        <Tooltip title={`Edit ${params.row.name}`}>
+          <a
+            href={editUrl.replace('/0', `/${params.id}`)}>
+            <EditIcon/>
+          </a>
+        </Tooltip>
+      }
+      label="Edit"
+    />,
+    <GridActionsCellItem
+      className='AdminTableDelete'
+      icon={
+        <Tooltip title={`Delete ${params.row.name}`}>
+          <DeleteIcon/>
+        </Tooltip>
+      }
+      label="Delete"
+      onClick={
+        () => {
+          const api = detailUrl.replace('/0', `/${params.id}`);
+          if (confirm(`Are you sure you want to delete : ${params.row.name}?`)) {
+            $.ajax({
+              url: api,
+              method: 'DELETE',
+              success: function () {
+                window.location = redirectUrl;
+              },
+              beforeSend: beforeAjaxSend
+            });
+            return false;
+          }
+        }
+      }
+    />,
+  ]
+}
+
 /**
  *
  * DEFAULT COLUMNS
@@ -22,7 +75,6 @@ import './style.scss';
  * @param {String} editUrl Url for edit row.
  * @param {String} detailUrl Url for detail of row.
  * @returns {list}
- * @constructor
  */
 export function COLUMNS(redirectUrl, editUrl = null, detailUrl = null) {
   editUrl = editUrl ? editUrl : urls.api.edit;
@@ -37,44 +89,7 @@ export function COLUMNS(redirectUrl, editUrl = null, detailUrl = null) {
       type: 'actions',
       width: 80,
       getActions: (params) => {
-        return [
-          <GridActionsCellItem
-            icon={
-              <Tooltip title={`Edit ${params.row.name}`}>
-                <a
-                  href={editUrl.replace('/0', `/${params.id}`)}>
-                  <EditIcon/>
-                </a>
-              </Tooltip>
-            }
-            label="Edit"
-          />,
-          <GridActionsCellItem
-            className='AdminTableDelete'
-            icon={
-              <Tooltip title={`Delete ${params.row.name}`}>
-                <DeleteIcon/>
-              </Tooltip>
-            }
-            label="Delete"
-            onClick={
-              () => {
-                const api = detailUrl.replace('/0', `/${params.id}`);
-                if (confirm(`Are you sure you want to delete : ${params.row.name}?`)) {
-                  $.ajax({
-                    url: api,
-                    method: 'DELETE',
-                    success: function () {
-                      window.location = redirectUrl;
-                    },
-                    beforeSend: beforeAjaxSend
-                  });
-                  return false;
-                }
-              }
-            }
-          />,
-        ]
+        return COLUMNS_ACTION(params, redirectUrl, editUrl, detailUrl)
       },
     }
   ]
@@ -85,12 +100,13 @@ export function COLUMNS(redirectUrl, editUrl = null, detailUrl = null) {
  * @param {list} columns Columns setup.
  * @param {String} pageName Page Name.
  * @param {String} listUrl Url for list row.
- * @param {String} editUrl Url for edit row.
- * @param {String} detailUrl Url for detail of row.
- * @param {String} redirectUrl Url for redirecting after action done.
+ * @param {React.Component} children React component to be rendered
  */
 export default function AdminList(
-  { columns, pageName, listUrl, editUrl, detailUrl, redirectUrl }
+  {
+    columns, pageName,
+    listUrl, rightHeader = null
+  }
 ) {
   const [data, setData] = useState(null);
   const [search, setSearch] = useState(null);
@@ -128,12 +144,14 @@ export default function AdminList(
       className='Indicator'
       pageName={pageName}
       rightHeader={
-        <a href={urls.api.create}>
-          <AddButton
-            variant="secondary"
-            text={"Add New " + pageName}
-          />
-        </a>
+        rightHeader ? rightHeader : (
+          <a href={urls.api.create}>
+            <AddButton
+              variant="secondary"
+              text={"Add New " + pageName}
+            />
+          </a>
+        )
       }>
 
       <div className='AdminBaseInput Indicator-Search'>
@@ -146,8 +164,7 @@ export default function AdminList(
 
       <div className='AdminList'>
         <AdminTable
-          rows={rows} columns={columns} editUrl={editUrl}
-          detailUrl={detailUrl} redirectUrl={redirectUrl}/>
+          rows={rows} columns={columns}/>
       </div>
     </Admin>
   );
