@@ -7,10 +7,9 @@ import AdminList from "../../List";
 
 import './style.scss';
 
-
 const columns = [
   { field: 'id', headerName: 'id', hide: true, width: 30 },
-  { field: 'name', headerName: 'Indicator Name', flex: 1 },
+  { field: 'name', headerName: 'Basemap Name', flex: 1 },
   { field: 'description', headerName: 'Description', flex: 1 },
   { field: 'group', headerName: 'Category', flex: 1 }
 ]
@@ -18,15 +17,15 @@ const columns = [
 /**
  * Indicator List App
  */
-export default function IndicatorList() {
+export default function BasemapList() {
   return <AdminList
     columns={columns}
-    pageName={pageNames.Indicators}
+    pageName={pageNames.Basemaps}
     listUrl={urls.api.list}
     editUrl={urls.api.edit}
     detailUrl={urls.api.detail}
-    redirectUrl={urls.admin.indicatorList}
+    redirectUrl={urls.admin.basemapList}
   />
 }
 
-render(IndicatorList, store)
+render(BasemapList, store)

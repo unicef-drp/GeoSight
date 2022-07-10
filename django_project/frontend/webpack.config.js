@@ -14,6 +14,8 @@ let conf = {
     Dashboard: ['./src/pages/Dashboard'],
     AdminIndicatorList: ['./src/pages/Admin/Indicator/List'],
     AdminIndicatorForm: ['./src/pages/Admin/Indicator/Form'],
+    AdminBasemapList: ['./src/pages/Admin/Basemap/List'],
+    AdminBasemapForm: ['./src/pages/Admin/Basemap/Form'],
   },
   output: {
     path: path.resolve(__dirname, "./bundles/frontend"),

@@ -4,7 +4,9 @@ from django.urls import include
 
 from dashboard.views.backups import BackupsView
 from dashboard.views.dashboard import DashboardListView
-from geosight.data.api.basemap import BasemapListAPI
+from geosight.data.api.basemap import (
+    BasemapListAPI, BasemapDetailAPI
+)
 from geosight.data.api.context_layers import ContextLayerListAPI
 from geosight.data.api.dashboard import DashboardData
 from geosight.data.api.download_file import (
@@ -51,12 +53,19 @@ indicator_api = [
     ),
 ]
 # ------------------------------------------------------
-api = [
+# BASEMAP API
+basemap_api = [
     url(
-        r'^basemap/list$',
-        BasemapListAPI.as_view(),
-        name='basemap-list-api'
+        r'^list',
+        BasemapListAPI.as_view(), name='basemap-list-api'
     ),
+    url(
+        r'^(?P<pk>\d+)',
+        BasemapDetailAPI.as_view(), name='basemap-detail-api'
+    ),
+]
+# ------------------------------------------------------
+api = [
     url(
         r'^context-layer/list$',
         ContextLayerListAPI.as_view(),
@@ -68,6 +77,7 @@ api = [
         name='dashboard-data-api'
     ),
 
+    url(r'^basemap/', include(basemap_api)),
     url(r'^indicator/', include(indicator_api)),
 ]
 

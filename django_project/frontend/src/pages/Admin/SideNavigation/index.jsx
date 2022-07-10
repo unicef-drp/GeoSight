@@ -11,17 +11,23 @@ import './style.scss';
  * @param {string} pageName Page name indicator
  */
 export default function SideNavigation({ pageName }) {
-  const indicatorsUrl = urls.admin.indicatorList; // eslint-disable-line no-undef
+  const indicatorList = urls.admin.indicatorList; // eslint-disable-line no-undef
+  const basemapList = urls.admin.basemapList; // eslint-disable-line no-undef
   return (
     <div className='SideNavigation'>
       <a href='/' className='SideNavigation-Row'>
         <HomeIcon className='SideNavigation-Row-Icon'/>
         <span className='SideNavigation-Row-Name'>Home</span>
       </a>
-      <a href={indicatorsUrl}
+      <a href={indicatorList}
          className={'SideNavigation-Row ' + (pageName === pageNames.Indicators ? 'active' : '')}>
         <ListAltIcon className='SideNavigation-Row-Icon'/>
         <span className='SideNavigation-Row-Name'>Indicators</span>
+      </a>
+      <a href={basemapList}
+         className={'SideNavigation-Row ' + (pageName === pageNames.Basemaps ? 'active' : '')}>
+        <ListAltIcon className='SideNavigation-Row-Icon'/>
+        <span className='SideNavigation-Row-Name'>Basemaps</span>
       </a>
     </div>
   );

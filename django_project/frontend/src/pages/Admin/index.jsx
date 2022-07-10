@@ -5,7 +5,8 @@ import SideNavigation from './SideNavigation'
 import './style.scss';
 
 export const pageNames = {
-  Indicators: 'indicator'
+  Indicators: 'Indicator',
+  Basemaps: 'Basemap',
 }
 /**
  * Base Admin App

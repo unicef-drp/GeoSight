@@ -4,6 +4,7 @@ from django.urls import include
 
 admin_url = [
     url(r'^indicators/', include('frontend.urls.indicator')),
+    url(r'^basemap/', include('frontend.urls.basemap')),
 ]
 urlpatterns = [
     url(r'^dashboard/', include('frontend.urls.dashboard')),

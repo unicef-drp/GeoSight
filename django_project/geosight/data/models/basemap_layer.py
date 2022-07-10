@@ -12,6 +12,12 @@ class BasemapLayerType(object):
     WMS = 'WMS'
 
 
+class BasemapGroup(AbstractTerm):
+    """The group of basemap."""
+
+    pass
+
+
 class BasemapLayer(AbstractTerm, IconTerm):
     """Model of BasemapLayer."""
 
@@ -26,11 +32,10 @@ class BasemapLayer(AbstractTerm, IconTerm):
             (BasemapLayerType.WMS, BasemapLayerType.WMS),
         )
     )
-    dashboard_default = models.BooleanField(
-        default=False,
-        help_text=_(
-            "Is the basemap used as default on dashboard editor."
-        )
+    group = models.ForeignKey(
+        BasemapGroup,
+        on_delete=models.SET_NULL,
+        blank=True, null=True
     )
 
     class Meta:  # noqa: D106

@@ -14,7 +14,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
  * @param {String} redirectUrl Url for redirecting after action done.
  */
 export function AdminTable(
-  { rows, columns, editUrl, detailUrl, redirectUrl }
+  {
+    rows, columns,
+    editUrl, detailUrl, redirectUrl
+  }
 ) {
   /** Add column  */
   columns = columns.concat([

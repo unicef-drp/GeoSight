@@ -14,12 +14,13 @@ import './style.scss';
  * Admin List App
  * @param {list} columns Columns setup.
  * @param {String} pageName Page Name.
+ * @param {String} listUrl Url for list row.
  * @param {String} editUrl Url for edit row.
  * @param {String} detailUrl Url for detail of row.
  * @param {String} redirectUrl Url for redirecting after action done.
  */
 export default function AdminList(
-  { columns, pageName, editUrl, detailUrl, redirectUrl }
+  { columns, pageName, listUrl, editUrl, detailUrl, redirectUrl }
 ) {
   const [data, setData] = useState(null);
   const [search, setSearch] = useState(null);
@@ -33,7 +34,7 @@ export default function AdminList(
 
   // Show modal when url changed
   useEffect(() => {
-    fetchData(urls.api.list)
+    fetchData(listUrl)
   }, [])
 
   /** Search on change */
@@ -60,14 +61,14 @@ export default function AdminList(
         <a href={urls.api.create}>
           <AddButton
             variant="secondary"
-            text="Add New Indicator"
+            text={"Add New " + pageName}
           />
         </a>
       }>
 
       <div className='AdminBaseInput Indicator-Search'>
         <IconTextField
-          placeholder='Search Indicator'
+          placeholder={"Search " + pageName}
           iconStart={<SearchIcon/>}
           onChange={searchOnChange}
         />
