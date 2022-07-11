@@ -10,7 +10,7 @@ admin_url = [
     url(r'^context-layer/', include('frontend.urls.context_layer')),
 ]
 urlpatterns = [
-    url(r'^dashboard/', include('frontend.urls.dashboard')),
+    url(r'^project/', include('frontend.urls.dashboard')),
     url(r'^admin/', include(admin_url)),
     url(r'^', HomePageView.as_view(), name='home-view'),
 ]

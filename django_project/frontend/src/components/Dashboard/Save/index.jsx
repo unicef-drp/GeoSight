@@ -153,7 +153,7 @@ export default function SaveDashboard() {
           Dashboard Detail
         </ModalHeader>
         <ModalContent>
-          <form method='POST' onSubmit={submitForm}>
+          <form method='POST' onSubmit={submitForm} className='MuiFormControl-Form'>
             <FormControl>
               <InputLabel>Title</InputLabel>
               <Input type="text" name="name" placeholder="Dashboard title"

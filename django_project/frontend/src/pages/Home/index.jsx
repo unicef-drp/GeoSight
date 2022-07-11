@@ -14,11 +14,11 @@ export default function Home() {
   return (
     <BasicPage className='Home'>
       <div className='PageContent-Title'>
-        <div className='PageContent-TitleText'>Select Dashboard</div>
+        <div className='PageContent-TitleText'>Select Project</div>
         <a href={urls.api.create}>
           <AddButton
             variant="secondary"
-            text={"New Dashboard"}
+            text={"New Project"}
           />
         </a>
       </div>
@@ -51,7 +51,7 @@ export default function Home() {
               )
             })}
           </div>
-        ) : <div>No Dashboard Found</div>
+        ) : <div>No Project Found</div>
       }
     </BasicPage>
   )
