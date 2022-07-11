@@ -12,6 +12,7 @@ from geosight.data.models.dashboard import Dashboard
 
 class DashboardCreateView(LoginRequiredMixin, BaseDashboardView):
     """Dashboard Detail View."""
+    template_name = 'frontend/admin/dashboard/editor.html'
 
     @property
     def content_title(self):
@@ -22,7 +23,6 @@ class DashboardCreateView(LoginRequiredMixin, BaseDashboardView):
         """Return context data."""
         context = super().get_context_data(**kwargs)
         context['dashboard'] = {'id': CREATE_SLUG}
-        context['edit_mode'] = True
         return context
 
     def post(self, request, **kwargs):

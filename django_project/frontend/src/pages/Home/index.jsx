@@ -1,10 +1,8 @@
 import React from 'react';
-import { AddButton } from "../../components/Elements/Button";
 import { store } from '../../store/admin';
 import { render } from '../../app';
 import BasicPage from '../Basic'
 import './style.scss';
-import SettingsIcon from "@mui/icons-material/Settings";
 
 /**
  * Home Page App
@@ -15,12 +13,6 @@ export default function Home() {
     <BasicPage className='Home'>
       <div className='PageContent-Title'>
         <div className='PageContent-TitleText'>Select Project</div>
-        <a href={urls.api.create}>
-          <AddButton
-            variant="secondary"
-            text={"New Project"}
-          />
-        </a>
       </div>
       {
         dashboardsData.length > 0 ? (
@@ -40,12 +32,6 @@ export default function Home() {
                         {dashboard.description}
                       </div>
                     </a>
-                    {dashboard.edit_url ? (
-                      <a href={dashboard.edit_url}
-                         className='DashboardCard-Edit'>
-                        <SettingsIcon/>
-                      </a>
-                    ) : ''}
                   </div>
                 </div>
               )

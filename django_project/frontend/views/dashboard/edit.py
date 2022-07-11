@@ -13,6 +13,7 @@ from geosight.data.models.dashboard import Dashboard
 
 class DashboardEditView(LoginRequiredMixin, BaseDashboardView):
     """Dashboard Edit View."""
+    template_name = 'frontend/admin/dashboard/editor.html'
 
     @property
     def content_title(self):
@@ -29,7 +30,6 @@ class DashboardEditView(LoginRequiredMixin, BaseDashboardView):
             raise PermissionDenied()
 
         context['dashboard'] = {'id': dashboard.slug}
-        context['edit_mode'] = True
         return context
 
     def post(self, request, slug, **kwargs):
