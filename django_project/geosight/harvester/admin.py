@@ -86,15 +86,12 @@ class HarvesterAdmin(admin.ModelAdmin):
 
     def uuid(self, object: Harvester):
         """Return unique ID."""
-        if object.indicator:
-            return object.unique_id
-        else:
-            url = reverse(
-                "harvester-detail", args=[object.unique_id]
-            )
-            return mark_safe(
-                f'<a href="{url}">{object.unique_id}</a>'
-            )
+        url = reverse(
+            "harvester-detail", args=[object.unique_id]
+        )
+        return mark_safe(
+            f'<a href="{url}">{object.unique_id}</a>'
+        )
 
     def logs(self, object: Harvester):
         """Return logs."""
