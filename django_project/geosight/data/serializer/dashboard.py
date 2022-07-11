@@ -102,3 +102,29 @@ class DashboardSerializer(serializers.ModelSerializer):
             'widgets', 'extent', 'defaultBasemapLayer',
             'filters'
         )
+
+
+class DashboardBasicSerializer(serializers.ModelSerializer):
+    """Serializer for Dashboard."""
+
+    id = serializers.SerializerMethodField()
+    group = serializers.SerializerMethodField()
+    modified_at = serializers.SerializerMethodField()
+
+    def get_id(self, obj: Dashboard):
+        """Return dashboard id."""
+        return obj.slug
+
+    def get_group(self, obj: Dashboard):
+        """Return dashboard group name."""
+        return obj.group.name if obj.group else ''
+
+    def get_modified_at(self, obj: Dashboard):
+        """Return dashboard last modified."""
+        return obj.modified_at.strftime('%Y-%m-%d %H:%M:%S')
+
+    class Meta:  # noqa: D106
+        model = Dashboard
+        fields = (
+            'id', 'icon', 'name', 'modified_at', 'description', 'group'
+        )

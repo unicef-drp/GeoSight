@@ -31,7 +31,7 @@ export default function User() {
 
   // Admin URLS
   const adminUrl = urls.admin.djangoAdmin; // eslint-disable-line no-undef
-  const indicatorsUrl = urls.admin.indicatorList; // eslint-disable-line no-undef
+  const dashboardUrl = urls.admin.dashboardList; // eslint-disable-line no-undef
 
   if (username) {
     return (
@@ -51,7 +51,7 @@ export default function User() {
           {
             is_staff ? (
               <MenuItem>
-                <a href={indicatorsUrl}>Admin</a>
+                <a href={dashboardUrl}>Admin</a>
               </MenuItem>
             ) : ''
           }

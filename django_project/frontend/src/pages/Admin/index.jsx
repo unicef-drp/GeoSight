@@ -5,6 +5,7 @@ import SideNavigation from './Components/SideNavigation'
 import './style.scss';
 
 export const pageNames = {
+  Dashboard: 'Project',
   Indicators: 'Indicator',
   Basemaps: 'Basemap',
   ContextLayer: 'Context Layer',

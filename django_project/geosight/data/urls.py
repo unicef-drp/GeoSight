@@ -9,7 +9,9 @@ from geosight.data.api.basemap import (
 from geosight.data.api.context_layers import (
     ContextLayerListAPI, ContextLayerDetailAPI
 )
-from geosight.data.api.dashboard import DashboardData
+from geosight.data.api.dashboard import (
+    DashboardData, DashboardDetail, DashboardListAPI
+)
 from geosight.data.api.download_file import (
     DownloadSharepointFile,
     DownloadBackupsFile
@@ -23,6 +25,24 @@ from geosight.data.api.indicator_value import (
     IndicatorValueDetail
 )
 
+# ------------------------------------------------------
+# DASHBOARD API
+dashboard_api = [
+    url(
+        r'^list',
+        DashboardListAPI.as_view(), name='dashboard-list-api'
+    ),
+    url(
+        r'^(?P<slug>[^/]+)/data$',
+        DashboardData.as_view(),
+        name='dashboard-data-api'
+    ),
+    url(
+        r'^(?P<slug>[^/]+)$',
+        DashboardDetail.as_view(),
+        name='dashboard-detail-api'
+    ),
+]
 # ------------------------------------------------------
 # INDICATOR API
 indicator_api = [
@@ -79,17 +99,7 @@ context_layer_api = [
 ]
 # ------------------------------------------------------
 api = [
-    url(
-        r'^context-layer/list$',
-        ContextLayerListAPI.as_view(),
-        name='context-layer-list-api'
-    ),
-    url(
-        r'^dashboard/(?P<slug>[^/]+)$',
-        DashboardData.as_view(),
-        name='dashboard-data-api'
-    ),
-
+    url(r'^dashboard/', include(dashboard_api)),
     url(r'^basemap/', include(basemap_api)),
     url(r'^indicator/', include(indicator_api)),
     url(r'^context-layer/', include(context_layer_api)),

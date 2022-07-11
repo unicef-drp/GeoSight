@@ -11,9 +11,10 @@ import './style.scss';
  * Indicator List App
  */
 export default function ContextLayerList() {
+  const pageName = pageNames.ContextLayer
   return <AdminList
-    columns={COLUMNS(urls.admin.contextLayerList)}
-    pageName={pageNames.ContextLayer}
+    columns={COLUMNS(pageName, urls.admin.contextLayerList)}
+    pageName={pageName}
     listUrl={urls.api.list}
   />
 }

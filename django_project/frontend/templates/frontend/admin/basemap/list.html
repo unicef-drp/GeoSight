@@ -11,8 +11,8 @@
 {% block scripts %}
     <script>
       urls.api = {
-        'create': '{% url 'admin-basemap-create-view' %}',
         'list': '{% url 'basemap-list-api' %}',
+        'create': '{% url 'admin-basemap-create-view' %}',
         'edit': '{% url 'admin-basemap-edit-view' 0 %}',
         'detail': '{% url 'basemap-detail-api' 0 %}',
       }

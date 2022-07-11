@@ -20,7 +20,8 @@ import './style.scss';
  * Indicator List App
  */
 export default function IndicatorList() {
-  const columns = COLUMNS(urls.admin.indicatorList);
+  const pageName = pageNames.Indicators
+  const columns = COLUMNS(pageName, urls.admin.indicatorList);
 
   columns[4] = {
     field: 'actions',
@@ -56,7 +57,7 @@ export default function IndicatorList() {
   }
   return <AdminList
     columns={columns}
-    pageName={pageNames.Indicators}
+    pageName={pageName}
     listUrl={urls.api.list}
     rightHeader={
       <div>

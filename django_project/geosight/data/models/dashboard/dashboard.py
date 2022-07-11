@@ -3,7 +3,9 @@ from django.contrib.auth import get_user_model
 from django.contrib.gis.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from core.models.general import SlugTerm, IconTerm
+from core.models.general import (
+    SlugTerm, IconTerm, AbstractTerm, AbstractEditData
+)
 from geosight.data.models.basemap_layer import BasemapLayer
 from geosight.data.models.context_layer import ContextLayer
 from geosight.data.models.indicator import Indicator
@@ -12,7 +14,13 @@ from geosight.georepo.reference_layer import ReferenceLayer
 User = get_user_model()
 
 
-class Dashboard(SlugTerm, IconTerm):
+class DashboardGroup(AbstractTerm):
+    """The group of dashboard."""
+
+    pass
+
+
+class Dashboard(SlugTerm, IconTerm, AbstractEditData):
     """Dashboard model.
 
     One dashboard just contains one indicator.
@@ -55,6 +63,13 @@ class Dashboard(SlugTerm, IconTerm):
         on_delete=models.CASCADE
     )
     filters = models.TextField(
+        blank=True, null=True
+    )
+
+    # group
+    group = models.ForeignKey(
+        DashboardGroup,
+        on_delete=models.SET_NULL,
         blank=True, null=True
     )
 

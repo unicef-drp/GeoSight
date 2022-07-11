@@ -71,17 +71,18 @@ export function COLUMNS_ACTION(params, redirectUrl, editUrl = null, detailUrl = 
 /**
  *
  * DEFAULT COLUMNS
+ * @param {String} pageName Page name.
  * @param {String} redirectUrl Url for redirecting after action done.
  * @param {String} editUrl Url for edit row.
  * @param {String} detailUrl Url for detail of row.
  * @returns {list}
  */
-export function COLUMNS(redirectUrl, editUrl = null, detailUrl = null) {
+export function COLUMNS(pageName, redirectUrl, editUrl = null, detailUrl = null) {
   editUrl = editUrl ? editUrl : urls.api.edit;
   detailUrl = detailUrl ? detailUrl : urls.api.detail;
   return [
     { field: 'id', headerName: 'id', hide: true, width: 30 },
-    { field: 'name', headerName: 'Indicator Name', flex: 1 },
+    { field: 'name', headerName: pageName + ' Name', flex: 1 },
     { field: 'description', headerName: 'Description', flex: 1 },
     { field: 'group', headerName: 'Category', flex: 1 },
     {

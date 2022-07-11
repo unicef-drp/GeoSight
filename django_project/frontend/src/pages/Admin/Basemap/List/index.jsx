@@ -11,9 +11,10 @@ import './style.scss';
  * Indicator List App
  */
 export default function BasemapList() {
+  const pageName = pageNames.Basemaps
   return <AdminList
-    columns={COLUMNS(urls.admin.basemapList)}
-    pageName={pageNames.Basemaps}
+    columns={COLUMNS(pageName, urls.admin.basemapList)}
+    pageName={pageName}
     listUrl={urls.api.list}
   />
 }

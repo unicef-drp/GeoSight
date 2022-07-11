@@ -11,8 +11,8 @@
 {% block scripts %}
     <script>
       urls.api = {
-        'create': '{% url 'admin-context-layer-create-view' %}',
         'list': '{% url 'context-layer-list-api' %}',
+        'create': '{% url 'admin-context-layer-create-view' %}',
         'edit': '{% url 'admin-context-layer-edit-view' 0 %}',
         'detail': '{% url 'context-layer-detail-api' 0 %}',
       }
