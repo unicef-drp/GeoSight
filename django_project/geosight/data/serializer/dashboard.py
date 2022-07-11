@@ -6,6 +6,10 @@ from rest_framework import serializers
 from geosight.data.models.dashboard import Dashboard, Widget
 from geosight.data.serializer.basemap_layer import BasemapLayerSerializer
 from geosight.data.serializer.context_layer import ContextLayerSerializer
+from geosight.data.serializer.dashboard_relation import (
+    DashboardIndicatorSerializer, DashboardBasemapSerializer,
+    DashboardContextLayerSerializer
+)
 from geosight.data.serializer.indicator import BasicIndicatorSerializer
 
 
@@ -45,28 +49,39 @@ class DashboardSerializer(serializers.ModelSerializer):
 
     def get_indicators(self, obj: Dashboard):
         """Return indicators."""
-        if obj.id:
-            return BasicIndicatorSerializer(obj.indicators, many=True).data
-        else:
-            return []
+        output = []
+        for model in obj.dashboardindicator_set.all():
+            data = BasicIndicatorSerializer(model.indicator).data
+            data.update(
+                DashboardIndicatorSerializer(model).data
+            )
+            output.append(data)
+
+        return output
 
     def get_basemapsLayers(self, obj: Dashboard):
         """Return basemapsLayers."""
-        if obj.id:
-            return BasemapLayerSerializer(
-                obj.basemap_layers.order_by('id'), many=True
-            ).data
-        else:
-            return []
+        output = []
+        for model in obj.dashboardbasemap_set.all():
+            data = BasemapLayerSerializer(model.basemap).data
+            data.update(
+                DashboardBasemapSerializer(model).data
+            )
+            output.append(data)
+
+        return output
 
     def get_contextLayers(self, obj: Dashboard):
         """Return contextLayers."""
-        if obj.id:
-            return ContextLayerSerializer(
-                obj.context_layers, many=True
-            ).data
-        else:
-            return []
+        output = []
+        for model in obj.dashboardcontextlayer_set.all():
+            data = ContextLayerSerializer(model.context_layer).data
+            data.update(
+                DashboardContextLayerSerializer(model).data
+            )
+            output.append(data)
+
+        return output
 
     def get_widgets(self, obj: Dashboard):
         """Return widgets."""

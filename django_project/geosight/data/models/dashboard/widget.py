@@ -3,7 +3,9 @@ from django.contrib.gis.db import models
 
 from core.models.general import AbstractTerm
 from geosight.data.models.context_layer import ContextLayer
-from geosight.data.models.dashboard.dashboard import Dashboard
+from geosight.data.models.dashboard.dashboard_relation import (
+    DashboardRelation
+)
 from geosight.data.models.indicator import Indicator
 
 
@@ -13,7 +15,7 @@ class LayerUsed(object):
     INDICATOR = 'Indicator'
 
 
-class Widget(AbstractTerm):
+class Widget(AbstractTerm, DashboardRelation):
     """Widget model."""
 
     @property
@@ -26,14 +28,6 @@ class Widget(AbstractTerm):
             return self.context_layer.id
         else:
             return 0
-
-    dashboard = models.ForeignKey(
-        Dashboard,
-        help_text=(
-            "Dashboard this plugin is used."
-        ),
-        on_delete=models.CASCADE
-    )
 
     unit = models.CharField(
         max_length=64,
@@ -92,11 +86,6 @@ class Widget(AbstractTerm):
         help_text=(
             "Use this layer when layer used is context layer."
         )
-    )
-
-    # order of indicator rendered on the list
-    order = models.IntegerField(
-        default=0
     )
 
     def __str__(self):

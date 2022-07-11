@@ -12,6 +12,7 @@ import Accordion from "@mui/material/Accordion";
 
 import Actions from '../../../../redux/actions/dashboard'
 import ReferenceLayer from '../../Map/ReferenceLayer'
+import { layerInGroup } from "../../../../utils/layers";
 
 /**
  * Indicators selector.
@@ -19,8 +20,13 @@ import ReferenceLayer from '../../Map/ReferenceLayer'
 export function Indicators() {
   const dispatch = useDispatch();
   const { indicators } = useSelector(state => state.dashboard.data);
+  const indicatorsEnabled = indicators.filter(indicator => {
+    return indicator.visible_by_default
+  })
   const indicatorData = useSelector(state => state.indicatorData);
-  const [currentIndicator, setCurrentIndicator] = useState(0);
+  const [currentIndicator, setCurrentIndicator] = useState(
+    indicatorsEnabled[0] ? indicatorsEnabled[0].id : 0
+  );
 
   const change = (checked, id) => {
     if (checked) {
@@ -43,30 +49,61 @@ export function Indicators() {
 
   // Get selected indicator data
   let selectedIndicator = null;
-  if (indicators && indicatorData[currentIndicator]) {
-    selectedIndicator = indicatorData[currentIndicator];
+  if (indicators) {
+    selectedIndicator = indicators.filter(indicator => {
+      return indicator.id === currentIndicator
+    })[0]
   }
 
-  return (
-    <Fragment>
-      {
-        indicators !== undefined ?
-          indicators.map(
-            (layer, idx) => (
+
+  /**
+   * Context Layer Row.
+   * @param {str} groupNumber Group number.
+   * @param {str} groupName Group name.
+   * @param {dict} group Group data.
+   */
+  const LayerRow = ({ groupNumber, groupName, group }) => {
+    if (!groupName) {
+      return <div></div>
+    }
+    const className = groupNumber > 1 ? 'LayerGroup' : 'LayerGroup Empty'
+
+    return <div className={className}>
+      <div className='LayerGroupName'><b
+        className='light'>{groupName}</b></div>
+      <div className='LayerGroupList'>
+        {
+          group.layers.map(layer => (
               <div className='dashboard__left_side__row'
-                   key={idx}>
+                   key={layer.id}>
                 <Radio
-                  checked={currentIndicator === idx}
+                  checked={currentIndicator === layer.id}
                   onChange={() => {
-                    change(event.target.checked, idx)
+                    change(event.target.checked, layer.id)
                   }}/>
                 <div className='text title'>
-                  <div>{layer.group} / {layer.name}</div>
+                  <div>{layer.name}</div>
                 </div>
               </div>
             )
           )
-          : <div>Loading</div>
+        }
+      </div>
+    </div>
+  }
+
+  const groups = layerInGroup(indicators)
+  return (
+    <Fragment>
+      {
+        Object.keys(groups.groups).map(
+          groupName => (
+            <LayerRow
+              groupNumber={Object.keys(groups.groups).length}
+              key={groupName} groupName={groupName}
+              group={groups.groups[groupName]}/>
+          )
+        )
       }
       <ReferenceLayer currentIndicator={selectedIndicator}/>
     </Fragment>

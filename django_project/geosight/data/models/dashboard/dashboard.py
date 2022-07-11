@@ -20,6 +20,7 @@ class DashboardGroup(AbstractTerm):
     pass
 
 
+
 class Dashboard(SlugTerm, IconTerm, AbstractEditData):
     """Dashboard model.
 
