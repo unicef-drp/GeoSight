@@ -22,9 +22,7 @@ class DashboardData(APIView):
             data = DashboardSerializer(dashboard).data
         else:
             dashboard = Dashboard()
-            basemaps = BasemapLayer.objects.filter(
-                dashboard_default=True
-            )
+            basemaps = BasemapLayer.objects.all()
             data = DashboardSerializer(dashboard).data
             data['basemapsLayers'] = BasemapLayerSerializer(
                 basemaps, many=True).data
