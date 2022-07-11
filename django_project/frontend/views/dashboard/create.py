@@ -12,6 +12,7 @@ from geosight.data.models.dashboard import Dashboard
 
 class DashboardCreateView(LoginRequiredMixin, BaseDashboardView):
     """Dashboard Detail View."""
+
     template_name = 'frontend/admin/dashboard/editor.html'
 
     @property
