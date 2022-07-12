@@ -42,7 +42,7 @@ class ContextLayerSerializer(serializers.ModelSerializer):
         return style
 
     def get_category(self, obj: ContextLayer):
-        """category name."""
+        """Return category name."""
         return obj.group.name if obj.group else ''
 
     class Meta:  # noqa: D106

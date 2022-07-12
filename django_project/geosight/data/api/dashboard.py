@@ -6,9 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.permissions import AdminAuthenticationPermission
-from geosight.data.models.basemap_layer import BasemapLayer
 from geosight.data.models.dashboard import Dashboard
-from geosight.data.serializer.basemap_layer import BasemapLayerSerializer
 from geosight.data.serializer.dashboard import (
     DashboardBasicSerializer, DashboardSerializer
 )
