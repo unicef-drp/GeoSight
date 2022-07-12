@@ -9,13 +9,12 @@ import MenuItem from "@mui/material/MenuItem";
 
 /**
  * Edit section for widget.
- * @param {int} idx Index of widget
  * @param {object} data Widget Data.
  * @param {object} selectedData selectedData Data.
  * @param {function} setAdditionalData selectedData Data.
  */
 export default function SummaryGroupWidgetEditSection(
-  { idx, data, selectedData, setAdditionalData }
+  { data, selectedData, setAdditionalData }
 ) {
   const [property2, setProperty2] = useState(data.property_2 ? data.property_2 : '');
 

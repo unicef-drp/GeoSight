@@ -28,6 +28,7 @@ import { fetchingData } from "../../../../Requests";
  * @param {Function} removeLayer Function of remove layer.
  * @param {Function} changeLayer Function of change layer.
  * @param {Function} addLayerInGroup Function of addLayerInGroup.
+ * @param {Function} editLayerInGroup When edit layer in group
  */
 export function FormGroup(
   {
@@ -41,11 +42,17 @@ export function FormGroup(
     addLayer,
     removeLayer,
     changeLayer,
-    addLayerInGroup
+    addLayerInGroup,
+    editLayerInGroup
   }) {
   const [editName, setEditName] = useState(false);
   const [name, setName] = useState(groupName);
   const [open, setOpen] = useState(false);
+
+  // Group name Submitted
+  useEffect(() => {
+    setName(groupName)
+  }, [layers])
 
   // Restructure columns
   const columns = [].concat(COLUMNS(pageName));
@@ -126,6 +133,11 @@ export function FormGroup(
         </div>
       </th>
       <th className='VisibilityAction'><VisibilityIcon/></th>
+      {
+        editLayerInGroup ?
+          <th className='VisibilityAction'/> : ''
+      }
+
       <th className='MuiButtonLike RemoveAction'>
         <RemoveCircleIcon onClick={() => {
           removeGroup(name)
@@ -152,6 +164,15 @@ export function FormGroup(
                   changeLayer(layer);
                 }}/>
             </td>
+            {
+              editLayerInGroup ?
+                <td className='MuiButtonLike RemoveAction'>
+                  <EditIcon onClick={() => {
+                    editLayerInGroup(layer)
+                  }}/>
+                </td> : ''
+            }
+
             <td className='MuiButtonLike RemoveAction'>
               <RemoveCircleIcon onClick={() => {
                 removeLayer(layer)
@@ -199,6 +220,7 @@ export function FormGroup(
  * @param {Function} removeLayerAction Action of Layer Removed.
  * @param {Function} changeLayerAction Action of Layer Changed.
  * @param {Function} addLayerInGroup When Add Layer In Group.
+ * @param {Function} editLayerInGroup When edit layer in group
  */
 export default function ListForm(
   {
@@ -208,7 +230,8 @@ export default function ListForm(
     addLayerAction,
     removeLayerAction,
     changeLayerAction,
-    addLayerInGroup
+    addLayerInGroup,
+    editLayerInGroup
   }
 ) {
   // GLOBAL DATA
@@ -216,7 +239,7 @@ export default function ListForm(
   const selectedIds = data.map(function (row) {
     return row.id
   })
-  const maxOrder = Math.max(data.map(function (row) {
+  const maxOrder = Math.max(...data.map(function (row) {
     return row.order
   }))
 
@@ -240,7 +263,8 @@ export default function ListForm(
     const currentGroupNames = Object.keys(groups);
     const newGroupNames = Object.keys(groupLayers.groups);
     currentGroupNames.map(groupName => {
-      if (!newGroupNames.includes(groupName)) {
+      if (groupName && !newGroupNames.includes(groupName)) {
+        groups[groupName].layers = []
         newGroups[groupName] = groups[groupName]
       }
     })
@@ -305,7 +329,6 @@ export default function ListForm(
     }
   }
 
-
   return (
     <div className={'TableForm ' + pageName}>
       <div className='TableForm-Header'>
@@ -321,7 +344,7 @@ export default function ListForm(
         {
           Object.keys(groups).map(groupName => {
             return <FormGroup
-              key={groupName}
+              key={groupName ? groupName : "No Name"}
               pageName={pageName}
               groupName={groupName}
               listData={listData}
@@ -332,7 +355,8 @@ export default function ListForm(
               addLayer={addLayer}
               removeLayer={removeLayer}
               changeLayer={changeLayer}
-              addLayerInGroup={addLayerInGroup}/>
+              addLayerInGroup={addLayerInGroup}
+              editLayerInGroup={editLayerInGroup}/>
           })
         }
       </table>

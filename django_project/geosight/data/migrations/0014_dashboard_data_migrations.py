@@ -40,6 +40,10 @@ def run(apps, schema_editor):
                 order=idx,
                 context_layer=model
             )
+        # Dashboard Widgets
+        for idx, model in enumerate(dashboard.widget_set.all()):
+            model.visible_by_default = True
+            model.save()
 
 
 class Migration(migrations.Migration):
