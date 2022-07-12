@@ -38,6 +38,7 @@ class DashboardSerializer(serializers.ModelSerializer):
     extent = serializers.SerializerMethodField()
     defaultBasemapLayer = serializers.SerializerMethodField()
     filters = serializers.SerializerMethodField()
+    group = serializers.SerializerMethodField()
 
     def get_referenceLayer(self, obj: Dashboard):
         """Return reference_layer."""
@@ -108,6 +109,10 @@ class DashboardSerializer(serializers.ModelSerializer):
         else:
             return []
 
+    def get_group(self, obj: Dashboard):
+        """Return dashboard group name."""
+        return obj.group.name if obj.group else ''
+
     class Meta:  # noqa: D106
         model = Dashboard
         fields = (
@@ -115,7 +120,7 @@ class DashboardSerializer(serializers.ModelSerializer):
             'referenceLayer', 'indicators',
             'basemapsLayers', 'contextLayers',
             'widgets', 'extent', 'defaultBasemapLayer',
-            'filters'
+            'filters', 'group'
         )
 
 

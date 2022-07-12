@@ -195,13 +195,12 @@ function ContextLayerInput({ data }) {
  * @param {str} groupName Group name.
  * @param {dict} group Group data.
  */
-function LayerRow({ groupNumber, groupName, group }) {
+function LayerRow({ groupName, group }) {
   if (!groupName) {
     return <div></div>
   }
-  const className = groupNumber > 1 ? 'LayerGroup' : 'LayerGroup Empty'
 
-  return <div className={className}>
+  return <div className='LayerGroup'>
     <div className='LayerGroupName'><b
       className='light'>{groupName}</b></div>
     <div className='LayerGroupList'>
@@ -209,15 +208,6 @@ function LayerRow({ groupNumber, groupName, group }) {
         group.layers.map(
           layer => (
             <ContextLayerInput key={layer.id} data={layer}/>
-          )
-        )
-      }
-      {
-        (Object.keys(group.groups)).map(
-          groupName => (
-            <LayerRow groupNumber={Object.keys(group.groups).length}
-                             key={groupName} groupName={groupName}
-                             group={group.groups[groupName]}/>
           )
         )
       }

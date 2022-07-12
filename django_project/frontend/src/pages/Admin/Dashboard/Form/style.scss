@@ -1,0 +1,191 @@
+/* ==========================================================================
+   Dashboard Form style
+   ========================================================================== */
+
+@import '../../../../app/variables';
+
+main {
+  display: block;
+}
+
+.dashboard {
+  display: none;
+}
+
+.Admin {
+  min-height: 0;
+  width: 100%;
+  display: flex;
+
+  & > div {
+    height: 100%;
+    overflow: hidden;
+
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box; /* Opera/IE 8+ */
+  }
+}
+
+.DashboardFormWrapper {
+  flex-grow: 1;
+  min-height: 0;
+}
+
+.DashboardForm {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  .DashboardFormHeader {
+    display: flex;
+    border-bottom: 1px solid $primary-color;
+
+    & > div {
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+
+      &:hover {
+        color: $primary-color;
+      }
+
+      &.active {
+        background: $primary-color;
+        color: $anti-primary-color;
+
+        &:hover {
+          color: $anti-primary-color;
+        }
+      }
+    }
+  }
+
+  .DashboardFormContent {
+    flex-grow: 1;
+    min-height: 0;
+    padding: 1rem;
+    overflow-y: auto;
+
+    & > div {
+      display: none;
+    }
+
+    .MuiInput-root {
+      border: 1px solid #ccc !important;
+      background: white;
+      border-radius: 0.2rem;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: 300;
+      padding: 0.5rem;
+      width: 100%;
+    }
+
+    .IconInput {
+      .MuiInputLabel-root {
+        position: unset;
+      }
+
+      .IconInputPreview {
+        display: flex;
+        margin-bottom: 1rem;
+
+        .MuiInput-root {
+          height: fit-content;
+          margin-top: auto;
+          margin-right: 10px;
+          position: relative;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+          margin-bottom: 2rem;
+
+          input {
+            opacity: 0;
+            cursor: pointer;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+          }
+        }
+
+        img {
+          height: 100px;
+        }
+      }
+    }
+  }
+
+  &.DashboardForm {
+    &.Summary {
+      .Summary {
+        display: block;
+      }
+    }
+
+    &.Basemaps {
+      .Basemaps {
+        display: block;
+      }
+    }
+
+    .DashboardFormLoading {
+      display: block;
+    }
+  }
+
+
+  #BasicForm {
+    padding: 1rem;
+  }
+
+  // TABLE FORM
+  .DragDropTable {
+    width: 100%;
+
+    .GroupRow {
+      background: $secondary-color;
+      color: $anti-secondary-color;
+
+      th {
+        font-weight: $base-font-medium;
+        text-align: left;
+      }
+
+      th, td {
+        padding: 0.3rem 0.5rem;
+      }
+    }
+
+    svg {
+      margin-top: 0.3rem;
+    }
+
+    .VisibilityAction,
+    .RemoveAction {
+      width: 3rem;
+      text-align: center !important;
+    }
+
+    .RemoveAction {
+      cursor: pointer;
+    }
+  }
+
+  .TableForm-Header {
+    display: flex;
+    margin-bottom: 1rem;
+
+    .TableForm-Header-Left {
+      flex-grow: 1;
+    }
+
+    .TableForm-Header-Right {
+      button {
+        margin-left: 0.5rem;
+      }
+    }
+  }
+}

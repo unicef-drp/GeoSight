@@ -62,13 +62,12 @@ export function Indicators() {
    * @param {str} groupName Group name.
    * @param {dict} group Group data.
    */
-  const LayerRow = ({ groupNumber, groupName, group }) => {
+  const LayerRow = ({ groupName, group }) => {
     if (!groupName) {
       return <div></div>
     }
-    const className = groupNumber > 1 ? 'LayerGroup' : 'LayerGroup Empty'
 
-    return <div className={className}>
+    return <div className='LayerGroup'>
       <div className='LayerGroupName'><b
         className='light'>{groupName}</b></div>
       <div className='LayerGroupList'>
@@ -99,7 +98,6 @@ export function Indicators() {
         Object.keys(groups.groups).map(
           groupName => (
             <LayerRow
-              groupNumber={Object.keys(groups.groups).length}
               key={groupName} groupName={groupName}
               group={groups.groups[groupName]}/>
           )
