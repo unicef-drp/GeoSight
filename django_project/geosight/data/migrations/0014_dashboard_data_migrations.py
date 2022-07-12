@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
     dependencies = [
         (
             'geosight_data',
-            '0013_dashboardbasemap_dashboardcontextlayer_dashboardindicator'
+            '0013_auto_20220712_0856'
         )
     ]
 

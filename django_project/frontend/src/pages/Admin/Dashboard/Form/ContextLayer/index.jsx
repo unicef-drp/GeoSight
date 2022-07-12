@@ -14,6 +14,6 @@ export default function ContextLayerForm() {
     listUrl={urls.api.contextLayerListAPI}
     addLayerAction={Actions.ContextLayers.add}
     removeLayerAction={Actions.ContextLayers.remove}
-    changeLayerAction={Actions.ContextLayers.change}
+    changeLayerAction={Actions.ContextLayers.update}
   />
 }

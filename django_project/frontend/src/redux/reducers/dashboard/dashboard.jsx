@@ -8,11 +8,11 @@ import widgetsReducer, { WIDGET_ACTION_NAME } from './widgets'
  */
 export const DASHBOARD_ACTION_NAME = 'DASHBOARD';
 export const REFERENCE_LAYER_ACTION_NAME = 'REFERENCE_LAYER';
-export const REFERENCE_LAYER_ACTION_TYPE_CHANGE = 'REFERENCE_LAYER/CHANGE';
+export const REFERENCE_LAYER_ACTION_TYPE_UPDATE = 'REFERENCE_LAYER/UPDATE';
 
 export const BASEMAP_ACTION_NAME = 'BASEMAP';
 export const BASEMAP_ACTION_TYPE_ADD = 'BASEMAP/ADD';
-export const BASEMAP_ACTION_TYPE_CHANGE = 'BASEMAP/CHANGE';
+export const BASEMAP_ACTION_TYPE_UPDATE = 'BASEMAP/UPDATE';
 export const BASEMAP_ACTION_TYPE_REMOVE = 'BASEMAP/REMOVE';
 
 export const BASEMAP_DEFAULT_ACTION_NAME = 'BASEMAP_DEFAULT';
@@ -24,7 +24,7 @@ export const EXTENT_DEFAULT_ACTION_TYPE_CHANGE = 'EXTENT/CHANGE'
 export const CONTEXT_LAYER_ACTION_NAME = 'CONTEXT_LAYER';
 export const CONTEXT_LAYER_ACTION_TYPE_ADD = 'CONTEXT_LAYER/ADD';
 export const CONTEXT_LAYER_ACTION_TYPE_REMOVE = 'CONTEXT_LAYER/REMOVE';
-export const CONTEXT_LAYER_ACTION_TYPE_CHANGE = 'CONTEXT_LAYER/CHANGE';
+export const CONTEXT_LAYER_ACTION_TYPE_UPDATE = 'CONTEXT_LAYER/UPDATE';
 
 const dashboardInitialState = {
   fetching: false,
@@ -93,7 +93,7 @@ export default function dashboardReducer(
           }
           return newState
         }
-        case BASEMAP_ACTION_TYPE_CHANGE: {
+        case BASEMAP_ACTION_TYPE_UPDATE: {
           const newState = { ...state }
           const basemapLayers = []
           newState.data.basemapsLayers.forEach(function (basemapLayer) {
@@ -120,7 +120,7 @@ export default function dashboardReducer(
     // REFERENCE LAYER REDUCER
     case REFERENCE_LAYER_ACTION_NAME: {
       switch (action.type) {
-        case REFERENCE_LAYER_ACTION_TYPE_CHANGE: {
+        case REFERENCE_LAYER_ACTION_TYPE_UPDATE: {
           const newState = { ...state }
           newState.data = {
             ...newState.data,
@@ -168,7 +168,7 @@ export default function dashboardReducer(
           }
           return newState
         }
-        case CONTEXT_LAYER_ACTION_TYPE_CHANGE: {
+        case CONTEXT_LAYER_ACTION_TYPE_UPDATE: {
           const newState = { ...state }
           const contextLayers = []
           newState.data.contextLayers.forEach(function (contextLayer) {

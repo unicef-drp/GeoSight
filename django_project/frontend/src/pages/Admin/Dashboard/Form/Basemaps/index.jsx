@@ -14,6 +14,6 @@ export default function BasemapsForm() {
     listUrl={urls.api.basemapListAPI}
     addLayerAction={Actions.Basemaps.add}
     removeLayerAction={Actions.Basemaps.remove}
-    changeLayerAction={Actions.Basemaps.change}
+    changeLayerAction={Actions.Basemaps.update}
   />
 }

@@ -29,13 +29,6 @@ class DashboardRelation(models.Model):
     visible_by_default = models.BooleanField(
         default=False
     )
-
-    class Meta:  # noqa: D106
-        abstract = True
-
-
-class DashboardRelationWithGroup(DashboardRelation):
-    """Dashboard relation with group."""
     group = models.CharField(
         max_length=512,
         blank=True, null=True
@@ -45,7 +38,7 @@ class DashboardRelationWithGroup(DashboardRelation):
         abstract = True
 
 
-class DashboardIndicator(DashboardRelationWithGroup):
+class DashboardIndicator(DashboardRelation):
     """Indicator x Dashboard model."""
 
     indicator = models.ForeignKey(
@@ -57,7 +50,7 @@ class DashboardIndicator(DashboardRelationWithGroup):
         ordering = ('order',)
 
 
-class DashboardBasemap(DashboardRelationWithGroup):
+class DashboardBasemap(DashboardRelation):
     """Indicator x Basemap model."""
 
     basemap = models.ForeignKey(
@@ -69,7 +62,7 @@ class DashboardBasemap(DashboardRelationWithGroup):
         ordering = ('order',)
 
 
-class DashboardContextLayer(DashboardRelationWithGroup):
+class DashboardContextLayer(DashboardRelation):
     """Indicator x ContextLayer model."""
 
     context_layer = models.ForeignKey(

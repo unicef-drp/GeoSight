@@ -14,6 +14,6 @@ export default function IndicatorsForm() {
     listUrl={urls.api.indicatorListAPI}
     addLayerAction={Actions.Indicators.add}
     removeLayerAction={Actions.Indicators.remove}
-    changeLayerAction={Actions.Indicators.change}
+    changeLayerAction={Actions.Indicators.update}
   />
 }

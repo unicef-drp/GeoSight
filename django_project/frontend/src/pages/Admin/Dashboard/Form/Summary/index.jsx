@@ -141,7 +141,7 @@ export default function SummaryDashboardForm() {
                         const selected = referenceLayerList.filter(row => {
                           return evt.value === row.identifier
                         })[0]
-                        dispatch(Actions.ReferenceLayer.change(selected));
+                        dispatch(Actions.ReferenceLayer.update(selected));
                       }}
                     /> :
                     <Select placeholder='Loading'/>

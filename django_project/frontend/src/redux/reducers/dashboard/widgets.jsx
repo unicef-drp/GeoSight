@@ -17,15 +17,23 @@ export default function widgetsReducer(state = initialState, action) {
       ]
     }
     case WIDGET_ACTION_TYPE_REMOVE: {
-      const newState = [...state]
-      if (newState[action.idx]) {
-        newState.splice(action.idx, 1)
-      }
+      const newState = []
+      state.forEach(function (widget) {
+        if (widget.id !== action.payload.id) {
+          newState.push(widget)
+        }
+      })
       return newState
     }
     case WIDGET_ACTION_TYPE_UPDATE: {
-      const newState = [...state]
-      newState[action.idx] = action.payload
+      const newState = []
+      state.forEach(function (widget) {
+        if (widget.id === action.payload.id) {
+          newState.push(action.payload)
+        } else if (widget.id !== action.payload.id) {
+          newState.push(widget)
+        }
+      })
       return newState
     }
     default:

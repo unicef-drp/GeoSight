@@ -27,6 +27,7 @@ import { fetchingData } from "../../../../Requests";
  * @param {Function} addLayer Function of add layer.
  * @param {Function} removeLayer Function of remove layer.
  * @param {Function} changeLayer Function of change layer.
+ * @param {Function} addLayerInGroup Function of addLayerInGroup.
  */
 export function FormGroup(
   {
@@ -40,6 +41,7 @@ export function FormGroup(
     addLayer,
     removeLayer,
     changeLayer,
+    addLayerInGroup
   }) {
   const [editName, setEditName] = useState(false);
   const [name, setName] = useState(groupName);
@@ -114,7 +116,11 @@ export function FormGroup(
           <AddButton
             variant="secondary" text={"Add"}
             onClick={() => {
-              setOpen(true)
+              if (!addLayerInGroup) {
+                setOpen(true)
+              } else {
+                addLayerInGroup(groupName)
+              }
             }}
           />
         </div>
@@ -192,6 +198,7 @@ export function FormGroup(
  * @param {Function} addLayerAction Action of Layer Added.
  * @param {Function} removeLayerAction Action of Layer Removed.
  * @param {Function} changeLayerAction Action of Layer Changed.
+ * @param {Function} addLayerInGroup When Add Layer In Group.
  */
 export default function ListForm(
   {
@@ -200,7 +207,8 @@ export default function ListForm(
     listUrl,
     addLayerAction,
     removeLayerAction,
-    changeLayerAction
+    changeLayerAction,
+    addLayerInGroup
   }
 ) {
   // GLOBAL DATA
@@ -323,7 +331,8 @@ export default function ListForm(
               changeGroupName={changeGroupName}
               addLayer={addLayer}
               removeLayer={removeLayer}
-              changeLayer={changeLayer}/>
+              changeLayer={changeLayer}
+              addLayerInGroup={addLayerInGroup}/>
           })
         }
       </table>

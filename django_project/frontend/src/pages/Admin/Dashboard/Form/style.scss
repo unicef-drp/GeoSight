@@ -136,14 +136,56 @@ main {
         display: block;
       }
     }
+
     &.Context {
       .Context {
         display: block;
       }
     }
 
+    &.Widgets {
+      .Widgets {
+        display: block;
+      }
+    }
+
+    &.Filters {
+      .Filters {
+        display: block;
+      }
+    }
+
     .DashboardFormLoading {
       display: block;
+    }
+
+    // SPECIFIED FOR FILTERS
+    .Filters {
+      .MuiPaper-root {
+        box-shadow: none;
+      }
+
+      .MuiCollapse-root {
+        visibility: unset;
+      }
+
+      .FilterInputWrapper {
+
+        .MuiInputSlider {
+          min-width: 80%;
+        }
+
+        .MuiInput-root {
+          border-radius: 0 !important;
+          border-top: none !important;
+          border-right: none !important;
+          border-bottom: none !important;
+          border-left: 1px solid var(--primary-color) !important;
+          padding: 5px 3px 0 3px;
+          width: 50px;
+          font-size: 0.8rem;
+        }
+      }
     }
   }
 

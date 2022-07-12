@@ -7,11 +7,18 @@ import { store } from '../../../../store/Dashboard';
 import Actions from "../../../../redux/actions/dashboard";
 import SideNavigation from "../../Components/SideNavigation";
 
-// Dashboar Form
+// Dashboard Form
 import SummaryDashboardForm from './Summary'
 import BasemapsForm from './Basemaps'
 import IndicatorsForm from './Indicators'
 import ContextLayerForm from './ContextLayer'
+import FiltersForm from './Filters'
+import WidgetForm from './Widgets'
+
+// Dashboard Preview
+import LeftPanel from '../../../../components/Dashboard/LeftPanel'
+import Map from '../../../../components/Dashboard/Map'
+import RightPanel from '../../../../components/Dashboard/RightPanel'
 
 import '../../../Dashboard/style.scss';
 import './style.scss';
@@ -39,10 +46,9 @@ export function DashboardPreview() {
     <div className='dashboard'>
       {Object.keys(data).length > 0 ?
         <Fragment>
-          {/*<LeftPanel/>*/}
-          {/*<Map/>*/}
-          {/*<RightPanel/>*/}
-          {/*<SaveDashboard/>*/}
+          <LeftPanel/>
+          <Map/>
+          <RightPanel/>
         </Fragment> :
         <div></div>
       }
@@ -123,6 +129,8 @@ export function DashboardForm() {
                   <BasemapsForm/>
                   <IndicatorsForm/>
                   <ContextLayerForm/>
+                  <FiltersForm/>
+                  <WidgetForm/>
                 </Fragment> :
                 <div className='DashboardFormLoading'>Loading</div>
               }
