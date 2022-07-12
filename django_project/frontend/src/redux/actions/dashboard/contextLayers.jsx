@@ -1,7 +1,8 @@
 import {
   CONTEXT_LAYER_ACTION_NAME,
   CONTEXT_LAYER_ACTION_TYPE_ADD,
-  CONTEXT_LAYER_ACTION_TYPE_REMOVE
+  CONTEXT_LAYER_ACTION_TYPE_REMOVE,
+  CONTEXT_LAYER_ACTION_TYPE_CHANGE
 } from '../../reducers/dashboard/dashboard'
 
 
@@ -29,6 +30,18 @@ export function remove(payload) {
   };
 }
 
+/**
+ * Remove context layer.
+ * @param {object} payload Context layer data.
+ */
+export function change(payload) {
+  return {
+    name: CONTEXT_LAYER_ACTION_NAME,
+    type: CONTEXT_LAYER_ACTION_TYPE_CHANGE,
+    payload: payload
+  };
+}
+
 export default {
-  add, remove
+  add, remove, change
 }

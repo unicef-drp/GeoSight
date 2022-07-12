@@ -131,6 +131,17 @@ main {
       }
     }
 
+    &.Indicators {
+      .Indicators {
+        display: block;
+      }
+    }
+    &.Context {
+      .Context {
+        display: block;
+      }
+    }
+
     .DashboardFormLoading {
       display: block;
     }
@@ -149,24 +160,82 @@ main {
       background: $secondary-color;
       color: $anti-secondary-color;
 
+      .GroupRowTitle {
+        display: flex;
+
+        .GroupEditName {
+          margin-top: 0.3rem;
+        }
+
+        span {
+          display: block;
+          padding: 0.5rem 1rem !important;
+        }
+
+        .Separator {
+          flex-grow: 1;
+        }
+
+        .MuiFormControl-root {
+          margin-top: 0.2rem;
+
+          .MuiOutlinedInput-root {
+            color: inherit;
+
+            .MuiInputAdornment-root {
+              color: inherit;
+
+              svg {
+                cursor: pointer;
+
+                &:hover {
+                  opacity: 0.8;
+                }
+              }
+            }
+
+            input {
+              padding: 0.3rem 0.5rem;
+            }
+
+            fieldset {
+              border-color: inherit;
+              top: 0;
+
+              legend {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+
       th {
         font-weight: $base-font-medium;
         text-align: left;
       }
-
-      th, td {
-        padding: 0.3rem 0.5rem;
-      }
     }
 
-    svg {
-      margin-top: 0.3rem;
+    th, td {
+      padding: 0.3rem 0.5rem;
+    }
+
+    td {
+      background-color: #dddddd30;
     }
 
     .VisibilityAction,
     .RemoveAction {
       width: 3rem;
       text-align: center !important;
+
+      svg {
+        margin-top: 0.3rem;
+      }
+    }
+
+    .AddAction {
+      width: 1%;
     }
 
     .RemoveAction {

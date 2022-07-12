@@ -10,6 +10,9 @@ import SideNavigation from "../../Components/SideNavigation";
 // Dashboar Form
 import SummaryDashboardForm from './Summary'
 import BasemapsForm from './Basemaps'
+import IndicatorsForm from './Indicators'
+import ContextLayerForm from './ContextLayer'
+
 import '../../../Dashboard/style.scss';
 import './style.scss';
 
@@ -51,7 +54,7 @@ export function DashboardPreview() {
  * Dashboard Form Section
  */
 export function DashboardForm() {
-  const [currentPage, setCurrentPage] = useState('Basemaps');
+  const [currentPage, setCurrentPage] = useState('Summary');
   const { data } = useSelector(state => state.dashboard);
 
   const changePage = (page) => {
@@ -118,6 +121,8 @@ export function DashboardForm() {
                 <Fragment>
                   <SummaryDashboardForm/>
                   <BasemapsForm/>
+                  <IndicatorsForm/>
+                  <ContextLayerForm/>
                 </Fragment> :
                 <div className='DashboardFormLoading'>Loading</div>
               }

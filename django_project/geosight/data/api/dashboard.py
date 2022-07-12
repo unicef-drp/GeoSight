@@ -51,11 +51,6 @@ class DashboardData(APIView):
             data = DashboardSerializer(dashboard).data
         else:
             dashboard = Dashboard()
-            basemaps = BasemapLayer.objects.all()
             data = DashboardSerializer(dashboard).data
-            data['basemapsLayers'] = BasemapLayerSerializer(
-                basemaps, many=True).data
-            if basemaps.count():
-                data['defaultBasemapLayer'] = basemaps[0].id
 
         return Response(data)

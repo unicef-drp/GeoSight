@@ -9,7 +9,8 @@ export function layerInGroup(layers) {
   layers.map(
     layer => {
       let groupDict = groups;
-      layer.group.split('/').forEach(group => {
+      const groupName  = layer.group ? layer.group : ''
+      groupName.split('/').forEach(group => {
         if (!groupDict['groups'][group]) {
           groupDict['groups'][group] = {
             'groups': {},

@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import Select from 'react-select'
 import { FormControl } from "@mui/material";
+
+import { fetchingData } from "../../../../../Requests";
+import Actions from "../../../../../redux/actions/dashboard";
 
 /**
  * Summary dashboard
@@ -11,7 +15,9 @@ export default function SummaryDashboardForm() {
     name,
     description,
     group,
+    referenceLayer
   } = useSelector(state => state.dashboard.data);
+  const dispatch = useDispatch();
 
   const imageName = (icon) => {
     return icon ? icon.split('/')[icon.split('/').length - 1] : 'No Image'
@@ -22,6 +28,25 @@ export default function SummaryDashboardForm() {
   const [groupData, setGroupData] = useState(group);
   const [iconSrc, setIconSrc] = useState(icon);
   const [iconName, setIconName] = useState(imageName(icon));
+
+  const [referenceLayerList, setReferenceLayerList] = useState(null);
+  const [referenceLayerOptions, setReferenceLayerOptions] = useState([]);
+
+  // Fetch data
+  useEffect(() => {
+    fetchingData(preferences.georepo_api.reference_layer_list, {}, {}, (data) => {
+      const options = []
+      data.map(row => {
+        row.detail_url = preferences.georepo_api.reference_layer_detail.replace('<identifier>', row.identifier)
+        options.push({
+          value: row.identifier,
+          label: row.name + ' (' + row.identifier + ')'
+        })
+      })
+      setReferenceLayerList(data);
+      setReferenceLayerOptions(options)
+    })
+  }, [])
 
   /** Image changed */
   const imageChanged = (event) => {
@@ -34,6 +59,11 @@ export default function SummaryDashboardForm() {
       setIconName(imageName(icon));
     }
   }
+
+  // Check init value
+  let initValue = referenceLayerOptions.filter(option => {
+    return option.value === referenceLayer.identifier
+  })
 
   return (
     <div className='Summary'>
@@ -91,6 +121,31 @@ export default function SummaryDashboardForm() {
                      onChange={(event) => {
                        setGroupData(event.target.value)
                      }}/>
+              </span>
+          </div>
+        </div>
+        <div className="BasicFormSection">
+          <div>
+            <label className="form-label required" htmlFor="name">
+              Reference Dataset
+            </label>
+          </div>
+          <div>
+              <span className="form-input">
+                {
+                  referenceLayerList ?
+                    <Select
+                      options={referenceLayerOptions}
+                      value={initValue ? initValue[0] : ''}
+                      onChange={(evt) => {
+                        const selected = referenceLayerList.filter(row => {
+                          return evt.value === row.identifier
+                        })[0]
+                        dispatch(Actions.ReferenceLayer.change(selected));
+                      }}
+                    /> :
+                    <Select placeholder='Loading'/>
+                }
               </span>
           </div>
         </div>

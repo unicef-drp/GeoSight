@@ -30,6 +30,7 @@ class WidgetSerializer(serializers.ModelSerializer):
 class DashboardSerializer(serializers.ModelSerializer):
     """Serializer for Dashboard."""
 
+    description = serializers.SerializerMethodField()
     referenceLayer = serializers.SerializerMethodField()
     indicators = serializers.SerializerMethodField()
     basemapsLayers = serializers.SerializerMethodField()
@@ -39,6 +40,10 @@ class DashboardSerializer(serializers.ModelSerializer):
     defaultBasemapLayer = serializers.SerializerMethodField()
     filters = serializers.SerializerMethodField()
     group = serializers.SerializerMethodField()
+
+    def get_description(self, obj: Dashboard):
+        """Return description."""
+        return obj.description if obj.description else ''
 
     def get_referenceLayer(self, obj: Dashboard):
         """Return reference_layer."""

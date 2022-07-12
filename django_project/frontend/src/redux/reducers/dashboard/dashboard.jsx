@@ -12,6 +12,7 @@ export const REFERENCE_LAYER_ACTION_TYPE_CHANGE = 'REFERENCE_LAYER/CHANGE';
 
 export const BASEMAP_ACTION_NAME = 'BASEMAP';
 export const BASEMAP_ACTION_TYPE_ADD = 'BASEMAP/ADD';
+export const BASEMAP_ACTION_TYPE_CHANGE = 'BASEMAP/CHANGE';
 export const BASEMAP_ACTION_TYPE_REMOVE = 'BASEMAP/REMOVE';
 
 export const BASEMAP_DEFAULT_ACTION_NAME = 'BASEMAP_DEFAULT';
@@ -23,6 +24,7 @@ export const EXTENT_DEFAULT_ACTION_TYPE_CHANGE = 'EXTENT/CHANGE'
 export const CONTEXT_LAYER_ACTION_NAME = 'CONTEXT_LAYER';
 export const CONTEXT_LAYER_ACTION_TYPE_ADD = 'CONTEXT_LAYER/ADD';
 export const CONTEXT_LAYER_ACTION_TYPE_REMOVE = 'CONTEXT_LAYER/REMOVE';
+export const CONTEXT_LAYER_ACTION_TYPE_CHANGE = 'CONTEXT_LAYER/CHANGE';
 
 const dashboardInitialState = {
   fetching: false,
@@ -65,6 +67,9 @@ export default function dashboardReducer(
       switch (action.type) {
         case BASEMAP_ACTION_TYPE_ADD: {
           const newState = { ...state }
+          if (newState.data.basemapsLayers.length === 0) {
+            action.payload.visible_by_default = true
+          }
           newState.data = {
             ...newState.data,
             basemapsLayers: [
@@ -79,6 +84,25 @@ export default function dashboardReducer(
           const basemapLayers = []
           newState.data.basemapsLayers.forEach(function (basemapLayer) {
             if (basemapLayer.id !== action.payload.id) {
+              basemapLayers.push(basemapLayer)
+            }
+          })
+          newState.data = {
+            ...newState.data,
+            basemapsLayers: basemapLayers
+          }
+          return newState
+        }
+        case BASEMAP_ACTION_TYPE_CHANGE: {
+          const newState = { ...state }
+          const basemapLayers = []
+          newState.data.basemapsLayers.forEach(function (basemapLayer) {
+            if (basemapLayer.id === action.payload.id) {
+              basemapLayers.push(action.payload)
+            } else {
+              if (action.payload.visible_by_default) {
+                basemapLayer.visible_by_default = false
+              }
               basemapLayers.push(basemapLayer)
             }
           })
@@ -135,6 +159,22 @@ export default function dashboardReducer(
           const contextLayers = []
           newState.data.contextLayers.forEach(function (contextLayer) {
             if (contextLayer.id !== action.payload.id) {
+              contextLayers.push(contextLayer)
+            }
+          })
+          newState.data = {
+            ...newState.data,
+            contextLayers: contextLayers
+          }
+          return newState
+        }
+        case CONTEXT_LAYER_ACTION_TYPE_CHANGE: {
+          const newState = { ...state }
+          const contextLayers = []
+          newState.data.contextLayers.forEach(function (contextLayer) {
+            if (contextLayer.id === action.payload.id) {
+              contextLayers.push(action.payload)
+            } else {
               contextLayers.push(contextLayer)
             }
           })

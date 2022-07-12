@@ -26,6 +26,7 @@ main {
   flex-direction: column;
   flex-grow: 1;
   min-width: 0;
+  background-color: #F4F4F4;
 
   & > div {
     border-radius: $border-radius;
@@ -90,4 +91,25 @@ main {
   .MuiDataGrid-actionsCell {
     grid-gap: 0 !important;
   }
+}
+
+.AdminSelectDataForm {
+  .MuiBox-root {
+    .AdminContent {
+      padding-top: 1rem;
+    }
+
+    display: flex;
+    flex-direction: column;
+    width: 1140px;
+    height: 90%;
+    max-width: 90%;
+  }
+}
+
+.CellDescription {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 60rem;
 }

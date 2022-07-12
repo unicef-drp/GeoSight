@@ -1,6 +1,7 @@
 import {
   INDICATOR_ACTION_NAME,
   INDICATOR_ACTION_TYPE_ADD,
+  INDICATOR_ACTION_TYPE_CHANGE,
   INDICATOR_ACTION_TYPE_REMOVE,
   INDICATOR_ACTION_TYPE_UPDATE_LEVEL
 } from '../../reducers/dashboard/indicators'
@@ -74,6 +75,18 @@ export function remove(payload) {
   };
 }
 
+/**
+ * Change indicator.
+ * @param {object} payload Indicator indicator.
+ */
+export function change(payload) {
+  return {
+    name: INDICATOR_ACTION_NAME,
+    type: INDICATOR_ACTION_TYPE_CHANGE,
+    payload: payload
+  };
+}
+
 export default {
-  fetch, add, remove, updateLevel
+  fetch, add, remove, change, updateLevel
 }

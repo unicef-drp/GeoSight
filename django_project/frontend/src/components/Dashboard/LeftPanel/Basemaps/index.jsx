@@ -25,10 +25,9 @@ export default function Basemaps({ data, defaultBasemapLayer }) {
   useEffect(() => {
     if (data) {
       const basemaps = data.map(function (basemap) {
-        basemap.id
+        return basemap.id
       })
       if (!selected || !basemaps.includes(selected)) {
-        dispatch(Actions.Basemaps.changeDefault(data[0]?.id));
         onSelected(data[0]?.id);
       }
     }
