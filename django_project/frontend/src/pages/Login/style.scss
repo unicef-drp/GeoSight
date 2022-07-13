@@ -1,0 +1,66 @@
+/* ==========================================================================
+   Login Page Content
+   ========================================================================== */
+@import '../../app/variables';
+
+main {
+  flex-grow: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+
+  .Background {
+    flex-grow: 1;
+  }
+
+  .Login {
+    background-color: white;
+    height: 100%;
+    width: 400px;
+    padding: 0 2rem;
+    box-sizing: border-box;
+    padding-top: 3rem;
+
+    .Errorlist {
+      color: $error;
+      margin: 0;
+      padding: 0;
+    }
+
+    .LoginHeader {
+      color: $primary-color;
+      font-size: 1.5rem;
+      font-weight: $base-font-medium;
+      margin-bottom: 2rem;
+    }
+
+    .AdminForm {
+      margin-top: 1rem;
+    }
+
+    .Mui-focused {
+      fieldset {
+        border: 2px solid $secondary-color;
+      }
+    }
+
+    fieldset {
+      border-radius: 0;
+      border: 1px solid $secondary-color;
+
+      &:hover {
+        border: 1px solid $secondary-color;
+      }
+    }
+
+    .MuiButton-root {
+      border-radius: 0;
+      width: 100%;
+    }
+
+    #BasicForm {
+      padding: 0;
+      color: $secondary-color;
+    }
+  }
+}

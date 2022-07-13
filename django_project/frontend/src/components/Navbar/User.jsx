@@ -80,7 +80,7 @@ export default function User() {
       <Fragment>
         <a href={loginUrl}>
           <button>
-            SIGNIN
+            LOG IN
           </button>
         </a>
       </Fragment>

@@ -44,9 +44,9 @@
     </style>
     <style>
         {% if preferences.background_image %}
-            .page {
+            main {
                 background: url("{{ preferences.background_image }}") no-repeat;
-                background-size: 100%;
+                background-size: cover;
             }
         {% endif %}
     </style>
@@ -59,7 +59,12 @@
 {% block extra_html %}
 {% endblock %}
 <script>
-  const user = {{ user|safe }};
+  {% if request.user.is_authenticated %}
+    const user = {{ user|safe }};
+  {% else %}
+    const user = {};
+  {% endif %}
+
   const csrfmiddlewaretoken = '{{ csrf_token }}';
   const preferences = {{ preferences|safe }};
 

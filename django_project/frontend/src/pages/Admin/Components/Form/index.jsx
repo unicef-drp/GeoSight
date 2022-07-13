@@ -2,6 +2,9 @@ import React, { useEffect } from 'react';
 import $ from 'jquery';
 import Select from 'react-select'
 import Creatable from 'react-select/creatable';
+import PersonIcon from '@mui/icons-material/Person';
+import LockIcon from '@mui/icons-material/Lock';
+import { IconTextField } from '../../../../components/Elements/Input'
 
 import './style.scss';
 
@@ -52,6 +55,18 @@ export default function AdminForm({ isSubmitted, children }) {
         input = <Select options={options} defaultValue={initValue}
                         name={$select.attr('name')}/>
       }
+    } else {
+      const $input = $(p).find('.form-input input');
+      const name = $input.attr('name')
+      if (name === 'username') {
+        input = <IconTextField
+          type={$input.attr('type')} name={$input.attr('name')}
+          iconStart={<PersonIcon/>}/>
+      } else if (name === 'password') {
+        input = <IconTextField
+          type={$input.attr('type')} name={$input.attr('name')}
+          iconStart={<LockIcon/>}/>
+      }
     }
 
     // Render
@@ -68,6 +83,11 @@ export default function AdminForm({ isSubmitted, children }) {
   return (
     <div className='AdminForm'>
       <form id="BasicForm" method="post" encType="multipart/form-data">
+        {$('#FormTemplate').find('.errorlist').map(function (idx) {
+          return <ul className='Errorlist' dangerouslySetInnerHTML={{
+            __html: $(this).html()
+          }}></ul>
+        })}
         {$('#FormTemplate').find('p').map(function (idx) {
           return renderInputRow(this, idx)
         })}

@@ -109,4 +109,13 @@
     color: $error;
     font-size: 0.8rem;
   }
+
+  .MuiOutlinedInput-root {
+    width: 100%;
+
+    input {
+      height: 2.5rem;
+      border: none;
+    }
+  }
 }

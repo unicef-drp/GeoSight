@@ -12,6 +12,7 @@ const minimized = !isDev;
 let conf = {
   entry: {
     Home: ['./src/pages/Home'],
+    Login: ['./src/pages/Login'],
     Dashboard: ['./src/pages/Dashboard'],
     DashboardForm: ['./src/pages/Admin/Dashboard/Form'],
     AdminDashboardList: ['./src/pages/Admin/Dashboard/List'],

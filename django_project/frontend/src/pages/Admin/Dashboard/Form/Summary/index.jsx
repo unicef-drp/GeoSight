@@ -156,7 +156,7 @@ export default function SummaryDashboardForm() {
             </label>
           </div>
           <div>
-            Go to Preview and move to extent that you want.
+            Go to Preview and move to the map to place that you want.
           </div>
         </div>
       </div>
