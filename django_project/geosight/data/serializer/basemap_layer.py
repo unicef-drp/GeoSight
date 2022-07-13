@@ -10,10 +10,10 @@ from geosight.data.models.basemap_layer import (
 class BasemapLayerSerializer(serializers.ModelSerializer):
     """Serializer for BasemapLayer."""
 
-    group = serializers.SerializerMethodField()
+    category = serializers.SerializerMethodField()
     parameters = serializers.SerializerMethodField()
 
-    def get_group(self, obj: BasemapLayer):
+    def get_category(self, obj: BasemapLayer):
         """Return group."""
         return obj.group.name if obj.group else ''
 
@@ -35,7 +35,7 @@ class BasemapLayerSerializer(serializers.ModelSerializer):
 
     class Meta:  # noqa: D106
         model = BasemapLayer
-        fields = '__all__'
+        exclude = ('group',)
 
 
 class BasemapLayerParameterSerializer(serializers.ModelSerializer):

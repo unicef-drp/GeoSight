@@ -33,24 +33,6 @@ class Dashboard(SlugTerm, IconTerm, AbstractEditData):
     reference_layer_identifier = models.CharField(
         max_length=512, null=True, blank=True
     )
-    basemap_layers = models.ManyToManyField(
-        BasemapLayer
-    )
-    default_basemap_layer = models.ForeignKey(
-        BasemapLayer,
-        null=True, blank=True,
-        on_delete=models.CASCADE,
-        help_text=_(
-            'If this is empty, the default will be latest basemap'
-        ),
-        related_name='dashboard_default_basemap_layer'
-    )
-    indicators = models.ManyToManyField(
-        Indicator
-    )
-    context_layers = models.ManyToManyField(
-        ContextLayer, blank=True
-    )
     extent = models.PolygonField(
         blank=True, null=True,
         help_text=_(
@@ -82,6 +64,57 @@ class Dashboard(SlugTerm, IconTerm, AbstractEditData):
         """Is dashboard can be edited by user."""
         return user.is_staff or self.creator == user
 
+    def save_relations(self, data):
+        """Save all relationship data."""
+        from geosight.data.models.dashboard import (
+            DashboardIndicator, DashboardBasemap, DashboardContextLayer
+        )
+        self.save_widgets(data['widgets'])
+        self.save_relation(
+            DashboardIndicator, Indicator, self.dashboardindicator_set.all(),
+            data['indicators'])
+        self.save_relation(
+            DashboardBasemap, BasemapLayer, self.dashboardbasemap_set.all(),
+            data['basemapsLayers'])
+        self.save_relation(
+            DashboardContextLayer, ContextLayer,
+            self.dashboardcontextlayer_set.all(),
+            data['contextLayers'])
+
+    def save_relation(self, ModelClass, ObjectClass, modelQuery, inputData):
+        """Save relation from data."""
+        ids = []
+
+        # Remove all not found ids
+        for data in inputData:
+            ids.append(data.get('id', 0))
+
+        # Remove all not found ids
+        modelQuery.exclude(object__id__in=ids).delete()
+
+        for data in inputData:
+            try:
+                model = ModelClass.objects.get(
+                    dashboard=self,
+                    object__id=data['id']
+                )
+            except (KeyError, ModelClass.DoesNotExist):
+                try:
+                    object = ObjectClass.objects.get(id=data['id'])
+                    model = ModelClass(
+                        dashboard=self,
+                        object=object
+                    )
+                except ObjectClass.DoesNotExist:
+                    raise Exception(
+                        f"{ObjectClass.__name__} with id "
+                        f"{data['id']} does not exist")
+
+            model.order = data.get('order', 0)
+            model.group = data.get('group', '')
+            model.visible_by_default = data.get('visible_by_default', False)
+            model.save()
+
     def save_widgets(self, widget_data):
         """Save widgets from data."""
         from .widget import Widget, LayerUsed
@@ -105,6 +138,10 @@ class Dashboard(SlugTerm, IconTerm, AbstractEditData):
                 except (KeyError, Widget.DoesNotExist):
                     widget = Widget(dashboard=self)
 
+                order = data.get('order', 0)
+                widget.order = order if order else 0
+                widget.visible_by_default = data['visible_by_default']
+                widget.group = data['group']
                 widget.name = data['name']
                 widget.type = data['type']
                 widget.description = data['description']

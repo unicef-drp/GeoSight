@@ -6,9 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.permissions import AdminAuthenticationPermission
-from geosight.data.models.basemap_layer import BasemapLayer
 from geosight.data.models.dashboard import Dashboard
-from geosight.data.serializer.basemap_layer import BasemapLayerSerializer
 from geosight.data.serializer.dashboard import (
     DashboardBasicSerializer, DashboardSerializer
 )
@@ -51,11 +49,6 @@ class DashboardData(APIView):
             data = DashboardSerializer(dashboard).data
         else:
             dashboard = Dashboard()
-            basemaps = BasemapLayer.objects.all()
             data = DashboardSerializer(dashboard).data
-            data['basemapsLayers'] = BasemapLayerSerializer(
-                basemaps, many=True).data
-            if basemaps.count():
-                data['defaultBasemapLayer'] = basemaps[0].id
 
         return Response(data)

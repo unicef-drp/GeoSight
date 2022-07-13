@@ -9,10 +9,12 @@ import {
   AddButton,
   ThemeButton
 } from "../../../../components/Elements/Button";
-import AdminList, { COLUMNS, COLUMNS_ACTION } from "../../Components/List";
 import { render } from '../../../../app';
 import { store } from '../../../../store/admin';
 import { pageNames } from '../../index';
+
+import { COLUMNS, COLUMNS_ACTION } from "../../Components/List";
+import AdminList from "../../AdminList";
 
 import './style.scss';
 

@@ -44,7 +44,7 @@ export default function Links() {
       {
         navbarLinks.map(
           link => (
-            <MenuItem key={link.id}>
+            <MenuItem key={link.id} className='MenuItem-Header'>
               <a href={link.url}>{link.name}</a>
             </MenuItem>
           )

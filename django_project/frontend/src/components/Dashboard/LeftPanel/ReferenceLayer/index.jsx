@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Accordion from "@mui/material/Accordion";
-import Edit from "../edit";
 
 export default function ReferenceLayerSection() {
   const { referenceLayer } = useSelector(state => state.dashboard.data);
@@ -18,9 +17,6 @@ export default function ReferenceLayerSection() {
     >
       <AccordionSummary>
         <div className='MuiAccordionSummary-title'>Reference Dataset</div>
-        {
-          editMode ? <Edit/> : ''
-        }
       </AccordionSummary>
       <AccordionDetails>
         {
@@ -37,7 +33,9 @@ export default function ReferenceLayerSection() {
             :
             (
               referenceLayer.identifier ? (referenceLayer.error ?
-                  <div className='error'>{referenceLayer.error.toString()}</div> : <div>Loading</div>) :
+                  <div
+                    className='error'>{referenceLayer.error.toString()}</div> :
+                  <div>Loading</div>) :
                 <div>Please select a reference dataset.</div>
             )
         }

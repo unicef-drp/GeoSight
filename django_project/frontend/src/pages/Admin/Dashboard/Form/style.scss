@@ -1,0 +1,322 @@
+/* ==========================================================================
+   Dashboard Form style
+   ========================================================================== */
+
+@import '../../../../app/variables';
+
+main {
+  display: block;
+}
+
+.FormMode {
+  .Admin {
+    display: flex;
+  }
+}
+
+.PreviewMode {
+  .Admin {
+    display: none;
+  }
+}
+
+.BackToForm {
+  position: absolute;
+  top: 0.5rem;
+  left: 46%;
+  z-index: 9999;
+}
+
+.Admin {
+  min-height: 0;
+  width: 100%;
+  display: flex;
+
+  & > div {
+    height: 100%;
+    overflow: hidden;
+
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box; /* Opera/IE 8+ */
+  }
+}
+
+.DashboardFormWrapper {
+  flex-grow: 1;
+  min-height: 0;
+}
+
+.DashboardForm {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  .DashboardFormHeader {
+    display: flex;
+    border-bottom: 1px solid $primary-color;
+
+    & > div {
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+
+      &:hover {
+        color: $primary-color;
+      }
+
+      &.active {
+        background: $primary-color;
+        color: $anti-primary-color;
+
+        &:hover {
+          color: $anti-primary-color;
+        }
+      }
+    }
+  }
+
+  .DashboardFormContent {
+    flex-grow: 1;
+    min-height: 0;
+    padding: 1rem;
+    overflow-y: auto;
+
+    & > div {
+      display: none;
+    }
+
+    .MuiInput-root {
+      border: 1px solid #ccc !important;
+      background: white;
+      border-radius: 0.2rem;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: 300;
+      padding: 0.5rem;
+      width: 100%;
+    }
+
+    .IconInput {
+      .MuiInputLabel-root {
+        position: unset;
+      }
+
+      .IconInputPreview {
+        display: flex;
+        margin-bottom: 1rem;
+
+        .MuiInput-root {
+          height: fit-content;
+          margin-top: auto;
+          margin-right: 10px;
+          position: relative;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+          margin-bottom: 2rem;
+
+          input {
+            opacity: 0;
+            cursor: pointer;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+          }
+        }
+
+        img {
+          height: 100px;
+        }
+      }
+    }
+  }
+
+  &.DashboardForm {
+    &.Summary {
+      .Summary {
+        display: block;
+      }
+    }
+
+    &.Basemaps {
+      .Basemaps {
+        display: block;
+      }
+    }
+
+    &.Indicators {
+      .Indicators {
+        display: block;
+      }
+    }
+
+    &.Context {
+      .Context {
+        display: block;
+      }
+    }
+
+    &.Widgets {
+      .Widgets {
+        display: block;
+      }
+    }
+
+    &.Filters {
+      .Filters {
+        display: block;
+      }
+    }
+
+    .DashboardFormLoading {
+      display: block;
+    }
+
+    // SPECIFIED FOR FILTERS
+    .Filters {
+      .MuiPaper-root {
+        box-shadow: none;
+      }
+
+      .MuiCollapse-root {
+        visibility: unset;
+      }
+
+      .FilterInputWrapper {
+
+        .MuiInputSlider {
+          min-width: 80%;
+        }
+
+        .MuiInput-root {
+          border-radius: 0 !important;
+          border-top: none !important;
+          border-right: none !important;
+          border-bottom: none !important;
+          border-left: 1px solid var(--primary-color) !important;
+          padding: 5px 3px 0 3px;
+          width: 50px;
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+
+
+  #BasicForm {
+    padding: 1rem;
+  }
+
+  // TABLE FORM
+  .DragDropTable {
+    width: 100%;
+
+    .GroupRow {
+      background: $secondary-color;
+      color: $anti-secondary-color;
+
+      .GroupRowTitle {
+        display: flex;
+
+        .GroupEditName {
+          margin-top: 0.3rem;
+        }
+
+        span {
+          display: block;
+          padding: 0.5rem 1rem !important;
+        }
+
+        .Separator {
+          flex-grow: 1;
+        }
+
+        .MuiFormControl-root {
+          margin-top: 0.2rem;
+
+          .MuiOutlinedInput-root {
+            color: inherit;
+
+            .MuiInputAdornment-root {
+              color: inherit;
+
+              svg {
+                cursor: pointer;
+
+                &:hover {
+                  opacity: 0.8;
+                }
+              }
+            }
+
+            input {
+              padding: 0.3rem 0.5rem;
+            }
+
+            fieldset {
+              border-color: inherit;
+              top: 0;
+
+              legend {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+
+      th {
+        font-weight: $base-font-medium;
+        text-align: left;
+      }
+    }
+
+    th, td {
+      padding: 0.3rem 0.5rem;
+    }
+
+    td {
+      background-color: #dddddd30;
+    }
+
+    .VisibilityAction,
+    .RemoveAction {
+      width: 3rem;
+      text-align: center !important;
+
+      svg {
+        margin-top: 0.3rem;
+      }
+    }
+
+    .AddAction {
+      width: 1%;
+    }
+
+    .RemoveAction {
+      cursor: pointer;
+    }
+  }
+
+  .TableForm-Header {
+    display: flex;
+    margin-bottom: 1rem;
+
+    .TableForm-Header-Left {
+      flex-grow: 1;
+    }
+
+    .TableForm-Header-Right {
+      button {
+        margin-left: 0.5rem;
+      }
+    }
+  }
+}
+
+.FormError {
+  color: $error;
+  padding: 0.5rem;
+}

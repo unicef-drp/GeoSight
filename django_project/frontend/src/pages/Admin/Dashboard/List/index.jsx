@@ -6,7 +6,8 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import { render } from '../../../../app';
 import { store } from '../../../../store/admin';
 import { pageNames } from '../../index';
-import AdminList, { COLUMNS, COLUMNS_ACTION } from "../../Components/List";
+import { COLUMNS, COLUMNS_ACTION } from "../../Components/List";
+import AdminList from "../../AdminList";
 
 import './style.scss';
 

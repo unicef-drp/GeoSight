@@ -13,9 +13,10 @@ export default function SummaryGroupMember({ onClick }) {
   return <WidgetSelectionMember
     title="Summary Group Widget"
     description="Summarize all values grouping the results by unique values in another column."
-    onClick={onClick}
-    defaultData={{
-      "type": "SummaryGroupWidget",
+    onClick={() => {
+      onClick({
+        "type": "SummaryGroupWidget",
+      })
     }}
   >
   </WidgetSelectionMember>

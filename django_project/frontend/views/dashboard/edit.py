@@ -17,9 +17,20 @@ class DashboardEditView(LoginRequiredMixin, BaseDashboardView):
     template_name = 'frontend/admin/dashboard/editor.html'
 
     @property
+    def page_title(self):
+        """Return page title that used on tab bar."""
+        return 'Edit Project'
+
+    @property
     def content_title(self):
         """Return content title that used on page title indicator."""
-        return 'Dashboard edit'
+        dashboard = get_object_or_404(
+            Dashboard, slug=self.kwargs.get('slug', '')
+        )
+        return (
+            f'<span>Projects</span> <span>></span> '
+            f'<span>{dashboard.__str__()}</span>'
+        )
 
     def get_context_data(self, slug, **kwargs) -> dict:
         """Return context data."""
@@ -52,11 +63,15 @@ class DashboardEditView(LoginRequiredMixin, BaseDashboardView):
             )
             if form.is_valid():
                 dashboard = form.save()
-                dashboard.save_widgets(data['widgets'])
+                dashboard.save_relations(data)
                 return redirect(
                     reverse(
                         'dashboard-detail-view', args=[dashboard.slug]
                     )
                 )
             else:
-                return HttpResponseBadRequest("There is error on form.")
+                errors = [
+                    key + ' : ' + ''.join(value) for key, value in
+                    form.errors.items()
+                ]
+                return HttpResponseBadRequest('<br>'.join(errors))

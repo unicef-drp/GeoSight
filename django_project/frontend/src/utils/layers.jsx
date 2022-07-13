@@ -1,15 +1,16 @@
 /**
- * Change context layers to groups
+ * Change Layers to groups
  */
-export function contextLayerInGroup(contextLayers) {
+export function layerInGroup(layers) {
   const groups = {
     'groups': {},
     'layers': []
   };
-  contextLayers.map(
+  layers.map(
     layer => {
       let groupDict = groups;
-      layer.group.split('/').forEach(group => {
+      const groupName  = layer.group ? layer.group : ''
+      groupName.split('/').forEach(group => {
         if (!groupDict['groups'][group]) {
           groupDict['groups'][group] = {
             'groups': {},

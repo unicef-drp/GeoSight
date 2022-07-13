@@ -1,6 +1,6 @@
 """Dashboard Create View."""
-
 from braces.views import LoginRequiredMixin
+from django.db import transaction
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, reverse
 
@@ -16,9 +16,14 @@ class DashboardCreateView(LoginRequiredMixin, BaseDashboardView):
     template_name = 'frontend/admin/dashboard/editor.html'
 
     @property
+    def page_title(self):
+        """Return page title that used on tab bar."""
+        return 'Create Project'
+
+    @property
     def content_title(self):
         """Return content title that used on page title indicator."""
-        return 'Dashboard create'
+        return '<span>Projects</span> <span>></span> <span>Create</span>'
 
     def get_context_data(self, **kwargs) -> dict:
         """Return context data."""
@@ -41,12 +46,20 @@ class DashboardCreateView(LoginRequiredMixin, BaseDashboardView):
         except Dashboard.DoesNotExist:
             form = DashboardForm(data, request.FILES)
             if form.is_valid():
-                dashboard = form.save()
-                dashboard.save_widgets(data['widgets'])
-                return redirect(
-                    reverse(
-                        'dashboard-detail-view', args=[dashboard.slug]
-                    )
-                )
+                try:
+                    with transaction.atomic():
+                        dashboard = form.save()
+                        dashboard.save_relations(data)
+                        return redirect(
+                            reverse(
+                                'dashboard-detail-view', args=[dashboard.slug]
+                            )
+                        )
+                except Exception as e:
+                    return HttpResponseBadRequest(e)
             else:
-                return HttpResponseBadRequest("There is error on form.")
+                errors = [
+                    key + ' : ' + ''.join(value) for key, value in
+                    form.errors.items()
+                ]
+                return HttpResponseBadRequest('<br>'.join(errors))

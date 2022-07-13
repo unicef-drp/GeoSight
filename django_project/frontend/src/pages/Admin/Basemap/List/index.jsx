@@ -3,7 +3,8 @@ import React from 'react';
 import { render } from '../../../../app';
 import { store } from '../../../../store/admin';
 import { pageNames } from '../../index';
-import AdminList, { COLUMNS } from "../../Components/List";
+import { COLUMNS } from "../../Components/List";
+import AdminList from "../../AdminList";
 
 import './style.scss';
 

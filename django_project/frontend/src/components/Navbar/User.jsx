@@ -50,26 +50,26 @@ export default function User() {
         >
           {
             is_staff ? (
-              <MenuItem>
+              <MenuItem className='MenuItem-Header'>
                 <a href={dashboardUrl}>Admin</a>
               </MenuItem>
             ) : ''
           }
           {
             is_staff ? (
-              <MenuItem>
+              <MenuItem className='MenuItem-Header'>
                 <a href={adminUrl}>Django Admin</a>
               </MenuItem>
             ) : ''
           }
           {
             is_staff ? (
-              <MenuItem>
+              <MenuItem className='MenuItem-Header'>
                 <a href={backupsUrl}>Backups</a>
               </MenuItem>
             ) : ''
           }
-          <MenuItem>
+          <MenuItem className='MenuItem-Header'>
             <a href={logoutUrl}>Logout</a>
           </MenuItem>
         </Menu>
