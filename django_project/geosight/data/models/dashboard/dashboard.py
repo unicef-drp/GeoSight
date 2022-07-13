@@ -65,7 +65,7 @@ class Dashboard(SlugTerm, IconTerm, AbstractEditData):
         return user.is_staff or self.creator == user
 
     def save_relations(self, data):
-        """Save all relationship data"""
+        """Save all relationship data."""
         from geosight.data.models.dashboard import (
             DashboardIndicator, DashboardBasemap, DashboardContextLayer
         )
@@ -107,7 +107,8 @@ class Dashboard(SlugTerm, IconTerm, AbstractEditData):
                     )
                 except ObjectClass.DoesNotExist:
                     raise Exception(
-                        f"{ObjectClass.__name__} with id {data['id']} does not exist")
+                        f"{ObjectClass.__name__} with id "
+                        f"{data['id']} does not exist")
 
             model.order = data.get('order', 0)
             model.group = data.get('group', '')
