@@ -263,7 +263,7 @@ export default function ListForm(
     const currentGroupNames = Object.keys(groups);
     const newGroupNames = Object.keys(groupLayers.groups);
     currentGroupNames.map(groupName => {
-      if (groupName && !newGroupNames.includes(groupName)) {
+      if (groupName && !newGroupNames.includes(groupName) && groups[groupName].layers.length === 0) {
         groups[groupName].layers = []
         newGroups[groupName] = groups[groupName]
       }
