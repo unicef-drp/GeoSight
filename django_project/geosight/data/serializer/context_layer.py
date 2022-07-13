@@ -12,7 +12,7 @@ class ContextLayerSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField()
     parameters = serializers.SerializerMethodField()
     style = serializers.SerializerMethodField()
-    group = serializers.SerializerMethodField()
+    category = serializers.SerializerMethodField()
 
     def get_url(self, obj: ContextLayer):
         """Url."""
@@ -41,18 +41,13 @@ class ContextLayerSerializer(serializers.ModelSerializer):
             style[contextlayerstyle.name] = value
         return style
 
-    def get_group(self, obj: ContextLayer):
-        """Group name."""
-        if obj.group:
-            groups = obj.group.group_tree_in_list
-            groups.reverse()
-            return '/'.join([group.name for group in groups])
-        else:
-            return ''
+    def get_category(self, obj: ContextLayer):
+        """Return category name."""
+        return obj.group.name if obj.group else ''
 
     class Meta:  # noqa: D106
         model = ContextLayer
-        fields = '__all__'
+        exclude = ('group',)
 
 
 class ContextLayerStyleSerializer(serializers.ModelSerializer):

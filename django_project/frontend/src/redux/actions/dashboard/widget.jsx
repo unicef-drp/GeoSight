@@ -19,26 +19,24 @@ export function add(payload) {
 
 /**
  * Remove widget on an index.
- * @param {int} idx Index of widget from list of widgets.
+ * @param {int} payload Widget that will be removed.
  */
-export function remove(idx) {
+export function remove(payload) {
   return {
     name: WIDGET_ACTION_NAME,
     type: WIDGET_ACTION_TYPE_REMOVE,
-    idx: idx
+    payload: payload
   };
 }
 
 /**
  * Update specific widget data on an index.
- * @param {int} idx Index of widget from list of widgets.
- * @param {object} payload New widget data.
+ * @param {object} payload Widget that will be updated.
  */
-export function update(idx, payload) {
+export function update(payload) {
   return {
     name: WIDGET_ACTION_NAME,
     type: WIDGET_ACTION_TYPE_UPDATE,
-    idx: idx,
     payload: payload
   };
 }

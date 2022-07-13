@@ -11,7 +11,16 @@ const minimized = !isDev;
 
 let conf = {
   entry: {
+    Home: ['./src/pages/Home'],
     Dashboard: ['./src/pages/Dashboard'],
+    DashboardForm: ['./src/pages/Admin/Dashboard/Form'],
+    AdminDashboardList: ['./src/pages/Admin/Dashboard/List'],
+    AdminIndicatorList: ['./src/pages/Admin/Indicator/List'],
+    AdminIndicatorForm: ['./src/pages/Admin/Indicator/Form'],
+    AdminBasemapList: ['./src/pages/Admin/Basemap/List'],
+    AdminBasemapForm: ['./src/pages/Admin/Basemap/Form'],
+    AdminContextLayerList: ['./src/pages/Admin/ContextLayer/List'],
+    AdminContextLayerForm: ['./src/pages/Admin/ContextLayer/Form'],
   },
   output: {
     path: path.resolve(__dirname, "./bundles/frontend"),

@@ -11,7 +11,16 @@ html, body {
   width: 100%;
 }
 
-.dashboard {
+.page {
+  @include media(xsmall-only) {
+    min-height: 100vh;
+    display: block;
+    overflow-y: auto;
+  }
+}
+
+.page {
+
   main {
     height: 100%;
     position: relative;
@@ -20,6 +29,12 @@ html, body {
     @include media(small-down) {
       height: fit-content;
     }
+  }
+
+  .dashboard {
+    height: 100%;
+    position: relative;
+    width: 100%;
   }
 
   .dashboard__panel {

@@ -54,7 +54,7 @@ class SitePreferences(SingletonModel):
     )
     secondary_color = models.CharField(
         max_length=16,
-        default='#297CC2',
+        default='#374EA2',
         help_text=_(
             'Secondary color that used for example for button. '
         )
@@ -68,7 +68,7 @@ class SitePreferences(SingletonModel):
     )
     tertiary_color = models.CharField(
         max_length=16,
-        default='#374EA2',
+        default='#297CC2',
         help_text=_(
             'Tertiary color that used for example for some special place. '
         )

@@ -32,6 +32,16 @@ class AbstractSource(models.Model):
         abstract = True
 
 
+class AbstractEditData(models.Model):
+    """Abstract model with Time Editor."""
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    class Meta:  # noqa: D106
+        abstract = True
+
+
 class SlugTerm(AbstractTerm):
     """Abstract model with term."""
 

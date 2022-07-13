@@ -2,8 +2,7 @@ import {
   BASEMAP_ACTION_NAME,
   BASEMAP_ACTION_TYPE_ADD,
   BASEMAP_ACTION_TYPE_REMOVE,
-  BASEMAP_DEFAULT_ACTION_NAME,
-  BASEMAP_DEFAULT_ACTION_TYPE_CHANGE
+  BASEMAP_ACTION_TYPE_UPDATE,
 } from '../../reducers/dashboard/dashboard'
 
 
@@ -32,19 +31,18 @@ export function remove(payload) {
   };
 }
 
-
 /**
- * Change default basemap
+ * Update basemap data.
  * @param {object} payload Basemap data.
  */
-export function changeDefault(payload) {
+export function update(payload) {
   return {
-    name: BASEMAP_DEFAULT_ACTION_NAME,
-    type: BASEMAP_DEFAULT_ACTION_TYPE_CHANGE,
+    name: BASEMAP_ACTION_NAME,
+    type: BASEMAP_ACTION_TYPE_UPDATE,
     payload: payload
   };
 }
 
 export default {
-  add, remove, changeDefault
+  add, remove, update
 }

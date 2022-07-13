@@ -19,8 +19,7 @@ import './style.scss';
  */
 export default function LeftPanel() {
   const {
-    basemapsLayers,
-    defaultBasemapLayer
+    basemapsLayers
   } = useSelector(state => state.dashboard.data);
   const [state, setState] = useState(LEFT);
   const [tab, setTab] = useState('DATASET');
@@ -73,8 +72,7 @@ export default function LeftPanel() {
       </div>
       <div className='dashboard__left_side__basemaps'>
         <Basemaps
-          data={basemapsLayers}
-          defaultBasemapLayer={defaultBasemapLayer}/>
+          data={basemapsLayers}/>
       </div>
     </section>
   )

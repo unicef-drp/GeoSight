@@ -62,18 +62,18 @@
                         <ul class="dropdown-menu box-shadow-bottom animate slideIn">
                             {% if user.is_staff %}
                                 <li>
-                                    <a href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
+                                    <a id="nav-indicator-management"
+                                       href="{% url "admin-indicator-list-view" %}"
+                                       class="nav row"
+                                       title="Indicator Management">
+                                        Admin
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'admin:index' %}">{% trans "Django Admin" %}</a>
                                 </li>
                                 <li>
                                     <a href="{% url "backups-view" %}">{% trans "Backups" %}</a>
-                                </li>
-                                <li>
-                                    <a id="nav-indicator-management"
-                                       href="{% url "indicator-management-view" %}"
-                                       class="nav row"
-                                       title="Indicator Management">
-                                        Indicators
-                                    </a>
                                 </li>
                             {% endif %}
                             <li>

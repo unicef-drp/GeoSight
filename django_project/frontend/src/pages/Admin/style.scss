@@ -1,0 +1,115 @@
+/* ==========================================================================
+   Admin specific style
+   ========================================================================== */
+
+@import '../../app/variables';
+
+
+main {
+  flex-grow: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+
+  & > div {
+    height: 100%;
+    overflow: hidden;
+
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box; /* Opera/IE 8+ */
+  }
+}
+
+.AdminContent {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 0;
+  background-color: #F4F4F4;
+
+  & > div {
+    border-radius: $border-radius;
+    margin: 0 1rem 1rem 1rem;
+  }
+
+  .AdminContentHeader {
+    background: white;
+    border-radius: 0;
+    box-shadow: $box-shadow-sm;
+    color: $primary-color;
+    display: flex;
+    margin: 0 0 1rem 0;
+    padding: 0.5rem 1rem;
+
+    .AdminContentHeader-Left {
+      flex-grow: 1;
+      padding: 0.5rem 0;
+
+      span {
+        display: inline-block;
+        margin-right: 0.5rem;
+      }
+    }
+
+    .AdminContentHeader-Right {
+      button {
+        margin-left: 0.5rem;
+      }
+    }
+  }
+
+  .AdminBaseInput {
+    background-color: white;
+    padding: 0.5rem;
+
+    .MuiFormControl-root {
+      background-color: $base-almost-white-color;
+      margin-top: 0 !important;
+      width: 100%;
+
+      .MuiOutlinedInput-root {
+        width: 100%;
+
+        input {
+          padding: 0.5rem 1rem 0.5rem 0;
+        }
+
+        .MuiOutlinedInput-notchedOutline {
+          border: unset;
+        }
+
+        &:hover {
+          .MuiOutlinedInput-notchedOutline {
+            border: unset;
+          }
+        }
+      }
+    }
+  }
+
+  .MuiDataGrid-actionsCell {
+    grid-gap: 0 !important;
+  }
+}
+
+.AdminSelectDataForm {
+  .MuiBox-root {
+    .AdminContent {
+      padding-top: 1rem;
+    }
+
+    display: flex;
+    flex-direction: column;
+    width: 1140px;
+    height: 90%;
+    max-width: 90%;
+  }
+}
+
+.CellDescription {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 60rem;
+}

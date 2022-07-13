@@ -1,0 +1,27 @@
+/* ==========================================================================
+   Table style
+   ========================================================================== */
+
+@import '../../../../app/variables';
+
+.AdminList {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 0;
+  overflow: hidden;
+
+  .AdminTable {
+    height: 100%;
+    width: 100%;
+  }
+
+  .AdminTableDelete {
+    color: $error;
+  }
+
+  .AdminTable-Loading {
+    padding: 1rem;
+  }
+}

@@ -3,54 +3,51 @@
    ========================================================================== */
 
 import React, { Fragment, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button, FormControl, Input, InputLabel } from "@mui/material";
-import Tooltip from '@mui/material/Tooltip';
-import SettingsIcon from '@mui/icons-material/Settings';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 
 import { DEFINITION } from "../Widget/index"
-import Actions from "../../redux/actions/dashboard"
 import Modal, { ModalContent, ModalHeader } from "../Modal";
 import { cleanLayerData } from "../../utils/indicatorData"
 
 /**
  * Edit section for widget.
- * @param {int} idx Index of widget
+ * @param {bool} open Is open or close.
+ * @param {Function} onCreated Set Parent Open.
  * @param {object} data Widget Data.
  * @param {React.Component} children React component to be rendered
  */
-export default function EditSection({ idx, data, children }) {
-  const dispatch = useDispatch()
+export default function WidgetEditor({ open, onCreated, data, children }) {
   const { indicators } = useSelector(state => state.dashboard.data);
-  const [open, setOpen] = useState(false);
-  const [name, setName] = useState(data.name ? data.name : '');
-  const [description, setDescription] = useState(data.description ? data.description : '');
-  const [layerID, setLayerID] = useState(data.layer_id ? data.layer_id : '');
-  const [layerType, setLayerType] = useState(data.layer_used ? data.layer_used : definition.WidgetLayerUsed.INDICATOR);
-  const [operation, setOperation] = useState(data.operation ? data.operation : DEFINITION.WidgetOperation.SUM);
-  const [unit, setUnit] = useState(data.unit ? data.unit : '');
-  const [property, setProperty] = useState(data.property ? data.property : '');
+
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [layerID, setLayerID] = useState('');
+  const [layerType, setLayerType] = useState('');
+  const [operation, setOperation] = useState('');
+  const [unit, setUnit] = useState('');
+  const [property, setProperty] = useState('');
   const [additionalData, setAdditionalData] = useState({});
 
-  // Open modal
-  const onOpen = () => {
-    setOpen(true);
-  };
+
+  // onSubmitted
+  useEffect(() => {
+    setName(data.name ? data.name : '')
+    setDescription(data.description ? data.description : '')
+    setLayerID(data.layer_id ? data.layer_id : '')
+    setLayerType(data.layer_used ? data.layer_used : definition.WidgetLayerUsed.INDICATOR)
+    setOperation(data.operation ? data.operation : DEFINITION.WidgetOperation.SUM)
+    setUnit(data.unit ? data.unit : '')
+    setProperty(data.property ? data.property : '')
+    setAdditionalData({})
+  }, [data])
 
   // Close modal
   const onClosed = () => {
-    setOpen(false);
+    onCreated();
   };
-
-  // Open modal if no name yet
-  useEffect(() => {
-    if (!data.name) {
-      onOpen();
-    }
-  }, [data]);
 
   const onApply = () => {
     const newData = {
@@ -66,18 +63,13 @@ export default function EditSection({ idx, data, children }) {
         property: property,
       }
     }
-    dispatch(Actions.Widget.update(idx, newData));
-    onClosed();
+    onCreated(newData)
   }
 
+  // Format indicator list
   const indicatorList = indicators.map(function (indicator) {
     return [indicator.id, indicator.name]
   })
-
-  // Delete widget
-  const deleteWidget = () => {
-    dispatch(Actions.Widget.remove(idx));
-  }
 
   let selectedData = {};
   try {
@@ -93,150 +85,134 @@ export default function EditSection({ idx, data, children }) {
 
   return (
     <Fragment>
-      <RemoveCircleIcon
-        className="remove__button"
-        onClick={deleteWidget}/>
-
-      <div className='setting__button' onClick={(event) => {
-        event.stopPropagation();
-      }}>
-        <Tooltip title='Change widget'>
-          <SettingsIcon
-            className='widget__button__editor'
-            onClick={() => {
-              onOpen()
-            }}/>
-        </Tooltip>
-
-        <Modal
-          open={open}
-          onClosed={onClosed}
-          className='modal__widget__editor'
-        >
-          <ModalHeader onClosed={onClosed}>
-            {name ? "Change " + name : "New Widget"}
-          </ModalHeader>
-          <ModalContent>
-            <FormControl>
-              <InputLabel>Widget name</InputLabel>
-              <Input type="text" placeholder="Widget name"
-                     onChange={(event) => {
-                       setName(event.target.value)
-                     }}
-                     value={name}
-              />
-            </FormControl>
-            <FormControl>
-              <InputLabel>Widget description</InputLabel>
-              <Input type="text"
-                     placeholder="Widget description"
-                     onChange={(event) => {
-                       setDescription(event.target.value)
-                     }}
-                     value={description}
-              />
-            </FormControl>
-            <FormControl>
-              <InputLabel>Unit</InputLabel>
-              <Input type="text"
-                     placeholder="Unit"
-                     onChange={(event) => {
-                       setUnit(event.target.value)
-                     }}
-                     value={unit}
-              />
-            </FormControl>
-            <FormControl>
-              <InputLabel>Layer Type</InputLabel>
-              <Select
-                onChange={(event) => {
-                  setLayerType(event.target.value)
-                }}
-                value={layerType}
-              >
-                {
-                  Object.keys(definition.WidgetLayerUsed).map((key, index) => (
-                    <MenuItem
-                      key={index}
-                      value={definition.WidgetLayerUsed[key]}>{definition.WidgetLayerUsed[key]}
-                    </MenuItem>
-                  ))
-                }
-              </Select>
-            </FormControl>
-            <FormControl>
-              <InputLabel>Source Layer</InputLabel>
-              <Select
-                onChange={(event) => {
-                  setLayerID(event.target.value)
-                }}
-                value={layerID}
-              >
-                {
-                  indicatorList.map(function (indicator, index) {
-                    return <MenuItem key={index}
-                                     value={indicator[0]}>{indicator[1]}
-                    </MenuItem>
-                  })
-                }
-              </Select>
-            </FormControl>
-            <FormControl>
-              <InputLabel>Operation</InputLabel>
-              <Select
-                onChange={(event) => {
-                  setOperation(event.target.value)
-                }}
-                value={operation}
-              >
-                {
-                  Object.keys(DEFINITION.WidgetOperation).map((key, index) => (
-                    <MenuItem
-                      key={index}
-                      value={DEFINITION.WidgetOperation[key]}>{DEFINITION.WidgetOperation[key]}
-                    </MenuItem>
-                  ))
-                }
-              </Select>
-            </FormControl>
-            <FormControl>
-              <InputLabel>Source Value</InputLabel>
-              <Select
-                onChange={(event) => {
-                  setProperty(event.target.value)
-                }}
-                value={property}
-              >
-                {
-                  Object.keys(selectedData).map((key, index) => (
-                    <MenuItem
-                      key={index}
-                      value={key}>{key}</MenuItem>
-                  ))
-                }
-              </Select>
-            </FormControl>
-
-            {
-              React.Children.map(children, child => {
-                return React.cloneElement(child, {
-                  idx,
-                  data,
-                  selectedData,
-                  setAdditionalData
-                })
-              })
-            }
-            <Button
-              variant="primary"
-              className="modal__widget__editor__apply"
-              onClick={onApply}
+      <Modal
+        open={open}
+        onClosed={onClosed}
+        className='modal__widget__editor MuiFormControl-Form'
+      >
+        <ModalHeader onClosed={onClosed}>
+          {name ? "Change " + name : "New Widget"}
+        </ModalHeader>
+        <ModalContent>
+          <FormControl>
+            <InputLabel>Widget name</InputLabel>
+            <Input type="text" placeholder="Widget name"
+                   onChange={(event) => {
+                     setName(event.target.value)
+                   }}
+                   value={name}
+            />
+          </FormControl>
+          <FormControl>
+            <InputLabel>Widget description</InputLabel>
+            <Input type="text"
+                   placeholder="Widget description"
+                   onChange={(event) => {
+                     setDescription(event.target.value)
+                   }}
+                   value={description}
+            />
+          </FormControl>
+          <FormControl>
+            <InputLabel>Unit</InputLabel>
+            <Input type="text"
+                   placeholder="Unit"
+                   onChange={(event) => {
+                     setUnit(event.target.value)
+                   }}
+                   value={unit}
+            />
+          </FormControl>
+          <FormControl>
+            <InputLabel>Layer Type</InputLabel>
+            <Select
+              onChange={(event) => {
+                setLayerType(event.target.value)
+              }}
+              value={layerType}
             >
-              Apply
-            </Button>
-          </ModalContent>
-        </Modal>
-      </div>
+              {
+                Object.keys(definition.WidgetLayerUsed).map((key, index) => (
+                  <MenuItem
+                    key={index}
+                    value={definition.WidgetLayerUsed[key]}>{definition.WidgetLayerUsed[key]}
+                  </MenuItem>
+                ))
+              }
+            </Select>
+          </FormControl>
+          <FormControl>
+            <InputLabel>Source Layer</InputLabel>
+            <Select
+              onChange={(event) => {
+                setLayerID(event.target.value)
+              }}
+              value={layerID}
+            >
+              {
+                indicatorList.map(function (indicator, index) {
+                  return <MenuItem key={index}
+                                   value={indicator[0]}>{indicator[1]}
+                  </MenuItem>
+                })
+              }
+            </Select>
+          </FormControl>
+          <FormControl>
+            <InputLabel>Operation</InputLabel>
+            <Select
+              onChange={(event) => {
+                setOperation(event.target.value)
+              }}
+              value={operation}
+            >
+              {
+                Object.keys(DEFINITION.WidgetOperation).map((key, index) => (
+                  <MenuItem
+                    key={index}
+                    value={DEFINITION.WidgetOperation[key]}>{DEFINITION.WidgetOperation[key]}
+                  </MenuItem>
+                ))
+              }
+            </Select>
+          </FormControl>
+          <FormControl>
+            <InputLabel>Source Value</InputLabel>
+            <Select
+              onChange={(event) => {
+                setProperty(event.target.value)
+              }}
+              value={property}
+            >
+              {
+                Object.keys(selectedData).map((key, index) => (
+                  <MenuItem
+                    key={index}
+                    value={key}>{key}</MenuItem>
+                ))
+              }
+            </Select>
+          </FormControl>
+
+          {
+            React.Children.map(children, child => {
+              return React.cloneElement(child, {
+                data,
+                selectedData,
+                setAdditionalData
+              })
+            })
+          }
+          <Button
+            variant="primary"
+            className="modal__widget__editor__apply"
+            onClick={onApply}
+            disabled={!name || !layerType || !operation || !property}
+          >
+            Apply
+          </Button>
+        </ModalContent>
+      </Modal>
     </Fragment>
   )
 }

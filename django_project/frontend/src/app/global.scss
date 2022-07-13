@@ -21,7 +21,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: $base-color;
+  background: $primary-color;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -37,7 +37,7 @@ html {
 
 body {
   margin: 0;
-  background-color: #eee;
+  background-color: $base-to-white-color;
   color: $base-black-color;
   font-size: $base-font-size;
   line-height: $base-line-height;
@@ -48,9 +48,9 @@ body {
 
 
 button {
-  background: $base-color;
+  background: $primary-color;
   border: unset;
-  color: $base-color-reverse;
+  color: $anti-primary-color;
   font-size: $base-font-size !important;
   line-height: $base-line-height !important;
 }
@@ -108,7 +108,7 @@ b.light {
 
 textarea {
   box-sizing: border-box;
-  border: 1px solid $base-color;
+  border: 1px solid $primary-color;
   border-radius: 5px;
   padding: 5px 10px;
   width: 100%;

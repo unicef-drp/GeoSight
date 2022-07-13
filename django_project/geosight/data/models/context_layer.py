@@ -16,27 +16,11 @@ class LayerType(object):
 class ContextLayerGroup(AbstractTerm):
     """A model for the group of context layer."""
 
-    group = models.ForeignKey(
-        "self",
-        null=True, blank=True,
-        on_delete=models.SET_NULL
-    )
-
     def __str__(self):
-        if self.group:
-            return self.name + '/' + self.group.__str__()
-        else:
-            return self.name
-
-    @property
-    def group_tree_in_list(self):
-        """Return the group tree i n list."""
-        return [self] + (self.group.group_tree_in_list if self.group else [])
+        return self.name
 
     def save(self, *args, **kwargs):
         """Override save."""
-        if self.group and self in self.group.group_tree_in_list:
-            self.group = None
         super(ContextLayerGroup, self).save(*args, **kwargs)
 
 
@@ -73,21 +57,21 @@ class ContextLayer(AbstractTerm):
         max_length=512,
         null=True, blank=True,
         help_text=_(
-            "Token to access the layer"
+            "Token to access the layer if needed."
         )
     )
     username = models.CharField(
         max_length=512,
         null=True, blank=True,
         help_text=_(
-            "Username to access the layer"
+            "Username to access the layer if needed."
         )
     )
     password = models.CharField(
         max_length=512,
         null=True, blank=True,
         help_text=_(
-            "Password to access the layer"
+            "Password to access the layer if needed."
         )
     )
 

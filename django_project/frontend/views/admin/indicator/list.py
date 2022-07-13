@@ -8,6 +8,8 @@ from frontend.views._base import BaseView
 class IndicatorListView(SuperuserRequiredMixin, BaseView):
     """Indicator Detail View."""
 
+    template_name = 'frontend/admin/indicator/list.html'
+
     @property
     def page_title(self):
         """Return page title that used on tab bar."""

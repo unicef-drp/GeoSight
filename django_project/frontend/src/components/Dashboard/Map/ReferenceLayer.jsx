@@ -48,7 +48,7 @@ export function IndicatorDetailsModal({ group, feature, onClose }) {
   if (data?.details && feature?.name && feature?.name.includes('Program Coverage')) {
     columns = [
       { field: 'id', headerName: 'id', hide: true },
-      { field: 'title', headerName: 'Title', width: 200 },
+      { field: 'title', headerName: 'Title', flex: 1 },
       { field: 'status', headerName: 'Status', width: 70 },
       { field: 'sections', headerName: 'Sections', width: 130 },
       {
@@ -111,7 +111,7 @@ export default function ReferenceLayer({ currentIndicator }) {
   const filtersData = useSelector(state => state.filtersData);
   const [clickedFeature, setClickedFeature] = useState(null);
 
-  const where = returnWhere(filtersData)
+  const where = returnWhere(filtersData ? filtersData : [])
 
   // Filter geometry_code based on indicators layer
   // Also filter by levels that found on indicators

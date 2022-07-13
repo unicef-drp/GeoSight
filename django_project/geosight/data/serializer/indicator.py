@@ -51,7 +51,7 @@ class IndicatorSerializer(serializers.ModelSerializer):
     class Meta:  # noqa: D106
         model = Indicator
         fields = (
-            'id', 'group', 'name', 'rules',
+            'id', 'group', 'name', 'rules', 'reporting_level',
             'dashboard_link', 'source', 'description', 'url')
 
 
@@ -59,7 +59,7 @@ class BasicIndicatorSerializer(serializers.ModelSerializer):
     """Serializer for Indicator."""
 
     url = serializers.SerializerMethodField()
-    group = serializers.SerializerMethodField()
+    category = serializers.SerializerMethodField()
 
     def get_url(self, obj: Indicator):
         """Return url."""
@@ -68,14 +68,14 @@ class BasicIndicatorSerializer(serializers.ModelSerializer):
             args=[obj.id]
         )
 
-    def get_group(self, obj: Indicator):
+    def get_category(self, obj: Indicator):
         """Return group."""
         return obj.group.name if obj.group else ''
 
     class Meta:  # noqa: D106
         model = Indicator
         fields = (
-            'id', 'name', 'group', 'source', 'description', 'url',
+            'id', 'name', 'category', 'source', 'description', 'url',
             'reporting_level')
 
 

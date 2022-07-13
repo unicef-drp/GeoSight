@@ -8,10 +8,6 @@ import InfoIcon from "@mui/icons-material/Info";
 
 import SummaryWidget from "./SummaryWidget"
 import SummaryGroupWidget from "./SummaryGroupWidget"
-import WidgetSelectionSection from "./WidgetSelection"
-import EditSection from "./edit";
-import SummaryGroupWidgetEditSection from "./SummaryGroupWidget/edit";
-import SummaryWidgetEditSection from "./SummaryWidget/edit";
 import { cleanLayerData } from "../../utils/indicatorData"
 
 import './style.scss';
@@ -74,20 +70,6 @@ export function Widget({ idx, data }) {
     }
   }
 
-  /**
-   * Render edit by type
-   * **/
-  function renderEditByType() {
-    switch (type) {
-      case DEFINITION.WidgetType.SUMMARY_WIDGET:
-        return <SummaryWidgetEditSection/>;
-      case DEFINITION.WidgetType.SUMMARY_GROUP_WIDGET:
-        return <SummaryGroupWidgetEditSection/>;
-      default:
-        return ''
-    }
-  }
-
   // Render widget based on the type and raise error
   const renderWidget = () => {
     try {
@@ -102,12 +84,6 @@ export function Widget({ idx, data }) {
       <InfoIcon className="info__button" onClick={() => {
         showInfoHandler()
       }}/>
-      {
-        editMode ?
-          <EditSection idx={idx} data={data}>
-            {renderEditByType()}
-          </EditSection> : ''
-      }
       <div className='widget__fill'>
         {renderWidget()}
       </div>
@@ -129,7 +105,6 @@ export function Widget({ idx, data }) {
 export default function WidgetList() {
   const { widgets } = useSelector(state => state.dashboard.data);
   return <Fragment>
-    {editMode ? <WidgetSelectionSection/> : ''}
     {
       widgets ?
         widgets.map(

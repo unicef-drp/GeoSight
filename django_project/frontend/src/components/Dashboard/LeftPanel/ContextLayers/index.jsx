@@ -12,7 +12,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 
 import Actions from '../../../../redux/actions/dashboard'
 import { featurePopupContent } from '../../../../utils/main'
-import { contextLayerInGroup } from '../../../../utils/contextLayer'
+import { layerInGroup } from '../../../../utils/layers'
 import EsriLeafletLayer from '../../../../utils/esri/leaflet-esri-layer'
 import Switch from '@mui/material/Switch';
 
@@ -110,7 +110,7 @@ function ContextLayerInput({ data }) {
 
   // Onload for default checked and the layer
   useEffect(() => {
-    if (data.enable_by_default) {
+    if (data.visible_by_default) {
       change(true)
     }
     if (!layer) {
@@ -195,29 +195,19 @@ function ContextLayerInput({ data }) {
  * @param {str} groupName Group name.
  * @param {dict} group Group data.
  */
-function ContextLayerRow({ groupNumber, groupName, group }) {
+function LayerRow({ groupName, group }) {
   if (!groupName) {
     return <div></div>
   }
-  const className = groupNumber > 1 ? 'ContextLayerGroup' : 'ContextLayerGroup Empty'
 
-  return <div className={className}>
-    <div className='ContextLayerGroupName'><b
+  return <div className='LayerGroup'>
+    <div className='LayerGroupName'><b
       className='light'>{groupName}</b></div>
-    <div className='ContextLayerGroupList'>
+    <div className='LayerGroupList'>
       {
         group.layers.map(
           layer => (
             <ContextLayerInput key={layer.id} data={layer}/>
-          )
-        )
-      }
-      {
-        (Object.keys(group.groups)).map(
-          groupName => (
-            <ContextLayerRow groupNumber={Object.keys(group.groups).length}
-                             key={groupName} groupName={groupName}
-                             group={group.groups[groupName]}/>
           )
         )
       }
@@ -232,7 +222,7 @@ function ContextLayerRow({ groupNumber, groupName, group }) {
  */
 export default function ContextLayersAccordion({ expanded, handleChange }) {
   const { contextLayers } = useSelector(state => state.dashboard.data);
-  const groups = contextLayerInGroup(contextLayers)
+  const groups = layerInGroup(contextLayers)
 
   /** Render group and layers
    * @param {str} groupName Name of group.
@@ -258,7 +248,7 @@ export default function ContextLayersAccordion({ expanded, handleChange }) {
           contextLayers !== undefined ?
             (Object.keys(groups.groups)).map(
               groupName => (
-                <ContextLayerRow
+                <LayerRow
                   groupNumber={Object.keys(groups.groups).length}
                   key={groupName} groupName={groupName}
                   group={groups.groups[groupName]}/>

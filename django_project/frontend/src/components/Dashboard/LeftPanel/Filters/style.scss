@@ -47,7 +47,7 @@
   overflow-y: auto;
 
   .FilterGroup {
-    border: 1px solid $base-color;
+    border: 1px solid $primary-color;
     margin-top: 15px;
     padding: 15px 5px 5px 5px;
     position: relative;
@@ -74,7 +74,7 @@
       }
 
       .MuiButtonLike {
-        color: $base-color;
+        color: $primary-color;
         background: white;
         height: 0.8rem;
         width: 18px;
@@ -95,7 +95,7 @@
         margin-left: 10px;
         font-size: 12px;
         margin-top: -2px;
-        background: $base-color;
+        background: $primary-color;
         border-radius: 5px;
         cursor: pointer;
       }
@@ -188,7 +188,7 @@
     display: flex;
     margin-top: 5px;
     width: 100%;
-    border: 1px solid $base-color;
+    border: 1px solid $primary-color;
 
     .MuiSvgIcon-root {
       color: #ddd;
@@ -235,7 +235,7 @@
     }
 
     .MuiInput-root {
-      border-left: 1px solid $base-color;
+      border-left: 1px solid $primary-color;
       padding: 5px 3px 0 3px;
       width: 50px;
       font-size: 0.8rem;
@@ -349,6 +349,6 @@
   padding: 10px;
 
   .FilterControlSummaryContent {
-    border: 1px solid $base-color;
+    border: 1px solid $primary-color;
   }
 }

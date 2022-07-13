@@ -3,25 +3,34 @@
    ========================================================================== */
 
 /* Settings */
-$base-hovered-opacity: 0.5;
+$base-hovered-opacity: 0.8;
+
+/* Customized Theme */
+$primary-color: var(--primary-color);
+$anti-primary-color: var(--anti-primary-color);
+$secondary-color: var(--secondary-color);
+$anti-secondary-color: var(--anti-secondary-color);
+$tertiary-color: var(--tertiary-color);
+$anti-tertiary-color: var(--anti-tertiary-color);
 
 /* Colors */
 $base-black-color: rgba(0, 0, 0, 0.87);
-$base-to-white-color: #eee;
-$base-color: var(--primary-color);
-$base-color-reverse: #FFFFFF;
+$base-to-white-color: #F4F4F4;
+$base-almost-white-color: #FAFAFA;
+$base-almost-gray-color: #DDDDDD;
 $base-alpha-color: #1CABE220;
 $base-shadow-box: 0 0 16px 4px rgba(#000000, 0.1);
 
-$navbar-background-color: $base-color;
-$navbar-font-color: $base-color-reverse;
+
+$navbar-background-color: $primary-color;
+$navbar-font-color: $anti-primary-color;
 $black: #000 !default;
 $error: #F00 !default;
 
 /* Fonts */
 $root-font-size: 16px;
 
-$base-font-color: $base-color;
+$base-font-color: $primary-color;
 $base-font-family: 'Rubik', sans-serif;
 $base-font-style: normal;
 $base-font-light: 300;
@@ -34,6 +43,7 @@ $base-line-height: 1.5;
 
 /* Spacing */
 $global-spacing: 1rem;
+$border-radius: 0.2rem;
 
 /* Media queries */
 $xsmall-range: (0, 543px);

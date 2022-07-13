@@ -116,5 +116,5 @@ admin_url = [
 ]
 
 urlpatterns = [
-    url(r'^admin/', include(admin_url)),
+    url(r'^old-admin/', include(admin_url)),
 ]

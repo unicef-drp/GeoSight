@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import { Provider } from 'react-redux';
 import c from 'classnames';
 import NavBar from '../components/Navbar';
-import { store } from '../Store';
 
 import './mui.scss';
 import './global.scss';
@@ -31,7 +30,7 @@ export default function App({ className, children }) {
  * RENDER APP
  * --------------------------------
  */
-export function render(App, connectConf) {
+export function render(App, store) {
   const root = createRoot(document.getElementById('app'));
   root.render(
     <Provider store={store}>

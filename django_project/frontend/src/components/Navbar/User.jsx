@@ -5,10 +5,8 @@
 import React, { Fragment, useState } from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Fade from '@mui/material/Fade';
-
-import LoginModal from '../Login'
 
 /**
  * User dropdown.
@@ -27,23 +25,19 @@ export default function User() {
    * Signin Modal Functions.
    **/
   const { username, full_name, is_staff } = user;
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const logoutUrl = urls.logout; // eslint-disable-line no-undef
-  const adminUrl = urls.admin; // eslint-disable-line no-undef
+  const loginUrl = urls.login; // eslint-disable-line no-undef
   const backupsUrl = urls.backups; // eslint-disable-line no-undef
-  const indicatorsUrl = urls.indicators; // eslint-disable-line no-undef
-  const openSignIn = () => {
-    setModalIsOpen(true);
-  };
-  const closeSignIn = () => {
-    setModalIsOpen(false);
-  };
+
+  // Admin URLS
+  const adminUrl = urls.admin.djangoAdmin; // eslint-disable-line no-undef
+  const dashboardUrl = urls.admin.dashboardList; // eslint-disable-line no-undef
 
   if (username) {
     return (
       <div>
         <button onClick={handleClick}>
-          <div>{full_name} <ArrowDropDownIcon/></div>
+          <AccountCircleIcon/>
         </button>
         <Menu
           anchorEl={anchorEl}
@@ -56,26 +50,26 @@ export default function User() {
         >
           {
             is_staff ? (
-              <MenuItem>
-                <a href={adminUrl}>Admin</a>
+              <MenuItem className='MenuItem-Header'>
+                <a href={dashboardUrl}>Admin</a>
               </MenuItem>
             ) : ''
           }
           {
             is_staff ? (
-              <MenuItem>
+              <MenuItem className='MenuItem-Header'>
+                <a href={adminUrl}>Django Admin</a>
+              </MenuItem>
+            ) : ''
+          }
+          {
+            is_staff ? (
+              <MenuItem className='MenuItem-Header'>
                 <a href={backupsUrl}>Backups</a>
               </MenuItem>
             ) : ''
           }
-          {
-            is_staff ? (
-              <MenuItem>
-                <a href={indicatorsUrl}>Indicators</a>
-              </MenuItem>
-            ) : ''
-          }
-          <MenuItem>
+          <MenuItem className='MenuItem-Header'>
             <a href={logoutUrl}>Logout</a>
           </MenuItem>
         </Menu>
@@ -84,13 +78,11 @@ export default function User() {
   } else {
     return (
       <Fragment>
-        <button onClick={openSignIn}>
-          SIGNIN
-        </button>
-        <LoginModal
-          open={modalIsOpen}
-          onClosed={closeSignIn}
-        />
+        <a href={loginUrl}>
+          <button>
+            SIGNIN
+          </button>
+        </a>
       </Fragment>
     );
   }
