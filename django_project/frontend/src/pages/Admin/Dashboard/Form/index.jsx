@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
+import MapIcon from '@mui/icons-material/Map';
 
 import App, { render } from '../../../../app';
 import { pageNames } from '../../index';
@@ -22,11 +23,12 @@ import RightPanel from '../../../../components/Dashboard/RightPanel'
 
 import '../../../Dashboard/style.scss';
 import './style.scss';
+import { ThemeButton } from "../../../../components/Elements/Button";
 
 /**
  * Dashboard Preview Section
  */
-export function DashboardPreview() {
+export function DashboardPreview({ onForm }) {
   const dispatch = useDispatch();
   const { data } = useSelector(state => state.dashboard);
 
@@ -44,6 +46,14 @@ export function DashboardPreview() {
 
   return (
     <div className='dashboard'>
+      <div className='BackToForm'>
+        <ThemeButton
+          variant="secondary"
+          onClick={onForm}
+        >
+          <MapIcon/>Back to Form
+        </ThemeButton>
+      </div>
       {Object.keys(data).length > 0 ?
         <Fragment>
           <LeftPanel/>
@@ -59,7 +69,7 @@ export function DashboardPreview() {
 /**
  * Dashboard Form Section
  */
-export function DashboardForm() {
+export function DashboardForm({ onPreview }) {
   const [currentPage, setCurrentPage] = useState('Summary');
   const { data } = useSelector(state => state.dashboard);
 
@@ -76,6 +86,12 @@ export function DashboardForm() {
                dangerouslySetInnerHTML={{ __html: contentTitle }}></b>
           </div>
           <div className='AdminContentHeader-Right'>
+            <ThemeButton
+              variant="secondary"
+              onClick={onPreview}
+            >
+              <MapIcon/>Preview
+            </ThemeButton>
           </div>
         </div>
 
@@ -146,12 +162,17 @@ export function DashboardForm() {
  * Dashboard Form App
  */
 export default function DashboardFormApp() {
+  const [currentMode, setCurrentMode] = useState('FormMode');
   return (
-    <App>
+    <App className={currentMode}>
       {/* ADMIN SECTION */}
-      <DashboardForm/>
+      <DashboardForm onPreview={() => {
+        setCurrentMode('PreviewMode')
+      }}/>
       {/* DASHBOARD SECTION */}
-      <DashboardPreview/>
+      <DashboardPreview onForm={() => {
+        setCurrentMode('FormMode')
+      }}/>
     </App>
   )
 }

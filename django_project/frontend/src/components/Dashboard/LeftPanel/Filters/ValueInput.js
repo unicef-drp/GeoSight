@@ -77,7 +77,7 @@ export default function FilterValueInput(
                 <div className='MuiInputSliderWithInput'>
                   <div className='MuiInputSlider'>
                     <Slider
-                      value={initValue}
+                      value={initValue === '' ? 0 : initValue}
                       step={1}
                       min={min}
                       max={max}

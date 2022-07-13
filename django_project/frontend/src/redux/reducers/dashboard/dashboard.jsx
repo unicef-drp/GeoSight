@@ -82,8 +82,14 @@ export default function dashboardReducer(
         case BASEMAP_ACTION_TYPE_REMOVE: {
           const newState = { ...state }
           const basemapLayers = []
+          let noVisiblePayload = action.payload.visible_by_default;
+          console.log(noVisiblePayload)
           newState.data.basemapsLayers.forEach(function (basemapLayer) {
             if (basemapLayer.id !== action.payload.id) {
+              if (noVisiblePayload) {
+                basemapLayer.visible_by_default = true
+                noVisiblePayload = false;
+              }
               basemapLayers.push(basemapLayer)
             }
           })

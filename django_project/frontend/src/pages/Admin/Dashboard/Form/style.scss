@@ -8,8 +8,23 @@ main {
   display: block;
 }
 
-.dashboard {
-  display: none;
+.FormMode {
+  .Admin {
+    display: flex;
+  }
+}
+
+.PreviewMode {
+  .Admin {
+    display: none;
+  }
+}
+
+.BackToForm {
+  position: absolute;
+  top: 0.5rem;
+  left: 46%;
+  z-index: 9999;
 }
 
 .Admin {

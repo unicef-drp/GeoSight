@@ -14,9 +14,9 @@ import Actions from '../../../../redux/actions/dashboard'
  * @param {list} data Basemap list.
  * @param {int} defaultBasemapLayer Default basemap.
  */
-export default function Basemaps({ data, defaultBasemapLayer }) {
+export default function Basemaps({ data }) {
   const dispatch = useDispatch();
-  const [selected, setSelected] = useState(defaultBasemapLayer);
+  const [selected, setSelected] = useState(null);
   const onSelected = (id) => {
     setSelected(id);
   };
@@ -24,18 +24,20 @@ export default function Basemaps({ data, defaultBasemapLayer }) {
   // Onload, check the default one
   useEffect(() => {
     if (data) {
-      const basemaps = data.map(function (basemap) {
-        return basemap.id
+      const basemaps = data.filter(function (basemap) {
+        return basemap.visible_by_default
       })
-      if (!selected || !basemaps.includes(selected)) {
-        onSelected(data[0]?.id);
+      if (basemaps[0]) {
+        onSelected(basemaps[0].id);
+      } else {
+        onSelected(data[0].id);
       }
     }
   }, [data])
 
   // Just when selected changed
   useEffect(() => {
-    if (data) {
+    if (data && selected) {
       let selectedBasemap = data.filter((basemap) => {
         return basemap.id === selected;
       })
