@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import $ from "jquery";
 import Popover from '@mui/material/Popover';
 import MapIcon from '@mui/icons-material/Map';
+import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
 
 import App, { render } from '../../../../app';
 import { pageNames } from '../../index';
@@ -56,7 +57,7 @@ export function DashboardPreview({ onForm }) {
           variant="secondary"
           onClick={onForm}
         >
-          <MapIcon/>Back to Form
+          <ViewHeadlineIcon/>Back to Form
         </ThemeButton>
       </div>
       {Object.keys(data).length > 0 ?
