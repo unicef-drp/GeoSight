@@ -239,9 +239,9 @@ export default function ListForm(
   const selectedIds = data.map(function (row) {
     return row.id
   })
-  const maxOrder = Math.max(...data.map(function (row) {
+  const maxOrder = data.length > 0 ? Math.max(...data.map(function (row) {
     return row.order
-  }))
+  })) : 0
 
   // Generate group of layers
   const [groups, setGroups] = useState({});

@@ -39,9 +39,6 @@ class DashboardAdmin(admin.ModelAdmin):
     """Dashboard admin."""
 
     list_display = ('slug', 'name', 'creator')
-    filter_horizontal = (
-        'basemap_layers', 'context_layers', 'indicators'
-    )
     inlines = (
         DashboardBasemapInline, DashboardIndicatorInline,
         DashboardContextLayerInline, WidgetInline

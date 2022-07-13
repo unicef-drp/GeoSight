@@ -63,11 +63,15 @@ class DashboardEditView(LoginRequiredMixin, BaseDashboardView):
             )
             if form.is_valid():
                 dashboard = form.save()
-                dashboard.save_widgets(data['widgets'])
+                dashboard.save_relations(data)
                 return redirect(
                     reverse(
                         'dashboard-detail-view', args=[dashboard.slug]
                     )
                 )
             else:
-                return HttpResponseBadRequest("There is error on form.")
+                errors = [
+                    key + ' : ' + ''.join(value) for key, value in
+                    form.errors.items()
+                ]
+                return HttpResponseBadRequest('<br>'.join(errors))

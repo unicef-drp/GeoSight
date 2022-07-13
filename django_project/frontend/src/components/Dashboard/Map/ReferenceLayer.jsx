@@ -111,7 +111,7 @@ export default function ReferenceLayer({ currentIndicator }) {
   const filtersData = useSelector(state => state.filtersData);
   const [clickedFeature, setClickedFeature] = useState(null);
 
-  const where = returnWhere(filtersData)
+  const where = returnWhere(filtersData ? filtersData : [])
 
   // Filter geometry_code based on indicators layer
   // Also filter by levels that found on indicators

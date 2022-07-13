@@ -14,6 +14,9 @@ const initialState = []
 export default function indicatorReducer(state = initialState, action) {
   switch (action.type) {
     case INDICATOR_ACTION_TYPE_ADD: {
+      if (state.length === 0) {
+        action.payload.visible_by_default = true
+      }
       return [
         ...state,
         action.payload
@@ -22,8 +25,13 @@ export default function indicatorReducer(state = initialState, action) {
 
     case INDICATOR_ACTION_TYPE_REMOVE: {
       const newState = []
+      let noVisiblePayload = action.payload.visible_by_default;
       state.forEach(function (indicator) {
         if (indicator.id !== action.payload.id) {
+          if (noVisiblePayload) {
+            indicator.visible_by_default = true
+            noVisiblePayload = false;
+          }
           newState.push(indicator)
         }
       })
@@ -35,6 +43,9 @@ export default function indicatorReducer(state = initialState, action) {
         if (indicator.id === action.payload.id) {
           newState.push(action.payload)
         } else if (indicator.id !== action.payload.id) {
+          if (action.payload.visible_by_default) {
+            indicator.visible_by_default = false
+          }
           newState.push(indicator)
         }
       })

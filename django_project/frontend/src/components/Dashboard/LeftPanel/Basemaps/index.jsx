@@ -28,9 +28,9 @@ export default function Basemaps({ data }) {
         return basemap.visible_by_default
       })
       if (basemaps[0]) {
-        onSelected(basemaps[0].id);
+        onSelected(basemaps[0]?.id);
       } else {
-        onSelected(data[0].id);
+        onSelected(data[0]?.id);
       }
     }
   }, [data])

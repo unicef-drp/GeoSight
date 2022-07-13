@@ -70,62 +70,6 @@ export default function SummaryDashboardForm() {
       <div id="BasicForm" className='AdminForm'>
         <div className="BasicFormSection">
           <div>
-            <label className="form-label required" htmlFor="name">Name</label>
-          </div>
-          <div>
-              <span className="form-input">
-              <input type="text" name="name" required={true} value={nameData}
-                     onChange={(event) => {
-                       setNameData(event.target.value)
-                     }}/>
-              </span>
-          </div>
-        </div>
-        <div className="BasicFormSection">
-          <div>
-            <label className="form-label" htmlFor="name">Description</label>
-          </div>
-          <div>
-              <span className="form-input">
-              <textarea name="name" value={descriptionData} rows="4"
-                        onChange={(event) => {
-                          setDescriptionData(event.target.value)
-                        }}/>
-              </span>
-          </div>
-        </div>
-        <FormControl className='IconInput'>
-          <label
-            className="MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-root MuiFormLabel-colorPrimary MuiFormLabel-filled css-1sumxir-MuiFormLabel-root-MuiInputLabel-root"
-            data-shrink="true">Icon</label>
-          <div className='IconInputPreview'>
-            <div
-              className="MuiInput-root MuiInput-underline MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl css-1ptx2yq-MuiInputBase-root-MuiInput-root">
-              {iconName}
-              <input type="file" name="icon"
-                     accept="image/png, image/jpeg"
-                     onChange={imageChanged}/>
-            </div>
-            {iconSrc ? <img src={iconSrc}/> : ''}
-          </div>
-        </FormControl>
-        <div className="BasicFormSection">
-          <div>
-            <label className="form-label required" htmlFor="name">
-              Category
-            </label>
-          </div>
-          <div>
-              <span className="form-input">
-              <input type="text" name="name" required={true} value={groupData}
-                     onChange={(event) => {
-                       setGroupData(event.target.value)
-                     }}/>
-              </span>
-          </div>
-        </div>
-        <div className="BasicFormSection">
-          <div>
             <label className="form-label required" htmlFor="name">
               Reference Dataset
             </label>
@@ -147,6 +91,72 @@ export default function SummaryDashboardForm() {
                     <Select placeholder='Loading'/>
                 }
               </span>
+          </div>
+        </div>
+        <div className="BasicFormSection">
+          <div>
+            <label className="form-label required" htmlFor="name">Name</label>
+          </div>
+          <div>
+              <span className="form-input">
+              <input id="SummaryName" type="text" name="name" required={true} value={nameData}
+                     onChange={(event) => {
+                       setNameData(event.target.value)
+                     }}/>
+              </span>
+          </div>
+        </div>
+        <div className="BasicFormSection">
+          <div>
+            <label className="form-label" htmlFor="name">Description</label>
+          </div>
+          <div>
+              <span className="form-input">
+              <textarea id="SummaryDescription" name="description" value={descriptionData} rows="4"
+                        onChange={(event) => {
+                          setDescriptionData(event.target.value)
+                        }}/>
+              </span>
+          </div>
+        </div>
+        <FormControl className='IconInput'>
+          <label
+            className="MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-root MuiFormLabel-colorPrimary MuiFormLabel-filled css-1sumxir-MuiFormLabel-root-MuiInputLabel-root"
+            data-shrink="true">Icon</label>
+          <div className='IconInputPreview'>
+            <div
+              className="MuiInput-root MuiInput-underline MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl css-1ptx2yq-MuiInputBase-root-MuiInput-root">
+              {iconName}
+              <input id="SummaryIcon" type="file" name="icon"
+                     accept="image/png, image/jpeg"
+                     onChange={imageChanged}/>
+            </div>
+            {iconSrc ? <img src={iconSrc}/> : ''}
+          </div>
+        </FormControl>
+        <div className="BasicFormSection">
+          <div>
+            <label className="form-label" htmlFor="name">
+              Category
+            </label>
+          </div>
+          <div>
+              <span className="form-input">
+              <input id="SummaryCategory" type="text" name="category" required={true} value={groupData}
+                     onChange={(event) => {
+                       setGroupData(event.target.value)
+                     }}/>
+              </span>
+          </div>
+        </div>
+        <div className="BasicFormSection">
+          <div>
+            <label className="form-label required" htmlFor="name">
+              Extent
+            </label>
+          </div>
+          <div>
+            Go to Preview and move to extent that you want.
           </div>
         </div>
       </div>

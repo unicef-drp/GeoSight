@@ -15,9 +15,6 @@ export const BASEMAP_ACTION_TYPE_ADD = 'BASEMAP/ADD';
 export const BASEMAP_ACTION_TYPE_UPDATE = 'BASEMAP/UPDATE';
 export const BASEMAP_ACTION_TYPE_REMOVE = 'BASEMAP/REMOVE';
 
-export const BASEMAP_DEFAULT_ACTION_NAME = 'BASEMAP_DEFAULT';
-export const BASEMAP_DEFAULT_ACTION_TYPE_CHANGE = 'BASEMAP_DEFAULT/CHANGE'
-
 export const EXTENT_DEFAULT_ACTION_NAME = 'EXTENT';
 export const EXTENT_DEFAULT_ACTION_TYPE_CHANGE = 'EXTENT/CHANGE'
 
@@ -40,16 +37,6 @@ export default function dashboardReducer(
     // DASHBOARD DATA
     case DASHBOARD_ACTION_NAME: {
       return APIReducer(state, action, DASHBOARD_ACTION_NAME)
-    }
-
-    // BASEMAP DEFAULT REDUCER
-    case BASEMAP_DEFAULT_ACTION_NAME: {
-      const newState = { ...state }
-      newState.data = {
-        ...newState.data,
-        defaultBasemapLayer: action.payload
-      }
-      return newState
     }
 
     // EXTENT DEFAULT REDUCER
@@ -83,7 +70,6 @@ export default function dashboardReducer(
           const newState = { ...state }
           const basemapLayers = []
           let noVisiblePayload = action.payload.visible_by_default;
-          console.log(noVisiblePayload)
           newState.data.basemapsLayers.forEach(function (basemapLayer) {
             if (basemapLayer.id !== action.payload.id) {
               if (noVisiblePayload) {

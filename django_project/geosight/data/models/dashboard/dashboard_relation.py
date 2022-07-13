@@ -41,7 +41,7 @@ class DashboardRelation(models.Model):
 class DashboardIndicator(DashboardRelation):
     """Indicator x Dashboard model."""
 
-    indicator = models.ForeignKey(
+    object = models.ForeignKey(
         Indicator,
         on_delete=models.CASCADE
     )
@@ -53,7 +53,7 @@ class DashboardIndicator(DashboardRelation):
 class DashboardBasemap(DashboardRelation):
     """Indicator x Basemap model."""
 
-    basemap = models.ForeignKey(
+    object = models.ForeignKey(
         BasemapLayer,
         on_delete=models.CASCADE
     )
@@ -65,7 +65,7 @@ class DashboardBasemap(DashboardRelation):
 class DashboardContextLayer(DashboardRelation):
     """Indicator x ContextLayer model."""
 
-    context_layer = models.ForeignKey(
+    object = models.ForeignKey(
         ContextLayer,
         on_delete=models.CASCADE
     )

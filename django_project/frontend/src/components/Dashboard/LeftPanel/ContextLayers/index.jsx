@@ -110,7 +110,7 @@ function ContextLayerInput({ data }) {
 
   // Onload for default checked and the layer
   useEffect(() => {
-    if (data.enable_by_default) {
+    if (data.visible_by_default) {
       change(true)
     }
     if (!layer) {

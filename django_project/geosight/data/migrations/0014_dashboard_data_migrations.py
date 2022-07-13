@@ -20,7 +20,7 @@ def run(apps, schema_editor):
                 group=model.group.name if model.group else '',
                 order=idx,
                 visible_by_default=idx == 0,
-                indicator=model
+                object=model
             )
         # Dashboard DashboardBasemap
         dashboard.dashboardbasemap_set.all().delete()
@@ -29,7 +29,7 @@ def run(apps, schema_editor):
                 dashboard=dashboard,
                 order=idx,
                 visible_by_default=idx == 0,
-                basemap=model
+                object=model
             )
         # Dashboard DashboardContextLayer
         dashboard.dashboardcontextlayer_set.all().delete()
@@ -38,7 +38,7 @@ def run(apps, schema_editor):
                 dashboard=dashboard,
                 group=model.group.name if model.group else '',
                 order=idx,
-                context_layer=model
+                object=model
             )
         # Dashboard Widgets
         for idx, model in enumerate(dashboard.widget_set.all()):
@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
     dependencies = [
         (
             'geosight_data',
-            '0013_auto_20220712_0856'
+            '0013_auto_20220713_0349'
         )
     ]
 

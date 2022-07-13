@@ -207,7 +207,7 @@ export default function WidgetEditor({ open, onCreated, data, children }) {
             variant="primary"
             className="modal__widget__editor__apply"
             onClick={onApply}
-            // disabled={!name || !layerType || !operation || !property}
+            disabled={!name || !layerType || !operation || !property}
           >
             Apply
           </Button>

@@ -37,8 +37,8 @@ class DashboardSerializer(serializers.ModelSerializer):
     contextLayers = serializers.SerializerMethodField()
     widgets = serializers.SerializerMethodField()
     extent = serializers.SerializerMethodField()
-    defaultBasemapLayer = serializers.SerializerMethodField()
     filters = serializers.SerializerMethodField()
+    category = serializers.SerializerMethodField()
     group = serializers.SerializerMethodField()
 
     def get_description(self, obj: Dashboard):
@@ -57,7 +57,7 @@ class DashboardSerializer(serializers.ModelSerializer):
         """Return indicators."""
         output = []
         for model in obj.dashboardindicator_set.all():
-            data = BasicIndicatorSerializer(model.indicator).data
+            data = BasicIndicatorSerializer(model.object).data
             data.update(
                 DashboardIndicatorSerializer(model).data
             )
@@ -69,7 +69,7 @@ class DashboardSerializer(serializers.ModelSerializer):
         """Return basemapsLayers."""
         output = []
         for model in obj.dashboardbasemap_set.all():
-            data = BasemapLayerSerializer(model.basemap).data
+            data = BasemapLayerSerializer(model.object).data
             data.update(
                 DashboardBasemapSerializer(model).data
             )
@@ -81,7 +81,7 @@ class DashboardSerializer(serializers.ModelSerializer):
         """Return contextLayers."""
         output = []
         for model in obj.dashboardcontextlayer_set.all():
-            data = ContextLayerSerializer(model.context_layer).data
+            data = ContextLayerSerializer(model.object).data
             data.update(
                 DashboardContextLayerSerializer(model).data
             )
@@ -102,17 +102,16 @@ class DashboardSerializer(serializers.ModelSerializer):
         """Return extent."""
         return obj.extent.extent if obj.extent else [0, 0, 0, 0]
 
-    def get_defaultBasemapLayer(self, obj: Dashboard):
-        """Return defaultBasemapLayer."""
-        default_basemap = obj.default_basemap_layer
-        return default_basemap.id if default_basemap else None
-
     def get_filters(self, obj: Dashboard):
         """Return filters."""
         if obj.filters:
             return json.loads(obj.filters)
         else:
             return []
+
+    def get_category(self, obj: Dashboard):
+        """Return dashboard category name."""
+        return obj.group.name if obj.group else ''
 
     def get_group(self, obj: Dashboard):
         """Return dashboard group name."""
@@ -124,8 +123,7 @@ class DashboardSerializer(serializers.ModelSerializer):
             'id', 'icon', 'name', 'description',
             'referenceLayer', 'indicators',
             'basemapsLayers', 'contextLayers',
-            'widgets', 'extent', 'defaultBasemapLayer',
-            'filters', 'group'
+            'widgets', 'extent', 'filters', 'category', 'group'
         )
 
 
@@ -134,6 +132,7 @@ class DashboardBasicSerializer(serializers.ModelSerializer):
 
     id = serializers.SerializerMethodField()
     group = serializers.SerializerMethodField()
+    category = serializers.SerializerMethodField()
     modified_at = serializers.SerializerMethodField()
 
     def get_id(self, obj: Dashboard):
@@ -144,6 +143,10 @@ class DashboardBasicSerializer(serializers.ModelSerializer):
         """Return dashboard group name."""
         return obj.group.name if obj.group else ''
 
+    def get_category(self, obj: Dashboard):
+        """Return dashboard category name."""
+        return obj.group.name if obj.group else ''
+
     def get_modified_at(self, obj: Dashboard):
         """Return dashboard last modified."""
         return obj.modified_at.strftime('%Y-%m-%d %H:%M:%S')
@@ -151,5 +154,6 @@ class DashboardBasicSerializer(serializers.ModelSerializer):
     class Meta:  # noqa: D106
         model = Dashboard
         fields = (
-            'id', 'icon', 'name', 'modified_at', 'description', 'group'
+            'id', 'icon', 'name', 'modified_at',
+            'description', 'group', 'category'
         )
