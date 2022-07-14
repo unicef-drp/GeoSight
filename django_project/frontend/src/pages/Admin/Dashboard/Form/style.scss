@@ -316,7 +316,15 @@ main {
   }
 }
 
-.FormError {
-  color: $error;
+.Popover-Submit {
   padding: 0.5rem;
+
+  .FormError {
+    color: $error;
+  }
+
+  .FormOk {
+    color: $ok;
+  }
+
 }

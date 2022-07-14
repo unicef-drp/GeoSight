@@ -87,7 +87,7 @@ export function DashboardSaveForm() {
   const filtersData = useSelector(state => state.filtersData);
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [error, setError] = useState(null);
+  const [info, setInfo] = useState(null);
   const [submitted, setSubmitted] = useState(filtersData == null);
 
   // save the filters query
@@ -169,15 +169,16 @@ export function DashboardSaveForm() {
           setSubmitted(false)
           if (responseError) {
             setAnchorEl(target)
-            setError(responseError)
+            setInfo("<div class='FormError'>" + responseError + "</div>")
           } else {
-            window.location = response.url
+            setAnchorEl(target)
+            setInfo("<div class='FormOk'>Configuration has been saved!</div>")
           }
         }
       )
     } else {
       setAnchorEl(event.currentTarget)
-      setError(errors.join('<br>'))
+      setInfo("<div class='FormError'>" + errors.join('<br>') + "</div>")
       setSubmitted(false)
     }
   }
@@ -202,8 +203,7 @@ export function DashboardSaveForm() {
         horizontal: 'left',
       }}
     >
-      <div className='FormError'>
-        <div dangerouslySetInnerHTML={{ __html: error }}/>
+      <div className='Popover-Submit' dangerouslySetInnerHTML={{ __html: info }}>
       </div>
     </Popover>
   </Fragment>
