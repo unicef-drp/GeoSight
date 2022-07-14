@@ -63,11 +63,7 @@ export function Indicators() {
    * @param {dict} group Group data.
    */
   const LayerRow = ({ groupName, group }) => {
-    if (!groupName) {
-      return <div></div>
-    }
-
-    return <div className='LayerGroup'>
+    return <div className={'LayerGroup ' + (groupName ? '' : 'Empty')}>
       <div className='LayerGroupName'><b
         className='light'>{groupName}</b></div>
       <div className='LayerGroupList'>

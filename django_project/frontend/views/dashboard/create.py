@@ -52,7 +52,7 @@ class DashboardCreateView(LoginRequiredMixin, BaseDashboardView):
                         dashboard.save_relations(data)
                         return redirect(
                             reverse(
-                                'dashboard-detail-view', args=[dashboard.slug]
+                                'dashboard-edit-view', args=[dashboard.slug]
                             )
                         )
                 except Exception as e:

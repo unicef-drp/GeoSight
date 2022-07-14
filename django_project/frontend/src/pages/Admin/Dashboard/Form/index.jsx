@@ -77,6 +77,7 @@ export function DashboardPreview({ onForm }) {
  */
 export function DashboardSaveForm() {
   const {
+    id,
     referenceLayer,
     indicators,
     basemapsLayers,
@@ -84,6 +85,7 @@ export function DashboardSaveForm() {
     widgets,
     extent
   } = useSelector(state => state.dashboard.data);
+  console.log(id)
   const filtersData = useSelector(state => state.filtersData);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -172,7 +174,11 @@ export function DashboardSaveForm() {
             setInfo("<div class='FormError'>" + responseError + "</div>")
           } else {
             setAnchorEl(target)
-            setInfo("<div class='FormOk'>Configuration has been saved!</div>")
+            if (!id) {
+              window.location = response.url
+            } else {
+              setInfo("<div class='FormOk'>Configuration has been saved!</div>")
+            }
           }
         }
       )
@@ -187,14 +193,14 @@ export function DashboardSaveForm() {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? "Button-Save" : undefined;
+  const buttonID = open ? "Button-Save" : undefined;
 
   return <Fragment>
     <SaveButton
-      id={id} variant="secondary" text='Save' onClick={onSave}
+      id={buttonID} variant="secondary" text='Save' onClick={onSave}
       disabled={submitted}/>
     <Popover
-      id={id}
+      id={buttonID}
       open={open}
       anchorEl={anchorEl}
       onClose={handleClose}
@@ -203,7 +209,8 @@ export function DashboardSaveForm() {
         horizontal: 'left',
       }}
     >
-      <div className='Popover-Submit' dangerouslySetInnerHTML={{ __html: info }}>
+      <div className='Popover-Submit'
+           dangerouslySetInnerHTML={{ __html: info }}>
       </div>
     </Popover>
   </Fragment>

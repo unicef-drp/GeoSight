@@ -66,7 +66,7 @@ class DashboardEditView(LoginRequiredMixin, BaseDashboardView):
                 dashboard.save_relations(data)
                 return redirect(
                     reverse(
-                        'dashboard-detail-view', args=[dashboard.slug]
+                        'dashboard-edit-view', args=[dashboard.slug]
                     )
                 )
             else:

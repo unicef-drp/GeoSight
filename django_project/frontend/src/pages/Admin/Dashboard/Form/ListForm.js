@@ -9,10 +9,10 @@ import EditIcon from "@mui/icons-material/Edit";
 
 import List, { COLUMNS } from '../../Components/List'
 import { AddButton } from "../../../../components/Elements/Button";
-import Modal, { ModalHeader } from "../../../../components/Modal";
 import { layerInGroup } from '../../../../utils/layers'
 import { IconTextField } from "../../../../components/Elements/Input";
 import { fetchingData } from "../../../../Requests";
+import Modal, { ModalHeader } from "../../../../components/Modal";
 
 
 /**
@@ -24,7 +24,6 @@ import { fetchingData } from "../../../../Requests";
  * @param {Array} selectedIds Ids that are selected.
  * @param {Function} removeGroup Function of remove group.
  * @param {Function} changeGroupName Function of change group name.
- * @param {Function} addLayer Function of add layer.
  * @param {Function} removeLayer Function of remove layer.
  * @param {Function} changeLayer Function of change layer.
  * @param {Function} addLayerInGroup Function of addLayerInGroup.
@@ -34,12 +33,10 @@ export function FormGroup(
   {
     pageName,
     groupName,
-    listData,
     layers,
     selectedIds,
     removeGroup,
     changeGroupName,
-    addLayer,
     removeLayer,
     changeLayer,
     addLayerInGroup,
@@ -47,103 +44,70 @@ export function FormGroup(
   }) {
   const [editName, setEditName] = useState(false);
   const [name, setName] = useState(groupName);
-  const [open, setOpen] = useState(false);
 
   // Group name Submitted
   useEffect(() => {
     setName(groupName)
   }, [layers])
 
-  // Restructure columns
-  const columns = [].concat(COLUMNS(pageName));
-  columns.pop();
-  columns.unshift({
-    field: 'actions',
-    type: 'actions',
-    width: 80,
-    getActions: (params) => {
-      return [
-        <GridActionsCellItem
-          icon={
-            <Checkbox
-              checked={selectedIds.includes(params.id)}
-              onChange={(evt) => {
-                if (evt.target.checked) {
-                  addLayer(params.row, groupName);
-                } else {
-                  removeLayer(params.row);
-                }
-              }}
-            />
-          }
-          label="Edit"
-        />
-      ]
-    },
-  })
-  // columns.push(
-  //   { field: 'group', headerName: 'Group', flex: 1 }
-  // )
   return (
     <tbody>
-    <tr className='GroupRow'>
-      <th colSpan="2">
-        <div className='GroupRowTitle'>
-          {
-            editName ? (
-                <Fragment>
-                  <span>Group:</span>
-                  <IconTextField
-                    iconEnd={
-                      <DoneIcon onClick={() => {
-                        if (changeGroupName(groupName, name)) {
-                          setEditName(false)
-                        }
+    {name ?
+      <tr className='GroupRow'>
+        <th colSpan="2">
+          <div className='GroupRowTitle'>
+            {
+              editName ? (
+                  <Fragment>
+                    <span>Group:</span>
+                    <IconTextField
+                      iconEnd={
+                        <DoneIcon onClick={() => {
+                          if (changeGroupName(groupName, name)) {
+                            setEditName(false)
+                          }
+                        }}/>
+                      }
+                      value={name}
+                      onChange={(evt) => {
+                        setName(evt.target.value)
+                      }}
+                    />
+                  </Fragment>
+                ) :
+                (
+                  <Fragment>
+                    <span>Group: {name ? name : <i>No Name</i>}</span>
+                    <EditIcon
+                      className='MuiButtonLike GroupEditName'
+                      onClick={() => {
+                        setEditName(true)
                       }}/>
-                    }
-                    value={name}
-                    onChange={(evt) => {
-                      setName(evt.target.value)
-                    }}
-                  />
-                </Fragment>
-              ) :
-              (
-                <Fragment>
-                  <span>Group: {name ? name : <i>No Name</i>}</span>
-                  <EditIcon
-                    className='MuiButtonLike GroupEditName'
-                    onClick={() => {
-                      setEditName(true)
-                    }}/>
-                </Fragment>
-              )
-          }
-          <div className='Separator'/>
-          <AddButton
-            variant="secondary" text={"Add"}
-            onClick={() => {
-              if (!addLayerInGroup) {
-                setOpen(true)
-              } else {
+                  </Fragment>
+                )
+            }
+            <div className='Separator'/>
+            <AddButton
+              variant="secondary" text={"Add"}
+              onClick={() => {
                 addLayerInGroup(groupName)
-              }
-            }}
-          />
-        </div>
-      </th>
-      <th className='VisibilityAction'><VisibilityIcon/></th>
-      {
-        editLayerInGroup ?
-          <th className='VisibilityAction'/> : ''
-      }
+              }}
+            />
+          </div>
+        </th>
+        <th className='VisibilityAction'><VisibilityIcon/></th>
+        {
+          editLayerInGroup ?
+            <th className='VisibilityAction'/> : ''
+        }
 
-      <th className='MuiButtonLike RemoveAction'>
-        <RemoveCircleIcon onClick={() => {
-          removeGroup(name)
-        }}/>
-      </th>
-    </tr>
+        <th className='MuiButtonLike RemoveAction'>
+          <RemoveCircleIcon onClick={() => {
+            removeGroup(name)
+          }}/>
+        </th>
+      </tr> : ""
+    }
     {
       layers.map(layer => {
         return (
@@ -182,31 +146,6 @@ export function FormGroup(
         )
       })
     }
-
-
-    {/* for modal to select the data */}
-    <Modal
-      className='AdminSelectDataForm'
-      open={open}
-      onClosed={() => {
-        setOpen(false)
-      }}
-    >
-      <ModalHeader onClosed={() => {
-        setOpen(false)
-      }}>
-        Select {pageName} For {name ? name : <i>No Name</i>}
-      </ModalHeader>
-      <div className='AdminContent'>
-        {
-          listData ?
-            <List
-              columns={columns} pageName={pageName}
-              initData={listData}/> : ''
-        }
-
-      </div>
-    </Modal>
     </tbody>
   )
 }
@@ -219,8 +158,8 @@ export function FormGroup(
  * @param {Function} addLayerAction Action of Layer Added.
  * @param {Function} removeLayerAction Action of Layer Removed.
  * @param {Function} changeLayerAction Action of Layer Changed.
- * @param {Function} addLayerInGroup When Add Layer In Group.
- * @param {Function} editLayerInGroup When edit layer in group
+ * @param {Function} addLayerInGroupAction When Add Layer In Group.
+ * @param {Function} editLayerInGroupAction When edit layer in group
  */
 export default function ListForm(
   {
@@ -230,12 +169,13 @@ export default function ListForm(
     addLayerAction,
     removeLayerAction,
     changeLayerAction,
-    addLayerInGroup,
-    editLayerInGroup
+    addLayerInGroupAction,
+    editLayerInGroupAction
   }
 ) {
   // GLOBAL DATA
   const dispatch = useDispatch();
+  const singularPageName = pageName.substring(0, pageName.length - 1);
   const selectedIds = data.map(function (row) {
     return row.id
   })
@@ -246,6 +186,8 @@ export default function ListForm(
   // Generate group of layers
   const [groups, setGroups] = useState({});
   const [listData, setListData] = useState(null);
+  const [currentGroupName, setCurrentGroupName] = useState(null);
+  const [open, setOpen] = useState(false);
 
   // Fetch data
   useEffect(() => {
@@ -329,11 +271,54 @@ export default function ListForm(
     }
   }
 
+  const addLayerInGroup = (groupName) => {
+    if (addLayerInGroupAction) {
+      addLayerInGroupAction(groupName)
+    } else {
+      setCurrentGroupName(groupName)
+      setOpen(true)
+    }
+  }
+
+  // Restructure columns
+  const columns = [].concat(COLUMNS(pageName));
+  columns.pop();
+  columns.unshift({
+    field: 'actions',
+    type: 'actions',
+    width: 80,
+    getActions: (params) => {
+      return [
+        <GridActionsCellItem
+          icon={
+            <Checkbox
+              checked={selectedIds.includes(params.id)}
+              onChange={(evt) => {
+                if (evt.target.checked) {
+                  addLayer(params.row, currentGroupName);
+                } else {
+                  removeLayer(params.row);
+                }
+              }}
+            />
+          }
+          label="Edit"
+        />
+      ]
+    },
+  })
+  // columns.push(
+  //   { field: 'group', headerName: 'Group', flex: 1 }
+  // )
+
   return (
     <div className={'TableForm ' + pageName}>
       <div className='TableForm-Header'>
         <div className='TableForm-Header-Left'></div>
         <div className='TableForm-Header-Right'>
+          <AddButton
+            variant="secondary" text={"Add " + singularPageName}
+            onClick={() => addLayerInGroup("")}/>
           <AddButton
             variant="secondary" text={"Add Group"} onClick={addGroup}/>
         </div>
@@ -347,7 +332,6 @@ export default function ListForm(
               key={groupName ? groupName : "No Name"}
               pageName={pageName}
               groupName={groupName}
-              listData={listData}
               layers={groups[groupName].layers}
               selectedIds={selectedIds}
               removeGroup={removeGroup}
@@ -356,10 +340,35 @@ export default function ListForm(
               removeLayer={removeLayer}
               changeLayer={changeLayer}
               addLayerInGroup={addLayerInGroup}
-              editLayerInGroup={editLayerInGroup}/>
+              editLayerInGroup={editLayerInGroupAction}/>
           })
         }
       </table>
+
+
+      {/* for modal to select the data */}
+      <Modal
+        className='AdminSelectDataForm'
+        open={open}
+        onClosed={() => {
+          setOpen(false)
+        }}
+      >
+        <ModalHeader onClosed={() => {
+          setOpen(false)
+        }}>
+          Select {pageName} {currentGroupName ? "For " + currentGroupName : ""}
+        </ModalHeader>
+        <div className='AdminContent'>
+          {
+            listData ?
+              <List
+                columns={columns}
+                pageName={pageName}
+                initData={listData}/> : ''
+          }
+        </div>
+      </Modal>
     </div>
   )
 }

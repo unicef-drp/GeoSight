@@ -54,13 +54,12 @@ export default function WidgetForm() {
       addLayerAction={Actions.Widget.add}
       removeLayerAction={Actions.Widget.remove}
       changeLayerAction={Actions.Widget.update}
-      addLayerInGroup={(groupName) => {
-        console.log(groupName)
+      addLayerInGroupAction={(groupName) => {
         setSelectedWidget(null)
         setGroupName(groupName)
         setOpen(true)
       }}
-      editLayerInGroup={(data) => {
+      editLayerInGroupAction={(data) => {
         setSelectedWidget(data)
       }}
     />

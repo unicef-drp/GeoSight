@@ -108,9 +108,10 @@ export default function WidgetList() {
     {
       widgets ?
         widgets.map(
-          (widget, idx) => (
-            <Widget key={idx} data={widget} idx={idx}/>
-          )
+          (widget, idx) => {
+            return widget.visible_by_default ?
+              <Widget key={idx} data={widget} idx={idx}/> : ''
+          }
         ) : <div className='dashboard__right_side__loading'>Loading</div>
     }
   </Fragment>

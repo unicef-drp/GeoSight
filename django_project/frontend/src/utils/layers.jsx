@@ -9,7 +9,7 @@ export function layerInGroup(layers) {
   layers.map(
     layer => {
       let groupDict = groups;
-      const groupName  = layer.group ? layer.group : ''
+      const groupName = layer.group ? layer.group : ''
       groupName.split('/').forEach(group => {
         if (!groupDict['groups'][group]) {
           groupDict['groups'][group] = {
@@ -25,5 +25,13 @@ export function layerInGroup(layers) {
       }
     }
   )
+  const currentGroups = groups.groups;
+  let orderedGroups = {}
+  if (currentGroups[""]) {
+    orderedGroups[""] = currentGroups[""]
+  }
+  delete currentGroups[""]
+  orderedGroups = Object.assign({}, orderedGroups, currentGroups);
+  groups.groups = orderedGroups
   return groups
 }
