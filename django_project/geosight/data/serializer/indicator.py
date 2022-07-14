@@ -13,6 +13,7 @@ class IndicatorSerializer(serializers.ModelSerializer):
     group = serializers.SerializerMethodField()
     rules = serializers.SerializerMethodField()
     url = serializers.SerializerMethodField()
+    category = serializers.SerializerMethodField()
 
     def get_group(self, obj: Indicator):
         """Return group."""
@@ -48,10 +49,14 @@ class IndicatorSerializer(serializers.ModelSerializer):
             args=[obj.id]
         )
 
+    def get_category(self, obj: Indicator):
+        """Return group."""
+        return obj.group.name if obj.group else ''
+
     class Meta:  # noqa: D106
         model = Indicator
         fields = (
-            'id', 'group', 'name', 'rules', 'reporting_level',
+            'id', 'group', 'name', 'category', 'rules', 'reporting_level',
             'dashboard_link', 'source', 'description', 'url')
 
 
