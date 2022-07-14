@@ -14,6 +14,7 @@ class SitePreferencesSerializer(serializers.ModelSerializer):
     favicon = serializers.SerializerMethodField()
     background_image = serializers.SerializerMethodField()
     georepo_api = serializers.SerializerMethodField()
+    georepo_api_key = serializers.SerializerMethodField()
 
     def get_icon(self, obj: SitePreferences):
         """Return icon."""
@@ -28,6 +29,10 @@ class SitePreferencesSerializer(serializers.ModelSerializer):
         georepo_url = GeorepoUrl()
         return georepo_url.urls
 
+    def get_georepo_api_key(self, obj: SitePreferences):
+        """Return georepo georepo_api_key."""
+        return obj.georepo_api_key if obj.georepo_api_key else ''
+
     def get_background_image(self, obj: SitePreferences):
         """Return background_image."""
         count = obj.sitepreferencesimage_set.count()
@@ -38,4 +43,4 @@ class SitePreferencesSerializer(serializers.ModelSerializer):
 
     class Meta:  # noqa: D106
         model = SitePreferences
-        exclude = ('georepo_api_key',)
+        exclude = ()

@@ -5,6 +5,7 @@ import { FormControl } from "@mui/material";
 
 import { fetchingData } from "../../../../../Requests";
 import Actions from "../../../../../redux/actions/dashboard";
+import { GeorepoUrls } from '../../../../../utils/georepo'
 
 /**
  * Summary dashboard
@@ -34,10 +35,10 @@ export default function SummaryDashboardForm() {
 
   // Fetch data
   useEffect(() => {
-    fetchingData(preferences.georepo_api.reference_layer_list, {}, {}, (data) => {
+    fetchingData(GeorepoUrls.ReferenceList, {}, {}, (data) => {
       const options = []
       data.map(row => {
-        row.detail_url = preferences.georepo_api.reference_layer_detail.replace('<identifier>', row.identifier)
+        row.detail_url = GeorepoUrls.ReferenceDetail(row.identifier)
         options.push({
           value: row.identifier,
           label: row.name + ' (' + row.identifier + ')'
@@ -99,7 +100,8 @@ export default function SummaryDashboardForm() {
           </div>
           <div>
               <span className="form-input">
-              <input id="SummaryName" type="text" name="name" required={true} value={nameData}
+              <input id="SummaryName" type="text" name="name" required={true}
+                     value={nameData}
                      onChange={(event) => {
                        setNameData(event.target.value)
                      }}/>
@@ -112,7 +114,8 @@ export default function SummaryDashboardForm() {
           </div>
           <div>
               <span className="form-input">
-              <textarea id="SummaryDescription" name="description" value={descriptionData} rows="4"
+              <textarea id="SummaryDescription" name="description"
+                        value={descriptionData} rows="4"
                         onChange={(event) => {
                           setDescriptionData(event.target.value)
                         }}/>
@@ -142,7 +145,8 @@ export default function SummaryDashboardForm() {
           </div>
           <div>
               <span className="form-input">
-              <input id="SummaryCategory" type="text" name="category" required={true} value={groupData}
+              <input id="SummaryCategory" type="text" name="category"
+                     required={true} value={groupData}
                      onChange={(event) => {
                        setGroupData(event.target.value)
                      }}/>

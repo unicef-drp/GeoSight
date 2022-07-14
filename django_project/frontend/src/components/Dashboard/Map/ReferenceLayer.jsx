@@ -13,6 +13,7 @@ import { featurePopupContent } from '../../../utils/main'
 import Modal, { ModalContent, ModalHeader } from "../../Modal";
 import { fetchingData } from "../../../Requests";
 import { returnWhere } from "../../../utils/queryExtraction";
+import { GeorepoUrls } from '../../../utils/georepo'
 
 /**
  * Show details of indicator in Modal
@@ -189,9 +190,8 @@ export default function ReferenceLayer({ currentIndicator }) {
         },
       };
 
-      const layer = vectorTileLayer(
-        preferences.georepo_api.domain.replaceAll('/proxy?url=', '') + referenceLayer.data.vector_tiles, options
-      );
+      const url = GeorepoUrls.WithDomain(referenceLayer.data.vector_tiles)
+      const layer = vectorTileLayer(url, options);
       layer.bindPopup(function (feature) {
         const properties = indicatorsByGeom[feature.properties.code]
           ? Object.assign({}, indicatorsByGeom[feature.properties.code]) : Object.assign({}, feature.properties);
