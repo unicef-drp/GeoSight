@@ -11,9 +11,10 @@ import './style.scss';
 /**
  * Indicator List App
  * @param {Boolean} isSubmitted If submitted.
+ * @param {Function} submit Submit.
  * @param {React.Component} children React component to be rendered.
  */
-export default function AdminForm({ isSubmitted, children }) {
+export default function AdminForm({ isSubmitted, submit, children }) {
 
   // onSubmitted
   useEffect(() => {
@@ -21,6 +22,14 @@ export default function AdminForm({ isSubmitted, children }) {
       $('#BasicForm').submit()
     }
   }, [isSubmitted])
+
+  const onKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      if (submit) {
+        submit();
+      }
+    }
+  }
 
   /** Render Input per row
    * @param p
@@ -61,11 +70,15 @@ export default function AdminForm({ isSubmitted, children }) {
       if (name === 'username') {
         input = <IconTextField
           type={$input.attr('type')} name={$input.attr('name')}
-          iconStart={<PersonIcon/>}/>
+          iconStart={<PersonIcon/>}
+          onKeyDown={onKeyDown}
+        />
       } else if (name === 'password') {
         input = <IconTextField
           type={$input.attr('type')} name={$input.attr('name')}
-          iconStart={<LockIcon/>}/>
+          iconStart={<LockIcon/>}
+          onKeyDown={onKeyDown}
+        />
       }
     }
 

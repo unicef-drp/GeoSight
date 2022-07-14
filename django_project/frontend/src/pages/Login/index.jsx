@@ -24,7 +24,9 @@ export default function Login() {
       <div className='Background'></div>
       <div className='Login'>
         <div className='LoginHeader'>Welcome to {preferences.site_title}</div>
-        <AdminForm isSubmitted={submitted}/>
+        <AdminForm isSubmitted={submitted} submit={() => {
+          setSubmitted(true)
+        }}/>
 
         <ThemeButton
           variant="secondary"
