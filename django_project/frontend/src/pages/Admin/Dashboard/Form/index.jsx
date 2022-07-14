@@ -85,7 +85,6 @@ export function DashboardSaveForm() {
     widgets,
     extent
   } = useSelector(state => state.dashboard.data);
-  console.log(id)
   const filtersData = useSelector(state => state.filtersData);
 
   const [anchorEl, setAnchorEl] = useState(null);
