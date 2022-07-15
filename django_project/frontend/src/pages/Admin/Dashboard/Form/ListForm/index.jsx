@@ -6,7 +6,9 @@ import { layerInGroup } from '../../../../../utils/layers'
 import { fetchingData } from "../../../../../Requests";
 
 import DataSelectionModal from './DataSelectionModal'
-import RowGroup from './RowGroup'
+import SortableList from './SortableList'
+
+import './style.scss';
 
 /**
  * Basemaps dashboard
@@ -115,7 +117,7 @@ export default function ListForm(
     const names = Object.keys(groups).filter(name => {
       return name !== groupName;
     });
-    if (names.includes(newName)) {
+    if (!newName || names.includes(newName)) {
       return false;
     } else {
       groups[groupName].layers.map(layer => {
@@ -158,24 +160,35 @@ export default function ListForm(
       </div>
 
       {/* for the table */}
-      <table className="DragDropTable">
-        {
-          Object.keys(groups).map(groupName => {
-            return <RowGroup
-              key={groupName ? groupName : "No Name"}
-              pageName={pageName}
-              groupName={groupName}
-              layers={groups[groupName].layers}
-              removeGroup={removeGroup}
-              changeGroupName={changeGroupName}
-              addLayer={addLayer}
-              removeLayer={removeLayer}
-              changeLayer={changeLayer}
-              addLayerInGroup={addLayerInGroup}
-              editLayerInGroup={editLayerInGroupAction}/>
-          })
-        }
-      </table>
+      <SortableList
+        groups={groups}
+        pageName={pageName}
+        removeGroup={removeGroup}
+        changeGroupName={changeGroupName}
+        addLayer={addLayer}
+        removeLayer={removeLayer}
+        changeLayer={changeLayer}
+        addLayerInGroup={addLayerInGroup}
+        editLayerInGroup={editLayerInGroupAction}
+      />
+      {/*<div className="DragDropTable">*/}
+      {/*  {*/}
+      {/*    Object.keys(groups).map(groupName => {*/}
+      {/*      return <RowGroup*/}
+      {/*        key={groupName ? groupName : "No Name"}*/}
+      {/*        pageName={pageName}*/}
+      {/*        groupName={groupName}*/}
+      {/*        layers={groups[groupName].layers}*/}
+      {/*        removeGroup={removeGroup}*/}
+      {/*        changeGroupName={changeGroupName}*/}
+      {/*        addLayer={addLayer}*/}
+      {/*        removeLayer={removeLayer}*/}
+      {/*        changeLayer={changeLayer}*/}
+      {/*        addLayerInGroup={addLayerInGroup}*/}
+      {/*        editLayerInGroup={editLayerInGroupAction}/>*/}
+      {/*    })*/}
+      {/*  }*/}
+      {/*</div>*/}
 
       <DataSelectionModal
         listData={listData}
