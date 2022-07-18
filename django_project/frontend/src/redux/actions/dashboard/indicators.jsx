@@ -1,8 +1,9 @@
 import {
   INDICATOR_ACTION_NAME,
   INDICATOR_ACTION_TYPE_ADD,
-  INDICATOR_ACTION_TYPE_UPDATE,
+  INDICATOR_ACTION_TYPE_REARRANGE,
   INDICATOR_ACTION_TYPE_REMOVE,
+  INDICATOR_ACTION_TYPE_UPDATE,
   INDICATOR_ACTION_TYPE_UPDATE_LEVEL
 } from '../../reducers/dashboard/indicators'
 import { fetchingData } from "../../../Requests";
@@ -87,6 +88,18 @@ export function update(payload) {
   };
 }
 
+/**
+ * Rearrange indicator.
+ * @param {object} payload Indicator indicator.
+ */
+export function rearrange(payload) {
+  return {
+    name: INDICATOR_ACTION_NAME,
+    type: INDICATOR_ACTION_TYPE_REARRANGE,
+    payload: payload
+  };
+}
+
 export default {
-  fetch, add, remove, update, updateLevel
+  fetch, add, remove, update, updateLevel, rearrange
 }

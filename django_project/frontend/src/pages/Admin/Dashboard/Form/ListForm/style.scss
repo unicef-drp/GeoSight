@@ -1,0 +1,162 @@
+/* ==========================================================================
+   Table Form style
+   ========================================================================== */
+
+@import '../../../../../app/variables';
+// TABLE FORM
+.DragDropTable {
+  width: 100%;
+  border-spacing: 0;
+
+  tr {
+    background: white;
+  }
+
+  th, td {
+    padding: 0.3rem 0.5rem;
+    outline: 1px solid white;
+  }
+
+  td {
+    background-color: #dddddd30;
+  }
+
+  .GroupRow {
+    td {
+      background: $secondary-color;
+      color: $anti-secondary-color;
+    }
+
+    .GroupRowTitle {
+      display: flex;
+
+      .GroupEditName {
+        margin-top: 0.8rem;
+        height: 1rem;
+      }
+
+      span {
+        display: block;
+        padding: 0.5rem 0 0.5rem 1rem !important;
+      }
+
+      .Separator {
+        flex-grow: 1;
+      }
+
+      .AddButton {
+        padding: 0.5rem;
+        display: flex;
+        font-weight: $base-font-medium;
+        letter-spacing: 0.02857em;
+        font-size: 1rem !important;
+        line-height: 1.5 !important;
+        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+
+        svg {
+          margin-right: 0.5rem;
+        }
+      }
+
+      .MuiFormControl-root {
+        margin-top: 0.2rem;
+        margin-left: 0.5rem;
+
+        .MuiOutlinedInput-root {
+          color: inherit;
+
+          .MuiInputAdornment-root {
+            color: inherit;
+
+            svg {
+              cursor: pointer;
+
+              &:hover {
+                opacity: 0.8;
+              }
+            }
+          }
+
+          input {
+            padding: 0.3rem 0.5rem;
+          }
+
+          fieldset {
+            border-color: inherit;
+            top: 0;
+
+            legend {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+
+    th {
+      font-weight: $base-font-medium;
+      text-align: left;
+    }
+  }
+
+  .VisibilityAction,
+  .RemoveAction,
+  .DragDropItem-Drag {
+    width: 3rem;
+    text-align: center !important;
+
+    svg {
+      margin-top: 0.3rem;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  .VisibilityAction {
+    .MuiCheckbox-root {
+      svg {
+        margin-top: 0;
+      }
+    }
+  }
+
+  .AddAction {
+    width: 1%;
+  }
+
+  .DragDropItem-Name,
+  .DragDropItem-Description {
+    padding: 1em 0.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .DragDropItem-Description {
+    flex-grow: 1;
+    width: 60rem;
+  }
+
+  .DropArea {
+    padding: 1rem;
+    color: #666;
+    text-align: center;
+  }
+}
+
+.TableForm-Header {
+  display: flex;
+  margin-bottom: 1rem;
+
+  .TableForm-Header-Left {
+    flex-grow: 1;
+  }
+
+  .TableForm-Header-Right {
+    button {
+      margin-left: 0.5rem;
+    }
+  }
+}

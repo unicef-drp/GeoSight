@@ -201,7 +201,7 @@ function LayerRow({ groupName, group }) {
       className='light'>{groupName}</b></div>
     <div className='LayerGroupList'>
       {
-        group.layers.map(
+        group.map(
           layer => (
             <ContextLayerInput key={layer.id} data={layer}/>
           )
@@ -242,12 +242,11 @@ export default function ContextLayersAccordion({ expanded, handleChange }) {
       <AccordionDetails>
         {
           contextLayers !== undefined ?
-            (Object.keys(groups.groups)).map(
+            (Object.keys(groups)).map(
               groupName => (
                 <LayerRow
-                  groupNumber={Object.keys(groups.groups).length}
                   key={groupName} groupName={groupName}
-                  group={groups.groups[groupName]}/>
+                  group={groups[groupName]}/>
               )
             )
             : <div>Loading</div>
