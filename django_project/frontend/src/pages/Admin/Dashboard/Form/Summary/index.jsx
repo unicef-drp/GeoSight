@@ -6,6 +6,9 @@ import { FormControl } from "@mui/material";
 import { fetchingData } from "../../../../../Requests";
 import Actions from "../../../../../redux/actions/dashboard";
 import { GeorepoUrls } from '../../../../../utils/georepo'
+import MapConfig from './MapConfig'
+
+import './style.scss';
 
 /**
  * Summary dashboard
@@ -159,9 +162,7 @@ export default function SummaryDashboardForm() {
               Extent
             </label>
           </div>
-          <div>
-            Go to Preview and move to the map to place that you want.
-          </div>
+          <MapConfig/>
         </div>
       </div>
     </div>

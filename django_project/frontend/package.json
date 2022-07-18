@@ -60,6 +60,7 @@
     "jquery": "^3.6.0",
     "js-sql-parser": "^1.4.1",
     "leaflet": "^1.8.0",
+    "leaflet-draw": "^1.0.4",
     "leaflet-vector-tile-layer": "^0.8.0",
     "maplibre-gl": "^2.1.9",
     "mini-css-extract-plugin": "^2.6.0",

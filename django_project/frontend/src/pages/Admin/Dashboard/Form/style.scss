@@ -106,7 +106,7 @@ main {
 
       .IconInputPreview {
         display: flex;
-        margin-bottom: 1rem;
+        margin-bottom: 2rem;
 
         .MuiInput-root {
           height: fit-content;
@@ -114,7 +114,6 @@ main {
           margin-right: 10px;
           position: relative;
           border-bottom: 1px solid rgba(0, 0, 0, 0.42);
-          margin-bottom: 2rem;
 
           input {
             opacity: 0;

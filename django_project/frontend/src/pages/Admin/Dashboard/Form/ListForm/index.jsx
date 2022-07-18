@@ -136,7 +136,6 @@ export default function ListForm(
     })
     setOpen(false)
   }
-  console.log(groups)
   return <Fragment>
     {
       !groups ? <div>Loading</div> :
