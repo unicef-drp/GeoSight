@@ -9,11 +9,8 @@ import DragHandleIcon from '@mui/icons-material/DragHandle';
 
 export default function SortableItem(
   {
-    layer,
-    pageName,
-    removeLayer,
-    changeLayer,
-    editLayerInGroup,
+    id,
+    children,
     ...props
   }) {
   const {
@@ -22,7 +19,7 @@ export default function SortableItem(
     setNodeRef,
     transform,
     transition
-  } = useSortable({ id: props.id });
+  } = useSortable({ id: id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -30,39 +27,13 @@ export default function SortableItem(
   };
 
   return (
-    <div className='DragDropItem' style={style}
-         ref={setNodeRef}>
-      <div className='DragDropItem-Drag'>
-        <DragHandleIcon {...attributes} {...listeners}/>
-      </div>
-      <div className='DragDropItem-Name' title={layer.name}>{layer.name}</div>
-      <div className='DragDropItem-Description' title={layer.description}>
-        {layer.description}
-      </div>
-      <div className='VisibilityAction'>
-        <Checkbox
-          checked={
-            layer.visible_by_default === undefined ? false : layer.visible_by_default
-          }
-          onChange={(evt) => {
-            layer.visible_by_default = evt.target.checked;
-            changeLayer(layer);
-          }}/>
-      </div>
-      {
-        editLayerInGroup ?
-          <div className='MuiButtonLike RemoveAction'>
-            <EditIcon onClick={() => {
-              editLayerInGroup(layer)
-            }}/>
-          </div> : ''
-      }
-
-      <div className='MuiButtonLike RemoveAction'>
-        <RemoveCircleIcon onClick={() => {
-          removeLayer(layer)
-        }}/>
-      </div>
-    </div>
+    <tr className='DragDropItem' style={style}
+        ref={setNodeRef}>
+      <td className='DragDropItem-Drag'>
+        <DragHandleIcon
+          className='MuiButtonLike' {...attributes} {...listeners}/>
+      </td>
+      {children}
+    </tr>
   );
 }

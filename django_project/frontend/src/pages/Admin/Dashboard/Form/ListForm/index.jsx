@@ -171,24 +171,6 @@ export default function ListForm(
         addLayerInGroup={addLayerInGroup}
         editLayerInGroup={editLayerInGroupAction}
       />
-      {/*<div className="DragDropTable">*/}
-      {/*  {*/}
-      {/*    Object.keys(groups).map(groupName => {*/}
-      {/*      return <RowGroup*/}
-      {/*        key={groupName ? groupName : "No Name"}*/}
-      {/*        pageName={pageName}*/}
-      {/*        groupName={groupName}*/}
-      {/*        layers={groups[groupName].layers}*/}
-      {/*        removeGroup={removeGroup}*/}
-      {/*        changeGroupName={changeGroupName}*/}
-      {/*        addLayer={addLayer}*/}
-      {/*        removeLayer={removeLayer}*/}
-      {/*        changeLayer={changeLayer}*/}
-      {/*        addLayerInGroup={addLayerInGroup}*/}
-      {/*        editLayerInGroup={editLayerInGroupAction}/>*/}
-      {/*    })*/}
-      {/*  }*/}
-      {/*</div>*/}
 
       <DataSelectionModal
         listData={listData}

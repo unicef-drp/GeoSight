@@ -43,7 +43,7 @@ export default function SortableList(
   const [data, setData] = useState({});
   const [items, setItems] = useState({});
 
-  // Groups changed
+  /** Groups changed **/
   useEffect(() => {
     const itemData = {}
     let orderedData = {}
@@ -64,6 +64,7 @@ export default function SortableList(
     })
   );
 
+  /** When drag event is running **/
   const handleDragOver = ({ over, active }) => {
     const overId = over?.id;
 
@@ -102,6 +103,7 @@ export default function SortableList(
     }
   };
 
+  /** When drag event ended **/
   const handleDragEnd = ({ active, over }) => {
     if (!over) {
       return;
@@ -146,6 +148,7 @@ export default function SortableList(
     }
   };
 
+  /** Chen when the data move between container **/
   const moveBetweenContainers = (
     items,
     activeContainer,
@@ -167,7 +170,7 @@ export default function SortableList(
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
     >
-      <div className={'DragDropTable'}>
+      <table className={'DragDropTable'}>
         {Object.keys(items).map((groupName) => (
           <SortableContainer
             key={groupName ? groupName : "No Name"}
@@ -185,7 +188,7 @@ export default function SortableList(
             editLayerInGroup={editLayerInGroup}
           />
         ))}
-      </div>
+      </table>
     </DndContext>
   );
 }
