@@ -47,15 +47,18 @@ export default function SortableList(
 
   // parsing data from groups
   const getData = (groups) => {
+
     const itemData = {}
     let dictData = {}
-    for (const [groupName, group] of Object.entries(groups)) {
-      itemData[groupName] = group.filter(layer => {
-        return layer.id
-      }).map(layer => {
-        dictData[layer.id] = layer
-        return layer.id
-      })
+    if (groups) {
+      for (const [groupName, group] of Object.entries(groups)) {
+        itemData[groupName] = group.filter(layer => {
+          return layer.id
+        }).map(layer => {
+          dictData[layer.id] = layer
+          return layer.id
+        })
+      }
     }
     return {
       itemData: itemData,

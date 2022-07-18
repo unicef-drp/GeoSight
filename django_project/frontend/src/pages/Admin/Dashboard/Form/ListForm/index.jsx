@@ -38,7 +38,7 @@ export default function ListForm(
   const singularPageName = pageName.substring(0, pageName.length - 1);
 
   // Generate group of layers
-  const [groups, setGroups] = useState({});
+  const [groups, setGroups] = useState(null);
   const [listData, setListData] = useState(null);
   const [currentGroupName, setCurrentGroupName] = useState(null);
   const [open, setOpen] = useState(false);
@@ -56,13 +56,15 @@ export default function ListForm(
     const newGroups = groupLayers;
 
     // Check if current group is not in new group, merge it
-    const currentGroupNames = Object.keys(groups);
-    const newGroupNames = Object.keys(groupLayers);
-    currentGroupNames.map(groupName => {
-      if (groupName && !newGroupNames.includes(groupName)) {
-        newGroups[groupName] = [-999]
-      }
-    })
+    if (groups) {
+      const currentGroupNames = Object.keys(groups);
+      const newGroupNames = Object.keys(groupLayers);
+      currentGroupNames.map(groupName => {
+        if (groupName && !newGroupNames.includes(groupName)) {
+          newGroups[groupName] = [-999]
+        }
+      })
+    }
     setGroups(newGroups)
   }, [data])
 
@@ -134,10 +136,10 @@ export default function ListForm(
     })
     setOpen(false)
   }
-
+  console.log(groups)
   return <Fragment>
     {
-      Object.keys(groups).length === 0 ? <div>Loading</div> :
+      !groups ? <div>Loading</div> :
         <div className={'TableForm ' + pageName}>
           <div className='TableForm-Header'>
             <div className='TableForm-Header-Left'></div>
