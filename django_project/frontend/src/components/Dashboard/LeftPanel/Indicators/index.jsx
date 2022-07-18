@@ -68,7 +68,7 @@ export function Indicators() {
         className='light'>{groupName}</b></div>
       <div className='LayerGroupList'>
         {
-          group.layers.map(layer => (
+          group.map(layer => (
               <div className='dashboard__left_side__row'
                    key={layer.id}>
                 <Radio
@@ -91,11 +91,11 @@ export function Indicators() {
   return (
     <Fragment>
       {
-        Object.keys(groups.groups).map(
+        Object.keys(groups).map(
           groupName => (
             <LayerRow
               key={groupName} groupName={groupName}
-              group={groups.groups[groupName]}/>
+              group={groups[groupName]}/>
           )
         )
       }

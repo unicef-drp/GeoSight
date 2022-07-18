@@ -1,6 +1,7 @@
 import {
   WIDGET_ACTION_NAME,
   WIDGET_ACTION_TYPE_ADD,
+  WIDGET_ACTION_TYPE_REARRANGE,
   WIDGET_ACTION_TYPE_REMOVE,
   WIDGET_ACTION_TYPE_UPDATE
 } from '../../reducers/dashboard/widgets'
@@ -41,6 +42,18 @@ export function update(payload) {
   };
 }
 
+/**
+ * Rearrange specific widget data on an index.
+ * @param {object} payload Widget that will be updated.
+ */
+export function rearrange(payload) {
+  return {
+    name: WIDGET_ACTION_NAME,
+    type: WIDGET_ACTION_TYPE_REARRANGE,
+    payload: payload
+  };
+}
+
 export default {
-  add, remove, update
+  add, remove, update, rearrange
 }

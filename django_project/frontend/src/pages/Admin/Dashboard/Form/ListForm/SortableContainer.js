@@ -1,24 +1,28 @@
 import React, { Fragment, useState } from "react";
-import { useDroppable } from "@dnd-kit/core";
-import { rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
+import {
+  rectSortingStrategy,
+  SortableContext,
+  useSortable
+} from "@dnd-kit/sortable";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import DoneIcon from '@mui/icons-material/Done';
 import EditIcon from "@mui/icons-material/Edit";
-import { IconTextField } from "../../../../../components/Elements/Input";
-import SortableItem from "./SortableItem";
 import { Checkbox } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { IconTextField } from "../../../../../components/Elements/Input";
+import SortableItem from "./SortableItem";
+import { CSS } from "@dnd-kit/utilities";
+import DragHandleIcon from "@mui/icons-material/DragHandle";
 
 /**
  * Group container
+ * @param {int} groupIdx Index of group.
  * @param {dict} data Actual layer data.
  * @param {list} layers Layers data.
  * @param {string} groupName Group name.
- * @param {string} pageName Page name.
  * @param {Function} removeGroup Function of remove group.
  * @param {Function} changeGroupName Function of change group name.
- * @param {Function} addLayer Function of add layer.
  * @param {Function} removeLayer Function of remove layer.
  * @param {Function} changeLayer Function of change layer.
  * @param {Function} addLayerInGroup Function of addLayerInGroup.
@@ -27,27 +31,43 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 export default function SortableContainer(
   {
     data,
+    groupIdx,
     items,
     groupName,
-    pageName,
     removeGroup,
     changeGroupName,
-    addLayer,
     removeLayer,
     changeLayer,
     addLayerInGroup,
     editLayerInGroup
   }) {
-  const { setNodeRef } = useDroppable({ groupName });
   const [editName, setEditName] = useState(false);
   const [name, setName] = useState(groupName);
 
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition
+  } = useSortable({ id: groupName });
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    transition
+  };
   return (
     <Fragment>
-      <tbody>
+      <tbody key={groupName} id={groupName} style={style} ref={setNodeRef}>
       <tr className='DragDropItem GroupRow'>
-        <td colSpan={3}>
-          {name !== '_noGroup' ?
+        <td className='DragDropItem-Drag'>
+          {
+            name !== '' ?
+              <DragHandleIcon
+                className='MuiButtonLike' {...attributes} {...listeners}/> : ''
+          }
+        </td>
+        <td colSpan={2}>
+          {name !== '' ?
             <div className='GroupRowTitle'>
               {
                 editName ? (
@@ -104,8 +124,11 @@ export default function SortableContainer(
       <SortableContext
         id={groupName} items={items} strategy={rectSortingStrategy}>
         {
-          items.map(item => {
+          Object.keys(items).length !== 0 ? items.map(item => {
             const layer = data[item];
+            if (!layer) {
+              return ''
+            }
             return (
               <SortableItem key={item} id={item}>
                 <td title={layer.name}>
@@ -136,14 +159,18 @@ export default function SortableContainer(
                 }
 
                 <td className='RemoveAction'>
-                  <RemoveCircleIcon className='MuiButtonLike' onClick={() => {
-                    removeLayer(layer)
-                  }}/>
+                  <RemoveCircleIcon className='MuiButtonLike'
+                                    onClick={() => {
+                                      removeLayer(layer)
+                                    }}/>
                 </td>
 
               </SortableItem>
             )
-          })
+          }) : <SortableItem key={-1 * groupIdx} id={-1 * groupIdx}
+                             isDropArea={true}>
+            <td colSpan={6} className='DropArea'>Drop Here</td>
+          </SortableItem>
         }
       </SortableContext>
       </tbody>

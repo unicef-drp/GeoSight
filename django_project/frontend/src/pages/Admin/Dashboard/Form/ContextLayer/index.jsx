@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Actions from "../../../../../redux/actions/dashboard";
 import ListForm from '../ListForm'
 
@@ -7,13 +7,23 @@ import ListForm from '../ListForm'
  * Basemaps dashboard
  */
 export default function ContextLayerForm() {
+  const dispatch = useDispatch()
   const { contextLayers } = useSelector(state => state.dashboard.data);
   return <ListForm
     pageName={'Context Layers'}
     data={contextLayers}
     listUrl={urls.api.contextLayerListAPI}
-    addLayerAction={Actions.ContextLayers.add}
-    removeLayerAction={Actions.ContextLayers.remove}
-    changeLayerAction={Actions.ContextLayers.update}
+    addLayerAction={(layer) => {
+      dispatch(Actions.ContextLayers.add(layer))
+    }}
+    removeLayerAction={(layer) => {
+      dispatch(Actions.ContextLayers.remove(layer))
+    }}
+    changeLayerAction={(layer) => {
+      dispatch(Actions.ContextLayers.update(layer))
+    }}
+    rearrangeLayersAction={(payload) => {
+      dispatch(Actions.ContextLayers.rearrange(payload))
+    }}
   />
 }

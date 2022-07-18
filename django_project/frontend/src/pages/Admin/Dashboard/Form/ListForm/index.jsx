@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from "react-redux";
+import React, { Fragment, useEffect, useState } from 'react';
 
 import { AddButton } from "../../../../../components/Elements/Button";
 import { layerInGroup } from '../../../../../utils/layers'
@@ -20,6 +19,7 @@ import './style.scss';
  * @param {Function} changeLayerAction Action of Layer Changed.
  * @param {Function} addLayerInGroupAction When Add Layer In Group.
  * @param {Function} editLayerInGroupAction When edit layer in group
+ * @param {Function} rearrangeLayersAction When rearrange layers
  */
 export default function ListForm(
   {
@@ -30,15 +30,12 @@ export default function ListForm(
     removeLayerAction,
     changeLayerAction,
     addLayerInGroupAction,
-    editLayerInGroupAction
+    editLayerInGroupAction,
+    rearrangeLayersAction
   }
 ) {
   // GLOBAL DATA
-  const dispatch = useDispatch();
   const singularPageName = pageName.substring(0, pageName.length - 1);
-  const maxOrder = data.length > 0 ? Math.max(...data.map(function (row) {
-    return row.order
-  })) : 0
 
   // Generate group of layers
   const [groups, setGroups] = useState({});
@@ -56,19 +53,17 @@ export default function ListForm(
   // Onload, check the default one
   useEffect(() => {
     const groupLayers = layerInGroup(data);
-    const newGroups = groupLayers.groups;
+    const newGroups = groupLayers;
 
     // Check if current group is not in new group, merge it
     const currentGroupNames = Object.keys(groups);
-    const newGroupNames = Object.keys(groupLayers.groups);
+    const newGroupNames = Object.keys(groupLayers);
     currentGroupNames.map(groupName => {
-      if (groupName && !newGroupNames.includes(groupName) && groups[groupName].layers.length === 0) {
-        groups[groupName].layers = []
-        newGroups[groupName] = groups[groupName]
+      if (groupName && !newGroupNames.includes(groupName)) {
+        newGroups[groupName] = [-999]
       }
     })
     setGroups(newGroups)
-
   }, [data])
 
   /** Add group */
@@ -78,9 +73,7 @@ export default function ListForm(
     while (!created) {
       const name = 'Group ' + idx;
       if (!groups[name]) {
-        groups[name] = {
-          'layers': []
-        }
+        groups[name] = []
         created = true;
       }
       idx += 1;
@@ -90,7 +83,7 @@ export default function ListForm(
 
   /** Remove group */
   const removeGroup = (groupName) => {
-    const layers = [...groups[groupName].layers]
+    const layers = [...(groups[groupName] ? groups[groupName] : groups[''])]
     delete groups[groupName]
     setGroups({ ...groups })
     layers.map(layer => {
@@ -98,29 +91,25 @@ export default function ListForm(
     })
   }
 
-  /** Add Layer */
-  const addLayer = (layer, groupName) => {
-    layer.order = maxOrder + 1;
-    layer.group = groupName;
-    dispatch(addLayerAction(layer))
-  }
   /** Remove Layer */
   const removeLayer = (layer) => {
-    dispatch(removeLayerAction(layer))
+    removeLayerAction(layer)
   }
   /** Change Layer */
   const changeLayer = (layer) => {
-    dispatch(changeLayerAction(layer))
+    changeLayerAction(layer)
   }
   /** Change group name */
   const changeGroupName = (groupName, newName) => {
     const names = Object.keys(groups).filter(name => {
       return name !== groupName;
     });
-    if (!newName || names.includes(newName)) {
+    if (
+      !newName || names.includes(newName) || ['_Table', ''].includes(newName)
+    ) {
       return false;
     } else {
-      groups[groupName].layers.map(layer => {
+      groups[groupName].map(layer => {
         layer.group = newName;
         changeLayer(layer);
       })
@@ -138,47 +127,49 @@ export default function ListForm(
   }
   const applyData = (addedData, removeData) => {
     addedData.map(data => {
-      dispatch(addLayerAction(data))
+      addLayerAction(data)
     })
     removeData.map(data => {
-      dispatch(removeLayerAction(data))
+      removeLayerAction(data)
     })
     setOpen(false)
   }
 
-  return (
-    <div className={'TableForm ' + pageName}>
-      <div className='TableForm-Header'>
-        <div className='TableForm-Header-Left'></div>
-        <div className='TableForm-Header-Right'>
-          <AddButton
-            variant="secondary" text={"Add " + singularPageName}
-            onClick={() => addLayerInGroup("")}/>
-          <AddButton
-            variant="secondary" text={"Add Group"} onClick={addGroup}/>
+  return <Fragment>
+    {
+      Object.keys(groups).length === 0 ? <div>Loading</div> :
+        <div className={'TableForm ' + pageName}>
+          <div className='TableForm-Header'>
+            <div className='TableForm-Header-Left'></div>
+            <div className='TableForm-Header-Right'>
+              <AddButton
+                variant="secondary" text={"Add " + singularPageName}
+                onClick={() => addLayerInGroup("")}/>
+              <AddButton
+                variant="secondary" text={"Add Group"} onClick={addGroup}/>
+            </div>
+          </div>
+
+          {/* for the table */}
+          <SortableList
+            groups={groups}
+            removeGroup={removeGroup}
+            changeGroupName={changeGroupName}
+            removeLayer={removeLayer}
+            changeLayer={changeLayer}
+            addLayerInGroup={addLayerInGroup}
+            editLayerInGroup={editLayerInGroupAction}
+            rearrangeLayers={rearrangeLayersAction}
+          />
+
+          <DataSelectionModal
+            listData={listData}
+            selectedData={data}
+            open={open} setOpen={setOpen}
+            pageName={pageName}
+            groupName={currentGroupName}
+            applyData={applyData}/>
         </div>
-      </div>
-
-      {/* for the table */}
-      <SortableList
-        groups={groups}
-        pageName={pageName}
-        removeGroup={removeGroup}
-        changeGroupName={changeGroupName}
-        addLayer={addLayer}
-        removeLayer={removeLayer}
-        changeLayer={changeLayer}
-        addLayerInGroup={addLayerInGroup}
-        editLayerInGroup={editLayerInGroupAction}
-      />
-
-      <DataSelectionModal
-        listData={listData}
-        selectedData={data}
-        open={open} setOpen={setOpen}
-        pageName={pageName}
-        groupName={currentGroupName}
-        applyData={applyData}/>
-    </div>
-  )
+    }
+  </Fragment>
 }

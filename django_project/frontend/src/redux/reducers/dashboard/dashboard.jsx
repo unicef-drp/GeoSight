@@ -14,6 +14,7 @@ export const BASEMAP_ACTION_NAME = 'BASEMAP';
 export const BASEMAP_ACTION_TYPE_ADD = 'BASEMAP/ADD';
 export const BASEMAP_ACTION_TYPE_UPDATE = 'BASEMAP/UPDATE';
 export const BASEMAP_ACTION_TYPE_REMOVE = 'BASEMAP/REMOVE';
+export const BASEMAP_ACTION_TYPE_REARRANGE = 'BASEMAP/REARRANGE';
 
 export const EXTENT_DEFAULT_ACTION_NAME = 'EXTENT';
 export const EXTENT_DEFAULT_ACTION_TYPE_CHANGE = 'EXTENT/CHANGE'
@@ -22,6 +23,7 @@ export const CONTEXT_LAYER_ACTION_NAME = 'CONTEXT_LAYER';
 export const CONTEXT_LAYER_ACTION_TYPE_ADD = 'CONTEXT_LAYER/ADD';
 export const CONTEXT_LAYER_ACTION_TYPE_REMOVE = 'CONTEXT_LAYER/REMOVE';
 export const CONTEXT_LAYER_ACTION_TYPE_UPDATE = 'CONTEXT_LAYER/UPDATE';
+export const CONTEXT_LAYER_ACTION_TYPE_REARRANGE = 'CONTEXT_LAYER/REARRANGE';
 
 const dashboardInitialState = {
   fetching: false,
@@ -104,6 +106,27 @@ export default function dashboardReducer(
           }
           return newState
         }
+        case BASEMAP_ACTION_TYPE_REARRANGE: {
+          const newState = { ...state }
+          const basemapLayers = []
+          let order = 0
+          for (const [groupName, groupValue] of Object.entries(action.payload)) {
+            groupValue.map(id => {
+              const layer = newState.data.basemapsLayers.filter(layerState => {
+                return layerState.id === id
+              })[0]
+              layer.order = order
+              layer.group = groupName
+              basemapLayers.push(layer)
+              order += 1;
+            })
+          }
+          newState.data = {
+            ...newState.data,
+            basemapLayers: basemapLayers
+          }
+          return newState
+        }
         default:
           return state
       }
@@ -170,6 +193,28 @@ export default function dashboardReducer(
               contextLayers.push(contextLayer)
             }
           })
+          newState.data = {
+            ...newState.data,
+            contextLayers: contextLayers
+          }
+          return newState
+        }
+
+        case CONTEXT_LAYER_ACTION_TYPE_REARRANGE: {
+          const newState = { ...state }
+          const contextLayers = []
+          let order = 0
+          for (const [groupName, groupValue] of Object.entries(action.payload)) {
+            groupValue.map(id => {
+              const layer = newState.data.contextLayers.filter(layerState => {
+                return layerState.id === id
+              })[0]
+              layer.order = order
+              layer.group = groupName
+              contextLayers.push(layer)
+              order += 1;
+            })
+          }
           newState.data = {
             ...newState.data,
             contextLayers: contextLayers

@@ -51,9 +51,18 @@ export default function WidgetForm() {
     <ListForm
       pageName={'Widgets'}
       data={widgets}
-      addLayerAction={Actions.Widget.add}
-      removeLayerAction={Actions.Widget.remove}
-      changeLayerAction={Actions.Widget.update}
+      addLayerAction={(layer) => {
+        dispatch(Actions.Widget.add(layer))
+      }}
+      removeLayerAction={(layer) => {
+        dispatch(Actions.Widget.remove(layer))
+      }}
+      changeLayerAction={(layer) => {
+        dispatch(Actions.Widget.update(layer))
+      }}
+      rearrangeLayersAction={(payload) => {
+        dispatch(Actions.Widget.rearrange(payload))
+      }}
       addLayerInGroupAction={(groupName) => {
         setSelectedWidget(null)
         setGroupName(groupName)

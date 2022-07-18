@@ -9,6 +9,7 @@ from geosight.data.models.dashboard import (
 
 class DashboardIndicatorSerializer(serializers.ModelSerializer):
     """Serializer for DashboardIndicator."""
+
     group = serializers.SerializerMethodField()
 
     def get_group(self, obj: DashboardIndicator):
@@ -22,6 +23,7 @@ class DashboardIndicatorSerializer(serializers.ModelSerializer):
 
 class DashboardBasemapSerializer(serializers.ModelSerializer):
     """Serializer for DashboardBasemap."""
+
     group = serializers.SerializerMethodField()
 
     def get_group(self, obj: DashboardBasemap):
@@ -35,6 +37,7 @@ class DashboardBasemapSerializer(serializers.ModelSerializer):
 
 class DashboardContextLayerSerializer(serializers.ModelSerializer):
     """Serializer for DashboardContextLayer."""
+
     group = serializers.SerializerMethodField()
 
     def get_group(self, obj: DashboardContextLayer):
