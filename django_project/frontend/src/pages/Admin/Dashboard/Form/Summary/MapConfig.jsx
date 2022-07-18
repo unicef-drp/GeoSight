@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import L from 'leaflet';
 import Draw from 'leaflet-draw';
+
 import Actions from "../../../../../redux/actions/dashboard";
 
 /**
@@ -118,16 +119,25 @@ export default function MapConfig() {
         if (!event.target.value) {
           setExtentError('This empty')
         } else {
-          const layer = L.polygon(JSON.parse(event.target.value), { color: 'blue' })
-          const bounds = layer.getBounds()
-          if (!bounds._southWest.lng) {
-            setExtentError('This empty')
-          } else {
-            const newExtent = [
-              bounds._southWest.lng, bounds._southWest.lat,
-              bounds._northEast.lng, bounds._northEast.lat
-            ]
-            dispatcher(Actions.Extent.changeDefault(newExtent))
+          try {
+            const layer = L.polygon(JSON.parse(event.target.value), { color: 'blue' })
+            const bounds = layer.getBounds()
+            if (!bounds._southWest.lng) {
+              setExtentError('This empty')
+            } else {
+              const newExtent = [
+                bounds._southWest.lng, bounds._southWest.lat,
+                bounds._northEast.lng, bounds._northEast.lat
+              ]
+              dispatcher(Actions.Extent.changeDefault(newExtent))
+            }
+          } catch (err) {
+            const error = err.toString()
+            if (error.includes('JSON')) {
+              setExtentError('Value is not recognized. Please use [[x1,y1],[x1,y2],[x2,y1],[x2,y2]]')
+            } else {
+              setExtentError(error)
+            }
           }
         }
       }}/>
