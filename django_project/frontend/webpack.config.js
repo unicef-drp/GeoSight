@@ -24,6 +24,7 @@ let conf = {
     AdminContextLayerForm: ['./src/pages/Admin/ContextLayer/Form'],
 
     // HARVESTERS
+    HarvesterDetail: ['./src/pages/Admin/Harvesters/Detail'],
     MetaIngestor: ['./src/pages/Admin/Harvesters/MetaIngestor'],
   },
   output: {

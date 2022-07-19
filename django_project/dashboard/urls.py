@@ -94,11 +94,11 @@ admin_indicator_url = [
         IndicatorManagementView.as_view(),
         name='indicator-management-view'
     ),
-    url(
-        r'^harvester/(?P<uuid>[0-9a-f-]+)',
-        HarvesterDetail.as_view(),
-        name='harvester-detail'
-    ),
+    # url(
+    #     r'^harvester/(?P<uuid>[0-9a-f-]+)',
+    #     HarvesterDetail.as_view(),
+    #     name='harvester-detail'
+    # ),
     url(
         r'^meta-ingestor/(?P<uuid>[0-9a-f-]+)',
         MetaIngestorView.as_view(),

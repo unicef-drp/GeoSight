@@ -1,0 +1,14 @@
+{% extends 'frontend/admin/base.html' %}
+{% load frontend %}
+{% load render_bundle from webpack_loader %}
+{% block render_bundle %}
+    {% render_bundle 'HarvesterDetail' %}
+{% endblock %}
+{% block scripts %}
+    <script>
+      const editUrl = "{{ edit_url }}";
+      const harvester = {{ harvester|js_json|safe }};
+      const attributesData = {{ attributes|js_json|safe }};
+      const currentLogData = {{ current_log|js_json|safe }};
+    </script>
+{% endblock %}

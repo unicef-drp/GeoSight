@@ -201,7 +201,7 @@ class HarvesterFormView(BaseView, ABC):
             else:
                 return redirect(
                     reverse(
-                        'harvester-detail', args=[
+                        'meta-ingestor-detail', args=[
                             str(harvester.unique_id)
                         ]
                     )

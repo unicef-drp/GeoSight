@@ -160,7 +160,7 @@ class Harvester(models.Model):
         ).items():
             try:
                 attr = self.harvesterattribute_set.get(name=name)
-                attr.title = attribute['title'] \
+                attr.name = attribute['title'] \
                     if 'title' in attribute else attr.human_name
                 if attr.value:
                     attributes.append(attr)
