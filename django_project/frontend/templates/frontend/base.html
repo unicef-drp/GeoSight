@@ -42,14 +42,6 @@
             color: var(--anti-tertiary-color) !important;
         }
     </style>
-    <style>
-        {% if preferences.background_image %}
-            main {
-                background: url("{{ preferences.background_image }}") no-repeat;
-                background-size: cover;
-            }
-        {% endif %}
-    </style>
     {% block style %}
     {% endblock %}
 </head>

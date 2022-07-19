@@ -40,18 +40,21 @@ class ExcelHarvester(BaseHarvester):
             },
             'sheet_name': {
                 'title': "Sheet name",
-                'description': "Sheet that will be used"
+                'description': "Sheet that will be used",
+                'type': 'select'
             },
             'row_number_for_header': {
                 'title': "Row Number: Header",
-                'description': "Row number that will be used as header."
+                'description': "Row number that will be used as header.",
+                'type': 'number'
             },
             'column_name_administration_code': {
                 'title': "Column Name: Administration Code",
                 'description': (
                     "The name of column in "
                     "the file contains administration code"
-                )
+                ),
+                'type': 'select'
             }
         }
         try:

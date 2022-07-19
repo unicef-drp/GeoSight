@@ -22,6 +22,9 @@ let conf = {
     AdminBasemapForm: ['./src/pages/Admin/Basemap/Form'],
     AdminContextLayerList: ['./src/pages/Admin/ContextLayer/List'],
     AdminContextLayerForm: ['./src/pages/Admin/ContextLayer/Form'],
+
+    // HARVESTERS
+    MetaIngestor: ['./src/pages/Admin/Harvesters/MetaIngestor'],
   },
   output: {
     path: path.resolve(__dirname, "./bundles/frontend"),
