@@ -7,8 +7,6 @@
             src="{% static 'libs/xlsx/0.17.5/jszip.js' %}"></script>
     <script type="text/javascript"
             src="{% static 'libs/xlsx/0.17.5/xlsx.js' %}"></script>
-    <script type="text/javascript"
-            src="{% static 'libs/fuzzysort.js' %}"></script>
 {% endblock %}
 {% block scripts %}
     <script>
@@ -20,48 +18,5 @@
       const harvesterClass = "{{ harvester_class|safe }}";
       const attributesData = toJson(`{{ attributes|safe }}`);
       const mappingData = toJson(`{{ mapping|safe }}`);
-
-      const threshold = -50000;
-
-      /**
-       *  Check the score of match between value and target.
-       * @param {String} value Value that will be checked.
-       * @param {String} target Target that will be checked.
-       */
-      function isMatched(value, target) {
-        const result = fuzzysort.single(value.replaceAll('_', ' '), target.replaceAll('_', ' '));
-        if (result && result.score > threshold) {
-          return {
-            value: value,
-            score: result.score
-          }
-        } else {
-          return {
-            value: null,
-            score: threshold
-          }
-        }
-      }
-
-      /**
-       *  Find the element in list that most matched with value.
-       * @param {Array} list List of data that will be searched.
-       * @param {String} value Value of target.
-       */
-      function findMostMatched(list, value) {
-        let maxScore = threshold
-        let matchedValue = null
-        list.map(row => {
-          const { score } = isMatched(value, '' + row)
-          if (score > maxScore) {
-            maxScore = score
-            matchedValue = row
-          }
-        })
-        return {
-          value: matchedValue,
-          score: maxScore
-        }
-      }
     </script>
 {% endblock %}

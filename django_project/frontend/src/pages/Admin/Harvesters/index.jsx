@@ -116,7 +116,7 @@ export default function Harvesters(
     }
   }
   return (
-    <form id="BasicForm" method="post" encType="multipart/form-data">
+    <form className="BasicForm" method="post" encType="multipart/form-data">
       <Admin
         pageName={pageNames.Indicators}
         rightHeader={

@@ -25,6 +25,7 @@ let conf = {
 
     // INDICATOR MANAGEMENT
     IndicatorValueManagementMap: ['./src/pages/Admin/Indicator/ValueManagementMap'],
+    IndicatorValueManagementForm: ['./src/pages/Admin/Indicator/ValueManagementForm'],
 
     // HARVESTERS
     HarvesterDetail: ['./src/pages/Admin/Harvesters/Detail'],

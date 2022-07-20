@@ -58,9 +58,13 @@ main {
       width: 100%;
     }
 
-    #BasicForm {
+    .BasicForm {
       padding: 0;
       color: $secondary-color;
+
+      input {
+        outline: none;
+      }
     }
   }
 }

@@ -144,7 +144,7 @@ class HarvesterDetail(HarvesterIndicatorDetail):
         context.update(
             self.get_context(
                 harvester, reverse(
-                    'meta-ingestor-uuid-view', args=[
+                    'meta-ingestor-uuid-form', args=[
                         self.kwargs.get('uuid', '')
                     ]
                 )

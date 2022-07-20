@@ -36,7 +36,7 @@ export default function User() {
   if (username) {
     return (
       <div>
-        <button onClick={handleClick}>
+        <button onClick={handleClick} type="button">
           <AccountCircleIcon/>
         </button>
         <Menu
@@ -79,7 +79,7 @@ export default function User() {
     return (
       <Fragment>
         <a href={loginUrl}>
-          <button>
+          <button type='<button'>
             LOG IN
           </button>
         </a>

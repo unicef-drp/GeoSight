@@ -98,7 +98,11 @@ class IndicatorValueManagementTableView(SuperuserRequiredMixin, BaseView):
         self.indicator = get_object_or_404(
             Indicator, id=self.kwargs.get('pk', '')
         )
-        return f'Indicator Value Manager Form : {self.indicator.__str__()} '
+        return (
+            f'<span>Indicators</span> <span>></span> '
+            f'<span>{self.indicator.__str__()}</span> <span>></span> '
+            f'<span>Value Manager Form </span>'
+        )
 
     def get_context_data(self, **kwargs) -> dict:
         """Return context."""

@@ -19,7 +19,7 @@ export default function AdminForm({ isSubmitted, submit, children }) {
   // onSubmitted
   useEffect(() => {
     if (isSubmitted) {
-      $('#BasicForm').submit()
+      $('.BasicForm').submit()
     }
   }, [isSubmitted])
 
@@ -95,7 +95,7 @@ export default function AdminForm({ isSubmitted, submit, children }) {
   /** Render **/
   return (
     <div className='AdminForm'>
-      <form id="BasicForm" method="post" encType="multipart/form-data">
+      <form className="BasicForm" method="post" encType="multipart/form-data">
         {$('#FormTemplate').find('.errorlist').map(function (idx) {
           return <ul className='Errorlist' dangerouslySetInnerHTML={{
             __html: $(this).html()

@@ -71,7 +71,7 @@ export default function SummaryDashboardForm() {
 
   return (
     <div className='Summary'>
-      <div id="BasicForm" className='AdminForm'>
+      <div className="BasicForm AdminForm">
         <div className="BasicFormSection">
           <div>
             <label className="form-label required" htmlFor="name">

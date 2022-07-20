@@ -35,7 +35,7 @@ export default function NavBar() {
             </a>
           </li>
           <li className='NavHeaderTitle'>
-            <button>
+            <button type='<button'>
               <a
                 href='/'
                 title={i18n.t('Homepage')}

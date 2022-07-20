@@ -8,6 +8,9 @@ import Select from "react-select";
  */
 export function SelectWithList({ list, value, ...props }) {
   let defaultValue = null
+  if (props.isMulti) {
+    defaultValue = []
+  }
   const options = []
   if (list) {
     list.map((row, idx) => {
@@ -15,8 +18,14 @@ export function SelectWithList({ list, value, ...props }) {
         value: row.value !== undefined ? row.value : row,
         label: row.name !== undefined ? row.name : row
       }
-      if ((value !== undefined && value === option.value) || (props.required && idx === 0)) {
-        defaultValue = option
+      if (!props.isMulti) {
+        if ((value !== undefined && value === option.value) || (props.required && idx === 0)) {
+          defaultValue = option
+        }
+      } else {
+        if ((value !== undefined && value.includes(option.value)) || (props.required && idx === 0)) {
+          defaultValue.push(option)
+        }
       }
       options.push(option)
     })

@@ -166,10 +166,6 @@ class Indicator(AbstractTerm, AbstractSource):
         from geosight.data.models.indicator import (
             IndicatorValue, IndicatorExtraValue
         )
-        if value < self.min_value or value > self.max_value:
-            raise IndicatorValueRejectedError(
-                f'Value needs between {self.min_value} - {self.max_value}'
-            )
         indicator_value, created = IndicatorValue.objects.get_or_create(
             indicator=self,
             date=date,
