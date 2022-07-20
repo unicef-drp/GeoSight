@@ -22,7 +22,7 @@ class HarvesterFormView(SuperuserRequiredMixin, BaseView, ABC):
     @property
     def page_title(self):
         """Return page title that used on tab bar."""
-        return f'Harvester'
+        return 'Harvester'
 
     @property
     def content_title(self):

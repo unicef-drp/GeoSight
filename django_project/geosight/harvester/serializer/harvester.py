@@ -56,6 +56,7 @@ class HarvesterLogSerializer(serializers.ModelSerializer):
 
 class HarvesterAttributeSerializer(serializers.ModelSerializer):
     """HarvesterAttribute Serializer."""
+
     value = serializers.SerializerMethodField()
 
     def get_value(self, obj: HarvesterAttribute):

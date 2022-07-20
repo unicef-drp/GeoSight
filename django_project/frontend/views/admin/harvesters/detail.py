@@ -16,7 +16,7 @@ from geosight.harvester.serializer.harvester import (
 from geosight.harvester.tasks import run_harvester
 
 
-class HarvesterIndicatorDetail(SuperuserRequiredMixin,BaseView):
+class HarvesterIndicatorDetail(SuperuserRequiredMixin, BaseView):
     """Harvester Indicator View."""
 
     template_name = 'frontend/admin/harvesters/detail.html'

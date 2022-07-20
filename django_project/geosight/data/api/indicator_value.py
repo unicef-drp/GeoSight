@@ -82,14 +82,12 @@ class IndicatorValueDetail(APIView):
 
 
 class IndicatorValues(APIView):
-    """
-    Return Scenario value for country with the indicator geometry level
-    """
+    """Return Scenario value for country with the indicator geometry level."""
+
     authentication_classes = (IndicatorHarvesterTokenAndBearerAuthentication,)
 
     def post(self, request, pk):
-        """
-        Save value for specific date
+        """Save value for specific date.
 
         :param slug: slug of the instance
         :param pk: pk of the indicator
@@ -144,14 +142,12 @@ class IndicatorValues(APIView):
 
 
 class IndicatorValuesBatch(APIView):
-    """
-    Return Scenario value for country with the indicator geometry level
-    """
+    """Return Scenario value for country with the indicator geometry level."""
+
     authentication_classes = (IndicatorHarvesterTokenAndBearerAuthentication,)
 
     def post(self, request, slug, pk):
-        """
-        Save value for specific date
+        """Save value for specific date.
 
         :param slug: slug of the instance
         :param pk: pk of the indicator
@@ -216,4 +212,4 @@ class IndicatorValuesBatch(APIView):
         except IndicatorValueRejectedError as e:
             return HttpResponseBadRequest(f'{e}')
         except NameError:
-            return HttpResponseBadRequest(f'replace needs to be True or False')
+            return HttpResponseBadRequest('replace needs to be True or False')
