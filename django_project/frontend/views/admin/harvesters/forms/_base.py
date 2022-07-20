@@ -1,6 +1,7 @@
 """Harvester base."""
 from abc import ABC
 
+from braces.views import SuperuserRequiredMixin
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, reverse, get_object_or_404
 from django.utils.module_loading import import_string
@@ -12,7 +13,7 @@ from geosight.harvester.models import (
 )
 
 
-class HarvesterFormView(BaseView, ABC):
+class HarvesterFormView(SuperuserRequiredMixin, BaseView, ABC):
     """HarvesterForm Base View."""
 
     indicator = None

@@ -1,6 +1,7 @@
 """Harvester Detail view."""
 import json
 
+from braces.views import SuperuserRequiredMixin
 from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, reverse, redirect
 
@@ -15,7 +16,7 @@ from geosight.harvester.serializer.harvester import (
 from geosight.harvester.tasks import run_harvester
 
 
-class HarvesterIndicatorDetail(BaseView):
+class HarvesterIndicatorDetail(SuperuserRequiredMixin,BaseView):
     """Harvester Indicator View."""
 
     template_name = 'frontend/admin/harvesters/detail.html'

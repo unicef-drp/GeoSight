@@ -9,6 +9,9 @@ from frontend.views.admin.harvesters.forms import (
 from frontend.views.admin.indicator.create import IndicatorCreateView
 from frontend.views.admin.indicator.edit import IndicatorEditView
 from frontend.views.admin.indicator.list import IndicatorListView
+from frontend.views.admin.indicator.value_management import (
+    IndicatorValueManagementMapView, IndicatorValueManagementTableView
+)
 
 harvester_form_url = [
     url(
@@ -33,6 +36,16 @@ admin_indicator_detail_url = [
     url(
         r'^harvester/',
         include(harvester_form_url)
+    ),
+    url(
+        r'^value-manager-map$',
+        IndicatorValueManagementMapView.as_view(),
+        name='admin-indicator-value-mapview-manager'
+    ),
+    url(
+        r'^value-manager-form',
+        IndicatorValueManagementTableView.as_view(),
+        name='admin-indicator-value-form-manager'
     ),
 ]
 urlpatterns = [

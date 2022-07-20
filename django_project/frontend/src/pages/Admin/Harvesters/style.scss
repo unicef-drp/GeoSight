@@ -4,11 +4,8 @@
 @import '../../../app/variables';
 
 .HarvesterForm {
-  background-color: white;
   flex-grow: 1;
   min-height: 0;
-  overflow: auto;
-  padding: 0 2rem;
 
   .BasicFormSection {
     input:disabled {

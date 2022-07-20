@@ -30,7 +30,6 @@ export default function IndicatorList() {
     type: 'actions',
     width: 160,
     getActions: (params) => {
-      console.log(params)
       // Create actions
       const actions = [].concat(
         COLUMNS_ACTION(
