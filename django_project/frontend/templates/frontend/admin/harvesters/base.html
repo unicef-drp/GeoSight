@@ -12,10 +12,14 @@
 {% endblock %}
 {% block scripts %}
     <script>
-      const harvestersData = {{ harvesters|safe }};
+      function toJson(str) {
+        return JSON.parse(str.replaceAll("'", '"').replaceAll("None", 'null').replaceAll("True", 'true').replaceAll("False", 'false'))
+      }
+
+      const harvestersData = toJson(`{{ harvesters|safe }}`);
       const harvesterClass = "{{ harvester_class|safe }}";
-      const attributesData = {{ attributes|safe }};
-      const mappingData = {{ mapping|safe }};
+      const attributesData = toJson(`{{ attributes|safe }}`);
+      const mappingData = toJson(`{{ mapping|safe }}`);
 
       const threshold = -50000;
 

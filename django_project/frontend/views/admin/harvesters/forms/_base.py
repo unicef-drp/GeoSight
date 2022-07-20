@@ -21,7 +21,7 @@ class HarvesterFormView(BaseView, ABC):
     @property
     def page_title(self):
         """Return page title that used on tab bar."""
-        raise NotImplementedError
+        return f'Harvester'
 
     @property
     def content_title(self):
@@ -71,7 +71,7 @@ class HarvesterFormView(BaseView, ABC):
         ).items():
             value = attr.get('value', '')
             try:
-                if harvester:
+                if name != 'API URL' and harvester:
                     value = harvester.harvesterattribute_set.get(
                         name=name
                     ).value
@@ -85,13 +85,11 @@ class HarvesterFormView(BaseView, ABC):
                         '_', ' ').capitalize(),
                     'value': value if value else '',
                     'description': attr.get('description', ''),
-                    'required': 'true' if attr.get(
-                        'required', True) else 'false',
+                    'required': attr.get('required', True),
                     'type': attr.get('type', ''),
                     'class': attr.get('class', ''),
                     'data': attr.get('data', {}),
-                    'read_only': 'true' if attr.get(
-                        'read_only', False) else 'false',
+                    'read_only': attr.get('read_only', False),
                 }
             )
         context.update(
@@ -132,12 +130,11 @@ class HarvesterFormView(BaseView, ABC):
                 harvester = self.get_harvester()
             except Harvester.DoesNotExist:
                 if indicator:
-                    harvester, created = Harvester.objects.get_or_create(
-                        indicator=indicator,
-                        defaults={
-                            'harvester_class': harvester_class
-                        }
-                    )
+                    try:
+                        harvester = indicator.harvester
+                    except Harvester.DoesNotExist:
+                        harvester = Harvester()
+                        harvester.indicator = indicator
                 else:
                     harvester = Harvester.objects.create(
                         harvester_class=harvester_class

@@ -9,6 +9,7 @@ import Modal, { ModalHeader } from "../../../../components/Modal";
 import { EditButton } from "../../../../components/Elements/Button";
 
 import './style.scss';
+import CopyToClipboard from "../../../../components/Elements/CopyToClipboard";
 
 
 /**
@@ -21,7 +22,7 @@ export default function Detail() {
 
   /** When current log is changed */
   useEffect(() => {
-    if (currentLog.status === 'Running') {
+    if (currentLog && currentLog.status === 'Running') {
       setTimeout(function () {
         $.ajax({
           url: currentLog.api,
@@ -51,17 +52,19 @@ export default function Detail() {
     >
       <div className='PageContent'>
         <b className='light'>Harvester Class</b> : {harvester.name}
-        <div className='PageSection'>
-          <div className='PageSectionTitle'>Last Run
-            : {currentLog.start_time}</div>
-          <div
-            className={
-              'HarvesterStatus ' + currentLog.status
-            }>
-            <span>{currentLog.status} </span>
-            <span> {currentLog.note ? '- ' + currentLog.note : ''}</span>
-            <span
-              className='HarvesterStatusDetail MuiButtonLike'>
+        {
+          currentLog ? (
+            <div className='PageSection'>
+              <div className='PageSectionTitle'>Last Run
+                : {currentLog.start_time}</div>
+              <div
+                className={
+                  'HarvesterStatus ' + currentLog.status
+                }>
+                <span>{currentLog.status} </span>
+                <span> {currentLog.note ? '- ' + currentLog.note : ''}</span>
+                <span
+                  className='HarvesterStatusDetail MuiButtonLike'>
               {
                 currentLog.html_detail ? (
                   <Fragment>
@@ -89,14 +92,16 @@ export default function Detail() {
                 ) : ''
               }
             </span>
-          </div>
-        </div>
+              </div>
+            </div>
+          ) : ''
+        }
         <div className='PageSection'>
           <div className='PageSectionTitle'>Attributes</div>
           <table className='PageSectionTable'>
             <tbody>
             {
-              harvester.user ?
+              harvester.user.full_name ?
                 <tr>
                   <td>User who run</td>
                   <td>
@@ -107,12 +112,81 @@ export default function Detail() {
             }
             {
               attributesData.map(attr => {
-                return (
-                  <tr key={attr.name}>
-                    <td>{attr.name}</td>
-                    <td>{attr.value}</td>
-                  </tr>
-                )
+                if (attr.name === "API URL") {
+                  return (
+                    <tr key={attr.name}>
+                      <td valign="top">{attr.name}</td>
+                      <td>
+                        <CopyToClipboard
+                          text={window.location.protocol + '//' + window.location.host + attr.value}/>
+                        <br/>
+                        <br/>
+                        <div className="helptext">
+                          Example data:
+                          <br/>
+                          <pre>{
+                            JSON.stringify({
+                              "geometry_code": "SO",
+                              "extra_data": {
+                                "Data 1": "1",
+                                "Data 2": "2",
+                              },
+                              "date": "2022-01-01",
+                              "value": 1
+                            }, undefined, 2)
+                          }</pre>
+                        </div>
+                        <b className='light'> For batch </b><br/>
+                        <div id="batch-url">
+                          <CopyToClipboard
+                            text={window.location.protocol + '//' + window.location.host + attr.value + '/batch'}/>
+                        </div>
+                        <br/>
+                        <div className="helptext">
+                          Example data:
+                          <pre>{
+                            JSON.stringify([
+                              {
+                                "geometry_code": "SO",
+                                "extra_data": {
+                                  "Data 1": "1",
+                                  "Data 2": "2",
+                                },
+                                "date": "2022-01-01",
+                                "value": 1
+                              },
+                              {
+                                "geometry_code": "SO",
+                                "extra_data": {
+                                  "Data 1": "1",
+                                  "Data 2": "2",
+                                },
+                                "date": "2022-02-01",
+                                "value": 1
+                              }
+                            ], undefined, 2)
+                          }</pre>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                } else if (attr.name === "Token") {
+                  return (
+                    <tr key={attr.name}>
+                      <td valign="top">{attr.name}</td>
+                      <td>
+                        <CopyToClipboard text={attr.value}/>
+                      </td>
+                    </tr>
+                  )
+                } else {
+                  return (
+                    <tr key={attr.name}>
+                      <td valign="top">{attr.name}</td>
+                      <td>{attr.value}</td>
+                    </tr>
+                  )
+                }
               })
             }
             </tbody>

@@ -9,6 +9,12 @@
   min-height: 0;
   overflow: auto;
   padding: 0 2rem;
+
+  .BasicFormSection {
+    input:disabled {
+      border: none !important;
+    }
+  }
 }
 
 form {

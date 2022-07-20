@@ -36,6 +36,14 @@ class HarvesterIndicatorDetail(BaseView):
 
     def get_context(self, harvester, edit_url):
         """Parse context."""
+        current_log = HarvesterLogSerializer(
+            harvester.harvesterlog_set.first()
+        ).data if harvester.harvesterlog_set.first() else None
+        current_log_detail = ''
+        if current_log:
+            current_log_detail = current_log['html_detail']
+            del current_log['html_detail']
+            del current_log['detail']
         context = {
             'edit_url': edit_url,
             'harvester': HarvesterSerializer(harvester).data,
@@ -45,9 +53,8 @@ class HarvesterIndicatorDetail(BaseView):
                         harvester.get_attributes(), many=True).data
                 )
             ),
-            'current_log': HarvesterLogSerializer(
-                harvester.harvesterlog_set.first()
-            ).data,
+            'current_log': current_log,
+            'current_log_detail': current_log_detail,
             'can_harvest_now': True
         }
         if harvester.harvester_class in [

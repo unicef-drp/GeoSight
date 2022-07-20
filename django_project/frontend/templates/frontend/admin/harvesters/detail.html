@@ -6,9 +6,17 @@
 {% endblock %}
 {% block scripts %}
     <script>
+      function toJson(str) {
+        return JSON.parse(str.replaceAll("'", '"').replaceAll("None", 'null').replaceAll("True", 'true').replaceAll("False", 'false'))
+      }
+
       const editUrl = "{{ edit_url }}";
-      const harvester = {{ harvester|js_json|safe }};
-      const attributesData = {{ attributes|js_json|safe }};
-      const currentLogData = {{ current_log|js_json|safe }};
+      const harvester = toJson("{{ harvester|safe }}");
+      const attributesData = toJson("{{ attributes|safe }}");
+      const currentLogData = {% if current_log %}
+        toJson(`{{ current_log|safe }}`){% else %}null{% endif %};
+      {% if current_log_detail %}
+        currentLogData['html_detail'] = `{{ current_log_detail }}`
+      {% endif %}
     </script>
 {% endblock %}

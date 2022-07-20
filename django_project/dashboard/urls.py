@@ -51,10 +51,10 @@ harvester_form_url = [
 ]
 
 indicator_url = [
-    url(
-        r'^harvester/',
-        include(harvester_form_url)
-    ),
+    # url(
+    #     r'^harvester/',
+    #     include(harvester_form_url)
+    # ),
     url(
         r'^value-manager-map$',
         IndicatorValueManagementMapView.as_view(),

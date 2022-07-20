@@ -3,7 +3,8 @@ from django.shortcuts import reverse
 from rest_framework import serializers
 
 from core.serializer.user import UserSerializer
-from geosight.harvester.models.harvester import Harvester
+from geosight.data.models.indicator import Indicator
+from geosight.harvester.models.harvester import Harvester, UsingExposedAPI
 from geosight.harvester.models.harvester_attribute import (
     HarvesterAttribute, HarvesterMappingValue
 )
@@ -55,6 +56,20 @@ class HarvesterLogSerializer(serializers.ModelSerializer):
 
 class HarvesterAttributeSerializer(serializers.ModelSerializer):
     """HarvesterAttribute Serializer."""
+    value = serializers.SerializerMethodField()
+
+    def get_value(self, obj: HarvesterAttribute):
+        """Return value of harvester."""
+        try:
+            if obj.name == 'API URL' and obj.harvester.harvester_class == \
+                    UsingExposedAPI[0]:
+                return reverse(
+                    'indicator-upload-values-api',
+                    args=[obj.harvester.indicator.id]
+                )
+        except Indicator.DoesNotExist:
+            pass
+        return obj.value
 
     class Meta:  # noqa: D106
         model = HarvesterAttribute

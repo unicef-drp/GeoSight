@@ -25,7 +25,7 @@ export default function Harvesters(
   /** Input function */
   const input = (attribute) => {
     const name = 'attribute_' + attribute.name
-    const required = attribute.required ? true : false
+    const required = attribute.required
     switch (attribute.type) {
       case "number":
         return (
@@ -99,6 +99,7 @@ export default function Harvesters(
           <input
             name={name}
             required={required}
+            disabled={attribute.read_only}
             type='text'
             value={attribute.value}
             onChange={
@@ -151,7 +152,7 @@ export default function Harvesters(
               return (
                 <div key={attribute.name} className="BasicFormSection">
                   <label
-                    className={"form-label " + attribute.required ? 'required' : ''}>
+                    className={"form-label " + (attribute.required ? 'required' : '')}>
                     {attribute.title}
                   </label>
                   {input(attribute)}
