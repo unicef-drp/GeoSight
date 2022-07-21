@@ -1,0 +1,22 @@
+{% extends 'frontend/admin/base.html' %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet"
+          href="{% static "libs/ReactDatepicker/style.css" %}"/>
+    <script type="text/javascript"
+            src="{% static 'libs/xlsx/0.17.5/jszip.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'libs/xlsx/0.17.5/xlsx.js' %}"></script>
+{% endblock %}
+{% block scripts %}
+    <script>
+      function toJson(str) {
+        return JSON.parse(str.replaceAll("'", '"').replaceAll("None", 'null').replaceAll("True", 'true').replaceAll("False", 'false'))
+      }
+
+      const harvestersData = toJson(`{{ harvesters|safe }}`);
+      const harvesterClass = "{{ harvester_class|safe }}";
+      const attributesData = toJson(`{{ attributes|safe }}`);
+      const mappingData = toJson(`{{ mapping|safe }}`);
+    </script>
+{% endblock %}

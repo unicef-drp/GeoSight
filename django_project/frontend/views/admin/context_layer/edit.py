@@ -57,7 +57,7 @@ class ContextLayerEditView(SuperuserRequiredMixin, BaseView):
         )
         if form.is_valid():
             form.save()
-            return redirect(reverse('admin-basemap-list-view'))
+            return redirect(reverse('admin-context-layer-list-view'))
         context = self.get_context_data(**kwargs)
         context['form'] = form
         return render(request, self.template_name, context)

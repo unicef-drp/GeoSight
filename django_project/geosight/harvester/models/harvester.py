@@ -38,9 +38,9 @@ ExcelHarvester = (
     'Excel Harvesters',
 )
 HARVESTERS = (
-    APIWithGeographyAndTodayDate,
-    APIListWithGeographyAndDate,
-    SharepointHarvester,
+    # APIWithGeographyAndTodayDate,
+    # APIListWithGeographyAndDate,
+    # SharepointHarvester,
     UsingExposedAPI,
 )
 ALL_HARVESTERS = HARVESTERS + (
@@ -102,16 +102,19 @@ class Harvester(models.Model):
     def save(self, *args, **kwargs):
         """Save model."""
         super().save(*args, **kwargs)
-        self.save_default_attributes()
+        self.save_default_attributes(indicator=self.indicator)
 
     def save_default_attributes(self, **kwargs):
         """Save default attributes for the harvesters."""
         from geosight.harvester.models import HarvesterAttribute
         harvester = self.get_harvester_class
-        for key in harvester.additional_attributes(**kwargs).keys():
+        for key, value in harvester.additional_attributes(**kwargs).items():
             HarvesterAttribute.objects.get_or_create(
                 harvester=self,
-                name=key
+                name=key,
+                defaults={
+                    'value': value.get('value', '')
+                }
             )
 
     def save_attributes(self, data):
@@ -160,7 +163,7 @@ class Harvester(models.Model):
         ).items():
             try:
                 attr = self.harvesterattribute_set.get(name=name)
-                attr.title = attribute['title'] \
+                attr.name = attribute['title'] \
                     if 'title' in attribute else attr.human_name
                 if attr.value:
                     attributes.append(attr)

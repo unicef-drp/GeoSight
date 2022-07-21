@@ -1,0 +1,33 @@
+/* ==========================================================================
+   MetaIngestor Content
+   ========================================================================== */
+@import '../../../../app/variables';
+
+.IndicatorSelection {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+
+  th {
+    background: $secondary-color;
+    color: $anti-secondary-color;
+    font-weight: $base-font-light;
+  }
+
+  th, td {
+    padding: 0.5rem 1rem;
+  }
+
+  tr {
+    border: 1px solid $secondary-color;
+  }
+
+  .HasClass {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 1rem;
+    background: green;
+    margin-right: 5px;
+  }
+}

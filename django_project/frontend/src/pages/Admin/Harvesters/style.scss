@@ -1,0 +1,25 @@
+/* ==========================================================================
+   Login Page Content
+   ========================================================================== */
+@import '../../../app/variables';
+
+.HarvesterForm {
+  flex-grow: 1;
+  min-height: 0;
+  overflow-y: auto;
+
+  .BasicFormSection {
+    input:disabled {
+      border: none !important;
+    }
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+  padding: 0 !important;
+}

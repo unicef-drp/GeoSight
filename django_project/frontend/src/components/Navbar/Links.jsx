@@ -25,7 +25,7 @@ export default function Links() {
     return ''
   }
   return <div>
-    <button onClick={handleClick}>
+    <button onClick={handleClick} type="button">
       <div className='NavHeader-Options'>
         <div>LINKS</div>
         <div className='NavHeader-Options-Icon'><KeyboardArrowDownIcon/>

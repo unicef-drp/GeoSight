@@ -6,13 +6,14 @@ import SearchIcon from '@mui/icons-material/Search';
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import { AdminTable } from '../Table';
 import { IconTextField } from '../../../../components/Elements/Input'
 import { fetchingData } from "../../../../Requests";
+import MoreAction from "../../../../components/Elements/MoreAction";
 
 import './style.scss';
-
 
 /**
  *
@@ -21,9 +22,12 @@ import './style.scss';
  * @param {String} redirectUrl Url for redirecting after action done.
  * @param {String} editUrl Url for edit row.
  * @param {String} detailUrl Url for detail of row.
+ * @param {React.Component} moreActions More actions before delete
  * @returns {list}
  */
-export function COLUMNS_ACTION(params, redirectUrl, editUrl = null, detailUrl = null) {
+export function COLUMNS_ACTION(
+  params, redirectUrl, editUrl = null, detailUrl = null, moreActions = null
+) {
   editUrl = editUrl ? editUrl : urls.api.edit;
   detailUrl = detailUrl ? detailUrl : urls.api.detail;
 
@@ -43,35 +47,41 @@ export function COLUMNS_ACTION(params, redirectUrl, editUrl = null, detailUrl = 
       />
     )
   }
-  if (detailUrl) {
-    actions.push(
-      <GridActionsCellItem
-        className='AdminTableDelete'
-        icon={
-          <Tooltip title={`Delete ${params.row.name}`}>
-            <DeleteIcon/>
-          </Tooltip>
-        }
-        label="Delete"
-        onClick={
-          () => {
-            const api = detailUrl.replace('/0', `/${params.id}`);
-            if (confirm(`Are you sure you want to delete : ${params.row.name}?`)) {
-              $.ajax({
-                url: api,
-                method: 'DELETE',
-                success: function () {
-                  window.location = redirectUrl;
-                },
-                beforeSend: beforeAjaxSend
-              });
-              return false;
-            }
+  actions.push(
+    <GridActionsCellItem
+      icon={
+        <MoreAction moreIcon={<MoreVertIcon/>}>
+          {
+            moreActions ? React.Children.map(moreActions, child => {
+              return child
+            }) : ''
           }
-        }
-      />
-    )
-  }
+          {
+            detailUrl ?
+              <div className='error' onClick={
+                () => {
+                  const api = detailUrl.replace('/0', `/${params.id}`);
+                  if (confirm(`Are you sure you want to delete : ${params.row.name}?`)) {
+                    $.ajax({
+                      url: api,
+                      method: 'DELETE',
+                      success: function () {
+                        window.location = redirectUrl;
+                      },
+                      beforeSend: beforeAjaxSend
+                    });
+                    return false;
+                  }
+                }
+              }>
+                <DeleteIcon/> Delete
+              </div> : ''
+          }
+        </MoreAction>
+      }
+      label="More"
+    />
+  )
   return actions
 }
 

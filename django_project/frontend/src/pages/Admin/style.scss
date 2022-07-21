@@ -31,6 +31,8 @@ main {
   & > div {
     border-radius: $border-radius;
     margin: 0 1rem 1rem 1rem;
+    background-color: white;
+    padding: 0 2rem;
   }
 
   .AdminContentHeader {

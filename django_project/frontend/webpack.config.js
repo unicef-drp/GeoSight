@@ -22,6 +22,15 @@ let conf = {
     AdminBasemapForm: ['./src/pages/Admin/Basemap/Form'],
     AdminContextLayerList: ['./src/pages/Admin/ContextLayer/List'],
     AdminContextLayerForm: ['./src/pages/Admin/ContextLayer/Form'],
+
+    // INDICATOR MANAGEMENT
+    IndicatorValueManagementMap: ['./src/pages/Admin/Indicator/ValueManagementMap'],
+    IndicatorValueManagementForm: ['./src/pages/Admin/Indicator/ValueManagementForm'],
+
+    // HARVESTERS
+    HarvesterDetail: ['./src/pages/Admin/Harvesters/Detail'],
+    MetaIngestor: ['./src/pages/Admin/Harvesters/MetaIngestor'],
+    ExposedAPI: ['./src/pages/Admin/Harvesters/ExposedAPI'],
   },
   output: {
     path: path.resolve(__dirname, "./bundles/frontend"),

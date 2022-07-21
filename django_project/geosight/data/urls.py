@@ -22,7 +22,8 @@ from geosight.data.api.indicator import (
 )
 from geosight.data.api.indicator_value import (
     IndicatorValuesByGeometry,
-    IndicatorValueDetail
+    IndicatorValueDetail,
+    IndicatorValues, IndicatorValuesBatch
 )
 
 # ------------------------------------------------------
@@ -53,6 +54,15 @@ indicator_api = [
     url(
         r'^list',
         IndicatorListAPI.as_view(), name='indicator-list-api'
+    ),
+    url(
+        r'^(?P<pk>\d+)/upload/batch',
+        IndicatorValuesBatch.as_view(),
+        name='indicator-upload-values-batch-api'
+    ),
+    url(
+        r'^(?P<pk>\d+)/upload',
+        IndicatorValues.as_view(), name='indicator-upload-values-api'
     ),
     url(
         r'^(?P<pk>\d+)/values/latest',

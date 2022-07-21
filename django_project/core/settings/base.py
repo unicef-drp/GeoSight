@@ -53,6 +53,7 @@ STATICFILES_DIRS = (
     ABS_PATH('core', 'static'),
     ABS_PATH('dashboard', 'static'),
     ABS_PATH('frontend', 'bundles'),
+    ABS_PATH('frontend', 'static'),
 )
 
 # Every cache key will get prefixed with this value - here we set it to

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Tooltip from "@mui/material/Tooltip";
 import DynamicFormIcon from '@mui/icons-material/DynamicForm';
 import MapIcon from '@mui/icons-material/Map';
@@ -30,7 +30,27 @@ export default function IndicatorList() {
     type: 'actions',
     width: 160,
     getActions: (params) => {
-      const actions = [].concat(COLUMNS_ACTION(params, urls.admin.indicatorList));
+      // Create actions
+      const actions = [].concat(
+        COLUMNS_ACTION(
+          params, urls.admin.indicatorList, urls.api.edit, urls.api.detail,
+          <Fragment>
+            <a href={params.row.harvester_url}>
+              {
+                params.row.has_harvester ?
+                  <Fragment>
+                    <PublishIcon/> Harvester
+                  </Fragment> :
+                  <Fragment>
+                    <PublishIcon/> Create Harvester
+                  </Fragment>
+              }
+            </a>
+          </Fragment>
+        )
+      );
+
+      // Unshift before more & edit action
       actions.unshift(
         <GridActionsCellItem
           icon={
