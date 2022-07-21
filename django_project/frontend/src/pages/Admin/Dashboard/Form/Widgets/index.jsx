@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import Actions from "../../../../../redux/actions/dashboard";
+import { Actions } from "../../../../../store/dashboard";
 import ListForm from '../ListForm'
 import WidgetSelectionSection
   from "../../../../../components/Widget/WidgetSelection";
@@ -28,9 +28,9 @@ export default function WidgetForm() {
         newData.id = newID + 1;
         newData.group = groupName;
         newData.order = newOrder + 1;
-        dispatch(Actions.Widget.add(newData))
+        dispatch(Actions.Widgets.add(newData))
       } else {
-        dispatch(Actions.Widget.update(newData))
+        dispatch(Actions.Widgets.update(newData))
       }
     }
     setSelectedWidget(null)
@@ -52,16 +52,16 @@ export default function WidgetForm() {
       pageName={'Widgets'}
       data={widgets}
       addLayerAction={(layer) => {
-        dispatch(Actions.Widget.add(layer))
+        dispatch(Actions.Widgets.add(layer))
       }}
       removeLayerAction={(layer) => {
-        dispatch(Actions.Widget.remove(layer))
+        dispatch(Actions.Widgets.remove(layer))
       }}
       changeLayerAction={(layer) => {
-        dispatch(Actions.Widget.update(layer))
+        dispatch(Actions.Widgets.update(layer))
       }}
       rearrangeLayersAction={(payload) => {
-        dispatch(Actions.Widget.rearrange(payload))
+        dispatch(Actions.Widgets.rearrange(payload))
       }}
       addLayerInGroupAction={(groupName) => {
         setSelectedWidget(null)

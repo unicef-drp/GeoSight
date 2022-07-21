@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import Actions from "../../../../../redux/actions/dashboard";
+import { Actions } from "../../../../../store/dashboard";
 import ListForm from '../ListForm'
 
 /**

@@ -7,8 +7,8 @@ import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
 
 import App, { render } from '../../../../app';
 import { pageNames } from '../../index';
-import { store } from '../../../../store/Dashboard';
-import Actions from "../../../../redux/actions/dashboard";
+import { store } from '../../../../store/dashboard';
+import { Actions } from "../../../../store/dashboard";
 import SideNavigation from "../../Components/SideNavigation";
 import {
   SaveButton,
@@ -34,7 +34,7 @@ import { postData } from "../../../../Requests";
 /**
  * Dashboard Preview Section
  */
-export function DashboardPreview({ onForm }) {
+export function DashboardPreview({ showing, onForm }) {
   const dispatch = useDispatch();
   const { data } = useSelector(state => state.dashboard);
 
@@ -43,12 +43,6 @@ export function DashboardPreview({ onForm }) {
       Actions.Dashboard.fetch(dispatch)
     )
   }, []);
-
-  useEffect(() => {
-    dispatch(
-      Actions.IndicatorsData.update(data.indicators)
-    )
-  }, [data]);
 
   return (
     <div className='dashboard'>
@@ -63,7 +57,7 @@ export function DashboardPreview({ onForm }) {
       {Object.keys(data).length > 0 ?
         <Fragment>
           <LeftPanel/>
-          <Map/>
+          {showing ? <Map/> : ''}
           <RightPanel/>
         </Fragment> :
         <div></div>
@@ -320,7 +314,7 @@ export default function DashboardFormApp() {
         setCurrentMode('PreviewMode')
       }}/>
       {/* DASHBOARD SECTION */}
-      <DashboardPreview onForm={() => {
+      <DashboardPreview showing={currentMode === 'PreviewMode'} onForm={() => {
         setCurrentMode('FormMode')
       }}/>
     </App>

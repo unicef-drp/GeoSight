@@ -4,7 +4,7 @@ import {
   CONTEXT_LAYER_ACTION_TYPE_REMOVE,
   CONTEXT_LAYER_ACTION_TYPE_UPDATE,
   CONTEXT_LAYER_ACTION_TYPE_REARRANGE
-} from '../../reducers/dashboard/dashboard'
+} from './index'
 
 
 /**

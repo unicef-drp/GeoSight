@@ -1,4 +1,4 @@
-import { APIReducer } from "../../../../redux/reducers_api";
+import { APIReducer } from "../../../reducers_api";
 
 /**
  * REFERENCE LAYER reducer

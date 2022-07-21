@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import L from 'leaflet';
 import Draw from 'leaflet-draw';
 
-import Actions from "../../../../../redux/actions/dashboard";
+import { Actions } from "../../../../../store/dashboard";
 
 /**
  * Map component.

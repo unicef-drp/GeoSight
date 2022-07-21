@@ -1,10 +1,10 @@
 import {
   BASEMAP_ACTION_NAME,
   BASEMAP_ACTION_TYPE_ADD,
+  BASEMAP_ACTION_TYPE_REARRANGE,
   BASEMAP_ACTION_TYPE_REMOVE,
-  BASEMAP_ACTION_TYPE_UPDATE,
-  BASEMAP_ACTION_TYPE_REARRANGE
-} from '../../reducers/dashboard/dashboard'
+  BASEMAP_ACTION_TYPE_UPDATE
+} from './index'
 
 
 /**
@@ -43,6 +43,7 @@ export function update(payload) {
     payload: payload
   };
 }
+
 /**
  * Rearrange basemap data.
  * @param {object} payload Basemap data.

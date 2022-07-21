@@ -21,6 +21,7 @@ import { cleanLayerData } from "../../utils/indicators"
  */
 export default function WidgetEditor({ open, onCreated, data, children }) {
   const { indicators } = useSelector(state => state.dashboard.data);
+  const indicatorsData = useSelector(state => state.indicatorsData);
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -74,7 +75,19 @@ export default function WidgetEditor({ open, onCreated, data, children }) {
   let selectedData = {};
   try {
     if (layerID && layerType) {
-      selectedData = cleanLayerData(layerID, layerType, indicators, null, true)[0]
+
+      const layer = indicators.filter((layer) => {
+        return layer.id === layerID;
+      })[0]
+
+      let indicatorData = null
+      if (layer) {
+        indicatorData = indicatorsData[layerID] ? indicatorsData[layerID] : {}
+      }
+
+      selectedData = cleanLayerData(
+        layerID, layerType, indicatorData, null, true
+      )[0]
       if (!selectedData) {
         selectedData = {}
       }

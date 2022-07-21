@@ -4,7 +4,7 @@ import Select from 'react-select'
 import { FormControl } from "@mui/material";
 
 import { fetchingData } from "../../../../../Requests";
-import Actions from "../../../../../redux/actions/dashboard";
+import { Actions } from "../../../../../store/dashboard";
 import { GeorepoUrls } from '../../../../../utils/georepo'
 import MapConfig from './MapConfig'
 

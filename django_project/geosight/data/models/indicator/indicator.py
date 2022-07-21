@@ -222,7 +222,7 @@ class Indicator(AbstractTerm, AbstractSource):
             'indicator_id': self.id,
             'geometry_code': geometry_code,
             'value': value,
-            'text': rule.name,
+            'text': rule.name if rule else '',
             'color': background_color,
             'outline_color': outline_color
         }
