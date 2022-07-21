@@ -9,7 +9,10 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Accordion from "@mui/material/Accordion";
 
 export default function ReferenceLayerSection() {
-  const { referenceLayer } = useSelector(state => state.dashboard.data);
+  const { referenceLayer } = useSelector(state => state.dashboard.data)
+  const referenceLayerData = useSelector(state => state.referenceLayerData)
+  const data = referenceLayerData[referenceLayer.identifier]
+
   return (
     <Accordion
       expanded={true}
@@ -20,24 +23,22 @@ export default function ReferenceLayerSection() {
       </AccordionSummary>
       <AccordionDetails>
         {
-          referenceLayer.data && Object.keys(referenceLayer.data).length > 0 ?
-            <div>
-              {referenceLayer.data.name ?
-                <div><b>Name :</b> {referenceLayer.data.name}</div> : ''}
-              {referenceLayer.data.description ?
-                <div><b>Description :</b> {referenceLayer.data.description}
-                </div> : ''}
-              {referenceLayer.data.source ?
-                <div><b>Source :</b> {referenceLayer.data.source}</div> : ''}
-            </div>
+          data && data.fetched ?
+            data.error ?
+              <div className='error'>
+                {data.error.toString()}
+              </div> :
+              <div>
+                {data.data.name ?
+                  <div><b>Name :</b> {data.data.name}</div> : ''}
+                {data.data.description ?
+                  <div><b>Description :</b> {data.data.description}
+                  </div> : ''}
+                {data.data.source ?
+                  <div><b>Source :</b> {data.data.source}</div> : ''}
+              </div>
             :
-            (
-              referenceLayer.identifier ? (referenceLayer.error ?
-                  <div
-                    className='error'>{referenceLayer.error.toString()}</div> :
-                  <div>Loading</div>) :
-                <div>Please select a reference dataset.</div>
-            )
+            <div>Loading</div>
         }
       </AccordionDetails>
     </Accordion>

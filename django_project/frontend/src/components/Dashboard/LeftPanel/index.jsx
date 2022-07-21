@@ -7,9 +7,9 @@ import { useSelector } from "react-redux";
 
 import LeftRightToggleButton, { LEFT, RIGHT } from '../../ToggleButton'
 import Basemaps from './Basemaps'
+import ReferenceLayerSection from './ReferenceLayer'
 import ContextLayersAccordion from './ContextLayers'
 import IndicatorsAccordion from './Indicators'
-import ReferenceLayerSection from './ReferenceLayer'
 import FiltersAccordion from './Filters'
 
 import './style.scss';
@@ -57,12 +57,12 @@ export default function LeftPanel() {
         </div>
         <div className='dashboard__content-wrapper__inner dataset-wrapper'>
           <ReferenceLayerSection/>
-          <IndicatorsAccordion
-            expanded={expanded === 'indicators'}
-            handleChange={handleChange}
-          />
           <ContextLayersAccordion
             expanded={expanded === 'contextLayers'}
+            handleChange={handleChange}
+          />
+          <IndicatorsAccordion
+            expanded={expanded === 'indicators'}
             handleChange={handleChange}
           />
         </div>

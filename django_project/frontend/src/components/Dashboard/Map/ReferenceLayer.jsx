@@ -8,7 +8,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import $ from 'jquery';
 import vectorTileLayer from 'leaflet-vector-tile-layer';
 
-import Actions from '../../../redux/actions/dashboard'
+import { Actions } from '../../../store/dashboard'
 import { featurePopupContent } from '../../../utils/main'
 import Modal, { ModalContent, ModalHeader } from "../../Modal";
 import { fetchingData } from "../../../Requests";
@@ -107,30 +107,27 @@ export function IndicatorDetailsModal({ group, feature, onClose }) {
  */
 export default function ReferenceLayer({ currentIndicator }) {
   const dispatch = useDispatch();
-  const { referenceLayer } = useSelector(state => state.dashboard.data);
-  const indicatorData = useSelector(state => state.indicatorData);
+  const {
+    referenceLayer,
+    indicators
+  } = useSelector(state => state.dashboard.data);
+  const referenceLayerData = useSelector(state => state.referenceLayerData);
+  const indicatorsData = useSelector(state => state.indicatorsData);
   const filtersData = useSelector(state => state.filtersData);
+  const filteredGeometries = useSelector(state => state.filteredGeometries);
+
   const [clickedFeature, setClickedFeature] = useState(null);
 
   const where = returnWhere(filtersData ? filtersData : [])
 
   // Filter geometry_code based on indicators layer
   // Also filter by levels that found on indicators
-  let geometryCodes = null;
+  let geometryCodes = filteredGeometries;
   let levels = [];
-  if (indicatorData && indicatorData.length) {
-    geometryCodes = []
-    indicatorData.forEach(indicator => {
+  if (indicators && indicators.length) {
+    indicators.map(indicator => {
       if (indicator.reporting_level) {
         levels.push(indicator.reporting_level.toLowerCase())
-      }
-      if (indicator.data) {
-        try {
-          indicator.data.forEach(indicator => {
-            geometryCodes.push(indicator.geometry_code)
-          })
-        } catch (err) {
-        }
       }
     })
   }
@@ -143,24 +140,51 @@ export default function ReferenceLayer({ currentIndicator }) {
 
   // When level changed
   useEffect(() => {
-    if (!referenceLayer.data) {
+    if (!referenceLayerData[referenceLayer.identifier]) {
       dispatch(
-        Actions.ReferenceLayer.fetch(dispatch, referenceLayer.detail_url)
+        Actions.ReferenceLayerData.fetch(
+          dispatch, referenceLayer.identifier, referenceLayer.detail_url
+        )
       )
     }
   }, [referenceLayer]);
 
+  // Prepare the data
   useEffect(() => {
-    if (referenceLayer?.data?.vector_tiles) {
+    if (referenceLayerData[referenceLayer.identifier]?.data &&
+      referenceLayerData[referenceLayer.identifier].data.levels) {
+
+      indicators.forEach(indicator => {
+        const level = referenceLayerData[referenceLayer.identifier].data.levels.filter(level => {
+          return level.level_name.toLowerCase() === indicator.reporting_level.toLowerCase() || '' + level.level === indicator.reporting_level
+        })[0];
+        if (level && ('' + level.level) !== indicator.reporting_level) {
+          dispatch(
+            Actions.Indicators.updateLevel(indicator.id, '' + level.level)
+          );
+        }
+        if (!indicatorsData[indicator.id].reporting_level) {
+          dispatch(
+            Actions.IndicatorsData.updateLevel(indicator.id, '' + level.level)
+          );
+        }
+      })
+    }
+  }, [referenceLayerData, indicatorsData]);
+
+  useEffect(() => {
+    const vectorTiles = referenceLayerData[referenceLayer.identifier]?.data?.vector_tiles
+    if (vectorTiles) {
 
       // Save indicator data per geom
       // This is needed for popup and rendering
       const indicatorsByGeom = {}
-      if (currentIndicator && currentIndicator.data) {
-        currentIndicator.data.forEach(function (data) {
+      if (currentIndicator && indicatorsData[currentIndicator.id] && indicatorsData[currentIndicator.id].fetched) {
+        indicatorsData[currentIndicator.id].data.forEach(function (data) {
           indicatorsByGeom[data.geometry_code] = data;
         })
       }
+
       const options = {
         maxDetailZoom: 8,
         filter: function (feature) {
@@ -168,9 +192,11 @@ export default function ReferenceLayer({ currentIndicator }) {
             && (!where || !geometryCodes || geometryCodes.includes(feature.properties.code))
         },
         style: function (feature, layer, test) {
-          dispatch(Actions.Geometries.add(
-            feature.properties.code, feature.properties
-          ));
+          dispatch(
+            Actions.Geometries.add(
+              feature.properties.code, feature.properties
+            )
+          );
 
           const indicatorData = indicatorsByGeom[feature.properties.code];
           let fillColor = indicatorData ? indicatorData.color : null;
@@ -190,7 +216,7 @@ export default function ReferenceLayer({ currentIndicator }) {
         },
       };
 
-      const url = GeorepoUrls.WithDomain(referenceLayer.data.vector_tiles)
+      const url = GeorepoUrls.WithDomain(vectorTiles)
       const layer = vectorTileLayer(url, options);
       layer.bindPopup(function (feature) {
         const properties = indicatorsByGeom[feature.properties.code]
@@ -206,6 +232,7 @@ export default function ReferenceLayer({ currentIndicator }) {
         delete properties.code
         return featurePopupContent(properties.name ? properties.name : 'Reference Layer', properties)
       });
+
       dispatch(
         Actions.Map.change_reference_layer(layer)
       )
@@ -225,7 +252,10 @@ export default function ReferenceLayer({ currentIndicator }) {
         }
       }, this);
     }
-  }, [referenceLayer, indicatorData, currentIndicator]);
+  }, [
+    referenceLayer, referenceLayerData, indicatorsData,
+    currentIndicator, filteredGeometries
+  ]);
 
   return (
     <Fragment>

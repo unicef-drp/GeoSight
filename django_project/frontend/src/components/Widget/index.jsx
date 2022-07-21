@@ -8,7 +8,7 @@ import InfoIcon from "@mui/icons-material/Info";
 
 import SummaryWidget from "./SummaryWidget"
 import SummaryGroupWidget from "./SummaryGroupWidget"
-import { cleanLayerData } from "../../utils/indicatorData"
+import { cleanLayerData } from "../../utils/indicators"
 
 import './style.scss';
 
@@ -28,12 +28,30 @@ export const DEFINITION = {
  * @param {string} data Data of widget
  */
 export function Widget({ idx, data }) {
-  const indicators = useSelector(state => state.indicatorData);
+  const { indicators } = useSelector(state => state.dashboard.data);
+  const indicatorsData = useSelector(state => state.indicatorsData);
+  const filteredGeometries = useSelector(state => state.filteredGeometries);
   const [showInfo, setShowInfo] = useState(false);
   const {
     name, description, type,
     layer_id, layer_used, property
   } = data
+
+
+  const layer = indicators.filter((layer) => {
+    return layer.id === layer_id;
+  })[0]
+
+  let indicatorData = null
+  if (layer) {
+    indicatorData = indicatorsData[layer_id] ? indicatorsData[layer_id] : {}
+    indicatorData = Object.assign({}, indicatorData)
+    if (indicatorData.fetched && indicatorData.data) {
+      indicatorData.data = indicatorData.data.filter(indicator => {
+        return filteredGeometries.includes(indicator.geometry_code)
+      })
+    }
+  }
 
   const showInfoHandler = () => {
     setShowInfo(!showInfo)
@@ -56,13 +74,21 @@ export function Widget({ idx, data }) {
       case DEFINITION.WidgetType.SUMMARY_WIDGET:
         return <SummaryWidget
           idx={idx}
-          data={cleanLayerData(layer_id, layer_used, layers, property)}
+          data={
+            cleanLayerData(
+              layer_id, layer_used, indicatorData, property
+            )
+          }
           widgetData={data}
         />;
       case DEFINITION.WidgetType.SUMMARY_GROUP_WIDGET:
         return <SummaryGroupWidget
           idx={idx}
-          data={cleanLayerData(layer_id, layer_used, layers, property)}
+          data={
+            cleanLayerData(
+              layer_id, layer_used, indicatorData, property
+            )
+          }
           widgetData={data}
         />;
       default:

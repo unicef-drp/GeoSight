@@ -10,9 +10,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Accordion from "@mui/material/Accordion";
 
-import Actions from '../../../../redux/actions/dashboard'
-import ReferenceLayer from '../../Map/ReferenceLayer'
+import { Actions } from '../../../../store/dashboard'
 import { layerInGroup } from "../../../../utils/layers";
+import ReferenceLayer from '../../Map/ReferenceLayer'
 
 /**
  * Indicators selector.
@@ -20,10 +20,10 @@ import { layerInGroup } from "../../../../utils/layers";
 export function Indicators() {
   const dispatch = useDispatch();
   const { indicators } = useSelector(state => state.dashboard.data);
+  const indicatorsData = useSelector(state => state.indicatorsData);
   const indicatorsEnabled = indicators.filter(indicator => {
     return indicator.visible_by_default
   })
-  const indicatorData = useSelector(state => state.indicatorData);
   const [currentIndicator, setCurrentIndicator] = useState(
     indicatorsEnabled[0] ? indicatorsEnabled[0].id : 0
   );
@@ -36,12 +36,15 @@ export function Indicators() {
     }
   };
 
-  // Get indicator data
+  /**
+   * Fetch indicator data
+   */
   useEffect(() => {
     if (indicators) {
-      indicators.forEach(function (indicator, idx) {
-        if (!indicator.data) {
-          dispatch(Actions.Indicators.fetch(dispatch, idx, indicator.url));
+      indicators.map(indicator => {
+        const { id } = indicator
+        if (!indicatorsData[id]?.data) {
+          dispatch(Actions.IndicatorsData.fetch(dispatch, id, indicator.url));
         }
       })
     }
@@ -110,7 +113,6 @@ export function Indicators() {
  * @param {function} handleChange Function when the accordion show
  */
 export default function IndicatorsAccordion({ expanded, handleChange }) {
-  const { indicators } = useSelector(state => state.dashboard.data);
   return (
     <Accordion
       expanded={expanded}
@@ -119,17 +121,9 @@ export default function IndicatorsAccordion({ expanded, handleChange }) {
 
       <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
         Indicators
-        {
-          indicators ?
-            <span></span> :
-            <i>&nbsp;(Loading)</i>
-        }
       </AccordionSummary>
       <AccordionDetails>
-        {
-          indicators ?
-            <Indicators/> : ''
-        }
+        <Indicators/>
       </AccordionDetails>
     </Accordion>
   )

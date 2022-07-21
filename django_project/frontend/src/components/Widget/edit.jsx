@@ -10,7 +10,7 @@ import Select from '@mui/material/Select';
 
 import { DEFINITION } from "../Widget/index"
 import Modal, { ModalContent, ModalHeader } from "../Modal";
-import { cleanLayerData } from "../../utils/indicatorData"
+import { cleanLayerData } from "../../utils/indicators"
 
 /**
  * Edit section for widget.

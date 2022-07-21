@@ -3,11 +3,10 @@
    ========================================================================== */
 
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import L from 'leaflet';
 
 import './style.scss';
-import Actions from '../../../redux/actions/dashboard'
 
 /**
  * Map component.
@@ -19,7 +18,6 @@ export default function Map() {
     contextLayers
   } = useSelector(state => state.map);
 
-  const dispatcher = useDispatch();
   const { extent } = useSelector(state => state.dashboard.data);
   const [map, setMap] = useState(null);
   const [basemapLayerGroup, setBasemapLayerGroup] = useState(null);

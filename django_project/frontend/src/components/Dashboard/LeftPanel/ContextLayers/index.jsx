@@ -5,17 +5,17 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import L from 'leaflet';
+
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from "@mui/material/AccordionDetails";
-
-import Actions from '../../../../redux/actions/dashboard'
-import { featurePopupContent } from '../../../../utils/main'
-import { layerInGroup } from '../../../../utils/layers'
-import EsriLeafletLayer from '../../../../utils/esri/leaflet-esri-layer'
 import Switch from '@mui/material/Switch';
 
+import { Actions } from '../../../../store/dashboard'
+import EsriLeafletLayer from '../../../../utils/esri/leaflet-esri-layer'
+import { featurePopupContent } from '../../../../utils/main'
+import { layerInGroup } from '../../../../utils/layers'
 import { fetchingData } from "../../../../Requests";
 
 import './style.scss'

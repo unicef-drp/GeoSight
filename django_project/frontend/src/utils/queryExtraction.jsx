@@ -153,7 +153,7 @@ export function queryFromDictionary(indicators, dictionary, ignoreActive) {
   let mainFrom = '';
   const dataList = [];
   indicators.map((indicator, idx) => {
-    const data = indicator.rawData;
+    const data = indicator.data;
     if (data) {
       const id = `${IDENTIFIER}${indicator.id}`;
       if (idx === 0) {

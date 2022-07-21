@@ -18,14 +18,14 @@ import {
   IDENTIFIER,
   INIT_DATA,
   OPERATOR,
-  queryFromDictionary,
   queryIndicator,
   TYPE,
   WHERE_OPERATOR
 } from "../../../../utils/queryExtraction"
 
-import Actions from '../../../../redux/actions/dashboard'
+import { Actions } from '../../../../store/dashboard'
 import { capitalize } from "../../../../utils/main";
+import { filteredGeoms } from "../../../../utils/indicators";
 import FilterEditorModal from './Modal'
 import FilterValueInput from './ValueInput'
 
@@ -35,8 +35,9 @@ import './style.scss'
  * Control All Filter.
  * @param {dict} filtersData Filters of dashboard.
  * @param {list} indicatorFields Indicator fields.
+ * @param {Function} filter Filter function.
  */
-export function FilterControl({ filtersData, indicatorFields }) {
+export function FilterControl({ filtersData, indicatorFields, filter }) {
   const dispatcher = useDispatch();
   const [filters, setFilters] = useState(
     filtersData ? filtersData : INIT_DATA.GROUP()
@@ -46,12 +47,7 @@ export function FilterControl({ filtersData, indicatorFields }) {
    * Update Filter
    */
   const updateFilter = (force) => {
-    dispatcher(
-      Actions.IndicatorsData.filter(filters)
-    );
-    dispatcher(
-      Actions.FiltersData.update(filters)
-    );
+    filter(filters)
     if (force) {
       setFilters({ ...filters });
     }
@@ -300,16 +296,6 @@ export function FilterControl({ filtersData, indicatorFields }) {
   </Fragment>
 }
 
-export function FilterSectionSummary() {
-  const { indicators } = useSelector(state => state.dashboard.data);
-  const filtersData = useSelector(state => state.filtersData);
-  const query = queryFromDictionary(indicators, filtersData).query
-  return <Fragment>{
-    query ? <div className='FilterControlSummary'>
-      {query}
-    </div> : ''
-  }</Fragment>
-}
 
 /**
  * Filter section.
@@ -320,58 +306,72 @@ export default function FilterSection() {
     indicators,
     referenceLayer
   } = useSelector(state => state.dashboard.data);
+  const referenceLayerData = useSelector(state => state.referenceLayerData)
+  const indicatorsData = useSelector(state => state.indicatorsData)
   const dispatcher = useDispatch();
 
-  // save the filters query
-  useEffect(() => {
-    if (indicators && referenceLayer?.data?.levels) {
-      indicators.forEach(indicator => {
-        const level = referenceLayer.data.levels.filter(level => {
-          return level.level_name.toLowerCase() === indicator.reporting_level.toLowerCase() || '' + level.level === indicator.reporting_level
-        })[0];
-        if (level && ('' + level.level) !== indicator.reporting_level) {
-          dispatcher(
-            Actions.Indicators.updateLevel(indicator.id, '' + level.level)
-          );
-        }
-      })
-      dispatcher(
-        Actions.IndicatorsData.filter(filters)
-      );
-      dispatcher(
-        Actions.FiltersData.update(filters)
-      );
+  const filter = (currentFilter) => {
+    let indicatorsList = [];
+    let allHasData = true;
+    for (const [key, indicator] of Object.entries(indicatorsData)) {
+      if (indicator.fetching) {
+        allHasData = false
+      }
+      indicatorsList.push(indicator)
     }
-  }, [filters, referenceLayer]);
+    const filteredGeometries = filteredGeoms(
+      indicatorsList, allHasData ? currentFilter : null
+    )
+    if (filteredGeometries) {
+      dispatcher(
+        Actions.FilteredGeometries.update(filteredGeometries)
+      )
+    }
+    dispatcher(
+      Actions.FiltersData.update(currentFilter)
+    );
+  }
+
+  // Apply the filters query
+  useEffect(() => {
+    if (referenceLayerData[referenceLayer.identifier]?.data &&
+      referenceLayerData[referenceLayer.identifier].data.levels) {
+      filter(filters)
+    }
+  }, [filters, indicatorsData]);
 
   // get indicator fields
   let indicatorFields = []
-  indicators.map((indicator, idx) => {
-    if (indicator.rawData) {
-      const indicatorData = queryIndicator(indicator.rawData)[0]
-      Object.keys(indicatorData).forEach(key => {
-        const id = `${IDENTIFIER}${indicator.id}.${key}`
-        indicatorFields.push({
-          'id': id,
-          'name': `${indicator.name}.${key}`,
-          'group': indicator.name,
-          'data': [...new Set(
-            indicator.rawData.map(data => {
-              return data[key]
-            }))
-          ]
+  indicators.map(indicator => {
+    if (indicatorsData[indicator.id]?.fetched) {
+      const data = indicatorsData[indicator.id]?.data
+      if (data) {
+        const indicatorData = queryIndicator(data)[0]
+        Object.keys(indicatorData).forEach(key => {
+          const id = `${IDENTIFIER}${indicator.id}.${key}`
+          indicatorFields.push({
+            'id': id,
+            'name': `${indicator.name}.${key}`,
+            'group': indicator.name,
+            'data': [...new Set(
+              data.map(data => {
+                return data[key]
+              }))
+            ]
+          })
         })
-      })
+      }
+      indicatorFields = [...new Set(indicatorFields)]
     }
-    indicatorFields = [...new Set(indicatorFields)]
   })
 
   return <Fragment>
     <div className='FilterControl'>
       <FilterControl
         filtersData={filters && Object.keys(filters).length > 0 ? filters : INIT_DATA.GROUP()}
-        indicatorFields={indicatorFields}/>
+        indicatorFields={indicatorFields}
+        filter={filter}
+      />
     </div>
-    {/*<FilterSectionSummary/>*/}
   </Fragment>
 }
