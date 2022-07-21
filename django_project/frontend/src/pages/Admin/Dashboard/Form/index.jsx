@@ -26,6 +26,7 @@ import WidgetForm from './Widgets'
 // Dashboard Preview
 import LeftPanel from '../../../../components/Dashboard/LeftPanel'
 import RightPanel from '../../../../components/Dashboard/RightPanel'
+import Map from '../../../../components/Dashboard/Map'
 import '../../../Dashboard/style.scss';
 import './style.scss';
 import { postData } from "../../../../Requests";

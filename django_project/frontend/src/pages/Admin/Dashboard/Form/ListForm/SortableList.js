@@ -87,7 +87,7 @@ export default function SortableList(
 
   /** Items changed **/
   useEffect(() => {
-    if (!dragged && prevState.items && prevState.items.length === items.length) {
+    if (!dragged && (!prevState.items || prevState.items.length === items.length)) {
       // We save it
       if (JSON.stringify(prevState.items) !== JSON.stringify(items)) {
         rearrangeLayers(items)
