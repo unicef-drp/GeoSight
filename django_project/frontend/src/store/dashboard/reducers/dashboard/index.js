@@ -14,6 +14,7 @@ import contextLayersReducer, {
  * DASHBOARD REQUEST reducer
  */
 export const DASHBOARD_ACTION_NAME = 'DASHBOARD';
+export const DASHBOARD_ACTION_TYPE_UPDATE = 'DASHBOARD/UPDATE';
 const dashboardInitialState = {
   fetching: false,
   fetched: false,
@@ -26,7 +27,17 @@ export default function dashboardReducer(
 ) {
   switch (action.name) {
     case DASHBOARD_ACTION_NAME: {
-      return APIReducer(state, action, DASHBOARD_ACTION_NAME)
+      switch (action.type) {
+        case DASHBOARD_ACTION_TYPE_UPDATE: {
+          return {
+            ...state,
+            data: action.payload
+          }
+        }
+        default: {
+          return APIReducer(state, action, DASHBOARD_ACTION_NAME)
+        }
+      }
     }
 
     /** INDICATOR REDUCER **/

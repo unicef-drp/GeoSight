@@ -4,11 +4,11 @@ import $ from "jquery";
 import Popover from '@mui/material/Popover';
 import MapIcon from '@mui/icons-material/Map';
 import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
+import ReplayIcon from '@mui/icons-material/Replay';
 
 import App, { render } from '../../../../app';
 import { pageNames } from '../../index';
-import { store } from '../../../../store/dashboard';
-import { Actions } from "../../../../store/dashboard";
+import { Actions, store } from '../../../../store/dashboard';
 import SideNavigation from "../../Components/SideNavigation";
 import {
   SaveButton,
@@ -25,16 +25,106 @@ import WidgetForm from './Widgets'
 
 // Dashboard Preview
 import LeftPanel from '../../../../components/Dashboard/LeftPanel'
-import Map from '../../../../components/Dashboard/Map'
 import RightPanel from '../../../../components/Dashboard/RightPanel'
 import '../../../Dashboard/style.scss';
 import './style.scss';
 import { postData } from "../../../../Requests";
+import UndoIcon from "@mui/icons-material/Undo";
+import RedoIcon from "@mui/icons-material/Redo";
+
+
+/**
+ * Dashboard history
+ */
+
+let histories = [];
+let isChanged = false;
+
+export function DashboardHistory(
+  {
+    page,
+    setCurrentPage,
+    currentHistoryIdx,
+    setCurrentHistoryIdx
+  }) {
+  const dispatch = useDispatch();
+  const { data } = useSelector(state => state.dashboard);
+
+  const undo = () => {
+    isChanged = true
+    const currentHistory = histories[currentHistoryIdx]
+    const history = histories[currentHistoryIdx - 1]
+    dispatch(Actions.Dashboard.update(history.data))
+    setCurrentPage(currentHistory.page)
+    setCurrentHistoryIdx(currentHistoryIdx - 1)
+  }
+
+  const redo = () => {
+    isChanged = true
+    const history = histories[currentHistoryIdx + 1]
+    dispatch(Actions.Dashboard.update(history.data))
+    setCurrentPage(history.page)
+    setCurrentHistoryIdx(currentHistoryIdx + 1)
+  }
+
+  const reset = () => {
+    isChanged = true
+    const history = histories[0]
+    histories = [history]
+    dispatch(Actions.Dashboard.update(history.data))
+    setCurrentPage(history.page)
+    setCurrentHistoryIdx(0)
+  }
+
+  // Add history
+  useEffect(() => {
+    if (!isChanged && data.id) {
+      const lastHistory = histories[currentHistoryIdx] ? currentHistoryIdx > 0 : null;
+      histories = histories.slice(0, currentHistoryIdx + 1);
+      if (!lastHistory || (lastHistory && JSON.stringify(data) !== JSON.stringify(lastHistory.data))) {
+        histories.push({
+          page: page,
+          data: JSON.parse(JSON.stringify(data))
+        })
+        setCurrentHistoryIdx(histories.length - 1)
+      }
+    }
+    isChanged = false
+  }, [data]);
+
+  const redoDisabled = (
+    histories.length <= 1 || histories.length - 1 === currentHistoryIdx
+  )
+  return <Fragment>
+    <ThemeButton
+      className='UndoRedo'
+      onClick={undo}
+      disabled={currentHistoryIdx <= 0}
+    >
+      <UndoIcon/>
+    </ThemeButton>
+    <ThemeButton
+      className='UndoRedo'
+      onClick={reset}
+      disabled={currentHistoryIdx <= 0}
+    >
+      <ReplayIcon/>
+    </ThemeButton>
+    <ThemeButton
+      className='UndoRedo'
+      onClick={redo}
+      disabled={redoDisabled}
+    >
+      <RedoIcon/>
+    </ThemeButton>
+  </Fragment>
+}
 
 /**
  * Dashboard Preview Section
  */
-export function DashboardPreview({ showing, onForm }) {
+
+export function DashboardPreview({ currentMode, setCurrentMode }) {
   const dispatch = useDispatch();
   const { data } = useSelector(state => state.dashboard);
 
@@ -49,7 +139,9 @@ export function DashboardPreview({ showing, onForm }) {
       <div className='BackToForm'>
         <ThemeButton
           variant="secondary"
-          onClick={onForm}
+          onClick={() => {
+            setCurrentMode('FormMode')
+          }}
         >
           <ViewHeadlineIcon/>Back to Form
         </ThemeButton>
@@ -57,7 +149,7 @@ export function DashboardPreview({ showing, onForm }) {
       {Object.keys(data).length > 0 ?
         <Fragment>
           <LeftPanel/>
-          {showing ? <Map/> : ''}
+          {currentMode === 'PreviewMode' ? <Map/> : ''}
           <RightPanel/>
         </Fragment> :
         <div></div>
@@ -69,7 +161,12 @@ export function DashboardPreview({ showing, onForm }) {
 /**
  * Dashboard Save Form
  */
-export function DashboardSaveForm() {
+export function DashboardSaveForm(
+  {
+    currentPage,
+    disabled,
+    setCurrentHistoryIdx
+  }) {
   const {
     id,
     referenceLayer,
@@ -79,6 +176,7 @@ export function DashboardSaveForm() {
     widgets,
     extent
   } = useSelector(state => state.dashboard.data);
+  const { data } = useSelector(state => state.dashboard);
   const filtersData = useSelector(state => state.filtersData);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -150,16 +248,16 @@ export function DashboardSaveForm() {
       }
 
       // onOpen();
-      var data = new FormData()
-      data.append('icon', icon)
-      data.append('name', name)
-      data.append('description', description)
-      data.append('group', category)
-      data.append('data', JSON.stringify(dashboardData))
+      var formData = new FormData()
+      formData.append('icon', icon)
+      formData.append('name', name)
+      formData.append('description', description)
+      formData.append('group', category)
+      formData.append('data', JSON.stringify(dashboardData))
 
       postData(
         document.location.href,
-        data,
+        formData,
         function (response, responseError) {
           setSubmitted(false)
           if (responseError) {
@@ -171,6 +269,12 @@ export function DashboardSaveForm() {
               window.location = response.url
             } else {
               setInfo("<div class='FormOk'>Configuration has been saved!</div>")
+              histories = [{
+                page: currentPage,
+                data: JSON.parse(JSON.stringify(data))
+              }]
+              setCurrentHistoryIdx(0)
+
             }
           }
         }
@@ -190,8 +294,11 @@ export function DashboardSaveForm() {
 
   return <Fragment>
     <SaveButton
-      id={buttonID} variant="secondary" text='Save' onClick={onSave}
-      disabled={submitted}/>
+      id={buttonID}
+      variant="secondary"
+      text='Save'
+      onClick={onSave}
+      disabled={disabled || submitted}/>
     <Popover
       id={buttonID}
       open={open}
@@ -210,11 +317,34 @@ export function DashboardSaveForm() {
 }
 
 /**
+ * Dashboard Form Section Content
+ */
+export function DashboardFormContent({ changed }) {
+  const { data } = useSelector(state => state.dashboard);
+  return (
+    <div className='DashboardFormContent'>
+      {Object.keys(data).length > 0 ?
+        <Fragment>
+          <SummaryDashboardForm changed={changed}/>
+          <BasemapsForm/>
+          <IndicatorsForm/>
+          <ContextLayerForm/>
+          <FiltersForm/>
+          <WidgetForm/>
+        </Fragment> :
+        <div className='DashboardFormLoading'>Loading</div>
+      }
+    </div>
+  )
+}
+
+/**
  * Dashboard Form Section
  */
 export function DashboardForm({ onPreview }) {
-  const { data } = useSelector(state => state.dashboard);
   const [currentPage, setCurrentPage] = useState('Summary');
+  const [currentHistoryIdx, setCurrentHistoryIdx] = useState(-1);
+  const [changed, setChanged] = useState(false);
 
   const changePage = (page) => {
     setCurrentPage(page)
@@ -229,13 +359,21 @@ export function DashboardForm({ onPreview }) {
                dangerouslySetInnerHTML={{ __html: contentTitle }}></b>
           </div>
           <div className='AdminContentHeader-Right'>
+            <DashboardHistory
+              page={currentPage}
+              setCurrentPage={setCurrentPage}
+              currentHistoryIdx={currentHistoryIdx}
+              setCurrentHistoryIdx={setCurrentHistoryIdx}/>
             <ThemeButton
               variant="secondary"
               onClick={onPreview}
             >
               <MapIcon/>Preview
             </ThemeButton>
-            <DashboardSaveForm/>
+            <DashboardSaveForm
+              currentPage={currentPage}
+              disabled={currentHistoryIdx === 0 && !changed}
+              setCurrentHistoryIdx={setCurrentHistoryIdx}/>
           </div>
         </div>
 
@@ -282,19 +420,7 @@ export function DashboardForm({ onPreview }) {
             </div>
 
             {/* FORM CONTENT */}
-            <div className='DashboardFormContent'>
-              {Object.keys(data).length > 0 ?
-                <Fragment>
-                  <SummaryDashboardForm/>
-                  <BasemapsForm/>
-                  <IndicatorsForm/>
-                  <ContextLayerForm/>
-                  <FiltersForm/>
-                  <WidgetForm/>
-                </Fragment> :
-                <div className='DashboardFormLoading'>Loading</div>
-              }
-            </div>
+            <DashboardFormContent changed={setChanged}/>
           </div>
         </div>
       </div>
@@ -314,9 +440,8 @@ export default function DashboardFormApp() {
         setCurrentMode('PreviewMode')
       }}/>
       {/* DASHBOARD SECTION */}
-      <DashboardPreview showing={currentMode === 'PreviewMode'} onForm={() => {
-        setCurrentMode('FormMode')
-      }}/>
+      <DashboardPreview currentMode={currentMode}
+                        setCurrentMode={setCurrentMode}/>
     </App>
   )
 }

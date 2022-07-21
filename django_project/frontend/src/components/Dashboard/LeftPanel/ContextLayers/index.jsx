@@ -130,9 +130,11 @@ function ContextLayerInput({ data }) {
         );
       }
     } else {
-      dispatch(
-        Actions.Map.remove_context_layer(id)
-      );
+      if (layer) {
+        dispatch(
+          Actions.Map.remove_context_layer(id)
+        );
+      }
     }
   }, [checked, layer])
 

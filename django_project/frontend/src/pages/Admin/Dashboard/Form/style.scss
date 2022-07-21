@@ -42,6 +42,11 @@ main {
   }
 }
 
+.UndoRedo {
+  padding: 0.5rem !important;
+  min-width: 1rem !important;
+}
+
 .DashboardFormWrapper {
   flex-grow: 1;
   min-height: 0;

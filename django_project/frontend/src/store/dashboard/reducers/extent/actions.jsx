@@ -1,7 +1,7 @@
 import {
   EXTENT_DEFAULT_ACTION_NAME,
   EXTENT_DEFAULT_ACTION_TYPE_CHANGE
-} from '../../reducers/dashboard/dashboard'
+} from './index'
 
 
 /**

@@ -3,24 +3,8 @@ import {
   INDICATOR_ACTION_TYPE_ADD,
   INDICATOR_ACTION_TYPE_REARRANGE,
   INDICATOR_ACTION_TYPE_REMOVE,
-  INDICATOR_ACTION_TYPE_UPDATE,
-  INDICATOR_ACTION_TYPE_UPDATE_LEVEL
+  INDICATOR_ACTION_TYPE_UPDATE
 } from './index'
-
-
-/**
- * Update level name
- * @param {int} id Id of data.
- * @param {String} reporting_level Reporting level that will be changed.
- */
-export function updateLevel(id, reporting_level) {
-  return {
-    name: INDICATOR_ACTION_NAME,
-    type: INDICATOR_ACTION_TYPE_UPDATE_LEVEL,
-    id: id,
-    reporting_level: reporting_level
-  };
-}
 
 
 /**
@@ -73,5 +57,5 @@ export function rearrange(payload) {
 }
 
 export default {
-  add, remove, update, updateLevel, rearrange
+  add, remove, update, rearrange
 }

@@ -1,6 +1,6 @@
 import { fetchingData } from "../../../../Requests";
 
-import { DASHBOARD_ACTION_NAME } from './index'
+import { DASHBOARD_ACTION_NAME, DASHBOARD_ACTION_TYPE_UPDATE } from './index'
 
 const REQUEST_DASHBOARD = 'REQUEST/' + DASHBOARD_ACTION_NAME;
 const RECEIVE_DASHBOARD = 'RECEIVE/' + DASHBOARD_ACTION_NAME;
@@ -43,6 +43,18 @@ export function fetch(dispatch) {
   return request();
 }
 
+/**
+ * Update dashboard data.
+ * @param {object} payload Dashboard data.
+ */
+export function update(payload) {
+  return {
+    name: DASHBOARD_ACTION_NAME,
+    type: DASHBOARD_ACTION_TYPE_UPDATE,
+    payload: payload
+  };
+}
+
 export default {
-  fetch
+  fetch, update
 }

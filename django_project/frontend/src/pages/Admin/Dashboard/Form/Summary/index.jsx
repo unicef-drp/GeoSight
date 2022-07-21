@@ -13,7 +13,7 @@ import './style.scss';
 /**
  * Summary dashboard
  */
-export default function SummaryDashboardForm() {
+export default function SummaryDashboardForm({ changed }) {
   const {
     icon,
     name,
@@ -35,6 +35,7 @@ export default function SummaryDashboardForm() {
 
   const [referenceLayerList, setReferenceLayerList] = useState(null);
   const [referenceLayerOptions, setReferenceLayerOptions] = useState([]);
+
 
   // Fetch data
   useEffect(() => {
@@ -58,6 +59,7 @@ export default function SummaryDashboardForm() {
     if (file) {
       setIconSrc(URL.createObjectURL(file));
       setIconName(file.name);
+      changed(true)
     } else {
       setIconSrc(icon);
       setIconName(imageName(icon));
@@ -107,6 +109,7 @@ export default function SummaryDashboardForm() {
                      value={nameData}
                      onChange={(event) => {
                        setNameData(event.target.value)
+                       changed(true)
                      }}/>
               </span>
           </div>
@@ -121,6 +124,7 @@ export default function SummaryDashboardForm() {
                         value={descriptionData} rows="4"
                         onChange={(event) => {
                           setDescriptionData(event.target.value)
+                          changed(true)
                         }}/>
               </span>
           </div>
@@ -152,6 +156,7 @@ export default function SummaryDashboardForm() {
                      required={true} value={groupData}
                      onChange={(event) => {
                        setGroupData(event.target.value)
+                       changed(true)
                      }}/>
               </span>
           </div>

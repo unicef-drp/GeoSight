@@ -19,7 +19,6 @@ export default function Dashboard() {
     )
   }, []);
 
-
   return (
     <App>
       <div className='dashboard'>

@@ -10,7 +10,8 @@ import EditIcon from '@mui/icons-material/Edit';
  */
 export function ThemeButton({ children, ...props }) {
   return (
-    <Button {...props} className='ThemeButton'>
+    <Button {...props}
+            className={'ThemeButton ' + (props.className ? props.className : '')}>
       {children}
     </Button>
   )
