@@ -47,7 +47,6 @@ export function FilterControl({ filtersData, indicatorFields, filter }) {
       setFilters(filtersData)
     }
   }, [filtersData]);
-  console.log(filters)
 
   /**
    * Update Filter

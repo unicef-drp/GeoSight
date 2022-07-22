@@ -57,10 +57,12 @@ export default function indicatorReducer(state = initialState, action) {
           const layer = state.filter(layerState => {
             return layerState.id === id
           })[0]
-          layer.order = order
-          layer.group = groupName
-          newState.push(layer)
-          order += 1;
+          if (layer) {
+            layer.order = order
+            layer.group = groupName
+            newState.push(layer)
+            order += 1;
+          }
         })
       }
       return newState

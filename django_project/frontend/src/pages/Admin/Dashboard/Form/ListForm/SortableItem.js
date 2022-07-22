@@ -25,7 +25,8 @@ export default function SortableItem(
   };
 
   return (
-    <tr className='DragDropItem' style={style}
+    <tr className={'DragDropItem ' + (props.className ? props.className : '')}
+        style={style}
         ref={setNodeRef}>
       {
         isDropArea ? '' :

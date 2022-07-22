@@ -58,10 +58,12 @@ export default function basemapsReducer(state = initialState, action) {
             const layer = state.filter(layerState => {
               return layerState.id === id
             })[0]
-            layer.order = order
-            layer.group = groupName
-            basemapLayers.push(layer)
-            order += 1;
+            if (layer) {
+              layer.order = order
+              layer.group = groupName
+              basemapLayers.push(layer)
+              order += 1;
+            }
           })
         }
         return basemapLayers

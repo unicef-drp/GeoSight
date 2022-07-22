@@ -53,18 +53,7 @@ export default function ListForm(
   // Onload, check the default one
   useEffect(() => {
     const groupLayers = layerInGroup(data);
-    const newGroups = groupLayers;
-
-    // Check if current group is not in new group, merge it
-    if (groups) {
-      const currentGroupNames = Object.keys(groups);
-      const newGroupNames = Object.keys(groupLayers);
-      currentGroupNames.map(groupName => {
-        if (groupName && !newGroupNames.includes(groupName)) {
-          newGroups[groupName] = [-999]
-        }
-      })
-    }
+    let newGroups = groupLayers;
     setGroups(newGroups)
   }, [data])
 

@@ -5,15 +5,15 @@ import {
   useSortable
 } from "@dnd-kit/sortable";
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import DragHandleIcon from '@mui/icons-material/DragHandle';
 import DoneIcon from '@mui/icons-material/Done';
 import EditIcon from "@mui/icons-material/Edit";
-import { Checkbox } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { IconTextField } from "../../../../../components/Elements/Input";
 import SortableItem from "./SortableItem";
 import { CSS } from "@dnd-kit/utilities";
-import DragHandleIcon from "@mui/icons-material/DragHandle";
 
 /**
  * Group container
@@ -41,6 +41,7 @@ export default function SortableContainer(
     addLayerInGroup,
     editLayerInGroup
   }) {
+  const noGroup = '_noGroup'
   const [editName, setEditName] = useState(false);
   const [name, setName] = useState(groupName);
 
@@ -57,78 +58,93 @@ export default function SortableContainer(
   };
   return (
     <Fragment>
-      <tbody key={groupName} id={groupName} style={style} ref={setNodeRef}>
-      <tr className='DragDropItem GroupRow'>
-        <td className='DragDropItem-Drag'>
-          {
-            name !== '' ?
-              <DragHandleIcon
-                className='MuiButtonLike' {...attributes} {...listeners}/> : ''
-          }
-        </td>
-        <td colSpan={2}>
-          {name !== '' ?
-            <div className='GroupRowTitle'>
-              {
-                editName ? (
-                    <Fragment>
-                      <span>Group:</span>
-                      <IconTextField
-                        iconEnd={
-                          <DoneIcon className='MuiButtonLike' onClick={() => {
-                            if (changeGroupName(groupName, name)) {
-                              setEditName(false)
-                            }
-                          }}/>
-                        }
-                        value={name}
-                        onChange={(evt) => {
-                          setName(evt.target.value)
-                        }}
-                      />
-                    </Fragment>
-                  ) :
-                  (
-                    <Fragment>
-                      <span>Group: {name ? name : <i>No Name</i>}</span>
-                      <EditIcon
-                        className='MuiButtonLike GroupEditName'
-                        onClick={() => {
-                          setEditName(true)
-                        }}/>
-                    </Fragment>
-                  )
-              }
-              <div className='Separator'/>
-              <div className='AddButton MuiButtonLike' onClick={() => {
-                addLayerInGroup(groupName)
-              }}>
-                <AddCircleIcon/>{"Add"}
-              </div>
-            </div> : ""
-          }
-        </td>
-        <td className='VisibilityAction'><VisibilityIcon/></td>
-        {
-          editLayerInGroup ?
-            <td className='RemoveAction'><EditIcon/></td> : ''
-        }
-        <td className='RemoveAction'>
-          {name ?
-            <RemoveCircleIcon className='MuiButtonLike' onClick={() => {
-              removeGroup(name)
-            }}/> : ""
-          }
-        </td>
-      </tr>
+      <tbody key={groupName} id={groupName} style={style} ref={setNodeRef}
+             className={groupName}>
       <SortableContext
         id={groupName} items={items} strategy={rectSortingStrategy}>
+
         {
           Object.keys(items).length !== 0 ? items.map(item => {
             const layer = data[item];
+
+            /** ----------------------------------------------------  **/
+            /** FOR GROUP HEADER **/
             if (!layer) {
-              return ''
+              return (
+                <SortableItem
+                  key={item} id={item}
+                  className={'GroupRow ' + item}>
+                  <td className='DragDropItem-Drag'>
+                    {
+                      item !== noGroup ?
+                        <DragHandleIcon
+                          className='MuiButtonLike' {...attributes} {...listeners}/> : ''
+                    }
+                  </td>
+                  <td colSpan={2}>
+                    {
+                      groupName !== noGroup ?
+                        <div className='GroupRowTitle'>
+                          {
+                            editName ? (
+                                <Fragment>
+                                  <span>Group:</span>
+                                  <IconTextField
+                                    iconEnd={
+                                      <DoneIcon className='MuiButtonLike'
+                                                onClick={() => {
+                                                  if (changeGroupName(groupName, name)) {
+                                                    setEditName(false)
+                                                  }
+                                                }}/>
+                                    }
+                                    value={name}
+                                    onChange={(evt) => {
+                                      setName(evt.target.value)
+                                    }}
+                                  />
+                                </Fragment>
+                              ) :
+                              (
+                                <Fragment>
+                              <span>Group: {name ? name :
+                                <i>No Name</i>}</span>
+                                  <EditIcon
+                                    className='MuiButtonLike GroupEditName'
+                                    onClick={() => {
+                                      setEditName(true)
+                                    }}/>
+                                </Fragment>
+                              )
+                          }
+                          <div className='Separator'/>
+                          <div className='AddButton MuiButtonLike'
+                               onClick={() => {
+                                 addLayerInGroup(groupName)
+                               }}>
+                            <AddCircleIcon/>{"Add"}
+                          </div>
+                        </div> : ""
+                    }
+                  </td>
+                  <td className='VisibilityAction'></td>
+                  {
+                    editLayerInGroup ?
+                      <td className='RemoveAction'><EditIcon/></td> : ''
+                  }
+                  <td className='RemoveAction'>
+                    {name ?
+                      <RemoveCircleIcon className='MuiButtonLike'
+                                        onClick={() => {
+                                          removeGroup(name)
+                                        }}/> : ""
+                    }
+                  </td>
+                </SortableItem>
+              )
             }
+            /** ----------------------------------------------------  **/
+            /** FOR GROUP MEMBERS **/
             return (
               <SortableItem key={item} id={item}>
                 <td title={layer.name}>
@@ -140,14 +156,21 @@ export default function SortableContainer(
                   </div>
                 </td>
                 <td className='VisibilityAction'>
-                  <Checkbox
-                    checked={
-                      layer.visible_by_default === undefined ? false : layer.visible_by_default
-                    }
-                    onChange={(evt) => {
-                      layer.visible_by_default = evt.target.checked;
-                      changeLayer(layer);
-                    }}/>
+                  {
+                    layer.visible_by_default ?
+                      <VisibilityIcon
+                        className='MuiButtonLike'
+                        onClick={() => {
+                          layer.visible_by_default = false;
+                          changeLayer(layer);
+                        }}/> :
+                      <VisibilityOffIcon
+                        className='MuiButtonLike VisibilityOff'
+                        onClick={() => {
+                          layer.visible_by_default = true;
+                          changeLayer(layer);
+                        }}/>
+                  }
                 </td>
                 {
                   editLayerInGroup ?
@@ -167,8 +190,9 @@ export default function SortableContainer(
 
               </SortableItem>
             )
-          }) : <SortableItem key={-1 * groupIdx} id={-1 * groupIdx}
-                             isDropArea={true}>
+          }) : <SortableItem
+            key={-1 * groupIdx} id={-1 * groupIdx}
+            isDropArea={true}>
             <td colSpan={6} className='DropArea'>Drop Here</td>
           </SortableItem>
         }

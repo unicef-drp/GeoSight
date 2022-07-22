@@ -44,20 +44,23 @@ export default function SortableList(
 ) {
   const prevState = useRef();
   const tableName = '_Table'
+  const noGroup = '_noGroup'
 
   // parsing data from groups
   const getData = (groups) => {
-
     const itemData = {}
     let dictData = {}
     if (groups) {
       for (const [groupName, group] of Object.entries(groups)) {
-        itemData[groupName] = group.filter(layer => {
-          return layer.id
-        }).map(layer => {
-          dictData[layer.id] = layer
-          return layer.id
-        })
+        const groupNameIdx = (groupName ? groupName : noGroup)
+        itemData[groupNameIdx] = [groupNameIdx + '-header'].concat(
+          group.filter(layer => {
+            return layer.id
+          }).map(layer => {
+            dictData[layer.id] = layer
+            return layer.id
+          })
+        )
       }
     }
     return {
@@ -65,38 +68,37 @@ export default function SortableList(
       dictData: dictData
     }
   }
-  const { itemData, dictData } = getData(groups)
-  // prevState.items = itemData
 
+  const { itemData, dictData } = getData(groups)
   const [dragMode, setDragMode] = useState(false)
   const [dragged, setDragged] = useState(false)
-  const [groupData, setGroupData] = useState(groups);
-  const [items, setItems] = useState(itemData);
-  const [data, setData] = useState(dictData);
+  const [items, setItems] = useState(itemData)
+  const [data, setData] = useState(dictData)
+  const [groupsOrder, setGroupsOrder] = useState(Object.keys(items))
 
   /** Groups changed **/
   useEffect(() => {
-    setGroupData(groups)
-  }, [groups])
-
-  /** Groups changed **/
-  useEffect(() => {
-    const { itemData, dictData } = getData(groupData)
+    const { itemData, dictData } = getData(groups)
     setItems(itemData)
+    setGroupsOrder(Object.keys(itemData))
     setData(dictData)
-  }, [groupData])
+  }, [groups])
 
   /** Items changed **/
   useEffect(() => {
     if (!dragged && dragMode) {
       // We save it
-      if (JSON.stringify(prevState.items) !== JSON.stringify(items)) {
-        rearrangeLayers(items)
-        prevState.items = items
-      }
+      const newItems = {}
+      groupsOrder.map(groupName => {
+        newItems[(groupName === noGroup) ? "" : groupName] = items[groupName]
+      })
       setDragMode(false)
+      if (prevState.items !== JSON.stringify(newItems)) {
+        rearrangeLayers(newItems)
+        prevState.items = JSON.stringify(newItems)
+      }
     }
-  }, [items])
+  }, [items, dragged, dragMode, groupsOrder])
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -126,11 +128,10 @@ export default function SortableList(
       overContainer = ""
     }
 
+    const activeIndex = active.data.current.sortable.index;
+    const overIndex = over.data.current?.sortable.index || 0;
     if (activeContainer !== overContainer) {
       setItems((items) => {
-        const activeIndex = active.data.current.sortable.index;
-        const overIndex = over.data.current?.sortable.index || 0;
-
         return moveBetweenContainers(
           items,
           activeContainer,
@@ -140,6 +141,21 @@ export default function SortableList(
           active.id
         );
       });
+    } else {
+      const currIdxContainer = Object.keys(items).indexOf(activeContainer)
+
+      if (overIndex === 0) {
+        setItems((items) => {
+          return moveBetweenContainers(
+            items,
+            activeContainer,
+            activeIndex,
+            Object.keys(items)[currIdxContainer - 1],
+            items[overContainer].length,
+            active.id
+          );
+        })
+      }
     }
   };
 
@@ -189,25 +205,14 @@ export default function SortableList(
           return newItems;
         });
       } else {
-        const groupList = Object.keys(groupData)
-        let newGroupList = arrayMove(
-          groupList,
-          activeIndex,
-          overIndex
-        )
-        const noGroupIdx = newGroupList.indexOf("");
-        if (noGroupIdx !== -1 && noGroupIdx !== 0) {
-          newGroupList = arrayMove(
-            newGroupList,
-            noGroupIdx,
-            0
+        if (over.id !== noGroup) {
+          let newGroupList = arrayMove(
+            groupsOrder,
+            activeIndex,
+            overIndex
           )
+          setGroupsOrder(newGroupList)
         }
-        const newGroups = {}
-        newGroupList.map(groupName => {
-          newGroups[groupName] = groups[groupName]
-        })
-        setGroupData(newGroups)
       }
     }
   };
@@ -221,12 +226,20 @@ export default function SortableList(
     overIndex,
     item
   ) => {
-    return {
-      ...items,
-      [activeContainer]: removeAtIndex(items[activeContainer], activeIndex),
-      [overContainer]: insertAtIndex(items[overContainer], overIndex, item)
-    };
+    if (overIndex === 0) {
+      overIndex = 1
+    }
+    if (items[activeContainer] && items[overContainer]) {
+      return {
+        ...items,
+        [activeContainer]: removeAtIndex(items[activeContainer], activeIndex),
+        [overContainer]: insertAtIndex(items[overContainer], overIndex, item)
+      };
+    } else {
+      return items
+    }
   };
+
   return (
     <DndContext
       sensors={sensors}
@@ -239,11 +252,11 @@ export default function SortableList(
     >
       <table className={'DragDropTable'}>
         <SortableContext
-          id={tableName} items={Object.keys(items)}
+          id={tableName} items={groupsOrder}
           strategy={rectSortingStrategy}>
-          {Object.keys(items).map((groupName, idx) => (
+          {groupsOrder.map((groupName, idx) => (
             <SortableContainer
-              key={groupName ? groupName : "No Name"}
+              key={groupName}
               id={groupName}
               groupIdx={idx}
               data={data}

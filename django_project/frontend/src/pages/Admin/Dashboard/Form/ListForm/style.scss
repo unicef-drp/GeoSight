@@ -14,17 +14,28 @@
 
   th, td {
     padding: 0.3rem 0.5rem;
-    outline: 1px solid white;
   }
 
   td {
     background-color: #dddddd30;
   }
 
+  tbody {
+    border: 1px solid $secondary-color;
+  }
+
   .GroupRow {
+    &._noGroup-header {
+      display: none;
+    }
+
     td {
       background: $secondary-color;
       color: $anti-secondary-color;
+    }
+
+    td:first-child {
+      display: none;
     }
 
     .GroupRowTitle {
@@ -119,6 +130,10 @@
       svg {
         margin-top: 0;
       }
+    }
+
+    .VisibilityOff {
+      opacity: 0.5;
     }
   }
 
