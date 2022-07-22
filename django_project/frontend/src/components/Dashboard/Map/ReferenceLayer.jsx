@@ -158,7 +158,7 @@ export default function ReferenceLayer({ currentIndicator }) {
         const level = referenceLayerData[referenceLayer.identifier].data.levels.filter(level => {
           return level.level_name.toLowerCase() === indicator.reporting_level.toLowerCase() || '' + level.level === indicator.reporting_level
         })[0];
-        if (!indicatorsData[indicator.id].reporting_level) {
+        if (level && !indicatorsData[indicator.id].reporting_level) {
           dispatch(
             Actions.IndicatorsData.updateLevel(indicator.id, '' + level.level)
           );

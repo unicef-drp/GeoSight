@@ -355,19 +355,21 @@ export default function FilterSection() {
       const data = indicatorsData[indicator.id]?.data
       if (data) {
         const indicatorData = queryIndicator(data)[0]
-        Object.keys(indicatorData).forEach(key => {
-          const id = `${IDENTIFIER}${indicator.id}.${key}`
-          indicatorFields.push({
-            'id': id,
-            'name': `${indicator.name}.${key}`,
-            'group': indicator.name,
-            'data': [...new Set(
-              data.map(data => {
-                return data[key]
-              }))
-            ]
+        if (indicatorData) {
+          Object.keys(indicatorData).forEach(key => {
+            const id = `${IDENTIFIER}${indicator.id}.${key}`
+            indicatorFields.push({
+              'id': id,
+              'name': `${indicator.name}.${key}`,
+              'group': indicator.name,
+              'data': [...new Set(
+                data.map(data => {
+                  return data[key]
+                }))
+              ]
+            })
           })
-        })
+        }
       }
       indicatorFields = [...new Set(indicatorFields)]
     }
