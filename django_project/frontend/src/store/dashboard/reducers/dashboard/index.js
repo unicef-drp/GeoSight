@@ -3,6 +3,7 @@ import indicatorReducer, { INDICATOR_ACTION_NAME } from '../indicators'
 import basemapsReducer, { BASEMAP_ACTION_NAME } from '../basemap'
 import widgetsReducer, { WIDGET_ACTION_NAME } from "../widgets";
 import extentReducer, { EXTENT_DEFAULT_ACTION_NAME } from "../extent";
+import filtersReducer , { FILTERS_ACTION_NAME } from "../filters";
 import referenceLayerReducer, {
   REFERENCE_LAYER_ACTION_NAME
 } from '../referenceLayer'
@@ -62,6 +63,20 @@ export default function dashboardReducer(
         newState.data = {
           ...newState.data,
           extent: data
+        }
+        return newState;
+      }
+      return state
+    }
+
+    /** FILTERS REDUCER **/
+    case FILTERS_ACTION_NAME: {
+      const data = filtersReducer(state.data.filters, action);
+      if (data !== state.data.filters) {
+        const newState = { ...state }
+        newState.data = {
+          ...newState.data,
+          filters: data
         }
         return newState;
       }

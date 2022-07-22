@@ -1,0 +1,13 @@
+/* ==========================================================================
+   Filters Form style
+   ========================================================================== */
+.Filters {
+
+  .MuiButtonBase-root {
+    min-height: 0 !important;
+
+    .MuiAccordionSummary-content {
+      margin: 12px 0 !important;
+    }
+  }
+}

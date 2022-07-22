@@ -5,6 +5,8 @@ import Popover from '@mui/material/Popover';
 import MapIcon from '@mui/icons-material/Map';
 import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
 import ReplayIcon from '@mui/icons-material/Replay';
+import UndoIcon from "@mui/icons-material/Undo";
+import RedoIcon from "@mui/icons-material/Redo";
 
 import App, { render } from '../../../../app';
 import { pageNames } from '../../index';
@@ -24,14 +26,13 @@ import FiltersForm from './Filters'
 import WidgetForm from './Widgets'
 
 // Dashboard Preview
+import { postData } from "../../../../Requests";
 import LeftPanel from '../../../../components/Dashboard/LeftPanel'
 import RightPanel from '../../../../components/Dashboard/RightPanel'
 import Map from '../../../../components/Dashboard/Map'
+
 import '../../../Dashboard/style.scss';
 import './style.scss';
-import { postData } from "../../../../Requests";
-import UndoIcon from "@mui/icons-material/Undo";
-import RedoIcon from "@mui/icons-material/Redo";
 
 
 /**
@@ -81,7 +82,7 @@ export function DashboardHistory(
 
   // Add history
   useEffect(() => {
-    if (!isChanged && data.id) {
+    if (!isChanged && data.extent) {
       const lastHistory = histories[currentHistoryIdx];
       histories = histories.slice(0, currentHistoryIdx + 1);
       if (!lastHistory || (lastHistory && JSON.stringify(data) !== JSON.stringify(lastHistory.data))) {

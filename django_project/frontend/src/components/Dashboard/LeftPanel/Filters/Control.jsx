@@ -39,9 +39,15 @@ import './style.scss'
  */
 export function FilterControl({ filtersData, indicatorFields, filter }) {
   const dispatcher = useDispatch();
-  const [filters, setFilters] = useState(
-    filtersData ? filtersData : INIT_DATA.GROUP()
-  )
+  const [filters, setFilters] = useState(filtersData)
+
+  // Apply the filters query
+  useEffect(() => {
+    if (JSON.stringify(filters) !== JSON.stringify(filtersData)) {
+      setFilters(filtersData)
+    }
+  }, [filtersData]);
+  console.log(filters)
 
   /**
    * Update Filter
@@ -49,6 +55,9 @@ export function FilterControl({ filtersData, indicatorFields, filter }) {
   const updateFilter = (force) => {
     filter(filters)
     if (force) {
+      dispatcher(
+        Actions.Filters.update({ ...filters })
+      )
       setFilters({ ...filters });
     }
   }
@@ -65,7 +74,7 @@ export function FilterControl({ filtersData, indicatorFields, filter }) {
     const switchWhere = (operator) => {
       setOperator(operator);
       where.operator = operator;
-      updateFilter()
+      updateFilter(true)
     }
     const add = (newData) => {
       switch (addType) {
@@ -368,7 +377,9 @@ export default function FilterSection() {
   return <Fragment>
     <div className='FilterControl'>
       <FilterControl
-        filtersData={filters && Object.keys(filters).length > 0 ? filters : INIT_DATA.GROUP()}
+        filtersData={
+          (filters && Object.keys(filters).length > 0) ? filters : INIT_DATA.GROUP()
+        }
         indicatorFields={indicatorFields}
         filter={filter}
       />
