@@ -51,42 +51,45 @@ export function DashboardHistory(
   const dispatch = useDispatch();
   const { data } = useSelector(state => state.dashboard);
 
-  const undo = () => {
+  const applyHistory = (targetIdx, page) => {
     isChanged = true
+    const history = histories[targetIdx]
+    dispatch(
+      Actions.Dashboard.update(
+        JSON.parse(JSON.stringify(history.data))
+      )
+    )
+    setCurrentPage(page)
+    setCurrentHistoryIdx(targetIdx)
+  }
+
+  const undo = () => {
     const currentHistory = histories[currentHistoryIdx]
-    const history = histories[currentHistoryIdx - 1]
-    dispatch(Actions.Dashboard.update(history.data))
-    setCurrentPage(currentHistory.page)
-    setCurrentHistoryIdx(currentHistoryIdx - 1)
+    applyHistory(currentHistoryIdx - 1, currentHistory.page)
   }
 
   const redo = () => {
-    isChanged = true
     const history = histories[currentHistoryIdx + 1]
-    dispatch(Actions.Dashboard.update(history.data))
-    setCurrentPage(history.page)
-    setCurrentHistoryIdx(currentHistoryIdx + 1)
+    applyHistory(currentHistoryIdx + 1, history.page)
   }
 
   const reset = () => {
     isChanged = true
     const history = histories[0]
-    histories = [history]
-    dispatch(Actions.Dashboard.update(history.data))
-    setCurrentPage(history.page)
-    setCurrentHistoryIdx(0)
+    applyHistory(0, history.page)
   }
 
   // Add history
   useEffect(() => {
     if (!isChanged && data.id) {
-      const lastHistory = histories[currentHistoryIdx] ? currentHistoryIdx > 0 : null;
+      const lastHistory = histories[currentHistoryIdx];
       histories = histories.slice(0, currentHistoryIdx + 1);
       if (!lastHistory || (lastHistory && JSON.stringify(data) !== JSON.stringify(lastHistory.data))) {
-        histories.push({
+        const newHistory = {
           page: page,
           data: JSON.parse(JSON.stringify(data))
-        })
+        }
+        histories.push(newHistory)
         setCurrentHistoryIdx(histories.length - 1)
       }
     }
@@ -96,6 +99,7 @@ export function DashboardHistory(
   const redoDisabled = (
     histories.length <= 1 || histories.length - 1 === currentHistoryIdx
   )
+
   return <Fragment>
     <ThemeButton
       className='UndoRedo'

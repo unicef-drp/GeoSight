@@ -68,6 +68,7 @@ export default function SortableList(
   const { itemData, dictData } = getData(groups)
   // prevState.items = itemData
 
+  const [dragMode, setDragMode] = useState(false)
   const [dragged, setDragged] = useState(false)
   const [groupData, setGroupData] = useState(groups);
   const [items, setItems] = useState(itemData);
@@ -87,12 +88,13 @@ export default function SortableList(
 
   /** Items changed **/
   useEffect(() => {
-    if (!dragged && (!prevState.items || prevState.items.length === items.length)) {
+    if (!dragged && dragMode) {
       // We save it
       if (JSON.stringify(prevState.items) !== JSON.stringify(items)) {
         rearrangeLayers(items)
         prevState.items = items
       }
+      setDragMode(false)
     }
   }, [items])
 
@@ -231,6 +233,7 @@ export default function SortableList(
       onDragEnd={handleDragEnd}
       onDragStart={() => {
         setDragged(true)
+        setDragMode(true)
       }}
       onDragOver={handleDragOver}
     >
