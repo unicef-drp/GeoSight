@@ -13,6 +13,7 @@ class BaseView(View):
         context = {
             'content_title': self.content_title,
             'page_title': self.page_title,
+            'header_title': self.header_title,
             'user': {}
         }
         if self.request.user.is_authenticated:
@@ -41,3 +42,8 @@ class BaseView(View):
     def content_title(self):
         """Return content title that used on page title indicator."""
         raise NotImplementedError
+
+    @property
+    def header_title(self):
+        """Return content title that will be show on the header."""
+        return ""

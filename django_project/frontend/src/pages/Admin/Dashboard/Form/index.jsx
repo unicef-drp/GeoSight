@@ -273,6 +273,8 @@ export function DashboardSaveForm(
             setAnchorEl(target)
             if (!id) {
               window.location = response.url
+            } else if (window.location.href !== response.url) {
+              window.location = response.url
             } else {
               setInfo("<div class='FormOk'>Configuration has been saved!</div>")
               histories = [{

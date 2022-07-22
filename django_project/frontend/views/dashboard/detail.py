@@ -14,6 +14,14 @@ class DashboardDetailView(LoginRequiredMixin, BaseDashboardView):
         """Return content title that used on page title indicator."""
         return 'Dashboard detail'
 
+    @property
+    def header_title(self):
+        """Return content title that will be show on the header."""
+        dashboard = get_object_or_404(
+            Dashboard, slug=self.kwargs.get('slug', '')
+        )
+        return "Project : " + dashboard.name
+
     def get_context_data(self, slug, **kwargs) -> dict:
         """Return context data."""
         context = super().get_context_data(**kwargs)

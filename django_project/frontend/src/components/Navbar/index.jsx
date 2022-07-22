@@ -45,6 +45,10 @@ export default function NavBar() {
               </a>
             </button>
           </li>
+          {headerTitle ?
+            <li className='NavHeaderRight HeaderTitle'>{headerTitle}</li> : ''
+          }
+
           <li className='NavHeaderRight First'>
             <Links/>
           </li>

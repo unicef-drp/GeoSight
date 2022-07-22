@@ -125,6 +125,13 @@ header {
         padding-left: 3rem;
       }
     }
+
+    .HeaderTitle {
+      background: $primary-color;
+      color: $anti-primary-color;
+      padding-right: 1rem;
+      font-weight: $base-font-regular;
+    }
   }
 }
 

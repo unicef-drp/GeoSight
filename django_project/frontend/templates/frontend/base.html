@@ -64,6 +64,7 @@
 
   const links = {{ links|safe }};
   const contentTitle = '{{ content_title|safe }}';
+  const headerTitle = '{{ header_title|safe }}';
   let urls = {
     'login': "{% url 'login' %}",
     'logout': "{% url 'logout' %}?next=/",
