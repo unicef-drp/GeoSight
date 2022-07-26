@@ -65,7 +65,7 @@ img {
 }
 
 .cover-logo {
-    background-image: url('file:///home/timlinux/dev/python/GeoSight/docs/assets/logo.svg');
+    background-image: url('file:///home/timlinux/dev/python/GeoSight/docs//docs/assets/logo.svg');
     background-repeat: no-repeat;
     width: 440px;
     height: 440px;
@@ -103,7 +103,7 @@ img {
 
     /*
     @top-left-corner {
-        background: url('file:///home/timlinux/dev/python/GeoSight/templates/logo.png');
+        background: url('file:///home/timlinux/dev/python/GeoSight/docs//templates/logo.png');
         background-repeat: no-repeat;
         background-position: 0% 0%;
         background-size: contain;
@@ -141,7 +141,7 @@ img {
         size: 210mm 22mm;
         border: none;
         /* BASE FOLDER token will be replaced at compile time by our bash script. */
-        background: url('file:///home/timlinux/dev/python/GeoSight/templates/header.svg');
+        background: url('file:///home/timlinux/dev/python/GeoSight/docs//templates/header.svg');
         /* Hack needed or image will not show */
         content: " ";
     }
@@ -188,7 +188,7 @@ img {
         background-size: contain;
         size: 210mm 22mm;
         /* BASE FOLDER token will be replaced at compile time by our bash script. */
-        background: url('file:///home/timlinux/dev/python/GeoSight/templates/footer.svg');
+        background: url('file:///home/timlinux/dev/python/GeoSight/docs//templates/footer.svg');
         /* Note you cannot do concatenation in CSS content 
           except I figured out this little trick below TS */
         content: " " counter(page) " ";

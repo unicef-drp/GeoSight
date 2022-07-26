@@ -1,7 +1,7 @@
 site_name: GeoSight
 site_description: "A platform provides a way to understand risk modalities across different geographic contexts."
 site_author: "Unicef"
-docs_dir: ./docs
+docs_dir: ./src
 site_dir: ./site
 repo_name: "unicef-drp/GeoSight"
 repo_url: "https://github.com/unicef-drp/GeoSight"
