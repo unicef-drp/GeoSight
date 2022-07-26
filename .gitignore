@@ -25,3 +25,4 @@ django_project/frontend/webpack-stats.prod.json
 
 # mkdocs related
 mkdocs.yml
+templates/styles.scss

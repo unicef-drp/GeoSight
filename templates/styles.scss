@@ -1,7 +1,7 @@
 /* Sass property declarations */
 
-$primary-color: #54a2cc;
-$secondary-color: #eeb248;
+$primary-color: #0099FF;
+$secondary-color: #FF0099;
 $tertiary-color: #8a8b8b;
 $primary-color-light: #cdedff;
 $secondary-color-light: #f4ebdb;
@@ -58,10 +58,10 @@ html {
 }
 
 img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
 
 .cover-logo {
@@ -77,8 +77,8 @@ img {
     width: 50%;
     background-color: #fff;
     /* ensures that svg stretches to fill the container */
-    background-size: contain;
-}
+    background-size: contain; 
+} 
 
 @font-face {
     src: url(../assets/AvenirLTStd-Book.otf);
@@ -115,7 +115,6 @@ img {
         /* Note this element gets obscured by top-center if it is solid. */
         content: 'The BIMS Handbook';
     }
-
     @top-center {
         /* Idiosyncratic note: The top center section is the 
            only one that you can expand out to the full width of the page.
@@ -146,14 +145,12 @@ img {
         /* Hack needed or image will not show */
         content: " ";
     }
-
     @top-right {
         min-width: 100mm;
         background-color: transparent;
         /* hack to make it appear as box */
         content: " ";
     }
-
     @bottom-left-corner {
         /* has no effect on corner elements */
         max-width: 0mm;
@@ -161,13 +158,11 @@ img {
         /* hack to make it appear as box */
         content: " ";
     }
-
     @bottom-left {
         background-color: transparent;
         /* hack to make it appear as box */
         content: " ";
     }
-
     @bottom-center {
         /* Idiosyncratic note: The bottom center section is the 
            only one that you can expand out to the full width of the page.
@@ -198,14 +193,12 @@ img {
           except I figured out this little trick below TS */
         content: " " counter(page) " ";
     }
-
     @bottom-right {
         max-width: 0mm;
         background-color: transparent;
         /* hack to make it appear as box */
         content: " ";
     }
-
     @bottom-right-corner {
         /* has no effect on corner elements */
         max-width: 0mm;
@@ -290,8 +283,7 @@ h4:before {
 
 article h1,
 h2,
-h3,
-h4 {
+h3, h4 {
     width: 100%;
     padding-right: 20pt;
     text-align: right;

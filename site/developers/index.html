@@ -7,7 +7,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="Unicef" name="author"/>
 <link href="../img/favicon.ico" rel="shortcut icon"/>
-<title>Setup - GeoSight</title>
+<title>GeoSight - GeoSight</title>
 <link href="../css/bootstrap.min.css" rel="stylesheet"/>
 <link href="../css/font-awesome.min.css" rel="stylesheet"/>
 <link href="../css/base.css" rel="stylesheet"/>
@@ -33,36 +33,52 @@
 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Home <b class="caret"></b></a>
 <ul class="dropdown-menu">
 <li>
-<a class="dropdown-item" href="../about_kartoza.md">About</a>
+<a class="dropdown-item" href="../about_geosight.md">About</a>
 </li>
 <li>
 <a class="dropdown-item" href="../contributing.md">Contributing</a>
 </li>
 </ul>
 </li>
-<li class="dropdown active">
+<li class="dropdown">
+<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">For Users <b class="caret"></b></a>
+<ul class="dropdown-menu">
+<li>
+<a class="dropdown-item" href="../users/">Overview</a>
+</li>
+</ul>
+</li>
+<li class="dropdown">
+<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">For Administrators <b class="caret"></b></a>
+<ul class="dropdown-menu">
+<li>
+<a class="dropdown-item" href="../administrators/">Overview</a>
+</li>
+</ul>
+</li>
+<li class="dropdown">
 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">For Developers <b class="caret"></b></a>
 <ul class="dropdown-menu">
 <li>
-<a class="dropdown-item active" href="./">Setup</a>
+<a class="dropdown-item" href="setup/">Setup</a>
 </li>
 <li class="dropdown-submenu">
 <a class="dropdown-item" href="#">Installation</a>
 <ul class="dropdown-menu">
 <li>
-<a class="dropdown-item" href="installation/preparation/">Preparation</a>
+<a class="dropdown-item" href="setup/installation/preparation/">Preparation</a>
 </li>
 <li>
-<a class="dropdown-item" href="installation/project_setup/">Project setup</a>
+<a class="dropdown-item" href="setup/installation/project_setup/">Project setup</a>
 </li>
 <li class="dropdown-submenu">
 <a class="dropdown-item" href="#">Development setup</a>
 <ul class="dropdown-menu">
 <li>
-<a class="dropdown-item" href="installation/development_setup/">Development Environment</a>
+<a class="dropdown-item" href="setup/installation/development_setup/">Development Environment</a>
 </li>
 <li>
-<a class="dropdown-item" href="installation/development_setup/pycharm/">Using pycharm</a>
+<a class="dropdown-item" href="setup/installation/development_setup/pycharm/">Using pycharm</a>
 </li>
 </ul>
 </li>
@@ -73,17 +89,7 @@
 </ul>
 <ul class="nav navbar-nav ml-auto">
 <li class="nav-item">
-<a class="nav-link disabled" rel="prev">
-<i class="fa fa-arrow-left"></i> Previous
-                                </a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="installation/preparation/" rel="next">
-                                    Next <i class="fa fa-arrow-right"></i>
-</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="https://github.com/unicef-drp/GeoSight/blob/main/docs/setup/index.md">Edit on unicef-drp/GeoSight</a>
+<a class="nav-link" href="https://github.com/unicef-drp/GeoSight/blob/main/docs/developers/index.md">Edit on unicef-drp/GeoSight</a>
 </li>
 </ul>
 </div>
@@ -99,16 +105,63 @@
 </div>
 <div class="navbar-collapse collapse card bg-secondary" id="toc-collapse">
 <ul class="nav flex-column">
-<li class="nav-item" data-level="1"><a class="nav-link" href="#setup">Setup</a>
+<li class="nav-item" data-level="1"><a class="nav-link" href="#geosight">GeoSight</a>
 <ul class="nav flex-column">
+<li class="nav-item" data-level="2"><a class="nav-link" href="#quick-installation-guide">QUICK INSTALLATION GUIDE</a>
+<ul class="nav flex-column">
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
 </div></div>
 <div class="col-md-9" role="main">
-<h1 id="setup">Setup</h1>
-<p>This document covers how you can set up the project, for production and development environment setup.</p></div>
+<h1 id="geosight">GeoSight</h1>
+<h2 id="quick-installation-guide">QUICK INSTALLATION GUIDE</h2>
+<h3 id="production">Production</h3>
+<pre><code>git clone https://github.com/unicef-drp/GeoSight
+cd GeoSight/deployment
+docker-compose up -d
+</code></pre>
+<p>The web will be available at <code>http://127.0.0.1/</code></p>
+<p>To stop containers:</p>
+<pre><code>docker-compose kill
+</code></pre>
+<p>To stop and delete containers:</p>
+<pre><code>docker-compose down
+</code></pre>
+<h3 id="development">Development</h3>
+<pre><code>git clone https://github.com/unicef-drp/GeoSight
+cd GeoSight/deployment
+cp .template.env .env
+docker-compose.override.template.yml docker-compose.override.yml
+
+cd GeoSight
+make up
+make dev
+</code></pre>
+<p>The web will be available at <code>http://localhost:2000/</code></p>
+<p>To stop dev:</p>
+<pre><code>make dev-kill
+</code></pre>
+<p>To reload container:</p>
+<pre><code>make dev-reload
+</code></pre>
+<h3 id="setup-onedrive">Setup onedrive</h3>
+<ol>
+<li>Download onedrive by <code>sudo apt-get install onedrive</code></li>
+<li>Execute <code>onedrive --get-O365-drive-id '&lt;your site name to search&gt;'</code></li>
+<li>It will ask to click an url and put back the url that created on browser</li>
+<li>It will show an information. Check drive_id and copy it.</li>
+<li>Open file deployment/onedrive/config and put it to drive_id</li>
+<li><code>make onedrive-firstrun</code> to run first config</li>
+<li>It will ask to click an url and put back the url that created on browser</li>
+<li>Wait the system to finish the sync</li>
+<li>After that we can stop it and do <code>make up</code></li>
+</ol>
+<p>More information:
+https://github.com/abraunegg/onedrive/blob/master/docs/SharePoint-Shared-Libraries.md</p></div>
 </div>
 </div>
 <footer class="col-md-12">

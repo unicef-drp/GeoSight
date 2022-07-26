@@ -11,14 +11,17 @@ copyright: "Unicef, Kartoza and Contributors"
 # Navigation
 nav:
         - Home:
-                  - About: about_kartoza.md
+                  - About: about_geosight.md
                   - Contributing: contributing.md
-        #- For Users:
+        - For Users:
+                  - Overview: users/index.md
+        - For Administrators:
+                  - Overview: administrators/index.md
         - For Developers:
-                  - setup/index.md
+                  - developers/setup/index.md
                   - Installation:
-                            - Preparation: setup/installation/preparation.md
-                            - Project setup: setup/installation/project_setup.md
+                            - Preparation: developers/setup/installation/preparation.md
+                            - Project setup: developers/setup/installation/project_setup.md
                             - Development setup:
-                                      - setup/installation/development_setup/index.md
-                                      - Using pycharm: setup/installation/development_setup/pycharm.md
+                                      - developers/setup/installation/development_setup/index.md
+                                      - Using pycharm: developers/setup/installation/development_setup/pycharm.md
