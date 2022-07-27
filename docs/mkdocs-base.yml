@@ -16,6 +16,7 @@ nav:
         - For Users:
                   - Overview: users/index.md
                   - Platform tour: users/platform_tour.md
+                  - Map Interactions: map_interactions.md
         - For Administrators:
                   - Overview: administrators/index.md
         - For Developers:
