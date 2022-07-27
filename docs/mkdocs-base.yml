@@ -15,7 +15,7 @@ nav:
                   - Contributing: contributing.md
         - For Users:
                   - Overview: users/index.md
-                  - Platform tour: platform_tour.md
+                  - Platform tour: users/platform_tour.md
         - For Administrators:
                   - Overview: administrators/index.md
         - For Developers:
