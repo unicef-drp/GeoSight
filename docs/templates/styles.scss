@@ -1,47 +1,20 @@
-/* Sass property declarations */
-
-$primary-color: #0099FF;
-$secondary-color: #FF0099;
-$tertiary-color: #8a8b8b;
-$primary-color-light: #cdedff;
-$secondary-color-light: #f4ebdb;
-$tertiary-color-light: #eaeaea;
-$primary-color-dark: #0082c7;
-$secondary-color-dark: #e79709;
-$tertiary-color-dark: #3f3f3f;
-
-$font-size: 10pt;
-$font-color: #000;
-
-$code-font-size: 8pt;
-$code-font-family: 'Noto Sans Mono', monospace;
-
-$inline-code-background: #c2d4dd;
-
-$codeblock-label-font-color: white;
-$codeblock-label-background: $primary-color;
-$codeblock-label-border: $primary-color-dark;
-$codeblock-background: $primary-color-light;
-$codeblock-border: $primary-color;
-
-$blockquote-label-font-color: white;
-$blockquote-label-background: $secondary-color;
-$blockquote-label-border: $secondary-color-dark;
-$blockquote-background: $secondary-color-light;
-$blockquote-border: $secondary-color;
-
-
+/* Sass property declarations - these two files contain stuff you can edit.
+   Don't edit anything in this file unless you are wanting to improve the base style.
+   This file is only used for the pdf generation.
+  */
+@import "variables.scss";
+@import "graphics.scss";
 /* To debug and define css rules, run the generator in debug mode
-   by editing mkdocs-pdf.yml and enabling debug mode. Then
-   redirect the generator output to an html file e.g.
-
-./build-docs-pdf.sh > /tmp/output.html
-xdg-open /tmp/output.html
-
-   Then use the inspect tool in your browser to identify the css paths 
-   of styles you want to modify.
-
-*/
+     by editing mkdocs-pdf.yml and enabling debug mode. Then
+     redirect the generator output to an html file e.g.
+  
+  ./build-docs-pdf.sh > /tmp/output.html
+  xdg-open /tmp/output.html
+  
+     Then use the inspect tool in your browser to identify the css paths 
+     of styles you want to modify.
+  
+  */
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&family=Source+Code+Pro&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
@@ -58,14 +31,14 @@ html {
 }
 
 img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
 }
 
 .cover-logo {
-    background-image: url('file:///home/timlinux/dev/python/GeoSight/docs//docs/assets/logo.svg');
+    background-image: $logo-url;
     background-repeat: no-repeat;
     width: 440px;
     height: 440px;
@@ -77,8 +50,8 @@ img {
     width: 50%;
     background-color: #fff;
     /* ensures that svg stretches to fill the container */
-    background-size: contain; 
-} 
+    background-size: contain;
+}
 
 @font-face {
     src: url(../assets/AvenirLTStd-Book.otf);
@@ -96,43 +69,51 @@ img {
     white-space: normal;
     color: $font-color;
     /* 
-      Margin properties next: 
+        Margin properties next: 
+  
+        See https://www.quackit.com/css/at-rules/css_bottom-left-corner_at-rule.cfm
+        for a nice explanation of the margin properties for css print layouts */
 
-      See https://www.quackit.com/css/at-rules/css_bottom-left-corner_at-rule.cfm
-      for a nice explanation of the margin properties for css print layouts */
 
-    /*
     @top-left-corner {
-        background: url('file:///home/timlinux/dev/python/GeoSight/docs//templates/logo.png');
+        @if $show-top-left-corner-logo {
+            background: $corner-logo-url;
+        }
+
         background-repeat: no-repeat;
         background-position: 0% 0%;
         background-size: contain;
+        z-index: 99;
         //Hack needed or image will not show
         content: " ";
     }
-    */
+
+
     @top-left {
         /* Note this element gets obscured by top-center if it is solid. */
-        content: 'The BIMS Handbook';
+        z-index: 95;
+        content: $document-title;
+        color: $document-title-color;
     }
+
     @top-center {
         /* Idiosyncratic note: The top center section is the 
-           only one that you can expand out to the full width of the page.
-           Also: The left elements will render under it, the right elements
-           over it (the z order increases as you move right).
-
-           Be careful trying to use a PNG background as the DPI is hard to configure
-           and your graphics will appear pixelated or not scale correctly 
-           so rather use an SVG.
-
-           The setup below will span your SVG across the page, make sure your
-           SVG document has exactly the same dimensions. Leave a pixel or two
-           white space to the very right of your SVG as the right edge is 
-           difficult to page align.
-           */
+             only one that you can expand out to the full width of the page.
+             Also: The left elements will render under it, the right elements
+             over it (the z order increases as you move right).
+  
+             Be careful trying to use a PNG background as the DPI is hard to configure
+             and your graphics will appear pixelated or not scale correctly 
+             so rather use an SVG.
+  
+             The setup below will span your SVG across the page, make sure your
+             SVG document has exactly the same dimensions. Leave a pixel or two
+             white space to the very right of your SVG as the right edge is 
+             difficult to page align.
+             */
         background-color: transparent;
         /* Dont remove these two lines, they force the center element
-           to the width of the page and height of the footer image. */
+             to the width of the page and height of the footer image. */
         min-width: 210mm;
         min-height: 22mm;
         background-repeat: no-repeat;
@@ -140,17 +121,19 @@ img {
         background-size: contain;
         size: 210mm 22mm;
         border: none;
-        /* BASE FOLDER token will be replaced at compile time by our bash script. */
-        background: url('file:///home/timlinux/dev/python/GeoSight/docs//templates/header.svg');
+        background: $header-url;
         /* Hack needed or image will not show */
         content: " ";
+        z-index: 90;
     }
+
     @top-right {
         min-width: 100mm;
         background-color: transparent;
         /* hack to make it appear as box */
         content: " ";
     }
+
     @bottom-left-corner {
         /* has no effect on corner elements */
         max-width: 0mm;
@@ -158,47 +141,50 @@ img {
         /* hack to make it appear as box */
         content: " ";
     }
+
     @bottom-left {
         background-color: transparent;
         /* hack to make it appear as box */
         content: " ";
     }
+
     @bottom-center {
         /* Idiosyncratic note: The bottom center section is the 
-           only one that you can expand out to the full width of the page.
-           Also: The left elements will render under it, the right elements
-           over it (the z order increases as you move right).
-
-           Be careful trying to use a PNG background as the DPI is hard to configure
-           and your graphics will appear pixelated or not scale correctly 
-           so rather use an SVG.
-
-           The setup below will span your SVG across the page, make sure your
-           SVG document has exactly the same dimensions. Leave a pixel or two
-           white space to the very right of your SVG as the right edge is 
-           difficult to page align.
-           */
+             only one that you can expand out to the full width of the page.
+             Also: The left elements will render under it, the right elements
+             over it (the z order increases as you move right).
+  
+             Be careful trying to use a PNG background as the DPI is hard to configure
+             and your graphics will appear pixelated or not scale correctly 
+             so rather use an SVG.
+  
+             The setup below will span your SVG across the page, make sure your
+             SVG document has exactly the same dimensions. Leave a pixel or two
+             white space to the very right of your SVG as the right edge is 
+             difficult to page align.
+             */
         background-color: transparent;
         /* Dont remove these two lines, they force the center element
-           to the width of the page and height of the footer image. */
+             to the width of the page and height of the footer image. */
         min-width: 210mm;
         min-height: 22mm;
         background-repeat: no-repeat;
         background-position: 0% 0%;
         background-size: contain;
         size: 210mm 22mm;
-        /* BASE FOLDER token will be replaced at compile time by our bash script. */
-        background: url('file:///home/timlinux/dev/python/GeoSight/docs//templates/footer.svg');
+        background: $footer-url;
         /* Note you cannot do concatenation in CSS content 
-          except I figured out this little trick below TS */
+            except I figured out this little trick below TS */
         content: " " counter(page) " ";
     }
+
     @bottom-right {
         max-width: 0mm;
         background-color: transparent;
         /* hack to make it appear as box */
         content: " ";
     }
+
     @bottom-right-corner {
         /* has no effect on corner elements */
         max-width: 0mm;
@@ -214,6 +200,7 @@ img {
 
 @page {
     margin: 2cm;
+    padding-top: 10mm;
 }
 
 
@@ -262,12 +249,12 @@ h4:before {
 }
 
 h1:before {
-    color: $secondary-color;
+    color: $primary-color;
     content: counter(c1);
 }
 
 h2:before {
-    color: $primary-color;
+    color: $secondary-color;
     content: counter(c1) "." counter(c2);
 }
 
@@ -283,7 +270,8 @@ h4:before {
 
 article h1,
 h2,
-h3, h4 {
+h3,
+h4 {
     width: 100%;
     padding-right: 20pt;
     text-align: right;
@@ -296,16 +284,16 @@ h3, h4 {
 
 
 article h1 {
-    border-bottom: 2px solid $secondary-color;
-    color: $secondary-color;
+    border-bottom: 1px solid $primary-color;
+    color: $primary-color;
     padding-top: 24px;
     text-decoration-style: double;
     margin-bottom: 32px;
 }
 
 article h2 {
-    border-bottom: 1px solid $primary-color;
-    color: $primary-color;
+    color: $secondary-color;
+    border-bottom: 2px solid $secondary-color;
     padding-top: 12px;
     margin-bottom: 12px;
 }
@@ -325,12 +313,12 @@ article h4 {
 }
 
 /* MKdocs renders code blocks inside a pre element and 
-  inline code simply inside code elements 
-  
-  Code block related items below are based on the article
-  at https://css-tricks.com/styling-code-in-and-out-of-blocks/
-  
-  */
+    inline code simply inside code elements 
+    
+    Code block related items below are based on the article
+    at https://css-tricks.com/styling-code-in-and-out-of-blocks/
+    
+    */
 
 code {
     font-family: monospace;
@@ -347,13 +335,11 @@ dd>code,
 td>code {
     display: inline;
     background: $inline-code-background;
-    white-space: pre;
+    white-space: pre-wrap;
     //max-width: 100%;
     //min-width: 100px;
-    padding: 0;
     word-wrap: break-word;
     box-decoration-break: clone;
-    padding: .1rem .3rem .2rem;
     border-radius: .2rem;
     font-size: $font-size;
     color: #000 !important;
@@ -389,7 +375,7 @@ pre code {
     font-size: $code-font-size;
     font-family: $code-font-family;
     /* margin: 1em 3em; 
-    */
+      */
     padding: 1em 1em;
     margin-left: 8px;
     margin-top: 1em;
@@ -411,8 +397,8 @@ blockquote:before {
     left: -20px;
     content: '🧑‍🔧 Note:';
     padding: 1em 1em;
+    margin-top: 10mm;
     margin-left: 0;
-    margin-top: 1em;
     margin-bottom: 1em;
     border-left: 5px solid $blockquote-label-border;
     background: $blockquote-label-background;
@@ -422,11 +408,9 @@ blockquote:before {
 }
 
 blockquote {
-    /* margin: 1em 3em; */
-    padding: 1em 1em;
     margin-left: 8px;
-    margin-top: 1em;
-    margin-bottom: 1em;
+    margin-top: 0mm;
+    margin-bottom: 0mm;
     width: 100%;
     border-left: 5px solid $blockquote-border;
     background: $blockquote-background;
@@ -436,11 +420,6 @@ blockquote {
 
 blockquote p {
     margin: 0;
-}
-
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
 }
 
 img {
@@ -466,6 +445,8 @@ table {
     font-family: sans-serif;
     min-width: 400px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 
@@ -501,7 +482,22 @@ table tbody tr.active-row {
 
 /* End of section based on https://dev.to/dcodeyt/creating-beautiful-html-tables-with-css-428l */
 
+ol,
+ul {
+    padding-top: 1ch;
+    padding-bottom: 1ch;
+}
 
+li {
+    padding-left: 1ch;
+}
+
+ul.li::marker {
+    color: $primary-color;
+    font-weight: bold;
+    content: '⧈';
+    margin-right: 10px;
+}
 
 
 
