@@ -1,0 +1,29 @@
+site_name: GeoSight
+site_description: "A platform provides a way to understand risk modalities across different geographic contexts."
+site_author: "Unicef"
+docs_dir: ./src
+site_dir: ./site
+repo_name: "unicef-drp/GeoSight"
+repo_url: "https://github.com/unicef-drp/GeoSight"
+edit_uri: "https://github.com/unicef-drp/GeoSight/blob/main/docs/"
+copyright: "Unicef, Kartoza and Contributors"
+
+# Navigation
+nav:
+        - Home:
+                  - About: about_geosight.md
+                  - Contributing: contributing.md
+        - For Users:
+                  - Overview: users/index.md
+                  - Platform tour: users/platform_tour.md
+                  - Map Interactions: map_interactions.md
+        - For Administrators:
+                  - Overview: administrators/index.md
+        - For Developers:
+                  - developers/setup/index.md
+                  - Installation:
+                            - Preparation: developers/setup/installation/preparation.md
+                            - Project setup: developers/setup/installation/project_setup.md
+                            - Development setup:
+                                      - developers/setup/installation/development_setup/index.md
+                                      - Using pycharm: developers/setup/installation/development_setup/pycharm.md
